@@ -78,22 +78,37 @@ class FusionModule:
         return F_curr
 
 
-
-
 '''
 A single Gated Fusion Layer consisting of 1 fusion module and 1 gated module.
+Input:
+    X: tensor of shape (batch_size, n_features_x)
+    G_prev: tensor of shape (batch_size, n_features_g)
+    W1: learnable parameter of the first convolution operation in the fusion module of shape (n_features_f, n_features_x)
+    W2: learnable parameter of the second convolution operation in the fusion module of shape (n_features_f, n_features_g)
+    W_gate: learnable parameter of the convolution operation in the gated module of shape (n_features_g, n_features_f + n_features_f)
+    b_gate: learnable bias term of the gated module of shape (n_features_g,)
+    W_update: learnable parameter of the convolution operation in the gated module of shape (n_features_g, n_features_f + n_features_g)
+    b_update: learnable bias term of the gated module of shape (n_features_g,)
+    
 '''
 @dataclass
 class GatedFusionLayer:
     def __init__(self, X, G_prev):
         self.X = X
         self.G_prev = G_prev
-        self.W1 = # TODO: Initialize W1
-        self.W2 = # TODO: Initialize W2
-        self.W_gate = # TODO: Initialize W_gate
-        self.b_gate = # TODO: Initialize b_gate to zeroes
-        self.W_update = # TODO: Initialize W_update
-        self.b_update = # TODO: Initialize b_update to zeroes
+        n_features_x = X.shape[1]
+        n_features_g = G_prev.shape[1]
+        n_features_f = 1  # TODO: choose the number of features for F_curr
+        self.W1 = nn.Parameter(torch.empty(n_features_f, n_features_x)) # Initialize W1
+        nn.init.xavier_uniform_(self.W1) # Xavier initialization for W1
+        self.W2 = nn.Parameter(torch.empty(n_features_f, n_features_g)) # Initialize W2
+        nn.init.xavier_uniform_(self.W2) # Xavier initialization for W2
+        self.W_gate = nn.Parameter(torch.empty(n_features_g, (n_features_f + n_features_f))) # Initialize W_gate
+        nn.init.xavier_uniform_(self.W_gate) # Xavier initialization for W_gate
+        self.b_gate = nn.Parameter(torch.zeros(n_features_g, 1)) # Initialize b_gate to zeroes
+        self.W_update = nn.Parameter(torch.empty(n_features_g, (n_features_f + n_features_g))) # Initialize W_update
+        nn.init.xavier_uniform_(self.W_update) # Xavier initialization for W_update
+        self.b_update = nn.Parameter(torch.zeros(n_features_g, 1)) # Initialize b_update to zeroes
 
     
     def forward(self):
@@ -148,22 +163,41 @@ The Deep Cross Modal Fusion Model consisting of 'M' Iterative Gated Fusion Modul
 '''
 @dataclass
 class DeepCrossModalFusionModel:
-    def __init__(self, M, L):
+    def __init__(self, M, L, input):
         self.M = M
         self.L = L
         self.GatedFusionLayer = GatedFusionLayer()
         self.IterativeGatedFusionModule = IterativeGatedFusionModule(self.GatedFusionLayer, self.L)
         self.fc = nn.Linear(in_features=self.L, out_features=1)
     
-    def train(self, X, Y1, Y2, Y3, Y4, Y5, Y6):
-        Y = [Y1, Y2, Y3, Y4, Y5, Y6]  # List of all the input modalities
+    def train(self):
+        X = self.input[0]
+        X1 = self.input[1]
+        X2 = self.input[2]
+        X3 = self.input[3]
+        X4 = self.input[4]
+        X5 = self.input[5]
+        X6 = self.input[6]
+        X7 = self.input[7]
+        X_modalities = [X1, X2, X3, X4, X5, X6]  # List of all the input modalities
         F_out = []
         for m in range(self.M):
-            F_next = self.IterativeGatedFusionModule(X, Y[m])
+            F_next = self.IterativeGatedFusionModule(X, X_modalities[m])
             F_out.append(F_next)
+
+        # Pass independent modalities through the fully connected layer for prediction
+        X_independent = [X, X1, X2, X3, X4, X5, X6, X7]
+        X_independent = torch.cat(X_independent, dim=1)
+        X_independent = X_independent.unsqueeze(1)
+        X_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)(X_independent)
 
         # Convolutional fusion of the outputs from all the Iterative Gated Fusion Modules
         F_out = torch.cat(F_out, dim=1)  # Concatenate along the channel dimension
+        F_out = F_out.unsqueeze(1)
+        F_out = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)(F_out)
+
+        # Concatenate the outputs of the independent modalities and the convolutional fusion
+        F_out = torch.cat(F_out, X_independent, dim=1)
         F_out = F_out.unsqueeze(1)
         F_out = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)(F_out)
 
