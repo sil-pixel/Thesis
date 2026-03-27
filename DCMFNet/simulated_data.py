@@ -5,8 +5,8 @@ import numpy as np
 np.random.seed(42)
 
 # Parameters
-n_rows = 10000
-n_cols = 250
+n_rows = 9000
+n_cols = 150
 categories = [np.nan, 0, 1, 2, 3]
 probabilities = [0.30, 0.45, 0.15, 0.05, 0.05]
 
