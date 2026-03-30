@@ -204,24 +204,25 @@ def train(train_df, seed, plot_training=False):
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1}/{num_epochs}")
         print(f"Training on {len(train_dataloader.dataset)} samples...")
+        # set the model to training mode
         model.train()  
         total_loss = 0.0
 
-        for x_batch, y_batch in train_dataloader:
-            print(f" the type of x_batch : {type(x_batch)}")  # list
-            print(f" the number of modalities in x_batch : {len(x_batch)}")   # number of modalities
+        for inputs, labels in train_dataloader:
+            print(f" the type of x_batch : {type(inputs)}")  # list
+            print(f" the number of modalities in x_batch : {len(inputs)}")   # number of modalities
             optimizer.zero_grad()
             # Forward pass
-            print(f"Forward pass for batch of size {x_batch[0].size(0)}...")
-            outputs = model(x_batch) 
-            loss = criterion(outputs, y_batch)
+            print(f"Forward pass for batch of size {inputs[0].size(0)}...")
+            outputs = model(inputs) 
+            loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
             _, predicted = torch.max(outputs.data, 1)
-            total += y_batch.size(0)
-            correct += (predicted == y_batch).sum().item()
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
         
         train_accuracy = correct / total
 
