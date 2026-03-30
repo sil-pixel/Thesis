@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 '''
 Performs the gated operation on the input tensor using the sigmoid activation function.
 Input:
-    F_curr: tensor of shape (batch_size, n_features_f)
+    F_curr: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
     G_prev: tensor of shape (batch_size, n_features_m)
 Equation:
     z_t = σ(W_z (F_t + G_{t-1}) + b_z)
@@ -36,10 +36,10 @@ Output:
     G_curr: tensor of shape (batch_size, n_features_m)
 '''
 class GatedModule(nn.Module):
-    def __init__(self, n_features_f, n_features_m):
+    def __init__(self, n_features_m):
         super().__init__()
-        self.W_update = nn.Linear(n_features_f + n_features_m, n_features_m)  # Learnable parameter for the update operation
-        self.W_gate = nn.Linear(n_features_f + n_features_f, n_features_m)  # Learnable parameter for the gated operation
+        self.W_update = nn.Linear( n_features_m + n_features_m, n_features_m)  # Learnable parameter for the update operation
+        self.W_gate = nn.Linear(n_features_m + n_features_m, n_features_m)  # Learnable parameter for the gated operation
 
     
     def forward(self, F_curr, G_prev):
@@ -53,20 +53,20 @@ class GatedModule(nn.Module):
 Performs bilinear fusion of X and previous gated output using tanh activation function.
 Input:
     X: tensor of shape (batch_size, n_features_x)
-    G_prev: tensor of shape (batch_size, n_features_g)
-    F_curr: tensor of shape (batch_size, n_features_f)
+    G_prev: tensor of shape (batch_size, n_features_m)
+    F_curr: tensor of shape (batch_size, n_features_m)
 Equation:
     F_curr = tanh(sum (tanh(W1 @ X) * tanh(W2 @ G_prev))) 
     TODO: check what the sum operation is in the equation? 
     TODO: in the paper it was mentioned that the sum is integrating the multi-head output features along the channel dimension
 Output:
-    F_curr: tensor of shape (batch_size, n_features_f)
+    F_curr: tensor of shape (batch_size, n_features_m)
 '''
 class FusionModule(nn.Module):
-    def __init__(self, n_features_x, n_features_m, n_features_f):
+    def __init__(self, n_features_x, n_features_m):
         super().__init__()
-        self.W1 = nn.Linear(n_features_x, n_features_f)  # Learnable parameter for the first convolution operation in the fusion module
-        self.W2 = nn.Linear(n_features_m, n_features_f)  # Learnable parameter for the second convolution operation in the fusion module
+        self.W1 = nn.Linear(n_features_x, n_features_m)  # Learnable parameter for the first convolution operation in the fusion module
+        self.W2 = nn.Linear(n_features_m, n_features_m)  # Learnable parameter for the second convolution operation in the fusion module
 
     
     def forward(self, X, G_prev):
@@ -81,16 +81,16 @@ Input:
     X: tensor of shape (batch_size, n_features_x)
     G_prev: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
 Output:
-    F_curr: tensor of shape (batch_size, n_features_f)
+    F_curr: tensor of shape (batch_size, n_features_m)
     G_curr: tensor of shape (batch_size, n_features_m)
     
 '''
 class GatedFusionLayer(nn.Module):
     # TODO: choose the number of features for F_curr 
-    def __init__(self, n_features_x, n_features_m, n_features_f=16):
+    def __init__(self, n_features_x, n_features_m):
         super().__init__()
-        self.fusion_layer = FusionModule(n_features_x, n_features_m, n_features_f)
-        self.gated_layer = GatedModule(n_features_f, n_features_m)
+        self.fusion_layer = FusionModule(n_features_x, n_features_m)
+        self.gated_layer = GatedModule(n_features_m)
 
     
     def forward(self, X, G_prev):
@@ -113,14 +113,14 @@ Equation:
     and Conv is a 1D convolution operation
     TODO: check the dimension along which the concatenation is performed in the equation.
 Output:
-    F_next: tensor of shape (batch_size, n_features_f * L)
+    F_next: tensor of shape (batch_size, n_features_m * L)
 '''
 class IterativeGatedFusionModule(nn.Module):
-    def __init__(self, L, n_features_x, n_features_m, n_features_f=16):
+    def __init__(self, L, n_features_x, n_features_m):
         super().__init__()
         self.L = L
         # using nn.ModuleList to store the Gated Fusion Layers
-        self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m, n_features_f) for _ in range(self.L)])
+        self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
         self.conv = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  # Learnable parameter for the convolution operation in the Iterative Gated Fusion Module
 
 
@@ -147,18 +147,19 @@ Variables:
     M: number of Iterative Gated Fusion Modules
     L: number of Gated Fusion Layers in each Iterative Gated Fusion Module
     n_features_x: number of features in the input modality 'X'
-    n_features_m: total number of features across the input modalitity 'M'
-    n_features_f: number of features in the output of each Gated Fusion Layer, can be changed based on the dataset used.
+    n_features_per_modality: list of number of features in each of the 'M' modalities, can be changed based on the dataset used.
     conv_fused: learnable parameter for the convolution operation on the fused output of all the Iterative Gated Fusion Modules
     conv_independent: learnable parameter for the convolution operation on the independent modalities
     conv_final: learnable parameter for the convolution operation on the concatenated output of the fused output and independent modalities
     fc: fully connected layer for prediction, in_features can be changed based on the output of the convolution operation on the concatenated output of the fused output and independent modalities
 '''
 class DeepCrossModalFusionModel(nn.Module):
-    def __init__(self, M, L, n_features_x, n_features_m, n_features_f=16):
+    def __init__(self, M, L, n_features_x, n_features_per_modality):
         super().__init__()
         self.M = M
-        self.igf_modules = nn.ModuleList([IterativeGatedFusionModule(L, n_features_x, n_features_m, n_features_f) for _ in range(self.M)])
+        self.igf_modules = nn.ModuleList([
+            IterativeGatedFusionModule(L, n_features_x, n_features_per_modality[m])
+             for m in range(self.M)])
         self.conv_fused = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_final = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  

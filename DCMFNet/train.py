@@ -41,8 +41,8 @@ fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
 # Known number of features for each modality in the dataset, can be changed based on the dataset used.
 n_features_x = 5
-# Maximum number of features across all modalities, can be changed based on the dataset used.
-n_features_m = 35 
+# List of modality sizes in the dataset, can be changed based on the dataset used. The order of the modality sizes should match the order of the modalities in the dataset.
+modality_sizes = [10, 25, 20, 15, 35, 4, 1]
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -195,7 +195,7 @@ def train(train_df, seed, plot_training=False):
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed)
 
     # Initialize model
-    model = DCMFNet(num_modalities, num_layers, n_features_x, n_features_m)  # Adjust n_features_x and n_features_m based on your dataset
+    model = DCMFNet(num_modalities, num_layers, n_features_x, modality_sizes)  # Adjust n_features_x and n_features_m based on your dataset
     # Define softmax Cross-entropy loss function and optimizer
     criterion = nn.CrossEntropyLoss() 
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
