@@ -21,7 +21,8 @@ from model import DeepCrossModalFusionModel as DCMFNet
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-
+import numpy as np
+from torch.utils.data import Dataset
 
 # Hyperparameters
 learning_rate = 1.82e-4
@@ -30,14 +31,18 @@ num_epochs = 15
 
 # Initialize model parameters
 '''
-6 modalities (input features)
+7 modalities (input features)
 5 iterative fusion layers (number of iterations for fusion) are found optimal in the paper,
  but can check for 1-7 and compare the performance of the model.
 '''
-num_modalities = 6  # change the number of modalities in the dataset if needed
+num_modalities = 7  # change the number of modalities in the dataset if needed
 num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
+# Known number of features for each modality in the dataset, can be changed based on the dataset used.
+n_features_x = 5
+# Maximum number of features across all modalities, can be changed based on the dataset used.
+n_features_m = 35 
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -49,7 +54,7 @@ Output:
     train_df: pandas dataframe containing the training data
     test_df: pandas dataframe containing the test data
 '''
-def random_split(df, test_size=0.25, random_state=seed):
+def random_split(df, test_size=0.25, random_state=42):
     unique_twin_ids = df['twin_id'].unique()
     train_ids, test_ids = train_test_split(unique_twin_ids, test_size=test_size, random_state=random_state)
     train_df = df[df['twin_id'].isin(train_ids)]
@@ -61,9 +66,43 @@ def random_split(df, test_size=0.25, random_state=seed):
 Prepare the dataframe for training by splitting the dataframe into input and target modalities dataframes.
 '''
 def prepare_data(df):
-    X = [df['SUD15'].values, df['PRS'].values, df.allmatches('SCZ15').values, df.allmatches('ATAC9').values, df.allmatches('ACE').values, df.allmatches('SES').values, df['Sex'].values, df['PCA'].values]
-    Y = df['SCZ18'].values
+    X = [
+        df.filter(regex="^SUD15").to_numpy(),
+        df.filter(regex="^PRS").to_numpy(),
+        df.filter(regex="^SCZ15").to_numpy(),
+        df.filter(regex="^ATAC9").to_numpy(),
+        df.filter(regex="^ACE").to_numpy(),
+        df.filter(regex="^SES").to_numpy(),
+        df.filter(regex="^Sex").to_numpy(),
+        df.filter(regex="^PCA").to_numpy()
+    ]
+    
+    Y = df.filter(regex="^SCZ18").to_numpy()
+    
     return X, Y
+
+'''
+Custom dataset class for multi-modal data.
+'''
+class MultiModalDataset(Dataset):
+    def __init__(self, X_list, Y):
+        self.X = [torch.tensor(x, dtype=torch.float32) for x in X_list]
+        self.Y = torch.tensor(Y, dtype=torch.float32)
+
+    def __len__(self):
+        return self.Y.shape[0]
+
+    def __getitem__(self, idx):
+        return [x[idx] for x in self.X], self.Y[idx]
+
+
+'''
+Create a data loader for the given input and target dataframes.
+'''
+def create_dataloader(X, Y, batch_size):
+    dataset = MultiModalDataset(X, Y)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    return dataloader
 
 
 '''
@@ -73,7 +112,6 @@ Input:
 Output:
         train_dataloader: data loader containing the training data
         val_dataloader: data loader containing the validation data
-        inputs: dataframe of shape (batch_size, num_features) where each column corresponds to a feature and each row corresponds to a sample.
 '''
 def create_cross_validation_data_loaders(df, seed):
     # attach the input and target modalities 
@@ -83,16 +121,6 @@ def create_cross_validation_data_loaders(df, seed):
     train_dataloader = create_dataloader(X_train, Y_train, batch_size)
     val_dataloader = create_dataloader(X_val, Y_val, batch_size)
     return train_dataloader, val_dataloader
-
-
-
-'''
-Create a data loader for the given input and target dataframes.
-'''
-def create_dataloader(X, Y, batch_size):
-    dataset = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(Y))
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-    return dataloader
 
 
 
@@ -167,31 +195,33 @@ def train(train_df, seed, plot_training=False):
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed)
 
     # Initialize model
-    model = DCMFNet(num_modalities, num_layers)  
+    model = DCMFNet(num_modalities, num_layers, n_features_x, n_features_m)  # Adjust n_features_x and n_features_m based on your dataset
     # Define softmax Cross-entropy loss function and optimizer
     criterion = nn.CrossEntropyLoss() 
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # Training loop
     for epoch in range(num_epochs):
+        print(f"Epoch {epoch+1}/{num_epochs}")
+        print(f"Training on {len(train_dataloader.dataset)} samples...")
         model.train()  
         total_loss = 0.0
 
-        for train_inputs, train_targets in train_dataloader:
-            train_inputs = train_inputs.float()  # Convert to float tensor
-            train_targets = train_targets.float()  # Convert to float tensor
-
+        for x_batch, y_batch in train_dataloader:
+            print(f" the type of x_batch : {type(x_batch)}")  # list
+            print(f" the number of modalities in x_batch : {len(x_batch)}")   # number of modalities
             optimizer.zero_grad()
             # Forward pass
-            outputs = model(train_inputs) 
-            loss = criterion(outputs, train_targets)
+            print(f"Forward pass for batch of size {x_batch[0].size(0)}...")
+            outputs = model(x_batch) 
+            loss = criterion(outputs, y_batch)
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
             _, predicted = torch.max(outputs.data, 1)
-            total += train_targets.size(0)
-            correct += (predicted == train_targets).sum().item()
+            total += y_batch.size(0)
+            correct += (predicted == y_batch).sum().item()
         
         train_accuracy = correct / total
 

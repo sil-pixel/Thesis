@@ -17,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-
+from dataclasses import dataclass, field
 
 
 '''
@@ -82,41 +82,38 @@ class FusionModule:
 A single Gated Fusion Layer consisting of 1 fusion module and 1 gated module.
 Input:
     X: tensor of shape (batch_size, n_features_x)
-    G_prev: tensor of shape (batch_size, n_features_g)
-    W1: learnable parameter of the first convolution operation in the fusion module of shape (n_features_f, n_features_x)
-    W2: learnable parameter of the second convolution operation in the fusion module of shape (n_features_f, n_features_g)
-    W_gate: learnable parameter of the convolution operation in the gated module of shape (n_features_g, n_features_f + n_features_f)
-    b_gate: learnable bias term of the gated module of shape (n_features_g,)
-    W_update: learnable parameter of the convolution operation in the gated module of shape (n_features_g, n_features_f + n_features_g)
-    b_update: learnable bias term of the gated module of shape (n_features_g,)
+    G_prev: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
+    W1: learnable parameter of the first convolution operation in the fusion module of shape
+    W2: learnable parameter of the second convolution operation in the fusion module of shape
+    W_gate: learnable parameter of the convolution operation in the gated module of shape 
+    b_gate: learnable bias term of the gated module of shape
+    W_update: learnable parameter of the convolution operation in the gated module of shape 
+    b_update: learnable bias term of the gated module of shape
     
 '''
 @dataclass
 class GatedFusionLayer:
-    def __init__(self, X, G_prev):
-        self.X = X
-        self.G_prev = G_prev
-        n_features_x = X.shape[1]
-        n_features_g = G_prev.shape[1]
+    def __init__(self, n_features_x, n_features_m):
         n_features_f = 1  # TODO: choose the number of features for F_curr
         self.W1 = nn.Parameter(torch.empty(n_features_f, n_features_x)) # Initialize W1
         nn.init.xavier_uniform_(self.W1) # Xavier initialization for W1
-        self.W2 = nn.Parameter(torch.empty(n_features_f, n_features_g)) # Initialize W2
+        self.W2 = nn.Parameter(torch.empty(n_features_f, n_features_m)) # Initialize W2
         nn.init.xavier_uniform_(self.W2) # Xavier initialization for W2
-        self.W_gate = nn.Parameter(torch.empty(n_features_g, (n_features_f + n_features_f))) # Initialize W_gate
+        self.W_gate = nn.Parameter(torch.empty(n_features_m, (n_features_f + n_features_f))) # Initialize W_gate
         nn.init.xavier_uniform_(self.W_gate) # Xavier initialization for W_gate
-        self.b_gate = nn.Parameter(torch.zeros(n_features_g, 1)) # Initialize b_gate to zeroes
-        self.W_update = nn.Parameter(torch.empty(n_features_g, (n_features_f + n_features_g))) # Initialize W_update
+        self.b_gate = nn.Parameter(torch.zeros(n_features_m, 1)) # Initialize b_gate to zeroes
+        self.W_update = nn.Parameter(torch.empty(n_features_m, (n_features_f + n_features_m))) # Initialize W_update
         nn.init.xavier_uniform_(self.W_update) # Xavier initialization for W_update
-        self.b_update = nn.Parameter(torch.zeros(n_features_g, 1)) # Initialize b_update to zeroes
+        self.b_update = nn.Parameter(torch.zeros(n_features_m, 1)) # Initialize b_update to zeroes
+        self.parameters = [self.W1, self.W2, self.W_gate, self.b_gate, self.W_update, self.b_update]
 
     
-    def forward(self):
+    def forward(self, X, G_prev):
         # Compute the fusion of X and G_prev
-        Fusion = FusionModule(self.X, self.G_prev, self.W1, self.W2)
+        Fusion = FusionModule(X, G_prev, self.W1, self.W2)
         F_curr = Fusion.forward()
         # Compute the gated operation on the input tensor
-        Gate = new GatedModule(F_curr, self.G_prev, self.W_gate, self.b_gate, self.W_update, self.b_update)
+        Gate = GatedModule(F_curr, G_prev, self.W_gate, self.b_gate, self.W_update, self.b_update)
         G_curr = Gate.forward()
         return F_curr, G_curr
 
@@ -126,7 +123,7 @@ class GatedFusionLayer:
 The Entire block of Iterative Gated Fusion Model consisting of 'L' Gated Fusion Layers.
 Input:
     X: tensor of shape (batch_size, n_features_x)
-    Y: tensor of shape (batch_size, n_features_y)
+    X_modalities: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
 Equation:
     IGF = Conv([F_1; F_2; ...; F_L]) 
     where F_l is the output of the l-th Gated Fusion Layer 
@@ -137,15 +134,17 @@ Output:
 '''
 @dataclass
 class IterativeGatedFusionModule:
-    def __init__(self, GatedFusionLayer, L):
-        self.GatedFusionLayer = GatedFusionLayer
+    def __init__(self, L, n_features_x, n_features_m):
         self.L = L
+        for l in range(self.L):
+            setattr(self, f'GatedFusionLayer_{l}', GatedFusionLayer(n_features_x, n_features_m)) 
+        self.parameters = [param for l in range(self.L) for param in getattr(self, f'GatedFusionLayer_{l}').parameters]
 
-    def forward(self, X, Y):
-        G_prev = Y
+    def forward(self, X, X_modalities):
+        G_prev = X_modalities
         F_next = []
         for l in range(self.L):
-            F_curr, G_prev = self.GatedFusionLayer(X, G_prev)
+            F_curr, G_prev = getattr(self, f'GatedFusionLayer_{l}')(X, G_prev).forward()
             F_next.append(F_curr)
         
         # Concatenate the outputs of all the Gated Fusion Layers
@@ -163,14 +162,21 @@ The Deep Cross Modal Fusion Model consisting of 'M' Iterative Gated Fusion Modul
 '''
 @dataclass
 class DeepCrossModalFusionModel:
-    def __init__(self, M, L, input):
+    def __init__(self, M, L, n_features_x, n_features_m):
         self.M = M
         self.L = L
-        self.GatedFusionLayer = GatedFusionLayer()
-        self.IterativeGatedFusionModule = IterativeGatedFusionModule(self.GatedFusionLayer, self.L)
+        for m in range(self.M):
+            setattr(self, f'IterativeGatedFusionModule_{m}', IterativeGatedFusionModule(self.L, n_features_x, n_features_m))
         self.fc = nn.Linear(in_features=self.L, out_features=1)
     
-    def train(self):
+    def parameters(self):
+        # define parameters to be optimized during training
+        return list(self.fc.parameters()) + [param for m in range(self.M) for param in getattr(self, f'IterativeGatedFusionModule_{m}').parameters]
+
+
+
+    def train(self, input):
+        print("Training the Deep Cross Modal Fusion Model...")
         X = self.input[0]
         X1 = self.input[1]
         X2 = self.input[2]
@@ -182,7 +188,7 @@ class DeepCrossModalFusionModel:
         X_modalities = [X1, X2, X3, X4, X5, X6]  # List of all the input modalities
         F_out = []
         for m in range(self.M):
-            F_next = self.IterativeGatedFusionModule(X, X_modalities[m])
+            F_next = getattr(self, f'IterativeGatedFusionModule_{m}').forward(X, X_modalities[m])
             F_out.append(F_next)
 
         # Pass independent modalities through the fully connected layer for prediction
