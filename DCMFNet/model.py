@@ -162,13 +162,13 @@ class DeepCrossModalFusionModel(nn.Module):
         self.conv_fused = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_final = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
-        self.fc = nn.Linear(in_features=self.L, out_features=1) 
+        self.fc = nn.Linear(in_features=L, out_features=1) 
 
     def forward(self, inputs):
         print("Training the Deep Cross Modal Fusion Model...")
-        X = input[0]
-        modalities = input[1:7]
-        X7 = input[7]
+        X = inputs[0]
+        modalities = inputs[1:7]
+        X7 = inputs[7]
 
         # Pass the input modality 'X' and each of the 'M' modalities through the 'M' Iterative Gated Fusion Modules
         F_out = []
