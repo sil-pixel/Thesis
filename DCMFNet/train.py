@@ -70,7 +70,8 @@ def prepare_data(df):
         df.filter(regex="^SUD15").to_numpy(),
         df.filter(regex="^PRS").to_numpy(),
         df.filter(regex="^SCZ15").to_numpy(),
-        df.filter(regex="^ATAC9").to_numpy(),
+        df.filter(regex="^ADHD9").to_numpy(),
+        df.filter(regex="^ASD9").to_numpy(),
         df.filter(regex="^ACE").to_numpy(),
         df.filter(regex="^SES").to_numpy(),
         df.filter(regex="^Sex").to_numpy(),
@@ -209,8 +210,6 @@ def train(train_df, seed, plot_training=False):
         total_loss = 0.0
 
         for inputs, labels in train_dataloader:
-            print(f" the type of x_batch : {type(inputs)}")  # list
-            print(f" the number of modalities in x_batch : {len(inputs)}")   # number of modalities
             optimizer.zero_grad()
             # Forward pass
             print(f"Forward pass for batch of size {inputs[0].size(0)}...")

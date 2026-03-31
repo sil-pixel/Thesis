@@ -38,7 +38,7 @@ Output:
 class GatedModule(nn.Module):
     def __init__(self, n_features_m):
         super().__init__()
-        self.W_update = nn.Linear( n_features_m + n_features_m, n_features_m)  # Learnable parameter for the update operation
+        self.W_update = nn.Linear(n_features_m, n_features_m)  # Learnable parameter for the update operation
         self.W_gate = nn.Linear(n_features_m + n_features_m, n_features_m)  # Learnable parameter for the gated operation
 
     
@@ -168,12 +168,14 @@ class DeepCrossModalFusionModel(nn.Module):
     def forward(self, inputs):
         print("Training the Deep Cross Modal Fusion Model...")
         X = inputs[0]
-        modalities = inputs[1:7]
-        X7 = inputs[7]
+        modalities = inputs[1:self.M+1]  # Get the 'M' modalities from the input list
+        X_ind = inputs[self.M+1]  # Get the independent modality 'X7' from the input list
 
         # Pass the input modality 'X' and each of the 'M' modalities through the 'M' Iterative Gated Fusion Modules
         F_out = []
         for m, igf in enumerate(self.igf_modules):
+            print(f"Processing modality {m+1} through Iterative Gated Fusion Module {m+1}...")
+            print(f"Input shape for modality {m+1}: {modalities[m].shape}")
             F_out.append(igf(X, modalities[m]))
         
         F_out = torch.cat(F_out, dim=1)  # Concatenate the outputs of all the Iterative Gated Fusion Modules
@@ -181,7 +183,7 @@ class DeepCrossModalFusionModel(nn.Module):
         F_out = self.conv_fused(F_out)  # Apply convolution to the fused output of all the Iterative Gated Fusion Modules
 
         # Pass independent modalities through the fully connected layer for prediction
-        X_independent = torch.cat([X] + modalities + [X7], dim=1)  # Concatenate all the independent modalities
+        X_independent = torch.cat([X] + modalities + [X_ind], dim=1)  # Concatenate all the independent modalities
         X_independent = X_independent.unsqueeze(1)
         X_independent = self.conv_independent(X_independent)
 
