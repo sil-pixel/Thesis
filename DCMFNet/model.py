@@ -167,7 +167,7 @@ class DeepCrossModalFusionModel(nn.Module):
         self.fc = nn.Linear(in_features=total_final_features, out_features=1) 
 
     def forward(self, inputs):
-        print("Training the Deep Cross Modal Fusion Model...")
+        #print("Training the Deep Cross Modal Fusion Model...")
         X = inputs[0]
         modalities = inputs[1:self.M+1]  # Get the 'M' modalities from the input list
         X_ind = inputs[self.M+1]  # Get the independent modality 'X7' from the input list
@@ -175,7 +175,7 @@ class DeepCrossModalFusionModel(nn.Module):
         # Pass the input modality 'X' and each of the 'M' modalities through the 'M' Iterative Gated Fusion Modules
         F_out = []
         for m, igf in enumerate(self.igf_modules):
-            print(f"Processing modality {m+1} through Iterative Gated Fusion Module {m+1}...")
+            #print(f"Processing modality {m+1} through Iterative Gated Fusion Module {m+1}...")
             #print(f"Input shape for modality {m+1}: {modalities[m].shape}")
             F_out.append(igf(X, modalities[m]))
         

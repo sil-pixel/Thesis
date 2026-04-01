@@ -219,10 +219,10 @@ def train(train_df, seed, plot_training=False):
             #print(f"Forward pass for batch of size {inputs[0].size(0)}...")
             outputs = model(inputs) 
             #print(f"Shape of the outputs: {outputs.shape}")
-            #print(f"Outputs: {outputs}")
+            print(f"Outputs: {outputs}")
             #print(f"Shape of the labels: {labels.shape}")
             labels = labels.sum(axis=1).unsqueeze(1)
-            #print(f"Labels: {labels}")
+            print(f"Labels: {labels}")
             loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
@@ -253,7 +253,9 @@ def evaluate_final_test(model, test_df):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv('simulated_data_cleaned.csv')
+    df = pd.read_csv('../Data/simulated_data.csv')
+    df = df.sample(frac=0.1, random_state=42)
+    print(f"Data shape: {df.shape}")
     seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)

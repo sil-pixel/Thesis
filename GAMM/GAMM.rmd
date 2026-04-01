@@ -1,0 +1,35 @@
+---
+title: "GAMM toy build"
+author: "Silpa Soni Nallacheruvu"
+date: "2026-04-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("readr")
+library(readr)
+set.seed(42)
+library(mgcv)
+```
+
+## Load the simulated Data
+
+```{r}
+catss <- read.csv("../Data/simulated_data.csv")
+```
+
+## Check complete cases 
+
+```{r}
+print(paste("Number of complete cases:", sum(complete.cases(catss))))
+```
+
+## Build a GAMM Model
+
+```{r}
+SUD15 <- 
+ADHD9 <- 
+
+```
+
