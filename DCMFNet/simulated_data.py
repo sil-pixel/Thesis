@@ -81,4 +81,25 @@ def assign_modalities():
     print(f"Columns after modality assignment: {df.columns.tolist()}")
     df.to_csv('simulated_data.csv', index=False)
 
-assign_modalities()
+def clean_data():
+    df = pd.read_csv('simulated_data.csv')
+    input_columns = [col for col in df.columns if col.startswith("SUD15")]
+    output_columns = [col for col in df.columns if col.startswith("SCZ18")]
+    # populate the missing values in the input columns with random values from the distribution of the column
+    for col in input_columns:
+        df[col] = df[col].fillna(np.random.choice(df[col].value_counts().index))
+    # populate the missing values in the output columns with random values from the distribution of the column
+    for col in output_columns:
+        df[col] = df[col].fillna(np.random.choice(df[col].value_counts().index))
+    df.to_csv('simulated_data_cleaned.csv', index=False)
+    print(f"Data saved to 'simulated_data_cleaned.csv'")
+
+def check_data():
+    df = pd.read_csv('simulated_data_cleaned.csv')
+    input_columns = [col for col in df.columns if col.startswith("SUD15")]
+    output_columns = [col for col in df.columns if col.startswith("SCZ18")]
+    df = df.dropna(subset=input_columns)
+    df = df.dropna(subset=output_columns)
+    print(f"Data shape: {df.shape}")
+
+check_data()

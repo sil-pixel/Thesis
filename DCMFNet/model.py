@@ -132,7 +132,6 @@ class IterativeGatedFusionModule(nn.Module):
             F_next.append(F_curr)
         
         # Concatenate the outputs of all the Gated Fusion Layers
-        # TODO: check the dimension along which the concatenation is performed in the equation is it dim=1 or dim=-1?
         F_next = torch.cat(F_next, dim=1) 
         # Add a channel dimension for convolution
         F_next = F_next.unsqueeze(1) 
@@ -163,7 +162,9 @@ class DeepCrossModalFusionModel(nn.Module):
         self.conv_fused = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_final = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
-        self.fc = nn.Linear(in_features=L, out_features=1) 
+        total_final_features =  L * sum(n_features_per_modality[:M]) + n_features_x + sum(n_features_per_modality) # Total features after concatenating the fused output and independent modalities
+        #print(f"Total features after concatenating the fused output and independent modalities: {total_final_features}")
+        self.fc = nn.Linear(in_features=total_final_features, out_features=1) 
 
     def forward(self, inputs):
         print("Training the Deep Cross Modal Fusion Model...")
@@ -175,24 +176,37 @@ class DeepCrossModalFusionModel(nn.Module):
         F_out = []
         for m, igf in enumerate(self.igf_modules):
             print(f"Processing modality {m+1} through Iterative Gated Fusion Module {m+1}...")
-            print(f"Input shape for modality {m+1}: {modalities[m].shape}")
+            #print(f"Input shape for modality {m+1}: {modalities[m].shape}")
             F_out.append(igf(X, modalities[m]))
         
-        F_out = torch.cat(F_out, dim=1)  # Concatenate the outputs of all the Iterative Gated Fusion Modules
-        F_out = F_out.unsqueeze(1)  # Add a channel dimension for convolution
+        #print(f"Shape of the output from each Iterative Gated Fusion Module: {[f.shape for f in F_out]}")
+        F_out = torch.cat(F_out, dim=-1)  # Concatenate the outputs of all the Iterative Gated Fusion Modules
+        #print(f"Shape of the concatenated output from all Iterative Gated Fusion Modules: {F_out.shape}")
         F_out = self.conv_fused(F_out)  # Apply convolution to the fused output of all the Iterative Gated Fusion Modules
+        #print(f"Shape of the fused output after convolution: {F_out.shape}")
 
         # Pass independent modalities through the fully connected layer for prediction
-        X_independent = torch.cat([X] + modalities + [X_ind], dim=1)  # Concatenate all the independent modalities
+        #print(f"Shape of all independent modalities before convolution: {X_ind.shape}")
+        #print(f"Shape of the input modality 'X' before convolution: {X.shape}")
+        #print(f"Shape of the modalities before convolution: {[modality.shape for modality in modalities]}")
+        X_independent = torch.cat([X] + modalities + [X_ind], dim=-1)  # Concatenate all the independent modalities
+        #print(f"Shape of the concatenated independent modalities before convolution: {X_independent.shape}")
         X_independent = X_independent.unsqueeze(1)
+        #print(f"Shape of the concatenated independent modalities after adding channel dimension: {X_independent.shape}")
         X_independent = self.conv_independent(X_independent)
+        #print(f"Shape of the independent modalities after convolution: {X_independent.shape}")
+
 
         # Concatenate the outputs of the independent modalities and the convolutional fusion
-        F_final = torch.cat(F_out, X_independent, dim=-1)
+        F_final = torch.cat((F_out, X_independent), dim=-1)
+        #print(f"Shape of the concatenated output of the fused output and independent modalities before convolution: {F_final.shape}")
         F_final = self.conv_final(F_final)
+        #print(f"Shape of the concatenated output of the fused output and independent modalities after convolution: {F_final.shape}")
 
         # Pass through the fully connected layer for prediction
-        output = self.fc(F_final.squeeze(1))  # Remove the channel dimension before passing to the fully connected layer
+        F_final = F_final.squeeze(1)  # Remove the channel dimension before passing to the fully connected layer
+        #print(f"Shape of the output after removing channel dimension: {F_final.shape}")
+        output = self.fc(F_final)  # Remove the channel dimension before passing to the fully connected layer
         return output
 
 
