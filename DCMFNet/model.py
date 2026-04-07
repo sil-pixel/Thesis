@@ -162,9 +162,12 @@ class DeepCrossModalFusionModel(nn.Module):
         self.conv_fused = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
         self.conv_final = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
+        #n_output_features = n_features_per_modality[-1]
+        #n_features_per_modality = n_features_per_modality[:-1]
         total_final_features =  L * sum(n_features_per_modality[:M]) + n_features_x + sum(n_features_per_modality) # Total features after concatenating the fused output and independent modalities
         #print(f"Total features after concatenating the fused output and independent modalities: {total_final_features}")
-        self.fc = nn.Linear(in_features=total_final_features, out_features=1) 
+        self.fc = nn.Linear(in_features=total_final_features, out_features=1)  # Learnable parameter for the fully connected layer for prediction
+        #self.fc = nn.Linear(in_features=total_final_features, out_features=n_output_features*4)  # Learnable parameter for the fully connected layer for prediction
 
     def forward(self, inputs):
         #print("Training the Deep Cross Modal Fusion Model...")
@@ -205,8 +208,11 @@ class DeepCrossModalFusionModel(nn.Module):
 
         # Pass through the fully connected layer for prediction
         F_final = F_final.squeeze(1)  # Remove the channel dimension before passing to the fully connected layer
+        #print(f"F_final: {F_final}")
         #print(f"Shape of the output after removing channel dimension: {F_final.shape}")
         output = self.fc(F_final)  # Remove the channel dimension before passing to the fully connected layer
+        #output = output.view(-1, 4, 25)  # reshape to (batch, 4_classes, 25_columns)
+        output = torch.sigmoid(output)  # Apply sigmoid activation to get the final output in the range [0, 1]
         return output
 
 

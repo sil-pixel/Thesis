@@ -28,9 +28,9 @@ import time
 # Hyperparameters
 learning_rate = 1.82e-4
 batch_size = 6
-num_epochs = 3
+num_epochs = 15
 
-# TODO: Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
+# Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
 weight_decay = 1e-5  # Example weight decay for L2 regularization
 
 # Initialize model parameters
@@ -47,7 +47,7 @@ fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 n_features_x = 5
 # List of modality sizes in the dataset, can be changed based on the dataset used. The order of the modality sizes should match the order of the modalities in the dataset.
 modality_sizes = [10, 25, 20, 15, 35, 4, 1, 10]  # Example modality sizes, adjust based on the dataset
-
+n_features_y = 25  # Assuming the target variable has 25 features, adjust based on the dataset
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
 Input:
@@ -127,6 +127,29 @@ def create_cross_validation_data_loaders(df, seed):
     val_dataloader = create_dataloader(X_val, Y_val, batch_size)
     return train_dataloader, val_dataloader
 
+# '''
+# Calculate the accuracy of the model on the given data.
+# Input:
+#     model: model to evaluate
+#     dataloader: data loader containing the data
+# Output:
+#     accuracy: accuracy of the model
+# '''
+# def accuracy(model, dataloader):
+#     model.eval()
+#     total_correct = 0
+#     total_samples = 0
+#     with torch.no_grad():
+#         for inputs, targets in dataloader:
+#             targets = targets.long()  # Convert targets to long for comparison with predicted class indices
+#             outputs = model(inputs)
+#             _, predicted = torch.max(outputs, dim=1) 
+#             total_correct += (predicted == targets).sum().item()
+#             total_samples += targets.numel()  # batch_size * 25
+    
+#     model.train()
+#     return (total_correct / total_samples)
+
 
 
 '''
@@ -141,28 +164,65 @@ def accuracy(model, dataloader):
     model.eval()
     total_correct = 0
     total_samples = 0
+    total_mae = 0.0
     with torch.no_grad():
         for inputs, targets in dataloader:
-            targets = targets.sum(axis=1).unsqueeze(1)
+            targets = targets.sum(axis=1)
+            targets = targets / (n_features_y * 3.0)
+            targets = targets.unsqueeze(1)  # Reshape to (batch_size, 1)
             outputs = model(inputs)
-            _, predictions = torch.max(outputs, dim=1)
-            total_correct += (predictions == targets).sum().item()
+            predictions = outputs
+            total_correct += (torch.abs(predictions - targets) < 0.1).sum().item()
             total_samples += targets.size(0)
+            total_mae += torch.abs(predictions - targets).mean().item()
     
     model.train()
-    return (total_correct / total_samples) 
+    return (total_correct / total_samples), (total_mae / len(dataloader))
+
+
+# '''
+# Plot the training and validation accuracy and training loss curves and save the plots for each seed.
+# '''
+# def plot_training_curves(training_accuracies, validation_accuracies, train_losses, seed):
+#     epochs = range(1, len(training_accuracies) + 1)
+
+#     plt.figure(figsize=(15, 5))
+    
+#     # Plot training and validation accuracy
+#     plt.subplot(1, 2, 1)
+#     plt.plot(epochs, training_accuracies, label='Training Accuracy')
+#     plt.plot(epochs, validation_accuracies, label='Validation Accuracy')
+#     plt.xlabel('Epochs')
+#     plt.ylabel('Accuracy')
+#     plt.title('Training and Validation Accuracy')
+#     plt.legend()
+    
+#     # Plot training loss
+#     plt.subplot(1, 2, 2)
+#     plt.plot(epochs, train_losses, label='Training Loss')
+#     plt.xlabel('Epochs')
+#     plt.ylabel('Loss')
+#     plt.title('Training Loss')
+#     plt.legend()
+
+#     plt.tight_layout()
+#     plt.savefig(f'training_curves_seed_{seed}.png')
+#     plt.close()
+#     print(f"Training curves plotted and saved to 'training_curves_seed_{seed}.png'")
+
+
 
 
 '''
 Plot the training and validation accuracy and training loss curves and save the plots for each seed.
 '''
-def plot_training_curves(training_accuracies, validation_accuracies, train_losses, seed):
+def plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed):
     epochs = range(1, len(training_accuracies) + 1)
 
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=(15, 5))
     
     # Plot training and validation accuracy
-    plt.subplot(1, 2, 1)
+    plt.subplot(1, 3, 1)
     plt.plot(epochs, training_accuracies, label='Training Accuracy')
     plt.plot(epochs, validation_accuracies, label='Validation Accuracy')
     plt.xlabel('Epochs')
@@ -171,11 +231,20 @@ def plot_training_curves(training_accuracies, validation_accuracies, train_losse
     plt.legend()
     
     # Plot training loss
-    plt.subplot(1, 2, 2)
+    plt.subplot(1, 3, 2)
     plt.plot(epochs, train_losses, label='Training Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Training Loss')
+    plt.legend()
+
+    # Plot training and validation MAE
+    plt.subplot(1, 3, 3)
+    plt.plot(epochs, training_maes, label='Training MAE')
+    plt.plot(epochs, validation_maes, label='Validation MAE')
+    plt.xlabel('Epochs')
+    plt.ylabel('MAE')
+    plt.title('Training and Validation MAE')
     plt.legend()
     
     plt.tight_layout()
@@ -191,17 +260,22 @@ Input:
 Output:
     None
 '''
-def train(train_df, seed, plot_training=False):
+def train(train_df, seed, n_features_per_modality, plot_training=False):
     training_accuracies = []
     validation_accuracies = []
     train_losses = []
+    training_maes = []
+    validation_maes = []
     # Create DataLoader
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed)
+    #n_features_y = n_features_per_modality[-1]  # Assuming the last modality size corresponds to the target variable
+    #n_features_per_modality = n_features_per_modality[:-1]  # Remove the target variable size from modality sizes
     # Initialize model
-    model = DCMFNet(num_modalities, num_layers, n_features_x, modality_sizes)  # Adjust n_features_x and n_features_m based on the dataset
+    model = DCMFNet(num_modalities, num_layers, n_features_x, n_features_per_modality)  # Adjust n_features_x and n_features_m based on the dataset
     # Define softmax Cross-entropy loss function and optimizer
-    criterion = nn.CrossEntropyLoss() 
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    criterion = nn.MSELoss() 
+    #criterion = nn.CrossEntropyLoss()  # Use Cross-entropy loss for multi-class classification
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
     for epoch in range(num_epochs):
@@ -212,57 +286,86 @@ def train(train_df, seed, plot_training=False):
         total_loss = 0.0
         total = 0
         correct = 0
+        i = 0
+        total_mae = 0.0
+
 
         for inputs, labels in train_dataloader:
+            print(f"Batch {i+1}...")
             optimizer.zero_grad()
             # Forward pass
             #print(f"Forward pass for batch of size {inputs[0].size(0)}...")
             outputs = model(inputs) 
             #print(f"Shape of the outputs: {outputs.shape}")
-            print(f"Outputs: {outputs}")
-            #print(f"Shape of the labels: {labels.shape}")
-            labels = labels.sum(axis=1).unsqueeze(1)
-            print(f"Labels: {labels}")
+            #print(f"Outputs: {outputs}")
+            labels = labels.sum(axis=1)
+            labels = labels / (n_features_y * 3.0)  # Normalize labels to be between 0 and 1
+            labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
+            #labels = labels.long()  # Convert labels to long for CrossEntropyLoss
+            print(f"Shape of the labels: {labels.shape}")
+            #print(f"Labels: {labels}")
             loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-        
+            print(f"Loss: {loss.item()}")
+            predicted = outputs
+            #_, predicted = torch.max(outputs, dim=1)  # (batch, 25) — argmax across 4 classes
+            print(f"Predicted: {predicted.shape}")
+            #print(f"Predicted: {predicted}")
+            total += labels.size(0)  # Total number of samples (batch_size)
+            #total += labels.size(0) * labels.size(1)  # Total number of samples (batch_size * num_classes)
+            correct += (torch.abs(predicted - labels) < 0.1).sum().item()
+            #correct += (predicted == labels).sum().item()
+            #total += labels.numel()  # batch_size * 25
+            print(f"Correct: {correct}, Total: {total}")
+            mae = torch.abs(predicted - labels).mean().item()
+            print(f"Mean Absolute Error: {mae}")
+            total_mae += mae
+            i += 1
         train_accuracy = correct / total
 
         avg_loss = total_loss / len(train_dataloader)
+        total_mae = total_mae / len(train_dataloader)
         # record the accuracy of the model
-        val_accuracy = accuracy(model, val_dataloader)
-        print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}')
+        #val_accuracy = accuracy(model, val_dataloader)
+        val_accuracy, val_mae = accuracy(model, val_dataloader)
+        #print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}')
+        print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}', f'Training MAE: {total_mae:.4f}, Validation MAE: {val_mae:.4f}')
         training_accuracies.append(train_accuracy)
         validation_accuracies.append(val_accuracy)
         train_losses.append(avg_loss)
-    return model, training_accuracies, validation_accuracies, train_losses
+        training_maes.append(total_mae)
+        validation_maes.append(val_mae)
+    return model, training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes
 
 
 
 def evaluate_final_test(model, test_df):
     X_test, Y_test = prepare_data(test_df)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
-    test_accuracy = accuracy(model, test_dataloader)
-    print(f'Final Test Accuracy: {100* test_accuracy:.4f}')
+    test_accuracy, test_mae = accuracy(model, test_dataloader)
+    #test_accuracy = accuracy(model, test_dataloader)
+    print(f'Final Test Accuracy: {100 * test_accuracy:.4f}, Final Test MAE: {test_mae:.4f}')
+    #print(f'Final Test Accuracy: {100 * test_accuracy:.4f}')
 
 
 if __name__ == "__main__":
     df = pd.read_csv('../Data/simulated_data.csv')
-    df = df.sample(frac=0.1, random_state=42)
+    df = df.dropna()
+    print(f"Data shape after dropping na: {df.shape}")
+    #df = df.sample(frac=0.01, random_state=42)
     print(f"Data shape: {df.shape}")
     seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
         start_time = time.time()
-        model, training_accuracies, validation_accuracies, train_losses = train(train_df, seed)
+        #model, training_accuracies, validation_accuracies, train_losses = train(train_df, seed, modality_sizes)
+        model, training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes = train(train_df, seed, modality_sizes)
         end_time = time.time()
         print(f"Time taken: {(end_time - start_time)/60:.2f} minutes")
-        plot_training_curves(training_accuracies, validation_accuracies, train_losses, seed)
-        #evaluate_final_test(model, test_df)
+        #plot_training_curves(training_accuracies, validation_accuracies, train_losses, seed)
+        plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed)
+        evaluate_final_test(model, test_df)

@@ -6,11 +6,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-install.packages("readr")
-library(readr)
 set.seed(42)
+
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(mgcv, dplyr, readr)
+library(readr)
 library(mgcv)
+library(dplyr)
 ```
 
 ## Load the simulated Data
@@ -25,11 +27,67 @@ catss <- read.csv("../Data/simulated_data.csv")
 print(paste("Number of complete cases:", sum(complete.cases(catss))))
 ```
 
-## Build a GAMM Model
+# Build a GAMM Model
+
+## Extract the data
 
 ```{r}
-SUD15 <- 
-ADHD9 <- 
+catss <- catss %>%
+  mutate(SCZ18_sum = rowSums(select(., starts_with("SCZ18")), na.rm = TRUE))
+catss <- catss %>%
+  mutate(SUD15_sum = rowSums(select(., starts_with("SUD15")), na.rm = TRUE))
+```
+
+## Split the data into training and testing dataset 
+
+Based on their twin_id
+
+```{r}
 
 ```
+
+
+## Fit the GAMM model
+
+fit it on the training dataset
+
+```{r}
+gamm_model <- gam(SCZ18_sum ~ SUD15_var_1 + SUD15_var_2 + SUD15_var_3 + SUD15_var_4 + SUD15_var_5 + s(twin_id, bs="re"), 
+                  data = catss,
+                  family = gaussian(),
+                  method = "REML")
+```
+
+```{r}
+summary(gamm_model)
+```
+
+
+```{r}
+plot(gamm_model, pages = 1)
+```
+
+
+
+
+```{r}
+gamm_model_prs <- gam(SCZ18_sum ~ SUD15_var_1 + SUD15_var_2 + SUD15_var_3 + SUD15_var_4 + SUD15_var_5 + 
+                    PRS_var_1 + PRS_var_2 + PRS_var_3 + PRS_var_4 + PRS_var_5 + PRS_var_6 + PRS_var_7 + PRS_var_8 + PRS_var_9 + PRS_var_10 + s(twin_id, bs="re"), 
+                  data = catss,
+                  family = gaussian(),
+                  method = "REML")
+summary(gamm_model_prs)
+```
+
+
+```{r}
+gamm_model_prs <- gam(SCZ18_sum ~ SUD15_sum + 
+                    PRS_var_1 + PRS_var_2 + PRS_var_3 + PRS_var_4 + PRS_var_5 + PRS_var_6 + PRS_var_7 + PRS_var_8 + PRS_var_9 + PRS_var_10 + s(twin_id, bs="re"), 
+                  data = catss,
+                  family = gaussian(),
+                  method = "REML")
+summary(gamm_model_prs)
+```
+
+
 
