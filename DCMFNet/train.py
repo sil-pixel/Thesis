@@ -169,7 +169,7 @@ def accuracy(model, dataloader):
     accuracy_score = correct / len(all_targets)
     
     print(f"  Prediction std: {np.std(all_predictions):.6f}")
-    #print(f"  Prediction range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}]")
+    print(f"  Prediction range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}]")
     print(f"  MAE: {mae:.4f}, MSE: {mse:.4f}")
     print(f"  Spearman rho: {rho:.4f}, p-value: {p:.4f}")
     
@@ -264,7 +264,7 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
-            sample_weights = 1.0 + 2.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
+            sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
             loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             # Backward pass and optimization
             loss.backward()
