@@ -208,7 +208,7 @@ class DeepCrossModalFusionModel(nn.Module):
         #print(f"F_final: {F_final}")
         #print(f"Shape of the output after removing channel dimension: {F_final.shape}")
         output = self.fc(F_final)  # Remove the channel dimension before passing to the fully connected layer
-        output = torch.sigmoid(output)  # Apply sigmoid activation to get the final output in the range [0, 1]
+        #output = torch.sigmoid(output)  # Apply sigmoid activation to get the final output in the range [0, 1]
         return output
 
 
