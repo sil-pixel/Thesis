@@ -17,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from model_attention import DeepCrossModalFusionModel as DCMFNet
+from model import DeepCrossModalFusionModel as DCMFNet
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt

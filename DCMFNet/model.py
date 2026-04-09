@@ -1,5 +1,5 @@
 '''
-Toy model for testing the iterative gated fusion model replacing Convolution 1D Layers with Soft Attention mechanism.
+Toy model for testing the iterative gated fusion model with Soft Attention and Squeeze-and-Excitation (SE) Attention mechanisms.
 Author: Silpa Soni Nallacheruvu
 Date: 09/04/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
@@ -206,6 +206,67 @@ class IterativeGatedFusionModule(nn.Module):
 
 
 
+'''
+Squeeze-and-Excitation (SE) Attention module.
+
+Adapts the channel-wise SE block (Hu et al., 2018) to work on 1D feature 
+vectors in tabular/multi-modal settings.
+
+How it works:
+  1. Squeeze:  Global average pooling collapses the input to a single scalar 
+               per feature — captures "how active is this feature on average."
+               For a 1D vector (batch, D), this is just the input itself, so 
+               squeeze is implicit.
+  2. Excitation: A bottleneck MLP (D -> D//r -> D) learns channel-wise 
+                 importance weights, activated by sigmoid to produce gates 
+                 in [0, 1].
+  3. Scale:    Element-wise multiply input by the gates.
+
+Why this helps at the final layer of DCMFNet:
+  - The final concatenated vector has hundreds of features from very different 
+    sources (fused outputs + raw modalities). SE lets the model learn to 
+    recalibrate which of those features matter for prediction.
+  - Unlike SoftAttention (softmax weights sum to 1, competitive), SE uses 
+    sigmoid (each gate is independent), so it can boost multiple features 
+    simultaneously or suppress them independently.
+
+Interface:
+  Input:  (batch, D)
+  Output: (batch, D)
+
+Parameters:
+    n_features: dimension D of the input vector
+    reduction: bottleneck reduction ratio (default: 2). 
+                Hidden dim = max(D // reduction, 8).
+    dropout: dropout applied inside the excitation path (default: 0.3)
+'''
+
+class SEAttention(nn.Module):
+
+    def __init__(self, n_features, reduction=2, dropout=0.3):
+        super().__init__()
+        hidden_dim = max(n_features // reduction, 8)
+
+        self.excitation = nn.Sequential(
+            nn.Linear(n_features, hidden_dim),
+            nn.ReLU(inplace=True),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, n_features),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        '''
+        Args:
+            x: (batch, D)
+        Returns:
+            out: (batch, D) — recalibrated features
+        '''
+        # Squeeze is implicit for 1D vectors (no spatial dims to pool over)
+        # Excitation: learn per-feature gates
+        gates = self.excitation(x)  # (batch, D), values in [0, 1]
+        # Scale: element-wise recalibration
+        return x * gates
 
 '''
 The Deep Cross Modal Fusion Model consisting of 'M' Iterative Gated Fusion Modules and a final fully connected layer for prediction.
@@ -232,9 +293,9 @@ class DeepCrossModalFusionModel(nn.Module):
         fused_dim = L * sum(n_features_per_modality[:M])
         independent_dim = n_features_x + sum(n_features_per_modality)
         total_final_features = fused_dim + independent_dim
-        self.attn_fused =  SoftAttention(fused_dim, dropout=dropout)  
-        self.attn_independent = SoftAttention(independent_dim, dropout=dropout)
-        self.attn_final = SoftAttention(total_final_features, dropout=dropout) 
+        self.attn_fused =  SEAttention(fused_dim, dropout=dropout)  
+        self.attn_independent = SEAttention(independent_dim, dropout=dropout)
+        self.attn_final = SEAttention(total_final_features, dropout=dropout) 
         #print(f"Total features after concatenating the fused output and independent modalities: {total_final_features}")
         self.fc = nn.Linear(in_features=total_final_features, out_features=1)  # Learnable parameter for the fully connected layer for prediction
 
