@@ -1,7 +1,7 @@
 '''
-Toy model for testing the iterative gated fusion model replacing Convolution 1D Layers with Soft Attention mechanism.
+Toy model for testing the iterative gated fusion model.
 Author: Silpa Soni Nallacheruvu
-Date: 09/04/2026
+Date: 11/02/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
 
 Steps:
@@ -103,91 +103,25 @@ class GatedFusionLayer(nn.Module):
 
 
 '''
-Learnable soft attention over features of a vector.
-
-Given input x of shape (batch, D):
-    1. score_i = W2 @ tanh(W1 @ x_i + b1) + b2   for each feature i
-    2. alpha = softmax(scores)                      attention weights
-    3. output = x * alpha                           weighted features
-
-This preserves the full dimensionality (unlike pooling) while letting 
-the model learn to emphasize or suppress individual features.
-
-Parameters:
-    n_features: the dimension D of the input vector
-    hidden_dim: internal dimension of the scoring network (default: D//2, min 8)
-    dropout: dropout on attention weights (default: 0.3)
-'''
-
-class SoftAttention(nn.Module):
-    def __init__(self, n_features, hidden_dim=None, dropout=0.3):
-        super().__init__()
-        self.n_features = n_features
-        if hidden_dim is None:
-            hidden_dim = max(n_features // 2, 8)
-        
-        # Scoring network: maps each feature through a shared 2-layer network
-        self.score_net = nn.Sequential(
-            nn.Linear(1, hidden_dim),
-            nn.Tanh(),
-            nn.Linear(hidden_dim, 1)
-        )
-        
-        # Context-aware gating: use global context to modulate attention
-        # This lets the model consider ALL features when deciding how to 
-        # weight each one, unlike Conv1d which was purely element-wise
-        self.context_net = nn.Sequential(
-            nn.Linear(n_features, n_features),
-            nn.Tanh()
-        )
-        
-        self.dropout = nn.Dropout(dropout)
-    
-    def forward(self, x):
-        '''
-        Args:
-            x: (batch, D)
-        Returns:
-            out: (batch, D) — attention-weighted features
-        '''
-        # Context-aware modulation: (batch, D)
-        context = self.context_net(x)
-        
-        # Compute per-feature attention scores
-        # Reshape to (batch, D, 1) so each feature is scored independently
-        x_expanded = context.unsqueeze(-1)  # (batch, D, 1)
-        scores = self.score_net(x_expanded).squeeze(-1)  # (batch, D)
-        
-        # Normalize to attention weights
-        alpha = F.softmax(scores, dim=-1)  # (batch, D)
-        alpha = self.dropout(alpha)
-        
-        # Apply attention: element-wise weighting
-        out = x * alpha * self.n_features  # scale by D to preserve magnitude
-        # (without scaling, softmax would shrink values since weights sum to 1)
-        return out
-
-
-'''
 The Entire block of Iterative Gated Fusion Model consisting of 'L' Gated Fusion Layers.
 Input:
     X: tensor of shape (batch_size, n_features_x)
     X_modalities: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
 Equation:
-    IGF = SoftAttention([F_1; F_2; ...; F_L]) 
+    IGF = Conv([F_1; F_2; ...; F_L]) 
     where F_l is the output of the l-th Gated Fusion Layer 
-    Changed: Conv1d -> SoftAttention over the concatenated L fusion outputs.
-    SoftAttention allows the model to learn to emphasize or suppress individual features across the concatenated output of all the Gated Fusion Layers, while preserving the full dimensionality of the output.
+    and Conv is a 1D convolution operation
+    TODO: check the dimension along which the concatenation is performed in the equation.
 Output:
     F_next: tensor of shape (batch_size, n_features_m * L)
 '''
 class IterativeGatedFusionModule(nn.Module):
-    def __init__(self, L, n_features_x, n_features_m, dropout=0.3):
+    def __init__(self, L, n_features_x, n_features_m):
         super().__init__()
         self.L = L
         # using nn.ModuleList to store the Gated Fusion Layers
         self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
-        self.attention = SoftAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
+        self.conv = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  # Learnable parameter for the convolution operation in the Iterative Gated Fusion Module
 
 
     def forward(self, X, X_modality):
@@ -199,11 +133,10 @@ class IterativeGatedFusionModule(nn.Module):
         
         # Concatenate the outputs of all the Gated Fusion Layers
         F_next = torch.cat(F_next, dim=1) 
-        # Apply attention to the concatenated output of all the Gated Fusion Layers
-        F_next = self.attention(F_next)
-        #print(f"Shape of the output from the Iterative Gated Fusion Module after attention: {F_next.shape}")
-        return F_next
-
+        # Add a channel dimension for convolution
+        F_next = F_next.unsqueeze(1) 
+        # Apply 1D convolution to the concatenated output
+        return self.conv(F_next)
 
 
 
@@ -214,27 +147,22 @@ Variables:
     L: number of Gated Fusion Layers in each Iterative Gated Fusion Module
     n_features_x: number of features in the input modality 'X'
     n_features_per_modality: list of number of features in each of the 'M' modalities, can be changed based on the dataset used.
-    dropout: dropout rate for the attention layers (default: 0.3)
-    attn_fused: learnable parameter for the attention operation on the fused output of all the Iterative Gated Fusion Modules
-    attn_independent: learnable parameter for the attention operation on the independent modalities
-    attn_final: learnable parameter for the attention operation on the concatenated output of the fused output and independent modalities
-    fc: fully connected layer for prediction, in_features is the total number of features after concatenating the fused output and independent modalities, out_features is 1 for continuous output for prediction.
+    conv_fused: learnable parameter for the convolution operation on the fused output of all the Iterative Gated Fusion Modules
+    conv_independent: learnable parameter for the convolution operation on the independent modalities
+    conv_final: learnable parameter for the convolution operation on the concatenated output of the fused output and independent modalities
+    fc: fully connected layer for prediction, in_features can be changed based on the output of the convolution operation on the concatenated output of the fused output and independent modalities
 '''
 class DeepCrossModalFusionModel(nn.Module):
-    def __init__(self, M, L, n_features_x, n_features_per_modality, dropout=0.3):
+    def __init__(self, M, L, n_features_x, n_features_per_modality):
         super().__init__()
         self.M = M
         self.igf_modules = nn.ModuleList([
             IterativeGatedFusionModule(L, n_features_x, n_features_per_modality[m])
              for m in range(self.M)])
-        
-        # Dimensions for each attention layer
-        fused_dim = L * sum(n_features_per_modality[:M])
-        independent_dim = n_features_x + sum(n_features_per_modality)
-        total_final_features = fused_dim + independent_dim
-        self.attn_fused =  SoftAttention(fused_dim, dropout=dropout)  
-        self.attn_independent = SoftAttention(independent_dim, dropout=dropout)
-        self.attn_final = SoftAttention(total_final_features, dropout=dropout) 
+        self.conv_fused = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
+        self.conv_independent = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
+        self.conv_final = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=1)  
+        total_final_features =  L * sum(n_features_per_modality[:M]) + n_features_x + sum(n_features_per_modality) # Total features after concatenating the fused output and independent modalities
         #print(f"Total features after concatenating the fused output and independent modalities: {total_final_features}")
         self.fc = nn.Linear(in_features=total_final_features, out_features=1)  # Learnable parameter for the fully connected layer for prediction
 
@@ -254,29 +182,32 @@ class DeepCrossModalFusionModel(nn.Module):
         #print(f"Shape of the output from each Iterative Gated Fusion Module: {[f.shape for f in F_out]}")
         F_out = torch.cat(F_out, dim=-1)  # Concatenate the outputs of all the Iterative Gated Fusion Modules
         #print(f"Shape of the concatenated output from all Iterative Gated Fusion Modules: {F_out.shape}")
-        F_out = self.attn_fused(F_out)  # Apply attention to the concatenated output of all the Iterative Gated Fusion Modules
-        #print(f"Shape of the fused output after attention: {F_out.shape}")
+        F_out = self.conv_fused(F_out)  # Apply convolution to the fused output of all the Iterative Gated Fusion Modules
+        #print(f"Shape of the fused output after convolution: {F_out.shape}")
 
         # Pass independent modalities through the fully connected layer for prediction
-        #print(f"Shape of all independent modalities before attention: {X_ind.shape}")
-        #print(f"Shape of the input modality 'X' before attention: {X.shape}")
-        #print(f"Shape of the modalities before attention: {[modality.shape for modality in modalities]}")
+        #print(f"Shape of all independent modalities before convolution: {X_ind.shape}")
+        #print(f"Shape of the input modality 'X' before convolution: {X.shape}")
+        #print(f"Shape of the modalities before convolution: {[modality.shape for modality in modalities]}")
         X_independent = torch.cat([X] + modalities + [X_ind], dim=-1)  # Concatenate all the independent modalities
-        #print(f"Shape of the concatenated independent modalities before attention: {X_independent.shape}")
-        X_independent = self.attn_independent(X_independent)  # Apply attention to the concatenated independent modalities
-        #print(f"Shape of the independent modalities after attention: {X_independent.shape}")
+        #print(f"Shape of the concatenated independent modalities before convolution: {X_independent.shape}")
+        X_independent = X_independent.unsqueeze(1)
+        #print(f"Shape of the concatenated independent modalities after adding channel dimension: {X_independent.shape}")
+        X_independent = self.conv_independent(X_independent)
+        #print(f"Shape of the independent modalities after convolution: {X_independent.shape}")
 
 
         # Concatenate the outputs of the independent modalities and the convolutional fusion
         F_final = torch.cat((F_out, X_independent), dim=-1)
-        #print(f"Shape of the concatenated output of the fused output and independent modalities before attention: {F_final.shape}")
-        F_final = self.attn_final(F_final)  # Apply attention to the concatenated output of the fused output and independent modalities
-       #print(f"Shape of the concatenated output of the fused output and independent modalities after attention: {F_final.shape}")
+        #print(f"Shape of the concatenated output of the fused output and independent modalities before convolution: {F_final.shape}")
+        F_final = self.conv_final(F_final)
+        #print(f"Shape of the concatenated output of the fused output and independent modalities after convolution: {F_final.shape}")
 
         # Pass through the fully connected layer for prediction
-        output = self.fc(F_final) 
-        #print(f"Shape of the output from the fully connected layer after activation: {output.shape}")
-        #print(f"Output from the fully connected layer after activation: {output}")
+        F_final = F_final.squeeze(1)  # Remove the channel dimension before passing to the fully connected layer
+        #print(f"F_final: {F_final}")
+        #print(f"Shape of the output after removing channel dimension: {F_final.shape}")
+        output = self.fc(F_final)  # Remove the channel dimension before passing to the fully connected layer
         #output = torch.sigmoid(output)  # Apply sigmoid activation to get the final output in the range [0, 1]
         return output
 
