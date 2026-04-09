@@ -187,7 +187,7 @@ class IterativeGatedFusionModule(nn.Module):
         self.L = L
         # using nn.ModuleList to store the Gated Fusion Layers
         self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
-        self.attention = SoftAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
+        self.attention = SEAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
 
 
     def forward(self, X, X_modality):
