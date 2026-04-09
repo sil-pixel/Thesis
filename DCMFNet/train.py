@@ -17,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from model import DeepCrossModalFusionModel as DCMFNet
+from model_attention import DeepCrossModalFusionModel as DCMFNet
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
@@ -263,7 +263,7 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
             labels = labels / (n_features_y * 3.0)  # Normalize labels to be between 0 and 1
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
-            #print(f"Labels: {labels}")
+            print(f"Labels: {labels}")
             sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
             loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             # Backward pass and optimization
@@ -273,7 +273,7 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
             print(f"Loss: {loss.item()}")
             predicted = outputs
             print(f"Shape of the Predicted: {predicted.shape}")
-            #print(f"Predicted: {predicted}")
+            print(f"Predicted: {predicted}")
             total += labels.size(0)  # Total number of samples (batch_size)
             correct += (torch.abs(predicted - labels) < 0.05).sum().item()
             print(f"Correct: {correct}, Total: {total}")
