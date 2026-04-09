@@ -115,7 +115,7 @@ the model learn to emphasize or suppress individual features.
 
 Parameters:
     n_features: the dimension D of the input vector
-    hidden_dim: internal dimension of the scoring network (default: D//2, min 16)
+    hidden_dim: internal dimension of the scoring network (default: D//2, min 8)
     dropout: dropout on attention weights (default: 0.3)
 '''
 
@@ -124,7 +124,7 @@ class SoftAttention(nn.Module):
         super().__init__()
         self.n_features = n_features
         if hidden_dim is None:
-            hidden_dim = max(n_features // 2, 16)
+            hidden_dim = max(n_features // 2, 8)
         
         # Scoring network: maps each feature through a shared 2-layer network
         self.score_net = nn.Sequential(
