@@ -116,11 +116,11 @@ the model learn to emphasize or suppress individual features.
 Parameters:
     n_features: the dimension D of the input vector
     hidden_dim: internal dimension of the scoring network (default: D//2, min 16)
-    dropout: dropout on attention weights (default: 0.1)
+    dropout: dropout on attention weights (default: 0.3)
 '''
 
 class SoftAttention(nn.Module):
-    def __init__(self, n_features, hidden_dim=None, dropout=0.1):
+    def __init__(self, n_features, hidden_dim=None, dropout=0.3):
         super().__init__()
         self.n_features = n_features
         if hidden_dim is None:
@@ -182,7 +182,7 @@ Output:
     F_next: tensor of shape (batch_size, n_features_m * L)
 '''
 class IterativeGatedFusionModule(nn.Module):
-    def __init__(self, L, n_features_x, n_features_m, dropout=0.1):
+    def __init__(self, L, n_features_x, n_features_m, dropout=0.3):
         super().__init__()
         self.L = L
         # using nn.ModuleList to store the Gated Fusion Layers
@@ -214,14 +214,14 @@ Variables:
     L: number of Gated Fusion Layers in each Iterative Gated Fusion Module
     n_features_x: number of features in the input modality 'X'
     n_features_per_modality: list of number of features in each of the 'M' modalities, can be changed based on the dataset used.
-    dropout: dropout rate for the attention layers (default: 0.1)
+    dropout: dropout rate for the attention layers (default: 0.3)
     attn_fused: learnable parameter for the attention operation on the fused output of all the Iterative Gated Fusion Modules
     attn_independent: learnable parameter for the attention operation on the independent modalities
     attn_final: learnable parameter for the attention operation on the concatenated output of the fused output and independent modalities
     fc: fully connected layer for prediction, in_features is the total number of features after concatenating the fused output and independent modalities, out_features is 1 for continuous output for prediction.
 '''
 class DeepCrossModalFusionModel(nn.Module):
-    def __init__(self, M, L, n_features_x, n_features_per_modality, dropout=0.1):
+    def __init__(self, M, L, n_features_x, n_features_per_modality, dropout=0.3):
         super().__init__()
         self.M = M
         self.igf_modules = nn.ModuleList([
