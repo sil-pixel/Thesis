@@ -32,7 +32,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # Hyperparameters
 learning_rate = 1.82e-4
 batch_size = 8
-num_epochs = 20
+num_epochs = 2
 
 # Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
 weight_decay = 1e-3  # Example weight decay for L2 regularization
@@ -48,7 +48,6 @@ num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
 # Known number of features for each modality in the dataset, can be changed based on the dataset used.
-n_features_x = 5
 y_pos_features = 24
 y_negative_features = 11
 '''
@@ -85,8 +84,8 @@ def prepare_data(df):
         df.filter(regex="^ACE18").to_numpy(),
         df.filter(regex="^SUD18").to_numpy(),
         df.filter(regex="^SES").to_numpy(),
-        df.filter(regex="^Sex").to_numpy(),
-        df.filter(regex="^PCA").to_numpy()
+        df.filter(regex="^SEX").to_numpy(),
+        df.filter(regex="^PC").to_numpy()
     ]
     
     Y = df.filter(regex="^SCZ18").to_numpy()
@@ -97,7 +96,7 @@ def prepare_data(df):
 Calculate the modality sizes for the catss dataset
 '''
 def calculate_modality_sizes(df):
-    prefixes = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "Sex", "PCA"]
+    prefixes = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "SEX", "PC"]
     counts = [
         sum(col.startswith(prefix) for col in df.columns)
         for prefix in prefixes
@@ -250,7 +249,7 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
     # Create DataLoader
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed)
     # Initialize model
-    model = DCMFNet(num_modalities, num_layers, n_features_x, n_features_per_modality)  # Adjust n_features_x and n_features_m based on the dataset
+    model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
     criterion = nn.MSELoss(reduction='none')  # Use mean squared error loss for regression
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
@@ -326,8 +325,8 @@ if __name__ == "__main__":
     df = df.dropna()
     print(f"Data shape after dropping na: {df.shape}")
     modality_sizes = calculate_modality_sizes(df)
-    #df = df.sample(frac=0.1, random_state=42)
-    #print(f"Data shape: {df.shape}")
+    df = df.sample(frac=0.1, random_state=42)
+    print(f"Data shape: {df.shape}")
     seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)
@@ -336,5 +335,5 @@ if __name__ == "__main__":
         model, training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes = train(train_df, seed, modality_sizes)
         end_time = time.time()
         print(f"Time taken: {(end_time - start_time)/60:.2f} minutes")
-        plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed)
-        evaluate_final_test(model, test_df)
+        #plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed)
+        #evaluate_final_test(model, test_df)

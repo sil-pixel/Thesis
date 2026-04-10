@@ -214,9 +214,12 @@ Variables:
     fc: fully connected layer for prediction, in_features is the total number of features after concatenating the fused output and independent modalities, out_features is 1 for continuous output for prediction.
 '''
 class DeepCrossModalFusionModel(nn.Module):
-    def __init__(self, M, L, n_features_x, n_features_per_modality, dropout=0.3):
+    def __init__(self, M, L, n_features_per_modality, dropout=0.3):
         super().__init__()
         self.M = M
+        n_features_x = n_features_per_modality[0]
+        n_features_per_modality = n_features_per_modality[1:]
+        print(f"n_features_x : {n_features_x}, n_features_per_modality: {n_features_per_modality}")
         self.igf_modules = nn.ModuleList([
             IterativeGatedFusionModule(L, n_features_x, n_features_per_modality[m])
              for m in range(self.M)])
