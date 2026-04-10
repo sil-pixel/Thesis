@@ -101,111 +101,6 @@ class GatedFusionLayer(nn.Module):
         return F_curr, G_curr
 
 
-
-'''
-Learnable soft attention over features of a vector.
-
-Given input x of shape (batch, D):
-    1. score_i = W2 @ tanh(W1 @ x_i + b1) + b2   for each feature i
-    2. alpha = softmax(scores)                      attention weights
-    3. output = x * alpha                           weighted features
-
-This preserves the full dimensionality (unlike pooling) while letting 
-the model learn to emphasize or suppress individual features.
-
-Parameters:
-    n_features: the dimension D of the input vector
-    hidden_dim: internal dimension of the scoring network (default: D//2, min 8)
-    dropout: dropout on attention weights (default: 0.3)
-'''
-
-class SoftAttention(nn.Module):
-    def __init__(self, n_features, hidden_dim=None, dropout=0.3):
-        super().__init__()
-        self.n_features = n_features
-        if hidden_dim is None:
-            hidden_dim = max(n_features // 2, 8)
-        
-        # Scoring network: maps each feature through a shared 2-layer network
-        self.score_net = nn.Sequential(
-            nn.Linear(1, hidden_dim),
-            nn.Tanh(),
-            nn.Linear(hidden_dim, 1)
-        )
-        
-        # Context-aware gating: use global context to modulate attention
-        # This lets the model consider ALL features when deciding how to 
-        # weight each one, unlike Conv1d which was purely element-wise
-        self.context_net = nn.Sequential(
-            nn.Linear(n_features, n_features),
-            nn.Tanh()
-        )
-        
-        self.dropout = nn.Dropout(dropout)
-    
-    def forward(self, x):
-        '''
-        Args:
-            x: (batch, D)
-        Returns:
-            out: (batch, D) — attention-weighted features
-        '''
-        # Context-aware modulation: (batch, D)
-        context = self.context_net(x)
-        
-        # Compute per-feature attention scores
-        # Reshape to (batch, D, 1) so each feature is scored independently
-        x_expanded = context.unsqueeze(-1)  # (batch, D, 1)
-        scores = self.score_net(x_expanded).squeeze(-1)  # (batch, D)
-        
-        # Normalize to attention weights
-        alpha = F.softmax(scores, dim=-1)  # (batch, D)
-        alpha = self.dropout(alpha)
-        
-        # Apply attention: element-wise weighting
-        out = x * alpha * self.n_features  # scale by D to preserve magnitude
-        # (without scaling, softmax would shrink values since weights sum to 1)
-        return out
-
-
-'''
-The Entire block of Iterative Gated Fusion Model consisting of 'L' Gated Fusion Layers.
-Input:
-    X: tensor of shape (batch_size, n_features_x)
-    X_modalities: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
-Equation:
-    IGF = SoftAttention([F_1; F_2; ...; F_L]) 
-    where F_l is the output of the l-th Gated Fusion Layer 
-    Changed: Conv1d -> SoftAttention over the concatenated L fusion outputs.
-    SoftAttention allows the model to learn to emphasize or suppress individual features across the concatenated output of all the Gated Fusion Layers, while preserving the full dimensionality of the output.
-Output:
-    F_next: tensor of shape (batch_size, n_features_m * L)
-'''
-class IterativeGatedFusionModule(nn.Module):
-    def __init__(self, L, n_features_x, n_features_m, dropout=0.3):
-        super().__init__()
-        self.L = L
-        # using nn.ModuleList to store the Gated Fusion Layers
-        self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
-        self.attention = SEAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
-
-
-    def forward(self, X, X_modality):
-        G_prev = X_modality
-        F_next = []
-        for gated_fusion_layer in self.gated_fusion_layers:
-            F_curr, G_prev = gated_fusion_layer(X, G_prev)
-            F_next.append(F_curr)
-        
-        # Concatenate the outputs of all the Gated Fusion Layers
-        F_next = torch.cat(F_next, dim=1) 
-        # Apply attention to the concatenated output of all the Gated Fusion Layers
-        F_next = self.attention(F_next)
-        #print(f"Shape of the output from the Iterative Gated Fusion Module after attention: {F_next.shape}")
-        return F_next
-
-
-
 '''
 Squeeze-and-Excitation (SE) Attention module.
 
@@ -267,6 +162,43 @@ class SEAttention(nn.Module):
         gates = self.excitation(x)  # (batch, D), values in [0, 1]
         # Scale: element-wise recalibration
         return x * gates
+
+'''
+The Entire block of Iterative Gated Fusion Model consisting of 'L' Gated Fusion Layers.
+Input:
+    X: tensor of shape (batch_size, n_features_x)
+    X_modalities: tensor of shape (batch_size, n_features_m) where n_features_m is the total number of features across the input modalitity 'M'
+Equation:
+    IGF = SoftAttention([F_1; F_2; ...; F_L]) 
+    where F_l is the output of the l-th Gated Fusion Layer 
+    Changed: Conv1d -> SoftAttention over the concatenated L fusion outputs.
+    SoftAttention allows the model to learn to emphasize or suppress individual features across the concatenated output of all the Gated Fusion Layers, while preserving the full dimensionality of the output.
+Output:
+    F_next: tensor of shape (batch_size, n_features_m * L)
+'''
+class IterativeGatedFusionModule(nn.Module):
+    def __init__(self, L, n_features_x, n_features_m, dropout=0.3):
+        super().__init__()
+        self.L = L
+        # using nn.ModuleList to store the Gated Fusion Layers
+        self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
+        self.attention = SEAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
+
+
+    def forward(self, X, X_modality):
+        G_prev = X_modality
+        F_next = []
+        for gated_fusion_layer in self.gated_fusion_layers:
+            F_curr, G_prev = gated_fusion_layer(X, G_prev)
+            F_next.append(F_curr)
+        
+        # Concatenate the outputs of all the Gated Fusion Layers
+        F_next = torch.cat(F_next, dim=1) 
+        # Apply attention to the concatenated output of all the Gated Fusion Layers
+        F_next = self.attention(F_next)
+        #print(f"Shape of the output from the Iterative Gated Fusion Module after attention: {F_next.shape}")
+        return F_next
+
 
 '''
 The Deep Cross Modal Fusion Model consisting of 'M' Iterative Gated Fusion Modules and a final fully connected layer for prediction.
