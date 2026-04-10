@@ -32,7 +32,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # Hyperparameters
 learning_rate = 1.82e-4
 batch_size = 8
-num_epochs = 2
+num_epochs = 20
 
 # Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
 weight_decay = 1e-3  # Example weight decay for L2 regularization
@@ -47,9 +47,12 @@ num_modalities = 9
 num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
-# Known number of features for each modality in the dataset, can be changed based on the dataset used.
-y_pos_features = 24
-y_neg_features = 11
+# Known number of output features in the dataset
+y_features = {
+    "Pos" : 24,
+    "Neg": 11
+}
+
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
 Input:
@@ -73,7 +76,7 @@ def random_split(df, test_size=0.25, random_state=42):
 '''
 Prepare the dataframe for training by splitting the dataframe into input and target modalities dataframes.
 '''
-def prepare_data(df):
+def prepare_data(df, model_tag):
     X = [
         df.filter(regex="^SUD15").to_numpy(),
         df.filter(regex="^PRS").to_numpy(),
@@ -87,8 +90,11 @@ def prepare_data(df):
         df.filter(regex="^SEX").to_numpy(),
         df.filter(regex="^PC").to_numpy()
     ]
-    
-    Y = df.filter(regex="^SCZ18").to_numpy()
+    if model_tag == "Pos":
+        Y = df["SCZ18_Pos"].to_numpy()
+    elif model_tag == "Neg":
+        Y = df["SCZ18_Neg"].to_numpy()
+
     
     return X, Y
 
@@ -138,11 +144,11 @@ Output:
         train_dataloader: data loader containing the training data
         val_dataloader: data loader containing the validation data
 '''
-def create_cross_validation_data_loaders(df, seed):
+def create_cross_validation_data_loaders(df, seed, model_tag):
     # attach the input and target modalities 
     train_df, val_df = random_split(df, test_size=0.2, random_state=seed)
-    X_train, Y_train = prepare_data(train_df)
-    X_val, Y_val = prepare_data(val_df)
+    X_train, Y_train = prepare_data(train_df, model_tag)
+    X_val, Y_val = prepare_data(val_df, model_tag)
     train_dataloader = create_dataloader(X_train, Y_train, batch_size)
     val_dataloader = create_dataloader(X_val, Y_val, batch_size)
     return train_dataloader, val_dataloader
@@ -155,10 +161,11 @@ Input:
 Output:
     accuracy: accuracy of the model
 '''
-def accuracy(model, dataloader, n_features_y):
+def accuracy(model, dataloader, model_tag):
     model.eval()
     all_predictions = []
     all_targets = []
+    n_features_y = y_features.get(model_tag)
     
     with torch.no_grad():
         for inputs, targets in dataloader:
@@ -196,7 +203,7 @@ def accuracy(model, dataloader, n_features_y):
 '''
 Plot the training and validation accuracy and training loss curves and save the plots for each seed.
 '''
-def plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed):
+def plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed, model_tag):
     epochs = range(1, len(training_accuracies) + 1)
 
     plt.figure(figsize=(15, 5))
@@ -228,26 +235,29 @@ def plot_training_curves(training_accuracies, validation_accuracies, train_losse
     plt.legend()
     
     plt.tight_layout()
-    plt.savefig(f'training_curves_seed_{seed}.png')
+    plt.savefig(f'{model_tag}_training_curves_seed_{seed}.png')
     plt.close()
-    print(f"Training curves plotted and saved to 'training_curves_seed_{seed}.png'")
+    print(f"Training curves plotted and saved to '{model_tag}_training_curves_seed_{seed}.png'")
 
 
 '''
 Train the model on the training data and evaluate the model on the test data.
 Input:
     df: pandas dataframe containing the training data
+    n_features_per_modality: List of number of features in each modality
+    model_tag: tag to distinguihs between positive or negative schizophrenic symptom model
 Output:
     None
 '''
-def train(train_df, seed, n_features_per_modality, n_features_y):
+def train(train_df, seed, n_features_per_modality, model_tag):
     training_accuracies = []
     validation_accuracies = []
     train_losses = []
     training_maes = []
     validation_maes = []
     # Create DataLoader
-    train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed)
+    train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag)
+    n_features_y = y_features.get(model_tag)
     # Initialize model
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
@@ -278,7 +288,7 @@ def train(train_df, seed, n_features_per_modality, n_features_y):
             labels = labels / (n_features_y * 3.0)  # Normalize labels to be between 0 and 1
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
-            print(f"Labels: {labels}")
+            #print(f"Labels: {labels}")
             sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
             loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             # Backward pass and optimization
@@ -288,7 +298,7 @@ def train(train_df, seed, n_features_per_modality, n_features_y):
             print(f"Loss: {loss.item()}")
             predicted = outputs
             print(f"Shape of the Predicted: {predicted.shape}")
-            print(f"Predicted: {predicted}")
+            #print(f"Predicted: {predicted}")
             total += labels.size(0)  # Total number of samples (batch_size)
             correct += (torch.abs(predicted - labels) < 0.05).sum().item()
             print(f"Correct: {correct}, Total: {total}")
@@ -301,7 +311,7 @@ def train(train_df, seed, n_features_per_modality, n_features_y):
         avg_loss = total_loss / len(train_dataloader)
         total_mae = total_mae / len(train_dataloader)
         # record the accuracy of the model
-        val_accuracy, val_mae = accuracy(model, val_dataloader, n_features_y)
+        val_accuracy, val_mae = accuracy(model, val_dataloader, model_tag)
         print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}', f'Training MAE: {total_mae:.4f}, Validation MAE: {val_mae:.4f}')
         training_accuracies.append(train_accuracy)
         validation_accuracies.append(val_accuracy)
@@ -312,11 +322,12 @@ def train(train_df, seed, n_features_per_modality, n_features_y):
 
 
 
-def evaluate_final_test(model, test_df, n_features_y):
-    X_test, Y_test = prepare_data(test_df)
+def evaluate_final_test(model, test_df, model_tag):
+    X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
-    test_accuracy, test_mae = accuracy(model, test_dataloader, n_features_y)
+    test_accuracy, test_mae = accuracy(model, test_dataloader, model_tag)
     print(f'Final Test Accuracy: {100 * test_accuracy:.4f}, Final Test MAE: {test_mae:.4f}')
+
 
 
 if __name__ == "__main__":
@@ -324,23 +335,27 @@ if __name__ == "__main__":
     df = df.dropna()
     print(f"Data shape after dropping na: {df.shape}")
     modality_sizes = calculate_modality_sizes(df)
-    df = df.sample(frac=0.1, random_state=42)
-    print(f"Data shape: {df.shape}")
+    #df = df.sample(frac=0.1, random_state=42)
+    #print(f"Data shape: {df.shape}")
     seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
+
+        # Positive symptom model training
+        model_tag = "Pos"
         start_time = time.time()
-        pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes 
-        = train(train_df, seed, modality_sizes, y_pos_features)
+        pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes = train(train_df, seed, modality_sizes, model_tag)
         end_time = time.time()
         print(f"Time taken for the positive SCZ model: {(end_time - start_time)/60:.2f} minutes")
-        #plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed)
+        plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed, model_tag)
         #evaluate_final_test(pos_model, test_df, y_pos_features)
+
+        # Negative symptom model training
+        model_tag = "Neg"
         start_time = time.time()
-        neg_model, neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes 
-        = train(train_df, seed, modality_sizes, y_neg_features)
+        neg_model, neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes = train(train_df, seed, modality_sizes, model_tag)
         end_time = time.time()
         print(f"Time taken for the negative SCZ model: {(end_time - start_time)/60:.2f} minutes")
-        #plot_training_curves(neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes, seed)
+        plot_training_curves(neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes, seed, model_tag)
         #evaluate_final_test(neg_model, test_df, y_neg_features)
