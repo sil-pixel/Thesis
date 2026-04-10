@@ -49,7 +49,7 @@ fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
 # Known number of features for each modality in the dataset, can be changed based on the dataset used.
 y_pos_features = 24
-y_negative_features = 11
+y_neg_features = 11
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
 Input:
@@ -155,14 +155,14 @@ Input:
 Output:
     accuracy: accuracy of the model
 '''
-def accuracy(model, dataloader):
+def accuracy(model, dataloader, n_features_y):
     model.eval()
     all_predictions = []
     all_targets = []
     
     with torch.no_grad():
         for inputs, targets in dataloader:
-            targets = targets.sum(axis=1) / (n_features_y * 3.0)
+            targets = targets / (n_features_y * 3.0)
             targets = targets.unsqueeze(1)
             outputs = model(inputs)
             all_predictions.append(outputs.cpu())
@@ -240,7 +240,7 @@ Input:
 Output:
     None
 '''
-def train(train_df, seed, n_features_per_modality, plot_training=False):
+def train(train_df, seed, n_features_per_modality, n_features_y):
     training_accuracies = []
     validation_accuracies = []
     train_losses = []
@@ -275,7 +275,6 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
             outputs = model(inputs) 
             #print(f"Shape of the outputs: {outputs.shape}")
             #print(f"Outputs: {outputs}")
-            labels = labels.sum(axis=1)
             labels = labels / (n_features_y * 3.0)  # Normalize labels to be between 0 and 1
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
@@ -302,7 +301,7 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
         avg_loss = total_loss / len(train_dataloader)
         total_mae = total_mae / len(train_dataloader)
         # record the accuracy of the model
-        val_accuracy, val_mae = accuracy(model, val_dataloader)
+        val_accuracy, val_mae = accuracy(model, val_dataloader, n_features_y)
         print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}', f'Training MAE: {total_mae:.4f}, Validation MAE: {val_mae:.4f}')
         training_accuracies.append(train_accuracy)
         validation_accuracies.append(val_accuracy)
@@ -313,10 +312,10 @@ def train(train_df, seed, n_features_per_modality, plot_training=False):
 
 
 
-def evaluate_final_test(model, test_df):
+def evaluate_final_test(model, test_df, n_features_y):
     X_test, Y_test = prepare_data(test_df)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
-    test_accuracy, test_mae = accuracy(model, test_dataloader)
+    test_accuracy, test_mae = accuracy(model, test_dataloader, n_features_y)
     print(f'Final Test Accuracy: {100 * test_accuracy:.4f}, Final Test MAE: {test_mae:.4f}')
 
 
@@ -332,8 +331,16 @@ if __name__ == "__main__":
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
         start_time = time.time()
-        model, training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes = train(train_df, seed, modality_sizes)
+        pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes 
+        = train(train_df, seed, modality_sizes, y_pos_features)
         end_time = time.time()
-        print(f"Time taken: {(end_time - start_time)/60:.2f} minutes")
-        #plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed)
-        #evaluate_final_test(model, test_df)
+        print(f"Time taken for the positive SCZ model: {(end_time - start_time)/60:.2f} minutes")
+        #plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed)
+        #evaluate_final_test(pos_model, test_df, y_pos_features)
+        start_time = time.time()
+        neg_model, neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes 
+        = train(train_df, seed, modality_sizes, y_neg_features)
+        end_time = time.time()
+        print(f"Time taken for the negative SCZ model: {(end_time - start_time)/60:.2f} minutes")
+        #plot_training_curves(neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes, seed)
+        #evaluate_final_test(neg_model, test_df, y_neg_features)
