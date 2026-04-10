@@ -1,14 +1,14 @@
 '''
-Deep Cross Modal Fusion Model with iterative gated fusion model and Squeeze-and-Excitation (SE) Attention mechanism.
+Toy model for testing the iterative gated fusion model with Soft Attention and Squeeze-and-Excitation (SE) Attention mechanisms.
 Author: Silpa Soni Nallacheruvu
-Date: 10/04/2026
+Date: 09/04/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
 
 Steps:
-1. Build basic building blocks of Iterative gated fusion model.
-   1.1 Build the fusion module.
-   1.2 Build the gated module.
-2. Build the Squeeze-and-Excitation (SE) Attention mechanism.
+1. Load toy data for training the model
+2. Build basic building blocks of Iterative gated fusion model.
+   2.1 Build the fusion module.
+   2.2 Build the gated module.
 3. Build the Deep Cross Modal Fusion Model.
 '''
 import numpy as np

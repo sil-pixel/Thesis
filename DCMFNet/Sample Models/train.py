@@ -43,14 +43,15 @@ weight_decay = 1e-3  # Example weight decay for L2 regularization
 5 iterative fusion layers (number of iterations for fusion) are found optimal in the paper,
  but can check for 1-7 and compare the performance of the model.
 '''
-num_modalities = 9 
+num_modalities = 7  # change the number of modalities in the dataset if needed
 num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
 # Known number of features for each modality in the dataset, can be changed based on the dataset used.
 n_features_x = 5
-y_pos_features = 24
-y_negative_features = 11
+# List of modality sizes in the dataset, can be changed based on the dataset used. The order of the modality sizes should match the order of the modalities in the dataset.
+modality_sizes = [10, 25, 20, 15, 35, 4, 1, 10]  # Example modality sizes, adjust based on the dataset
+n_features_y = 25  # Assuming the target variable has 25 features, adjust based on the dataset
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
 Input:
@@ -62,12 +63,10 @@ Output:
     test_df: pandas dataframe containing the test data
 '''
 def random_split(df, test_size=0.25, random_state=42):
-    unique_twin_ids = df['cmpair'].unique()
+    unique_twin_ids = df['twin_id'].unique()
     train_ids, test_ids = train_test_split(unique_twin_ids, test_size=test_size, random_state=random_state)
-    train_df = df[df['cmpair'].isin(train_ids)]
-    test_df = df[df['cmpair'].isin(test_ids)]
-    print(f"Train: {len(train_df)} rows ({len(train_ids)} IDs),"
-            f"Test: {len(test_df)} rows ({len(test_ids)} IDs) \n")
+    train_df = df[df['twin_id'].isin(train_ids)]
+    test_df = df[df['twin_id'].isin(test_ids)]
     return train_df, test_df
 
 
@@ -81,9 +80,7 @@ def prepare_data(df):
         df.filter(regex="^SCZ15").to_numpy(),
         df.filter(regex="^ADHD9").to_numpy(),
         df.filter(regex="^ASD9").to_numpy(),
-        df.filter(regex="^ACE15").to_numpy(),
-        df.filter(regex="^ACE18").to_numpy(),
-        df.filter(regex="^SUD18").to_numpy(),
+        df.filter(regex="^ACE").to_numpy(),
         df.filter(regex="^SES").to_numpy(),
         df.filter(regex="^Sex").to_numpy(),
         df.filter(regex="^PCA").to_numpy()
@@ -92,20 +89,6 @@ def prepare_data(df):
     Y = df.filter(regex="^SCZ18").to_numpy()
     
     return X, Y
-
-'''
-Calculate the modality sizes for the catss dataset
-'''
-def calculate_modality_sizes(df):
-    prefixes = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "Sex", "PCA"]
-    counts = [
-        sum(col.startswith(prefix) for col in df.columns)
-        for prefix in prefixes
-    ]
-    print(f"modality sizes for {prefixes} : {counts}")
-    return counts
-
-
 
 '''
 Custom dataset class for multi-modal data.
@@ -322,12 +305,11 @@ def evaluate_final_test(model, test_df):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("catss_final_data.csv")
+    df = pd.read_csv('../Data/simulated_data.csv')
     df = df.dropna()
     print(f"Data shape after dropping na: {df.shape}")
-    modality_sizes = calculate_modality_sizes(df)
     #df = df.sample(frac=0.1, random_state=42)
-    #print(f"Data shape: {df.shape}")
+    print(f"Data shape: {df.shape}")
     seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)
