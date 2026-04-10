@@ -32,7 +32,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # Hyperparameters
 learning_rate = 1.82e-4
 batch_size = 8
-num_epochs = 15
+num_epochs = 20
 
 # Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
 weight_decay = 1e-3  # Example weight decay for L2 regularization
