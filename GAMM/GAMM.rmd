@@ -34,8 +34,6 @@ print(paste("Number of complete cases:", sum(complete.cases(catss))))
 ```{r}
 catss <- catss %>%
   mutate(SCZ18_sum = rowSums(select(., starts_with("SCZ18")), na.rm = TRUE))
-catss <- catss %>%
-  mutate(SUD15_sum = rowSums(select(., starts_with("SUD15")), na.rm = TRUE))
 ```
 
 ## Split the data into training and testing dataset 
@@ -43,6 +41,26 @@ catss <- catss %>%
 Based on their twin_id
 
 ```{r}
+
+test_size <- 0.25
+
+# Get unique IDs
+unique_ids <- unique(catss$twin_id)
+
+# Sample test IDs
+n_test <- floor(length(unique_ids) * test_size)
+test_ids <- sample(unique_ids, size = n_test)
+
+# Split dataset
+test_df <- catss[catss$twin_id %in% test_ids, ]
+train_df <- catss[!catss$twin_id %in% test_ids, ]
+
+# Print summary
+cat(sprintf(
+  "Train: %d rows (%d IDs), Test: %d rows (%d IDs)\n",
+  nrow(train_df), length(unique(train_df$twin_id)),
+  nrow(test_df), length(unique(test_df$twin_id))
+))
 
 ```
 
@@ -52,41 +70,90 @@ Based on their twin_id
 fit it on the training dataset
 
 ```{r}
-gamm_model <- gam(SCZ18_sum ~ SUD15_var_1 + SUD15_var_2 + SUD15_var_3 + SUD15_var_4 + SUD15_var_5 + s(twin_id, bs="re"), 
-                  data = catss,
-                  family = gaussian(),
-                  method = "REML")
-```
+# get a list of columns with their prefix
+SUD15_vars <- grep("^SUD15_var_", names(catss), value = TRUE)
+SCZ15_vars <- grep("^SCZ15_var_", names(catss), value = TRUE)
+PRS_vars <- grep("^PRS_var_", names(catss), value = TRUE)
+ADHD9_vars <- grep("^ADHD9_var_", names(catss), value = TRUE)
+ASD9_vars <- grep("^ASD9_var_", names(catss), value = TRUE)
+ACE_vars <- grep("^ACE_var_", names(catss), value = TRUE)
+SES_vars <- grep("^SES_var_", names(catss), value = TRUE)
+PCA_vars <- grep("^PCA_var_", names(catss), value = TRUE)
 
-```{r}
-summary(gamm_model)
-```
+factor_terms <- paste(
+  c(
+    paste0("factor(", SUD15_vars, ")"),
+    "factor(Sex_var_1)"
+  ),
+  collapse = " + "
+)
 
 
-```{r}
-plot(gamm_model, pages = 1)
-```
+covariate_terms <- paste(
+  c(SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PCA_vars, PRS_vars),
+  collapse = " + "
+)
 
+interaction_terms <- paste(
+  c(
+    paste0("factor(", SUD15_vars, "):(", SCZ15_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(", ADHD9_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(", ASD9_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(", ACE_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(", SES_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(", PRS_vars, ")"),
+    paste0("factor(", SUD15_vars, "):(Sex_var_1)")
+  ),
+  collapse = " + "
+)
 
+formula_str <- paste(
+  "SCZ18_sum ~",
+  factor_terms, "+",
+  covariate_terms, "+",
+  interaction_terms, "+",
+  "s(twin_id, bs='re')"
+)
 
+gamm_formula <- as.formula(formula_str)
 
-```{r}
-gamm_model_prs <- gam(SCZ18_sum ~ SUD15_var_1 + SUD15_var_2 + SUD15_var_3 + SUD15_var_4 + SUD15_var_5 + 
-                    PRS_var_1 + PRS_var_2 + PRS_var_3 + PRS_var_4 + PRS_var_5 + PRS_var_6 + PRS_var_7 + PRS_var_8 + PRS_var_9 + PRS_var_10 + s(twin_id, bs="re"), 
-                  data = catss,
-                  family = gaussian(),
-                  method = "REML")
+gamm_model_prs <- gam(
+  gamm_formula,
+  data = train_df,
+  family = gaussian(),
+  method = "REML"
+)
+
 summary(gamm_model_prs)
 ```
-
+## Check the twin random effect
 
 ```{r}
-gamm_model_prs <- gam(SCZ18_sum ~ SUD15_sum + 
-                    PRS_var_1 + PRS_var_2 + PRS_var_3 + PRS_var_4 + PRS_var_5 + PRS_var_6 + PRS_var_7 + PRS_var_8 + PRS_var_9 + PRS_var_10 + s(twin_id, bs="re"), 
-                  data = catss,
-                  family = gaussian(),
-                  method = "REML")
-summary(gamm_model_prs)
+plot(gamm_model_prs, select = 1, main = "Random Effect of Twin ID")
+```
+
+# Evaluate the model predictions
+
+```{r}
+y_pred <- predict(gamm_model, newdata = test_df, type = "response")
+y_true <- test_df$SCZ18_sum
+
+
+rmse <- sqrt(mean((y_true - y_pred)^2))
+mae <- mean(abs(y_true - y_pred))
+r2 <- 1 - sum((y_true - y_pred)^2) / sum((y_true - mean(y_true))^2)
+corr <- cor(y_true, y_pred)
+
+cat("RMSE:", rmse, "\n")
+cat("MAE:", mae, "\n")
+cat("R2:", r2, "\n")
+cat("Correlation:", corr, "\n")
+```
+# Plot predicted vs true values
+
+```{r}
+plot(y_true, y_pred, main = "Predicted vs True Values", xlab = "True Values", ylab = "Predicted Values")
+abline(a = 0, b = 1, col = "red")
 ```
 
 

@@ -174,21 +174,18 @@ def accuracy(model, dataloader):
     mae = mean_absolute_error(all_targets, all_predictions)
     mse = mean_squared_error(all_targets, all_predictions)
     
-    # Check for constant predictions before Spearman
-    if np.std(all_predictions) < 1e-6:
-        print("WARNING: predictions are constant, Spearman undefined")
-        rho, p = float('nan'), float('nan')
-    else:
-        rho, p = spearmanr(all_targets, all_predictions)
-    
+    # Calculate R2 and correlation
+    r2 = r2_score(all_targets, all_predictions)
+    spearman_corr, _ = spearmanr(all_targets, all_predictions)
+
     correct = (np.abs(all_predictions - all_targets) < 0.05).sum()
     accuracy_score = correct / len(all_targets)
     
     print(f"  Prediction std: {np.std(all_predictions):.6f}")
     print(f"  Prediction range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}]")
     print(f"  MAE: {mae:.4f}, MSE: {mse:.4f}")
-    print(f"  Spearman rho: {rho:.4f}, p-value: {p:.4f}")
-    
+    print(f"  R2 Score: {r2:.4f}, Spearman Correlation: {spearman_corr:.4f}")
+
     model.train()
     return accuracy_score, mae
 
