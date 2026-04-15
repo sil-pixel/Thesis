@@ -91,9 +91,9 @@ def prepare_data(df, model_tag):
         df.filter(regex="^PC").to_numpy()
     ]
     if model_tag == "Pos":
-        Y = df["SCZ18_Pos"].to_numpy()
+        Y = df["SCZ18_Pos_Norm"].to_numpy()
     elif model_tag == "Neg":
-        Y = df["SCZ18_Neg"].to_numpy()
+        Y = df["SCZ18_Neg_Norm"].to_numpy()
 
     
     return X, Y
@@ -287,7 +287,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
-            #sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
+            sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
             loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             # Backward pass and optimization
             loss.backward()
