@@ -260,7 +260,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     # Initialize model
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
-    criterion = nn.MSELoss(reduction='none')  # Use mean squared error loss for regression
+    criterion = nn.MSELoss()  # Use mean squared error loss for regression
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
@@ -287,8 +287,9 @@ def train(train_df, seed, n_features_per_modality, model_tag):
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
-            sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
-            loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
+            #sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
+            #loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
+            loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
