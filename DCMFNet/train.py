@@ -26,7 +26,7 @@ from torch.utils.data import Dataset
 import time
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from loss import InverseFrequencyMSELoss
+from loss import ImbalancedRegressionLoss
 
 
 # Hyperparameters
@@ -258,8 +258,8 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
     #criterion = nn.MSELoss()  # Use mean squared error loss for regression
-    # using a custom loss function that has inverse frequency weighting to handle the imbalance in the label distribution
-    criterion = InverseFrequencyMSELoss(all_labels, n_bins=10, max_weight=20.0)
+    # using a custom loss function that has inverse frequency weighting to handle the imbalance in the label distribution with focal regression loss
+    criterion = ImbalancedRegressionLoss(all_labels, n_bins=10, max_weight=20.0, base_loss='mse')
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
