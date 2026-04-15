@@ -259,7 +259,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
     #criterion = nn.MSELoss()  # Use mean squared error loss for regression
     # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
-    criterion = ImbalancedRegressionLoss(all_labels, n_bins=10, max_weight=20.0, base_loss='huber')
+    criterion = ImbalancedRegressionLoss(all_labels, base_loss='huber', huber_delta=0.05)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
