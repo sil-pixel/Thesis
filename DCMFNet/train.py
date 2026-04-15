@@ -253,7 +253,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag)
     for inputs, labels in train_dataloader:
         all_labels.append(labels)
-        all_labels = torch.cat(all_labels)
+    all_labels = torch.cat(all_labels)
     # Initialize model
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
