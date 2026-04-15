@@ -169,7 +169,6 @@ def accuracy(model, dataloader, model_tag):
     
     with torch.no_grad():
         for inputs, targets in dataloader:
-            targets = targets / (n_features_y * 3.0)
             targets = targets.unsqueeze(1)
             outputs = model(inputs)
             all_predictions.append(outputs.cpu())
@@ -285,11 +284,10 @@ def train(train_df, seed, n_features_per_modality, model_tag):
             outputs = model(inputs) 
             #print(f"Shape of the outputs: {outputs.shape}")
             #print(f"Outputs: {outputs}")
-            labels = labels / (n_features_y * 3.0)  # Normalize labels to be between 0 and 1
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
-            sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
+            #sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
             loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             # Backward pass and optimization
             loss.backward()
