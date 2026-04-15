@@ -26,7 +26,7 @@ from torch.utils.data import Dataset
 import time
 from scipy.stats import spearmanr
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
+from loss import InverseFrequencyMSELoss
 
 
 # Hyperparameters
@@ -47,11 +47,6 @@ num_modalities = 9
 num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
-# Known number of output features in the dataset
-y_features = {
-    "Pos" : 24,
-    "Neg": 11
-}
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -161,11 +156,10 @@ Input:
 Output:
     accuracy: accuracy of the model
 '''
-def accuracy(model, dataloader, model_tag):
+def accuracy(model, dataloader):
     model.eval()
     all_predictions = []
     all_targets = []
-    n_features_y = y_features.get(model_tag)
     
     with torch.no_grad():
         for inputs, targets in dataloader:
@@ -254,13 +248,18 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     train_losses = []
     training_maes = []
     validation_maes = []
+    all_labels = []
     # Create DataLoader
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag)
-    n_features_y = y_features.get(model_tag)
+    for inputs, labels in train_dataloader:
+        all_labels.append(labels)
+        all_labels = torch.cat(all_labels)
     # Initialize model
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
-    criterion = nn.MSELoss()  # Use mean squared error loss for regression
+    #criterion = nn.MSELoss()  # Use mean squared error loss for regression
+    # using a custom loss function that has inverse frequency weighting to handle the imbalance in the label distribution
+    criterion = InverseFrequencyMSELoss(all_labels, n_bins=10, max_weight=20.0)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
@@ -287,8 +286,6 @@ def train(train_df, seed, n_features_per_modality, model_tag):
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
             print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
-            #sample_weights = 1.0 + 3.0 * labels.squeeze()  # Example: higher weight for higher labels, adjust as needed
-            #loss = (criterion(outputs, labels).squeeze() * sample_weights).mean()
             loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
@@ -310,7 +307,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
         avg_loss = total_loss / len(train_dataloader)
         total_mae = total_mae / len(train_dataloader)
         # record the accuracy of the model
-        val_accuracy, val_mae = accuracy(model, val_dataloader, model_tag)
+        val_accuracy, val_mae = accuracy(model, val_dataloader)
         print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}', f'Training MAE: {total_mae:.4f}, Validation MAE: {val_mae:.4f}')
         training_accuracies.append(train_accuracy)
         validation_accuracies.append(val_accuracy)
@@ -324,9 +321,8 @@ def train(train_df, seed, n_features_per_modality, model_tag):
 def evaluate_final_test(model, test_df, model_tag):
     X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
-    test_accuracy, test_mae = accuracy(model, test_dataloader, model_tag)
+    test_accuracy, test_mae = accuracy(model, test_dataloader)
     print(f'Final Test Accuracy: {100 * test_accuracy:.4f}, Final Test MAE: {test_mae:.4f}')
-
 
 
 if __name__ == "__main__":
@@ -341,20 +337,11 @@ if __name__ == "__main__":
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
 
-        # Positive symptom model training
-        model_tag = "Pos"
-        start_time = time.time()
-        pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes = train(train_df, seed, modality_sizes, model_tag)
-        end_time = time.time()
-        print(f"Time taken for the positive SCZ model: {(end_time - start_time)/60:.2f} minutes")
-        plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed, model_tag)
-        #evaluate_final_test(pos_model, test_df, y_pos_features)
-
-        # Negative symptom model training
-        model_tag = "Neg"
-        start_time = time.time()
-        neg_model, neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes = train(train_df, seed, modality_sizes, model_tag)
-        end_time = time.time()
-        print(f"Time taken for the negative SCZ model: {(end_time - start_time)/60:.2f} minutes")
-        plot_training_curves(neg_training_accuracies, neg_validation_accuracies, neg_train_losses, neg_training_maes, neg_validation_maes, seed, model_tag)
-        #evaluate_final_test(neg_model, test_df, y_neg_features)
+        # Positive and negative symptom model training
+        for model_tag in ["Pos", "Neg"]:
+            start_time = time.time()
+            pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes = train(train_df, seed, modality_sizes, model_tag)
+            end_time = time.time()
+            print(f"Time taken for the positive SCZ model: {(end_time - start_time)/60:.2f} minutes")
+            plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed, model_tag)
+            #evaluate_final_test(pos_model, test_df, y_pos_features)
