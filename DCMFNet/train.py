@@ -258,8 +258,8 @@ def train(train_df, seed, n_features_per_modality, model_tag):
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
     # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
     #criterion = nn.MSELoss()  # Use mean squared error loss for regression
-    # using a custom loss function that has inverse frequency weighting to handle the imbalance in the label distribution with focal regression loss
-    criterion = ImbalancedRegressionLoss(all_labels, n_bins=10, max_weight=20.0, base_loss='mse')
+    # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
+    criterion = ImbalancedRegressionLoss(all_labels, n_bins=10, max_weight=20.0, base_loss='huber')
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
