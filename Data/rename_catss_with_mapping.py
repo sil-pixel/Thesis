@@ -85,8 +85,60 @@ def aggregated_outcome_cols():
 
 
 
+def normalise_outcome_cols():
+    catss = pd.read_csv("catss_final_data.csv")
+    print(f"The shape of catss data : {catss.shape}")
+    catss["SCZ18_Pos_Norm"] = catss["SCZ18_Pos"]/46.0
+    catss["SCZ18_Neg_Norm"] = catss["SCZ18_Neg"]/33.0
+    print(f"The shape of updated catss data : {catss.shape}")
+    print(f"Columns after normalised outputs: {catss.columns.tolist()}")
+    catss.to_csv("catss_normalised_output.csv", index=False)
 
-aggregated_outcome_cols()
+
+
+'''
+    Expand batch * PC interactions following the R formula:
+        factor(batch) * PC1 + factor(batch) * PC2 + ...
+    
+    Adds:
+      - One-hot encoded batch columns (main effect)
+      - Interaction columns: batch_k * PC_j for each combination
+    
+    The original PC columns stay in the dataframe (main effect of PCs).
+'''
+def add_batch_pc_interactions(pc_cols=['PC1', 'PC2']):
+
+    catss = pd.read_csv("catss_final_data.csv")
+    batch_col='batch'
+
+    if pc_cols is None:
+        pc_cols = [c for c in catss.columns if c.startswith('PC')]
+    
+    # One-hot encode batch (drop_first=True to avoid perfect collinearity,
+    # matching R's default treatment contrasts)
+    batch_dummies = pd.get_dummies(catss[batch_col], prefix='batch', 
+                                    drop_first=True, dtype=float)
+    
+    print(f"Batch dummies columns: {list(batch_dummies.columns)}")
+    
+    # Compute interactions: each batch dummy * each PC
+    interactions = {}
+    for batch_level in batch_dummies.columns:
+        for pc in pc_cols:
+            interaction_name = f"{batch_level}_x_{pc}"
+            interactions[interaction_name] = batch_dummies[batch_level] * catss[pc]
+
+    print(f"Batch and PC Interctions: {list(interactions.keys())}")
+    
+    interactions_df = pd.DataFrame(interactions, index=catss.index)
+    
+    # Combine: original catss + batch dummies + interactions
+    catss_expanded = pd.concat([catss, batch_dummies, interactions_df], axis=1)
+
+    catss_expanded.to_csv("catss_pc_factorised.csv", index=False)
+    
+
+add_batch_pc_interactions()
 
 
 
