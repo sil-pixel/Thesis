@@ -1,5 +1,5 @@
 ---
-title: "GAMM toy build"
+title: "GAMM and GLMM toy build"
 author: "Silpa Soni Nallacheruvu"
 date: "2026-04-01"
 output: html_document
@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 pacman::p_load(mgcv, dplyr, readr)
 library(readr)
 library(mgcv)
+library(lme4)
 library(dplyr)
 ```
 
@@ -27,11 +28,10 @@ catss <- read.csv("../Data/simulated_data.csv")
 print(paste("Number of complete cases:", sum(complete.cases(catss))))
 ```
 
-# Build a GAMM Model
-
-## Extract the data
+## Create the output
 
 ```{r}
+catss <- catss[complete.cases(catss), ]
 catss <- catss %>%
   mutate(SCZ18_sum = rowSums(select(., starts_with("SCZ18")), na.rm = TRUE))
 ```
@@ -65,9 +65,7 @@ cat(sprintf(
 ```
 
 
-## Fit the GAMM model
-
-fit it on the training dataset
+## Prepare the data for the model formula by creating interaction terms and factor variables
 
 ```{r}
 # get a list of columns with their prefix
@@ -79,21 +77,22 @@ ASD9_vars <- grep("^ASD9_var_", names(catss), value = TRUE)
 ACE_vars <- grep("^ACE_var_", names(catss), value = TRUE)
 SES_vars <- grep("^SES_var_", names(catss), value = TRUE)
 PCA_vars <- grep("^PCA_var_", names(catss), value = TRUE)
+Sex_var <- grep("^Sex_var_", names(catss), value = TRUE)
 
 factor_terms <- paste(
   c(
-    paste0("factor(", SUD15_vars, ")"),
-    "factor(Sex_var_1)"
+    paste0("factor(", SUD15_vars, ")")
   ),
   collapse = " + "
 )
 
 
 covariate_terms <- paste(
-  c(SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PCA_vars, PRS_vars),
+  c(SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PCA_vars, PRS_vars, Sex_var),
   collapse = " + "
 )
 
+# create interaction terms between SUD15 variables and all other covariates
 interaction_terms <- paste(
   c(
     paste0("factor(", SUD15_vars, "):(", SCZ15_vars, ")"),
@@ -102,12 +101,16 @@ interaction_terms <- paste(
     paste0("factor(", SUD15_vars, "):(", ACE_vars, ")"),
     paste0("factor(", SUD15_vars, "):(", SES_vars, ")"),
     paste0("factor(", SUD15_vars, "):(", PRS_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(Sex_var_1)")
+    paste0("factor(", SUD15_vars, "):(", Sex_var, ")")
   ),
   collapse = " + "
 )
+```
 
-formula_str <- paste(
+# Fit the GAMM model
+
+```{r}
+gamm_formula_str <- paste(
   "SCZ18_sum ~",
   factor_terms, "+",
   covariate_terms, "+",
@@ -115,46 +118,98 @@ formula_str <- paste(
   "s(twin_id, bs='re')"
 )
 
-gamm_formula <- as.formula(formula_str)
+gamm_formula <- as.formula(gamm_formula_str)
 
-gamm_model_prs <- gam(
+gamm_model <- gam(
   gamm_formula,
   data = train_df,
   family = gaussian(),
   method = "REML"
 )
 
-summary(gamm_model_prs)
+summary(gamm_model)
 ```
+
 ## Check the twin random effect
 
 ```{r}
-plot(gamm_model_prs, select = 1, main = "Random Effect of Twin ID")
+plot(gamm_model, select = 1, main = "Random Effect of Twin ID in GAMM Model")
 ```
 
 # Evaluate the model predictions
 
 ```{r}
-y_pred <- predict(gamm_model, newdata = test_df, type = "response")
+gamm_y_pred <- predict(gamm_model, newdata = test_df, type = "response")
 y_true <- test_df$SCZ18_sum
 
 
-rmse <- sqrt(mean((y_true - y_pred)^2))
-mae <- mean(abs(y_true - y_pred))
-r2 <- 1 - sum((y_true - y_pred)^2) / sum((y_true - mean(y_true))^2)
-corr <- cor(y_true, y_pred)
+gamm_rmse <- sqrt(mean((y_true - gamm_y_pred)^2))
+gamm_mae <- mean(abs(y_true - gamm_y_pred))
+gamm_r2 <- 1 - sum((y_true - gamm_y_pred)^2) / sum((y_true - mean(y_true))^2)
+gamm_corr <- cor(y_true, gamm_y_pred)
 
-cat("RMSE:", rmse, "\n")
-cat("MAE:", mae, "\n")
-cat("R2:", r2, "\n")
-cat("Correlation:", corr, "\n")
+cat("GAMM RMSE:", gamm_rmse, "\n")
+cat("GAMM MAE:", gamm_mae, "\n")
+cat("GAMM R2:", gamm_r2, "\n")
+cat("GAMM Correlation:", gamm_corr, "\n")
 ```
 # Plot predicted vs true values
 
 ```{r}
-plot(y_true, y_pred, main = "Predicted vs True Values", xlab = "True Values", ylab = "Predicted Values")
-abline(a = 0, b = 1, col = "red")
+plot(y_true, gamm_y_pred, main = "Predicted vs True Values in GAMM Model", xlab = "True Values", ylab = "Predicted Values")
+abline(a = 0, b = 1, col = "red") # indicating perfect predictions
 ```
 
 
+# Fit a GLMM model
+
+```{r}
+glmm_formula_str <- paste(
+  "SCZ18_sum ~",
+  factor_terms, "+",
+  covariate_terms, "+",
+  interaction_terms, "+",
+  "(1 | twin_id)"
+)
+
+glmm_formula <- as.formula(glmm_formula_str)
+
+glmm_model <- glmer(
+  glmm_formula,
+  data = train_df
+)
+
+summary(glmm_model)
+```
+
+## Check the twin random effect
+
+```{r}
+plot(glmm_model, select = 1, main = "Random Effect of Twin ID in GLMM Model")
+```
+
+## Evaluate the model predictions
+
+```{r}
+glmm_y_pred <- predict(glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
+y_true <- test_df$SCZ18_sum
+
+
+glmm_rmse <- sqrt(mean((y_true - glmm_y_pred)^2))
+glmm_mae <- mean(abs(y_true - glmm_y_pred))
+glmm_r2 <- 1 - sum((y_true - glmm_y_pred)^2) / sum((y_true - mean(y_true))^2)
+glmm_corr <- cor(y_true, glmm_y_pred)
+
+cat("GLMM RMSE:", glmm_rmse, "\n")
+cat("GLMM MAE:", glmm_mae, "\n")
+cat("GLMM R2:", glmm_r2, "\n")
+cat("GLMM Correlation:", glmm_corr, "\n")
+```
+
+## Plot predicted vs true values
+
+```{r}
+plot(y_true, glmm_y_pred, main = "Predicted vs True Values in GLMM Model", xlab = "True Values", ylab = "Predicted Values")
+abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+```
 
