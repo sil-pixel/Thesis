@@ -1,5 +1,5 @@
 ---
-title: "GAMM and GLMM toy build"
+title: "GAMM and GLMM build"
 author: "Silpa Soni Nallacheruvu"
 date: "2026-04-01"
 output: html_document
@@ -9,7 +9,7 @@ output: html_document
 set.seed(42)
 
 knitr::opts_chunk$set(echo = TRUE)
-pacman::p_load(mgcv, dplyr, readr)
+#pacman::p_load(mgcv, dplyr, readr, lme4)
 library(readr)
 library(mgcv)
 library(lme4)
@@ -19,7 +19,7 @@ library(dplyr)
 ## Load the simulated Data
 
 ```{r}
-catss <- read.csv("../Data/simulated_data.csv")
+catss <- read_csv("catss_final_data.csv")
 ```
 
 ## Check complete cases 
@@ -28,12 +28,10 @@ catss <- read.csv("../Data/simulated_data.csv")
 print(paste("Number of complete cases:", sum(complete.cases(catss))))
 ```
 
-## Create the output
+## Create the CCA dataset
 
 ```{r}
 catss <- catss[complete.cases(catss), ]
-catss <- catss %>%
-  mutate(SCZ18_sum = rowSums(select(., starts_with("SCZ18")), na.rm = TRUE))
 ```
 
 ## Split the data into training and testing dataset 
@@ -45,21 +43,21 @@ Based on their twin_id
 test_size <- 0.25
 
 # Get unique IDs
-unique_ids <- unique(catss$twin_id)
+unique_ids <- unique(catss$cmpair)
 
 # Sample test IDs
 n_test <- floor(length(unique_ids) * test_size)
 test_ids <- sample(unique_ids, size = n_test)
 
 # Split dataset
-test_df <- catss[catss$twin_id %in% test_ids, ]
-train_df <- catss[!catss$twin_id %in% test_ids, ]
+test_df <- catss[catss$cmpair %in% test_ids, ]
+train_df <- catss[!catss$cmpair %in% test_ids, ]
 
 # Print summary
 cat(sprintf(
   "Train: %d rows (%d IDs), Test: %d rows (%d IDs)\n",
-  nrow(train_df), length(unique(train_df$twin_id)),
-  nrow(test_df), length(unique(test_df$twin_id))
+  nrow(train_df), length(unique(train_df$cmpair)),
+  nrow(test_df), length(unique(test_df$cmpair))
 ))
 
 ```
@@ -69,15 +67,16 @@ cat(sprintf(
 
 ```{r}
 # get a list of columns with their prefix
-SUD15_vars <- grep("^SUD15_var_", names(catss), value = TRUE)
-SCZ15_vars <- grep("^SCZ15_var_", names(catss), value = TRUE)
-PRS_vars <- grep("^PRS_var_", names(catss), value = TRUE)
-ADHD9_vars <- grep("^ADHD9_var_", names(catss), value = TRUE)
-ASD9_vars <- grep("^ASD9_var_", names(catss), value = TRUE)
-ACE_vars <- grep("^ACE_var_", names(catss), value = TRUE)
-SES_vars <- grep("^SES_var_", names(catss), value = TRUE)
-PCA_vars <- grep("^PCA_var_", names(catss), value = TRUE)
-Sex_var <- grep("^Sex_var_", names(catss), value = TRUE)
+SUD15_vars <- grep("^SUD15", names(catss), value = TRUE)
+SCZ15_vars <- grep("^SCZ15", names(catss), value = TRUE)
+PRS_vars <- grep("^PRS", names(catss), value = TRUE)
+ADHD9_vars <- grep("^ADHD9", names(catss), value = TRUE)
+ASD9_vars <- grep("^ASD9", names(catss), value = TRUE)
+ACE_vars <- grep("^ACE", names(catss), value = TRUE)
+SES_vars <- grep("^SES", names(catss), value = TRUE)
+PCA_vars <- grep("^PC", names(catss), value = TRUE)[1:2]
+Sex_var <- grep("^SEX", names(catss), value = TRUE)
+Batch_var <- grep("^batch", names(catss), value = TRUE)
 
 factor_terms <- paste(
   c(
@@ -88,12 +87,20 @@ factor_terms <- paste(
 
 
 covariate_terms <- paste(
-  c(SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PCA_vars, PRS_vars, Sex_var),
+  c(SUD15_vars, SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PRS_vars, Sex_var),
+  collapse = " + "
+)
+
+# PCA terms according to the genetic batch
+genetic_confounding_terms <- paste(
+  c(
+    paste0("factor(", Batch_var, ") : ", PCA_vars)
+  ),
   collapse = " + "
 )
 
 # create interaction terms between SUD15 variables and all other covariates
-interaction_terms <- paste(
+factor_interaction_terms <- paste(
   c(
     paste0("factor(", SUD15_vars, "):(", SCZ15_vars, ")"),
     paste0("factor(", SUD15_vars, "):(", ADHD9_vars, ")"),
@@ -105,111 +112,239 @@ interaction_terms <- paste(
   ),
   collapse = " + "
 )
+
+interaction_terms <- paste(
+  c(
+    paste0(SUD15_vars ,":", SCZ15_vars),
+    paste0(SUD15_vars, ":", ADHD9_vars),
+    paste0(SUD15_vars, ":", ASD9_vars),
+    paste0(SUD15_vars, ":", ACE_vars),
+    paste0(SUD15_vars, ":", SES_vars),
+    paste0(SUD15_vars, ":", PRS_vars),
+    paste0(SUD15_vars, ":", Sex_var)
+  ),
+  collapse = " + "
+)
+
+train_df$cmpair <- as.factor(train_df$cmpair)
 ```
 
 # Fit the GAMM model
 
+## Fit the Positive GAMM model
+
 ```{r}
-gamm_formula_str <- paste(
-  "SCZ18_sum ~",
-  factor_terms, "+",
+pos_gamm_formula_str <- paste(
+  "SCZ18_Pos_Norm ~",
   covariate_terms, "+",
+  genetic_confounding_terms, "+",
   interaction_terms, "+",
-  "s(twin_id, bs='re')"
+  "s(cmpair, bs='re')"
 )
 
-gamm_formula <- as.formula(gamm_formula_str)
+pos_gamm_formula <- as.formula(pos_gamm_formula_str)
 
-gamm_model <- gam(
-  gamm_formula,
+pos_gamm_model <- gam(
+  pos_gamm_formula,
   data = train_df,
   family = gaussian(),
   method = "REML"
 )
 
-summary(gamm_model)
+summary(pos_gamm_model)
 ```
 
 ## Check the twin random effect
 
 ```{r}
-plot(gamm_model, select = 1, main = "Random Effect of Twin ID in GAMM Model")
+plot(pos_gamm_model, select = 1, main = "Random Effect of Twin ID in Positive GAMM Model")
 ```
 
 # Evaluate the model predictions
 
 ```{r}
-gamm_y_pred <- predict(gamm_model, newdata = test_df, type = "response")
-y_true <- test_df$SCZ18_sum
+pos_gamm_y_pred <- predict(pos_gamm_model, newdata = test_df, type = "response")
+pos_y_true <- test_df$SCZ18_Pos_Norm
 
 
-gamm_rmse <- sqrt(mean((y_true - gamm_y_pred)^2))
-gamm_mae <- mean(abs(y_true - gamm_y_pred))
-gamm_r2 <- 1 - sum((y_true - gamm_y_pred)^2) / sum((y_true - mean(y_true))^2)
-gamm_corr <- cor(y_true, gamm_y_pred)
+pos_gamm_rmse <- sqrt(mean((pos_y_true - pos_gamm_y_pred)^2))
+pos_gamm_mae <- mean(abs(pos_y_true - pos_gamm_y_pred))
+pos_gamm_r2 <- 1 - sum((pos_y_true - pos_gamm_y_pred)^2) / sum((pos_y_true - mean(pos_y_true))^2)
+pos_gamm_corr <- cor(pos_y_true, pos_gamm_y_pred)
 
-cat("GAMM RMSE:", gamm_rmse, "\n")
-cat("GAMM MAE:", gamm_mae, "\n")
-cat("GAMM R2:", gamm_r2, "\n")
-cat("GAMM Correlation:", gamm_corr, "\n")
+cat("Positive GAMM RMSE:", pos_gamm_rmse, "\n")
+cat("Positive GAMM MAE:", pos_gamm_mae, "\n")
+cat("Positive GAMM R2:", pos_gamm_r2, "\n")
+cat("Positive GAMM Correlation:", pos_gamm_corr, "\n")
 ```
+
 # Plot predicted vs true values
 
 ```{r}
-plot(y_true, gamm_y_pred, main = "Predicted vs True Values in GAMM Model", xlab = "True Values", ylab = "Predicted Values")
+plot(pos_y_true, pos_gamm_y_pred, main = "Predicted vs True Values in Positive GAMM Model", xlab = "True Values", ylab = "Predicted Values")
 abline(a = 0, b = 1, col = "red") # indicating perfect predictions
 ```
 
 
-# Fit a GLMM model
+## Fit the Negative GAMM model
 
 ```{r}
-glmm_formula_str <- paste(
-  "SCZ18_sum ~",
-  factor_terms, "+",
+neg_gamm_formula_str <- paste(
+  "SCZ18_Neg_Norm ~",
   covariate_terms, "+",
+  genetic_confounding_terms, "+",
   interaction_terms, "+",
-  "(1 | twin_id)"
+  "s(cmpair, bs='re')"
 )
 
-glmm_formula <- as.formula(glmm_formula_str)
+neg_gamm_formula <- as.formula(neg_gamm_formula_str)
 
-glmm_model <- glmer(
-  glmm_formula,
-  data = train_df
+neg_gamm_model <- gam(
+  neg_gamm_formula,
+  data = train_df,
+  family = gaussian(),
+  method = "REML"
 )
 
-summary(glmm_model)
+summary(neg_gamm_model)
 ```
 
 ## Check the twin random effect
 
 ```{r}
-plot(glmm_model, select = 1, main = "Random Effect of Twin ID in GLMM Model")
+plot(neg_gamm_model, select = 1, main = "Random Effect of Twin ID in Negative GAMM Model")
+```
+
+# Evaluate the model predictions
+
+```{r}
+neg_gamm_y_pred <- predict(neg_gamm_model, newdata = test_df, type = "response")
+neg_y_true <- test_df$SCZ18_Neg_Norm
+
+
+neg_gamm_rmse <- sqrt(mean((neg_y_true - neg_gamm_y_pred)^2))
+neg_gamm_mae <- mean(abs(neg_y_true - neg_gamm_y_pred))
+neg_gamm_r2 <- 1 - sum((neg_y_true - neg_gamm_y_pred)^2) / sum((neg_y_true - mean(neg_y_true))^2)
+neg_gamm_corr <- cor(neg_y_true, neg_gamm_y_pred)
+
+cat("Negative GAMM RMSE:", neg_gamm_rmse, "\n")
+cat("Negative GAMM MAE:", neg_gamm_mae, "\n")
+cat("Negative GAMM R2:", neg_gamm_r2, "\n")
+cat("Negative GAMM Correlation:", neg_gamm_corr, "\n")
+```
+
+# Plot predicted vs true values
+
+```{r}
+plot(neg_y_true, neg_gamm_y_pred, main = "Predicted vs True Values in Negative GAMM Model", xlab = "True Values", ylab = "Predicted Values")
+abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+```
+
+
+# Fit a GLMM Model
+
+## Fit a Positive GLMM Model
+
+```{r}
+pos_glmm_formula_str <- paste(
+  "SCZ18_Pos_Norm ~",
+  factor_terms, "+",
+  covariate_terms, "+",
+  interaction_terms, "+",
+  "(1 | cmpair)"
+)
+
+pos_glmm_formula <- as.formula(pos_glmm_formula_str)
+
+pos_glmm_model <- glmer(
+  pos_glmm_formula,
+  data = train_df
+)
+
+summary(pos_glmm_model)
+```
+
+## Check the twin random effect
+
+```{r}
+plot(pos_glmm_model, select = 1, main = "Random Effect of Twin ID in Positive GLMM Model")
 ```
 
 ## Evaluate the model predictions
 
 ```{r}
-glmm_y_pred <- predict(glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
-y_true <- test_df$SCZ18_sum
+pos_glmm_y_pred <- predict(pos_glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
+pos_y_true <- test_df$SCZ18_Pos_Norm
 
 
-glmm_rmse <- sqrt(mean((y_true - glmm_y_pred)^2))
-glmm_mae <- mean(abs(y_true - glmm_y_pred))
-glmm_r2 <- 1 - sum((y_true - glmm_y_pred)^2) / sum((y_true - mean(y_true))^2)
-glmm_corr <- cor(y_true, glmm_y_pred)
+pos_glmm_rmse <- sqrt(mean((pos_y_true - pos_glmm_y_pred)^2))
+pos_glmm_mae <- mean(abs(pos_y_true - pos_glmm_y_pred))
+pos_glmm_r2 <- 1 - sum((pos_y_true - pos_glmm_y_pred)^2) / sum((pos_y_true - mean(pos_y_true))^2)
+pos_glmm_corr <- cor(pos_y_true, pos_glmm_y_pred)
 
-cat("GLMM RMSE:", glmm_rmse, "\n")
-cat("GLMM MAE:", glmm_mae, "\n")
-cat("GLMM R2:", glmm_r2, "\n")
-cat("GLMM Correlation:", glmm_corr, "\n")
+cat("Positive GLMM RMSE:", pos_glmm_rmse, "\n")
+cat("Positive GLMM MAE:", pos_glmm_mae, "\n")
+cat("Positive GLMM R2:", pos_glmm_r2, "\n")
+cat("Positive GLMM Correlation:", pos_glmm_corr, "\n")
 ```
 
 ## Plot predicted vs true values
 
 ```{r}
-plot(y_true, glmm_y_pred, main = "Predicted vs True Values in GLMM Model", xlab = "True Values", ylab = "Predicted Values")
+plot(pos_y_true, pos_glmm_y_pred, main = "Predicted vs True Values in Positive GLMM Model", xlab = "True Values", ylab = "Predicted Values")
+abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+```
+
+
+## Fit a Negative GLMM Model
+
+```{r}
+neg_glmm_formula_str <- paste(
+  "SCZ18_Neg_Norm ~",
+  factor_terms, "+",
+  covariate_terms, "+",
+  interaction_terms, "+",
+  "(1 | cmpair)"
+)
+
+neg_glmm_formula <- as.formula(neg_glmm_formula_str)
+
+neg_glmm_model <- glmer(
+  neg_glmm_formula,
+  data = train_df
+)
+
+summary(neg_glmm_model)
+```
+
+## Check the twin random effect
+
+```{r}
+plot(neg_glmm_model, select = 1, main = "Random Effect of Twin ID in Negative GLMM Model")
+```
+
+## Evaluate the model predictions
+
+```{r}
+neg_glmm_y_pred <- predict(pos_glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
+neg_y_true <- test_df$SCZ18_Pos_Norm
+
+
+neg_glmm_rmse <- sqrt(mean((neg_y_true - neg_glmm_y_pred)^2))
+neg_glmm_mae <- mean(abs(neg_y_true - neg_glmm_y_pred))
+neg_glmm_r2 <- 1 - sum((neg_y_true - neg_glmm_y_pred)^2) / sum((neg_y_true - mean(neg_y_true))^2)
+neg_glmm_corr <- cor(neg_y_true, neg_glmm_y_pred)
+
+cat("Negative GLMM RMSE:", neg_glmm_rmse, "\n")
+cat("Negative GLMM MAE:", neg_glmm_mae, "\n")
+cat("Negative GLMM R2:", neg_glmm_r2, "\n")
+cat("Negative GLMM Correlation:", neg_glmm_corr, "\n")
+```
+
+## Plot predicted vs true values
+
+```{r}
+plot(neg_y_true, neg_glmm_y_pred, main = "Predicted vs True Values in Negative GLMM Model", xlab = "True Values", ylab = "Predicted Values")
 abline(a = 0, b = 1, col = "red") # indicating perfect predictions
 ```
 
