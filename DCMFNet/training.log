@@ -1831,7 +1831,7 @@ Mean Absolute Error: 0.0651196613907814
   Prediction std: 0.046937
   Prediction range: [0.0823, 0.4379]
   MAE: 0.0858, MSE: 0.0110
-  Spearman rho: 0.2972, p-value: 0.0000
+  R2 Score: -0.0897, Spearman Correlation: 0.2972
 Epoch [1/20], Train Loss: 0.0061, Train Accuracy: 33.6103, Val Accuracy: 32.4415 Training MAE: 0.0833, Validation MAE: 0.0858
 Epoch 2/20
 Training on 2407 samples...
@@ -3644,7 +3644,7 @@ Mean Absolute Error: 0.08569560945034027
   Prediction std: 0.050508
   Prediction range: [0.0634, 0.4322]
   MAE: 0.0785, MSE: 0.0095
-  Spearman rho: 0.3619, p-value: 0.0000
+  R2 Score: 0.0632, Spearman Correlation: 0.3619
 Epoch [2/20], Train Loss: 0.0055, Train Accuracy: 36.6016, Val Accuracy: 35.7860 Training MAE: 0.0794, Validation MAE: 0.0785
 Epoch 3/20
 Training on 2407 samples...
@@ -5457,7 +5457,7 @@ Mean Absolute Error: 0.09504369646310806
   Prediction std: 0.053616
   Prediction range: [0.0731, 0.4523]
   MAE: 0.0819, MSE: 0.0102
-  Spearman rho: 0.3933, p-value: 0.0000
+  R2 Score: -0.0054, Spearman Correlation: 0.3933
 Epoch [3/20], Train Loss: 0.0056, Train Accuracy: 37.7649, Val Accuracy: 34.1137 Training MAE: 0.0772, Validation MAE: 0.0819
 Epoch 4/20
 Training on 2407 samples...
@@ -7270,7 +7270,7 @@ Mean Absolute Error: 0.1231369748711586
   Prediction std: 0.052574
   Prediction range: [0.0560, 0.4184]
   MAE: 0.0751, MSE: 0.0088
-  Spearman rho: 0.4120, p-value: 0.0000
+  R2 Score: 0.1313, Spearman Correlation: 0.4120
 Epoch [4/20], Train Loss: 0.0055, Train Accuracy: 37.2248, Val Accuracy: 36.6221 Training MAE: 0.0772, Validation MAE: 0.0751
 Epoch 5/20
 Training on 2407 samples...
@@ -9083,7 +9083,7 @@ Mean Absolute Error: 0.07578063011169434
   Prediction std: 0.055152
   Prediction range: [0.0618, 0.4384]
   MAE: 0.0769, MSE: 0.0091
-  Spearman rho: 0.4217, p-value: 0.0000
+  R2 Score: 0.0976, Spearman Correlation: 0.4217
 Epoch [5/20], Train Loss: 0.0055, Train Accuracy: 38.8035, Val Accuracy: 37.1237 Training MAE: 0.0753, Validation MAE: 0.0769
 Epoch 6/20
 Training on 2407 samples...
@@ -10896,7 +10896,7 @@ Mean Absolute Error: 0.045818500220775604
   Prediction std: 0.057980
   Prediction range: [0.0628, 0.4467]
   MAE: 0.0779, MSE: 0.0094
-  Spearman rho: 0.4312, p-value: 0.0000
+  R2 Score: 0.0757, Spearman Correlation: 0.4312
 Epoch [6/20], Train Loss: 0.0054, Train Accuracy: 38.8450, Val Accuracy: 35.9532 Training MAE: 0.0749, Validation MAE: 0.0779
 Epoch 7/20
 Training on 2407 samples...
@@ -12709,7 +12709,7 @@ Mean Absolute Error: 0.11620841920375824
   Prediction std: 0.057047
   Prediction range: [0.0590, 0.4309]
   MAE: 0.0756, MSE: 0.0089
-  Spearman rho: 0.4370, p-value: 0.0000
+  R2 Score: 0.1228, Spearman Correlation: 0.4370
 Epoch [7/20], Train Loss: 0.0054, Train Accuracy: 38.6789, Val Accuracy: 38.6288 Training MAE: 0.0742, Validation MAE: 0.0756
 Epoch 8/20
 Training on 2407 samples...
@@ -14522,7 +14522,7 @@ Mean Absolute Error: 0.05334504693746567
   Prediction std: 0.059699
   Prediction range: [0.0726, 0.4587]
   MAE: 0.0811, MSE: 0.0100
-  Spearman rho: 0.4389, p-value: 0.0000
+  R2 Score: 0.0132, Spearman Correlation: 0.4389
 Epoch [8/20], Train Loss: 0.0053, Train Accuracy: 38.6789, Val Accuracy: 35.4515 Training MAE: 0.0743, Validation MAE: 0.0811
 Epoch 9/20
 Training on 2407 samples...
@@ -16335,7 +16335,7 @@ Mean Absolute Error: 0.07091192156076431
   Prediction std: 0.057797
   Prediction range: [0.0601, 0.4353]
   MAE: 0.0755, MSE: 0.0088
-  Spearman rho: 0.4445, p-value: 0.0000
+  R2 Score: 0.1262, Spearman Correlation: 0.4445
 Epoch [9/20], Train Loss: 0.0053, Train Accuracy: 39.8006, Val Accuracy: 38.9632 Training MAE: 0.0738, Validation MAE: 0.0755
 Epoch 10/20
 Training on 2407 samples...
@@ -18148,7 +18148,7 @@ Mean Absolute Error: 0.0786772221326828
   Prediction std: 0.058720
   Prediction range: [0.0641, 0.4384]
   MAE: 0.0773, MSE: 0.0092
-  Spearman rho: 0.4466, p-value: 0.0000
+  R2 Score: 0.0930, Spearman Correlation: 0.4466
 Epoch [10/20], Train Loss: 0.0054, Train Accuracy: 39.3020, Val Accuracy: 37.2910 Training MAE: 0.0734, Validation MAE: 0.0773
 Epoch 11/20
 Training on 2407 samples...
@@ -19961,7 +19961,7 @@ Mean Absolute Error: 0.06656340509653091
   Prediction std: 0.057488
   Prediction range: [0.0598, 0.4287]
   MAE: 0.0758, MSE: 0.0089
-  Spearman rho: 0.4477, p-value: 0.0000
+  R2 Score: 0.1240, Spearman Correlation: 0.4477
 Epoch [11/20], Train Loss: 0.0053, Train Accuracy: 39.5929, Val Accuracy: 37.7926 Training MAE: 0.0733, Validation MAE: 0.0758
 Epoch 12/20
 Training on 2407 samples...
@@ -21774,7 +21774,7 @@ Mean Absolute Error: 0.10814414918422699
   Prediction std: 0.056318
   Prediction range: [0.0549, 0.4104]
   MAE: 0.0742, MSE: 0.0085
-  Spearman rho: 0.4512, p-value: 0.0000
+  R2 Score: 0.1560, Spearman Correlation: 0.4512
 Epoch [12/20], Train Loss: 0.0054, Train Accuracy: 39.8837, Val Accuracy: 39.2977 Training MAE: 0.0734, Validation MAE: 0.0742
 Epoch 13/20
 Training on 2407 samples...
@@ -23587,7 +23587,7 @@ Mean Absolute Error: 0.0778266116976738
   Prediction std: 0.057512
   Prediction range: [0.0583, 0.4136]
   MAE: 0.0752, MSE: 0.0087
-  Spearman rho: 0.4532, p-value: 0.0000
+  R2 Score: 0.1375, Spearman Correlation: 0.4532
 Epoch [13/20], Train Loss: 0.0052, Train Accuracy: 39.4267, Val Accuracy: 37.9599 Training MAE: 0.0729, Validation MAE: 0.0752
 Epoch 14/20
 Training on 2407 samples...
@@ -25400,7 +25400,7 @@ Mean Absolute Error: 0.07039713114500046
   Prediction std: 0.056699
   Prediction range: [0.0571, 0.4035]
   MAE: 0.0743, MSE: 0.0086
-  Spearman rho: 0.4560, p-value: 0.0000
+  R2 Score: 0.1544, Spearman Correlation: 0.4560
 Epoch [14/20], Train Loss: 0.0053, Train Accuracy: 39.3851, Val Accuracy: 39.2977 Training MAE: 0.0734, Validation MAE: 0.0743
 Epoch 15/20
 Training on 2407 samples...
@@ -27213,7 +27213,7 @@ Mean Absolute Error: 0.14329573512077332
   Prediction std: 0.056736
   Prediction range: [0.0568, 0.4105]
   MAE: 0.0745, MSE: 0.0086
-  Spearman rho: 0.4532, p-value: 0.0000
+  R2 Score: 0.1495, Spearman Correlation: 0.4532
 Epoch [15/20], Train Loss: 0.0052, Train Accuracy: 39.5098, Val Accuracy: 38.2943 Training MAE: 0.0725, Validation MAE: 0.0745
 Epoch 16/20
 Training on 2407 samples...
@@ -29026,7 +29026,7 @@ Mean Absolute Error: 0.06927155703306198
   Prediction std: 0.057434
   Prediction range: [0.0652, 0.4081]
   MAE: 0.0766, MSE: 0.0090
-  Spearman rho: 0.4580, p-value: 0.0000
+  R2 Score: 0.1120, Spearman Correlation: 0.4580
 Epoch [16/20], Train Loss: 0.0052, Train Accuracy: 39.8421, Val Accuracy: 37.1237 Training MAE: 0.0724, Validation MAE: 0.0766
 Epoch 17/20
 Training on 2407 samples...
@@ -30839,7 +30839,7 @@ Mean Absolute Error: 0.04605105519294739
   Prediction std: 0.057886
   Prediction range: [0.0668, 0.4125]
   MAE: 0.0771, MSE: 0.0091
-  Spearman rho: 0.4590, p-value: 0.0000
+  R2 Score: 0.1025, Spearman Correlation: 0.4590
 Epoch [17/20], Train Loss: 0.0052, Train Accuracy: 39.7590, Val Accuracy: 36.7893 Training MAE: 0.0726, Validation MAE: 0.0771
 Epoch 18/20
 Training on 2407 samples...
@@ -32652,7 +32652,7 @@ Mean Absolute Error: 0.09169882535934448
   Prediction std: 0.056650
   Prediction range: [0.0609, 0.4008]
   MAE: 0.0750, MSE: 0.0087
-  Spearman rho: 0.4591, p-value: 0.0000
+  R2 Score: 0.1432, Spearman Correlation: 0.4591
 Epoch [18/20], Train Loss: 0.0052, Train Accuracy: 39.8837, Val Accuracy: 38.1271 Training MAE: 0.0726, Validation MAE: 0.0750
 Epoch 19/20
 Training on 2407 samples...
@@ -34465,7 +34465,7 @@ Mean Absolute Error: 0.049371812492609024
   Prediction std: 0.055849
   Prediction range: [0.0595, 0.3863]
   MAE: 0.0742, MSE: 0.0085
-  Spearman rho: 0.4607, p-value: 0.0000
+  R2 Score: 0.1600, Spearman Correlation: 0.4607
 Epoch [19/20], Train Loss: 0.0053, Train Accuracy: 39.6344, Val Accuracy: 38.9632 Training MAE: 0.0727, Validation MAE: 0.0742
 Epoch 20/20
 Training on 2407 samples...
@@ -36278,9 +36278,9 @@ Mean Absolute Error: 0.07394201308488846
   Prediction std: 0.058065
   Prediction range: [0.0671, 0.4124]
   MAE: 0.0773, MSE: 0.0091
-  Spearman rho: 0.4583, p-value: 0.0000
+  R2 Score: 0.0989, Spearman Correlation: 0.4583
 Epoch [20/20], Train Loss: 0.0051, Train Accuracy: 39.9668, Val Accuracy: 37.1237 Training MAE: 0.0717, Validation MAE: 0.0773
-Time taken for the positive SCZ model: 2.72 minutes
+Time taken for the positive SCZ model: 3.33 minutes
 Training curves plotted and saved to 'Pos_training_curves_seed_42.png'
 Train: 2407 rows (1613 IDs),Test: 598 rows (404 IDs) 
 
@@ -38111,7 +38111,7 @@ Mean Absolute Error: 0.2324850857257843
   Prediction std: 0.067452
   Prediction range: [0.1478, 0.5635]
   MAE: 0.1530, MSE: 0.0323
-  Spearman rho: 0.3711, p-value: 0.0000
+  R2 Score: -0.0794, Spearman Correlation: 0.3711
 Epoch [1/20], Train Loss: 0.0120, Train Accuracy: 18.3631, Val Accuracy: 15.0502 Training MAE: 0.1475, Validation MAE: 0.1530
 Epoch 2/20
 Training on 2407 samples...
@@ -39924,7 +39924,7 @@ Mean Absolute Error: 0.13374605774879456
   Prediction std: 0.068851
   Prediction range: [0.1375, 0.5532]
   MAE: 0.1418, MSE: 0.0286
-  Spearman rho: 0.4115, p-value: 0.0000
+  R2 Score: 0.0451, Spearman Correlation: 0.4115
 Epoch [2/20], Train Loss: 0.0109, Train Accuracy: 17.0337, Val Accuracy: 16.8896 Training MAE: 0.1447, Validation MAE: 0.1418
 Epoch 3/20
 Training on 2407 samples...
@@ -41737,7 +41737,7 @@ Mean Absolute Error: 0.15299805998802185
   Prediction std: 0.074815
   Prediction range: [0.1427, 0.5944]
   MAE: 0.1463, MSE: 0.0298
-  Spearman rho: 0.4347, p-value: 0.0000
+  R2 Score: 0.0036, Spearman Correlation: 0.4347
 Epoch [3/20], Train Loss: 0.0108, Train Accuracy: 18.1969, Val Accuracy: 15.3846 Training MAE: 0.1420, Validation MAE: 0.1463
 Epoch 4/20
 Training on 2407 samples...
@@ -43550,7 +43550,7 @@ Mean Absolute Error: 0.16598276793956757
   Prediction std: 0.074613
   Prediction range: [0.1329, 0.5874]
   MAE: 0.1379, MSE: 0.0273
-  Spearman rho: 0.4482, p-value: 0.0000
+  R2 Score: 0.0891, Spearman Correlation: 0.4482
 Epoch [4/20], Train Loss: 0.0107, Train Accuracy: 18.6124, Val Accuracy: 16.8896 Training MAE: 0.1404, Validation MAE: 0.1379
 Epoch 5/20
 Training on 2407 samples...
@@ -45363,7 +45363,7 @@ Mean Absolute Error: 0.11849696189165115
   Prediction std: 0.080137
   Prediction range: [0.1412, 0.6195]
   MAE: 0.1444, MSE: 0.0292
-  Spearman rho: 0.4574, p-value: 0.0000
+  R2 Score: 0.0260, Spearman Correlation: 0.4574
 Epoch [5/20], Train Loss: 0.0105, Train Accuracy: 19.6095, Val Accuracy: 15.8863 Training MAE: 0.1354, Validation MAE: 0.1444
 Epoch 6/20
 Training on 2407 samples...
@@ -47176,7 +47176,7 @@ Mean Absolute Error: 0.13734528422355652
   Prediction std: 0.078953
   Prediction range: [0.1313, 0.6048]
   MAE: 0.1372, MSE: 0.0269
-  Spearman rho: 0.4652, p-value: 0.0000
+  R2 Score: 0.1008, Spearman Correlation: 0.4652
 Epoch [6/20], Train Loss: 0.0105, Train Accuracy: 20.1496, Val Accuracy: 17.8930 Training MAE: 0.1357, Validation MAE: 0.1372
 Epoch 7/20
 Training on 2407 samples...
@@ -48989,7 +48989,7 @@ Mean Absolute Error: 0.16283847391605377
   Prediction std: 0.084689
   Prediction range: [0.1385, 0.6423]
   MAE: 0.1434, MSE: 0.0289
-  Spearman rho: 0.4709, p-value: 0.0000
+  R2 Score: 0.0362, Spearman Correlation: 0.4709
 Epoch [7/20], Train Loss: 0.0103, Train Accuracy: 19.9418, Val Accuracy: 15.8863 Training MAE: 0.1345, Validation MAE: 0.1434
 Epoch 8/20
 Training on 2407 samples...
@@ -50802,7 +50802,7 @@ Mean Absolute Error: 0.15195684134960175
   Prediction std: 0.082758
   Prediction range: [0.1284, 0.6181]
   MAE: 0.1366, MSE: 0.0267
-  Spearman rho: 0.4777, p-value: 0.0000
+  R2 Score: 0.1078, Spearman Correlation: 0.4777
 Epoch [8/20], Train Loss: 0.0104, Train Accuracy: 19.6095, Val Accuracy: 18.0602 Training MAE: 0.1360, Validation MAE: 0.1366
 Epoch 9/20
 Training on 2407 samples...
@@ -52615,7 +52615,7 @@ Mean Absolute Error: 0.15705084800720215
   Prediction std: 0.084814
   Prediction range: [0.1362, 0.6358]
   MAE: 0.1400, MSE: 0.0277
-  Spearman rho: 0.4818, p-value: 0.0000
+  R2 Score: 0.0748, Spearman Correlation: 0.4818
 Epoch [9/20], Train Loss: 0.0103, Train Accuracy: 20.6066, Val Accuracy: 17.0569 Training MAE: 0.1313, Validation MAE: 0.1400
 Epoch 10/20
 Training on 2407 samples...
@@ -54428,7 +54428,7 @@ Mean Absolute Error: 0.1343587189912796
   Prediction std: 0.084057
   Prediction range: [0.1289, 0.6240]
   MAE: 0.1366, MSE: 0.0266
-  Spearman rho: 0.4848, p-value: 0.0000
+  R2 Score: 0.1109, Spearman Correlation: 0.4848
 Epoch [10/20], Train Loss: 0.0105, Train Accuracy: 19.7341, Val Accuracy: 18.7291 Training MAE: 0.1336, Validation MAE: 0.1366
 Epoch 11/20
 Training on 2407 samples...
@@ -56241,7 +56241,7 @@ Mean Absolute Error: 0.09136240929365158
   Prediction std: 0.084775
   Prediction range: [0.1275, 0.6286]
   MAE: 0.1367, MSE: 0.0266
-  Spearman rho: 0.4862, p-value: 0.0000
+  R2 Score: 0.1110, Spearman Correlation: 0.4862
 Epoch [11/20], Train Loss: 0.0103, Train Accuracy: 19.8172, Val Accuracy: 18.7291 Training MAE: 0.1327, Validation MAE: 0.1367
 Epoch 12/20
 Training on 2407 samples...
@@ -58054,7 +58054,7 @@ Mean Absolute Error: 0.12876248359680176
   Prediction std: 0.085397
   Prediction range: [0.1264, 0.6280]
   MAE: 0.1355, MSE: 0.0263
-  Spearman rho: 0.4876, p-value: 0.0000
+  R2 Score: 0.1229, Spearman Correlation: 0.4876
 Epoch [12/20], Train Loss: 0.0101, Train Accuracy: 20.3157, Val Accuracy: 20.7358 Training MAE: 0.1322, Validation MAE: 0.1355
 Epoch 13/20
 Training on 2407 samples...
@@ -59867,7 +59867,7 @@ Mean Absolute Error: 0.12227283418178558
   Prediction std: 0.086725
   Prediction range: [0.1277, 0.6345]
   MAE: 0.1364, MSE: 0.0265
-  Spearman rho: 0.4886, p-value: 0.0000
+  R2 Score: 0.1140, Spearman Correlation: 0.4886
 Epoch [13/20], Train Loss: 0.0104, Train Accuracy: 20.2742, Val Accuracy: 19.3980 Training MAE: 0.1322, Validation MAE: 0.1364
 Epoch 14/20
 Training on 2407 samples...
@@ -61680,7 +61680,7 @@ Mean Absolute Error: 0.11232028901576996
   Prediction std: 0.086507
   Prediction range: [0.1250, 0.6328]
   MAE: 0.1362, MSE: 0.0265
-  Spearman rho: 0.4884, p-value: 0.0000
+  R2 Score: 0.1161, Spearman Correlation: 0.4884
 Epoch [14/20], Train Loss: 0.0104, Train Accuracy: 20.1080, Val Accuracy: 19.8997 Training MAE: 0.1327, Validation MAE: 0.1362
 Epoch 15/20
 Training on 2407 samples...
@@ -63493,7 +63493,7 @@ Mean Absolute Error: 0.09239278733730316
   Prediction std: 0.087987
   Prediction range: [0.1264, 0.6439]
   MAE: 0.1382, MSE: 0.0271
-  Spearman rho: 0.4891, p-value: 0.0000
+  R2 Score: 0.0958, Spearman Correlation: 0.4891
 Epoch [15/20], Train Loss: 0.0103, Train Accuracy: 20.0665, Val Accuracy: 18.8963 Training MAE: 0.1328, Validation MAE: 0.1382
 Epoch 16/20
 Training on 2407 samples...
@@ -65306,7 +65306,7 @@ Mean Absolute Error: 0.0941619724035263
   Prediction std: 0.088081
   Prediction range: [0.1215, 0.6360]
   MAE: 0.1363, MSE: 0.0265
-  Spearman rho: 0.4897, p-value: 0.0000
+  R2 Score: 0.1161, Spearman Correlation: 0.4897
 Epoch [16/20], Train Loss: 0.0101, Train Accuracy: 20.3988, Val Accuracy: 19.8997 Training MAE: 0.1310, Validation MAE: 0.1363
 Epoch 17/20
 Training on 2407 samples...
@@ -67119,7 +67119,7 @@ Mean Absolute Error: 0.16604337096214294
   Prediction std: 0.086642
   Prediction range: [0.1161, 0.6234]
   MAE: 0.1319, MSE: 0.0252
-  Spearman rho: 0.4904, p-value: 0.0000
+  R2 Score: 0.1588, Spearman Correlation: 0.4904
 Epoch [17/20], Train Loss: 0.0101, Train Accuracy: 20.3573, Val Accuracy: 20.9030 Training MAE: 0.1312, Validation MAE: 0.1319
 Epoch 18/20
 Training on 2407 samples...
@@ -68932,7 +68932,7 @@ Mean Absolute Error: 0.14331261813640594
   Prediction std: 0.090782
   Prediction range: [0.1401, 0.6616]
   MAE: 0.1449, MSE: 0.0292
-  Spearman rho: 0.4902, p-value: 0.0000
+  R2 Score: 0.0237, Spearman Correlation: 0.4902
 Epoch [18/20], Train Loss: 0.0102, Train Accuracy: 21.5206, Val Accuracy: 16.0535 Training MAE: 0.1287, Validation MAE: 0.1449
 Epoch 19/20
 Training on 2407 samples...
@@ -70745,7 +70745,7 @@ Mean Absolute Error: 0.10699915885925293
   Prediction std: 0.089763
   Prediction range: [0.1341, 0.6540]
   MAE: 0.1417, MSE: 0.0282
-  Spearman rho: 0.4904, p-value: 0.0000
+  R2 Score: 0.0590, Spearman Correlation: 0.4904
 Epoch [19/20], Train Loss: 0.0104, Train Accuracy: 20.3157, Val Accuracy: 16.7224 Training MAE: 0.1312, Validation MAE: 0.1417
 Epoch 20/20
 Training on 2407 samples...
@@ -72558,7 +72558,7 @@ Mean Absolute Error: 0.11636175215244293
   Prediction std: 0.090613
   Prediction range: [0.1268, 0.6550]
   MAE: 0.1407, MSE: 0.0279
-  Spearman rho: 0.4897, p-value: 0.0000
+  R2 Score: 0.0694, Spearman Correlation: 0.4897
 Epoch [20/20], Train Loss: 0.0102, Train Accuracy: 20.7727, Val Accuracy: 17.7258 Training MAE: 0.1301, Validation MAE: 0.1407
-Time taken for the positive SCZ model: 2.55 minutes
+Time taken for the positive SCZ model: 2.88 minutes
 Training curves plotted and saved to 'Neg_training_curves_seed_42.png'
