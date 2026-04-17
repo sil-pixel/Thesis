@@ -24,10 +24,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from torch.utils.data import Dataset
 import time
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, pearsonr
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from loss import ImbalancedRegressionLoss
-
+import re
 
 # Hyperparameters
 learning_rate = 1.82e-4
@@ -83,7 +83,7 @@ def prepare_data(df, model_tag):
         df.filter(regex="^SUD18").to_numpy(),
         df.filter(regex="^SES").to_numpy(),
         df.filter(regex="^SEX").to_numpy(),
-        df.filter(regex="^PC").to_numpy()
+        df.filter(regex="^batch_.*_x_PC").to_numpy()
     ]
     if model_tag == "Pos":
         Y = df["SCZ18_Pos_Norm"].to_numpy()
@@ -97,14 +97,17 @@ def prepare_data(df, model_tag):
 Calculate the modality sizes for the catss dataset
 '''
 def calculate_modality_sizes(df):
-    prefixes = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "SEX", "PC"]
-    counts = [
-        sum(col.startswith(prefix) for col in df.columns)
-        for prefix in prefixes
-    ]
-    print(f"modality sizes for {prefixes} : {counts}")
+    prefixes = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "SEX"]
+    regex_patterns = [r"^batch_.*_x_PC"]
+    counts = []
+    for prefix in prefixes:
+        counts.append(sum(col.startswith(prefix) for col in df.columns))
+    for pattern in regex_patterns:
+        counts.append(sum(1 for col in df.columns if re.match(pattern, col)))
+    
+    all_modals = prefixes + regex_patterns
+    print(f"modality sizes for {all_modals} : {counts}")
     return counts
-
 
 
 '''
@@ -149,14 +152,9 @@ def create_cross_validation_data_loaders(df, seed, model_tag):
     return train_dataloader, val_dataloader
 
 '''
-Calculate the accuracy of the model on the given data.
-Input:
-    model: model to evaluate
-    dataloader: data loader containing the data
-Output:
-    accuracy: accuracy of the model
+Evaluate the model and return regression metrics + raw predictions/targets.
 '''
-def accuracy(model, dataloader):
+def evaluate(model, dataloader):
     model.eval()
     all_predictions = []
     all_targets = []
@@ -168,67 +166,132 @@ def accuracy(model, dataloader):
             all_predictions.append(outputs.cpu())
             all_targets.append(targets.cpu())
     
-    all_predictions = torch.cat(all_predictions).numpy()
-    all_targets = torch.cat(all_targets).numpy()
+    all_predictions = torch.cat(all_predictions).numpy().flatten()
+    all_targets = torch.cat(all_targets).numpy().flatten()
     
     mae = mean_absolute_error(all_targets, all_predictions)
     mse = mean_squared_error(all_targets, all_predictions)
-    
-    # Calculate R2 and correlation
     r2 = r2_score(all_targets, all_predictions)
-    spearman_corr, _ = spearmanr(all_targets, all_predictions)
-
-    correct = (np.abs(all_predictions - all_targets) < 0.05).sum()
-    accuracy_score = correct / len(all_targets)
     
-    print(f"  Prediction std: {np.std(all_predictions):.6f}")
-    print(f"  Prediction range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}]")
-    print(f"  MAE: {mae:.4f}, MSE: {mse:.4f}")
-    print(f"  R2 Score: {r2:.4f}, Spearman Correlation: {spearman_corr:.4f}")
-
+    if np.std(all_predictions) < 1e-6:
+        print("WARNING: predictions are constant, correlation undefined")
+        spearman_rho = float('nan')
+        pearson_r = float('nan')
+    else:
+        spearman_rho, _ = spearmanr(all_targets, all_predictions)
+        pearson_r, _ = pearsonr(all_targets, all_predictions)
+    
+    metrics = {
+        'mae': mae,
+        'mse': mse,
+        'r2': r2,
+        'spearman_rho': spearman_rho,
+        'pearson_r': pearson_r,
+    }
+    
+    print(f"  Pred range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}], "
+          f"std: {np.std(all_predictions):.4f}")
+    print(f"  MAE: {mae:.4f}, R2: {r2:.4f}, "
+          f"Spearman rho: {spearman_rho:.4f}, Pearson r: {pearson_r:.4f}")
+ 
     model.train()
-    return accuracy_score, mae
-
+    return metrics, all_predictions, all_targets
+ 
 
 '''
-Plot the training and validation accuracy and training loss curves and save the plots for each seed.
+Plot predicted vs actual scatter plot and residual plot.
 '''
-def plot_training_curves(training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes, seed, model_tag):
-    epochs = range(1, len(training_accuracies) + 1)
-
-    plt.figure(figsize=(15, 5))
+def plot_predicted_vs_actual(predictions, targets, metrics, seed, model_tag, split_name="val"):
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
     
-    # Plot training and validation accuracy
-    plt.subplot(1, 3, 1)
-    plt.plot(epochs, training_accuracies, label='Training Accuracy')
-    plt.plot(epochs, validation_accuracies, label='Validation Accuracy')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy')
-    plt.title('Training and Validation Accuracy')
-    plt.legend()
+    # Scatter plot: Predicted vs Actual
+    ax1 = axes[0]
+    ax1.scatter(targets, predictions, alpha=0.4, s=20, edgecolors='none')
+    min_val = min(targets.min(), predictions.min())
+    max_val = max(targets.max(), predictions.max())
+    margin = (max_val - min_val) * 0.05
+    ax1.plot([min_val - margin, max_val + margin], 
+             [min_val - margin, max_val + margin], 
+             'r--', linewidth=1.5, label='Perfect prediction')
+    if np.std(predictions) > 1e-6:
+        z = np.polyfit(targets, predictions, 1)
+        p_line = np.poly1d(z)
+        x_line = np.linspace(min_val, max_val, 100)
+        ax1.plot(x_line, p_line(x_line), 'b-', alpha=0.7, linewidth=1.5, label='Best fit')
+    ax1.set_xlabel('Actual Values')
+    ax1.set_ylabel('Predicted Values')
+    ax1.set_title(f'{model_tag} - Predicted vs Actual ({split_name})')
+    ax1.legend(loc='upper left')
+    textstr = (f"R2 = {metrics['r2']:.4f}\n"
+               f"MAE = {metrics['mae']:.4f}\n"
+               f"Spearman rho = {metrics['spearman_rho']:.4f}\n"
+               f"Pearson r = {metrics['pearson_r']:.4f}")
+    ax1.text(0.97, 0.03, textstr, transform=ax1.transAxes, fontsize=9,
+             verticalalignment='bottom', horizontalalignment='right',
+             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     
-    # Plot training loss
-    plt.subplot(1, 3, 2)
-    plt.plot(epochs, train_losses, label='Training Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.title('Training Loss')
-    plt.legend()
-
-    # Plot training and validation MAE
-    plt.subplot(1, 3, 3)
-    plt.plot(epochs, training_maes, label='Training MAE')
-    plt.plot(epochs, validation_maes, label='Validation MAE')
-    plt.xlabel('Epochs')
-    plt.ylabel('MAE')
-    plt.title('Training and Validation MAE')
-    plt.legend()
+    # Residual plot
+    ax2 = axes[1]
+    residuals = targets - predictions
+    ax2.scatter(predictions, residuals, alpha=0.4, s=20, edgecolors='none')
+    ax2.axhline(y=0, color='r', linestyle='--', linewidth=1.5)
+    ax2.set_xlabel('Predicted Values')
+    ax2.set_ylabel('Residuals (Actual - Predicted)')
+    ax2.set_title(f'{model_tag} - Residual Plot ({split_name})')
     
     plt.tight_layout()
-    plt.savefig(f'{model_tag}_training_curves_seed_{seed}.png')
+    plt.savefig(f'{model_tag}_pred_vs_actual_{split_name}_seed_{seed}.png', dpi=150)
     plt.close()
-    print(f"Training curves plotted and saved to '{model_tag}_training_curves_seed_{seed}.png'")
-
+    print(f"Saved: '{model_tag}_pred_vs_actual_{split_name}_seed_{seed}.png'")
+ 
+ 
+'''
+Plot training curves: Loss, MAE, Spearman rho, and R2 over epochs.
+'''
+def plot_training_curves(train_losses, train_maes, val_maes, 
+                         train_spearmans, val_spearmans,
+                         train_r2s, val_r2s, seed, model_tag):
+    epochs = range(1, len(train_losses) + 1)
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    
+    # Training loss
+    axes[0, 0].plot(epochs, train_losses, label='Training Loss')
+    axes[0, 0].set_xlabel('Epochs')
+    axes[0, 0].set_ylabel('Loss')
+    axes[0, 0].set_title('Training Loss')
+    axes[0, 0].legend()
+ 
+    # MAE
+    axes[0, 1].plot(epochs, train_maes, label='Training MAE')
+    axes[0, 1].plot(epochs, val_maes, label='Validation MAE')
+    axes[0, 1].set_xlabel('Epochs')
+    axes[0, 1].set_ylabel('MAE')
+    axes[0, 1].set_title('Training and Validation MAE')
+    axes[0, 1].legend()
+ 
+    # Spearman rho
+    axes[1, 0].plot(epochs, train_spearmans, label='Training Spearman rho')
+    axes[1, 0].plot(epochs, val_spearmans, label='Validation Spearman rho')
+    axes[1, 0].set_xlabel('Epochs')
+    axes[1, 0].set_ylabel('Spearman rho')
+    axes[1, 0].set_title('Training and Validation Spearman rho')
+    axes[1, 0].legend()
+ 
+    # R2
+    axes[1, 1].plot(epochs, train_r2s, label='Training R2')
+    axes[1, 1].plot(epochs, val_r2s, label='Validation R2')
+    axes[1, 1].set_xlabel('Epochs')
+    axes[1, 1].set_ylabel('R2')
+    axes[1, 1].set_title('Training and Validation R2')
+    axes[1, 1].legend()
+    
+    plt.suptitle(f'{model_tag} Model - Seed {seed}', fontsize=14)
+    plt.tight_layout()
+    plt.savefig(f'{model_tag}_training_curves_seed_{seed}.png', dpi=150)
+    plt.close()
+    print(f"Saved: '{model_tag}_training_curves_seed_{seed}.png'")
+ 
+ 
 
 '''
 Train the model on the training data and evaluate the model on the test data.
@@ -240,36 +303,34 @@ Output:
     None
 '''
 def train(train_df, seed, n_features_per_modality, model_tag):
-    training_accuracies = []
-    validation_accuracies = []
     train_losses = []
-    training_maes = []
-    validation_maes = []
-    all_labels = []
+    train_maes = []
+    val_maes = []
+    train_spearmans = []
+    val_spearmans = []
+    train_r2s = []
+    val_r2s = []
+
+    all_training_labels = []
     # Create DataLoader
     train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag)
     for inputs, labels in train_dataloader:
-        all_labels.append(labels)
-    all_labels = torch.cat(all_labels)
+        all_training_labels.append(labels)
+    all_training_labels = torch.cat(all_training_labels)
     # Initialize model
     model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
-    # define MSE loss for a regression task and Adam optimizer with weight decay for regularization
-    #criterion = nn.MSELoss()  # Use mean squared error loss for regression
     # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
-    criterion = ImbalancedRegressionLoss(all_labels, base_loss='huber', huber_delta=0.05)
+    criterion = ImbalancedRegressionLoss(all_training_labels, base_loss='huber', huber_delta=0.05)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
 
     # Training loop
     for epoch in range(num_epochs):
-        print(f"Epoch {epoch+1}/{num_epochs}")
+        print(f"\nEpoch {epoch+1}/{num_epochs}")
         print(f"Training on {len(train_dataloader.dataset)} samples...")
         # set the model to training mode
         model.train()  
         total_loss = 0.0
-        total = 0
-        correct = 0
         i = 0
-        total_mae = 0.0
 
 
         for inputs, labels in train_dataloader:
@@ -292,35 +353,41 @@ def train(train_df, seed, n_features_per_modality, model_tag):
             predicted = outputs
             print(f"Shape of the Predicted: {predicted.shape}")
             #print(f"Predicted: {predicted}")
-            total += labels.size(0)  # Total number of samples (batch_size)
-            correct += (torch.abs(predicted - labels) < 0.05).sum().item()
-            print(f"Correct: {correct}, Total: {total}")
-            mae = mean_absolute_error(labels.cpu().numpy(), predicted.detach().cpu().numpy())
-            print(f"Mean Absolute Error: {mae}")
-            total_mae += mae
             i += 1
-        train_accuracy = correct / total
 
         avg_loss = total_loss / len(train_dataloader)
-        total_mae = total_mae / len(train_dataloader)
-        # record the accuracy of the model
-        val_accuracy, val_mae = accuracy(model, val_dataloader)
-        print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}, Train Accuracy: {100 * train_accuracy:.4f}, Val Accuracy: {100 * val_accuracy:.4f}', f'Training MAE: {total_mae:.4f}, Validation MAE: {val_mae:.4f}')
-        training_accuracies.append(train_accuracy)
-        validation_accuracies.append(val_accuracy)
+
+        # Evaluate on both sets
+        print("  [Train]", end="")
+        train_metrics, _, _ = evaluate(model, train_dataloader)
+        print("  [Val]  ", end="")
+        val_metrics, val_preds, val_targets = evaluate(model, val_dataloader)
+        print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | "
+              f"Train rho: {train_metrics['spearman_rho']:.4f}, Val rho: {val_metrics['spearman_rho']:.4f} | "
+              f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f}")
+ 
         train_losses.append(avg_loss)
-        training_maes.append(total_mae)
-        validation_maes.append(val_mae)
-    return model, training_accuracies, validation_accuracies, train_losses, training_maes, validation_maes
+        train_maes.append(train_metrics['mae'])
+        val_maes.append(val_metrics['mae'])
+        train_spearmans.append(train_metrics['spearman_rho'])
+        val_spearmans.append(val_metrics['spearman_rho'])
+        train_r2s.append(train_metrics['r2'])
+        val_r2s.append(val_metrics['r2'])
+ 
+    return (model, train_losses, train_maes, val_maes, 
+            train_spearmans, val_spearmans, train_r2s, val_r2s,
+            val_preds, val_targets, val_metrics)
 
 
 
-def evaluate_final_test(model, test_df, model_tag):
+def evaluate_final_test(model, test_df, model_tag, seed):
     X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
-    test_accuracy, test_mae = accuracy(model, test_dataloader)
-    print(f'Final Test Accuracy: {100 * test_accuracy:.4f}, Final Test MAE: {test_mae:.4f}')
-
+    test_metrics, test_preds, test_targets = evaluate(model, test_dataloader)
+    print(f'\nFinal Test - MAE: {test_metrics["mae"]:.4f}, R2: {test_metrics["r2"]:.4f}, '
+          f'Spearman rho: {test_metrics["spearman_rho"]:.4f}')
+    plot_predicted_vs_actual(test_preds, test_targets, test_metrics, seed, model_tag, split_name="test")
+    return test_metrics
 
 if __name__ == "__main__":
     df = pd.read_csv("catss_final_data.csv")
@@ -336,9 +403,21 @@ if __name__ == "__main__":
 
         # Positive and negative symptom model training
         for model_tag in ["Pos", "Neg"]:
+            print(f"\n{'='*60}")
+            print(f"  Training {model_tag} symptom model")
+            print(f"{'='*60}")
             start_time = time.time()
-            pos_model, pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes = train(train_df, seed, modality_sizes, model_tag)
-            end_time = time.time()
-            print(f"Time taken for the positive SCZ model: {(end_time - start_time)/60:.2f} minutes")
-            plot_training_curves(pos_training_accuracies, pos_validation_accuracies, pos_train_losses, pos_training_maes, pos_validation_maes, seed, model_tag)
-            #evaluate_final_test(pos_model, test_df, y_pos_features)
+
+            (model, train_losses, train_maes, val_maes, 
+                train_spearmans, val_spearmans, train_r2s, val_r2s,
+                val_preds, val_targets, val_metrics) = train(train_df, seed, modality_sizes, model_tag)
+
+            elapsed = (time.time() - start_time) / 60
+            print(f"\nTime taken for {model_tag} model: {elapsed:.2f} minutes")
+
+            plot_training_curves(train_losses, train_maes, val_maes,
+                                    train_spearmans, val_spearmans,
+                                    train_r2s, val_r2s, seed, model_tag)
+            plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
+                                        seed, model_tag, split_name="val")
+            # evaluate_final_test(model, test_df, model_tag, seed)
