@@ -75,7 +75,7 @@ ACE_vars <- grep("^ACE", names(catss), value = TRUE)
 SES_vars <- grep("^SES", names(catss), value = TRUE)
 PCA_vars <- grep("^PC", names(catss), value = TRUE)[1:2]
 Sex_var <- grep("^SEX", names(catss), value = TRUE)
-Batch_var <- grep("^batch", names(catss), value = TRUE)
+Batch_var <- grep("^batch", names(catss), value = TRUE)[1]
 
 factor_terms <- paste(
   c(
@@ -175,12 +175,19 @@ pos_glmm_coefs
 ```
 
 
-
-### Check the twin random effect
+## Check the Twin random effect
 
 ```{r}
-plot(pos_glmm_model, select = 1, main = "Random Effect of Twin ID in Positive GLMM Model")
+pos_re <- ranef(pos_glmm_model)$cmpair[,1]
+pos_qq <- qqnorm(pos_re, plot.it = FALSE)
+
+plot(pos_qq$x, pos_qq$y,
+     xlab = "Gaussian quantiles",
+     ylab = "effects",
+     main = "Random Effect of Twin ID in Positive GLMM Model")
+abline(lm(pos_qq$y ~ pos_qq$x), col = "black")
 ```
+
 
 ### Evaluate the model predictions
 
@@ -256,13 +263,21 @@ neg_glmm_coefs
 ### Check the twin random effect
 
 ```{r}
-plot(neg_glmm_model, select = 1, main = "Random Effect of Twin ID in Negative GLMM Model")
+neg_re <- ranef(neg_glmm_model)$cmpair[,1]
+neg_qq <- qqnorm(neg_re, plot.it = FALSE)
+
+plot(neg_qq$x, neg_qq$y,
+     xlab = "Gaussian quantiles",
+     ylab = "effects",
+     main = "Random Effect of Twin ID in Negative GLMM Model")
+abline(lm(neg_qq$y ~ neg_qq$x), col = "black")
 ```
+
 
 ### Evaluate the model predictions
 
 ```{r}
-neg_glmm_y_pred <- predict(pos_glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
+neg_glmm_y_pred <- predict(neg_glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
 neg_y_true <- test_df$SCZ18_Neg_Norm
 
 
