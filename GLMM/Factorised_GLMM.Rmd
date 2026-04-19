@@ -10,9 +10,12 @@ set.seed(42)
 
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
-library(mgcv)
 library(lme4)
 library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(kableExtra)
+library(patchwork)
 ```
 
 ## Load the simulated Data
@@ -172,7 +175,20 @@ pos_glmm_coefs$significance <- cut(
   labels = c("***", "**", "*", ".", "")
 )
 
-pos_glmm_coefs
+# Prepare clean table
+pos_coefs_table <- pos_glmm_coefs %>%
+  mutate(Variable = rownames(.)) %>%
+  filter(p_value < 0.05, Variable != "(Intercept)") %>%
+  arrange(p_value) %>%
+  select(Estimate, `Std. Error`, p_value, significance) %>%
+  mutate(
+    Estimate = round(Estimate, 3),
+    `Std. Error` = round(`Std. Error`, 3),
+    p_value = signif(p_value, 3)
+  )
+
+kable(pos_coefs_table, format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -197,22 +213,64 @@ pos_glmm_y_pred <- predict(pos_glmm_model, newdata = test_df, allow.new.levels =
 pos_y_true <- test_df$SCZ18_Pos_Norm
 
 
-pos_glmm_rmse <- sqrt(mean((pos_y_true - pos_glmm_y_pred)^2))
-pos_glmm_mae <- mean(abs(pos_y_true - pos_glmm_y_pred))
-pos_glmm_r2 <- 1 - sum((pos_y_true - pos_glmm_y_pred)^2) / sum((pos_y_true - mean(pos_y_true))^2)
-pos_glmm_corr <- cor(pos_y_true, pos_glmm_y_pred)
+# Create dataframe
+pos_glmm_df <- data.frame(
+  actual = pos_y_true,
+  predicted = pos_glmm_y_pred
+)
 
-cat("Positive GLMM RMSE:", pos_glmm_rmse, "\n")
-cat("Positive GLMM MAE:", pos_glmm_mae, "\n")
-cat("Positive GLMM R2:", pos_glmm_r2, "\n")
-cat("Positive GLMM Correlation:", pos_glmm_corr, "\n")
-```
+# Residuals
+pos_glmm_df$residuals <- pos_glmm_df$actual - pos_glmm_df$predicted
 
-### Plot predicted vs true values
+# Metrics
+r2 <- cor(pos_glmm_df$actual, pos_glmm_df$predicted)^2
+mae <- mean(abs(pos_glmm_df$actual - pos_glmm_df$predicted))
+pearson_r <- cor(pos_glmm_df$actual, pos_glmm_df$predicted)
+spearman_r <- cor(pos_glmm_df$actual, pos_glmm_df$predicted, method = "spearman")
 
-```{r}
-plot(pos_y_true, pos_glmm_y_pred, main = "Predicted vs True Values in Positive Factorised GLMM Model", xlab = "True Values", ylab = "Predicted Values")
-abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+metrics_text <- sprintf(
+  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, mae, spearman_r, pearson_r
+)
+
+# predicted vs actual plot
+p1 <- ggplot(pos_glmm_df, aes(x = actual, y = predicted)) +
+  geom_point(alpha = 0.5, color = "#2C7FB8") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  
+  annotate("text",
+           x = max(pos_glmm_df$actual) * 0.6,
+           y = max(pos_glmm_df$predicted) * 0.1,   # move inside plot
+           label = metrics_text,
+           hjust = 0,
+           size = 4) +
+  
+  coord_cartesian(clip = "off") +  # prevents clipping
+  
+  labs(
+    title = "Positive Factorised GLMM Model - Predicted vs Actual (Test set)",
+    x = "Actual Values",
+    y = "Predicted Values"
+  ) +
+  theme_minimal() +
+  theme(plot.margin = margin(10, 40, 10, 10))  # extra space
+
+p1 
+
+# residual plot
+p2 <- ggplot(pos_glmm_df, aes(x = predicted, y = residuals)) +
+  geom_point(alpha = 0.5, color = "#74A9CF") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  
+  labs(
+    title = "Positive Factorised GLMM Model - Residual Plot (Test set)",
+    x = "Predicted Values",
+    y = "Residuals (Actual - Predicted)"
+  ) +
+  theme_minimal()
+
+p2
 ```
 
 
@@ -258,7 +316,21 @@ neg_glmm_coefs$significance <- cut(
   labels = c("***", "**", "*", ".", "")
 )
 
-neg_glmm_coefs
+
+# Prepare clean table
+neg_coefs_table <- neg_glmm_coefs %>%
+  mutate(Variable = rownames(.)) %>%
+  filter(p_value < 0.05, Variable != "(Intercept)") %>%
+  arrange(p_value) %>%
+  select(Estimate, `Std. Error`, p_value, significance) %>%
+  mutate(
+    Estimate = round(Estimate, 3),
+    `Std. Error` = round(`Std. Error`, 3),
+    p_value = signif(p_value, 3)
+  )
+
+kable(neg_coefs_table, format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -281,22 +353,63 @@ abline(lm(neg_qq$y ~ neg_qq$x), col = "black")
 neg_glmm_y_pred <- predict(neg_glmm_model, newdata = test_df, allow.new.levels = TRUE, type = "response")
 neg_y_true <- test_df$SCZ18_Neg_Norm
 
+# Create data frame
+neg_glmm_df <- data.frame(
+  actual = neg_y_true,
+  predicted = neg_glmm_y_pred
+)
 
-neg_glmm_rmse <- sqrt(mean((neg_y_true - neg_glmm_y_pred)^2))
-neg_glmm_mae <- mean(abs(neg_y_true - neg_glmm_y_pred))
-neg_glmm_r2 <- 1 - sum((neg_y_true - neg_glmm_y_pred)^2) / sum((neg_y_true - mean(neg_y_true))^2)
-neg_glmm_corr <- cor(neg_y_true, neg_glmm_y_pred)
+# Residuals
+neg_glmm_df$residuals <- neg_glmm_df$actual - neg_glmm_df$predicted
 
-cat("Negative GLMM RMSE:", neg_glmm_rmse, "\n")
-cat("Negative GLMM MAE:", neg_glmm_mae, "\n")
-cat("Negative GLMM R2:", neg_glmm_r2, "\n")
-cat("Negative GLMM Correlation:", neg_glmm_corr, "\n")
-```
+# Metrics
+r2 <- cor(neg_glmm_df$actual, neg_glmm_df$predicted)^2
+mae <- mean(abs(neg_glmm_df$actual - neg_glmm_df$predicted))
+pearson_r <- cor(neg_glmm_df$actual, neg_glmm_df$predicted)
+spearman_r <- cor(neg_glmm_df$actual, neg_glmm_df$predicted, method = "spearman")
 
-### Plot predicted vs true values
+metrics_text <- sprintf(
+  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, mae, spearman_r, pearson_r
+)
 
-```{r}
-plot(neg_y_true, neg_glmm_y_pred, main = "Predicted vs True Values in Negative Factorised GLMM Model", xlab = "True Values", ylab = "Predicted Values")
-abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+# predicted vs actual plot
+p1 <- ggplot(neg_glmm_df, aes(x = actual, y = predicted)) +
+  geom_point(alpha = 0.5, color = "#2C7FB8") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  
+  annotate("text",
+           x = max(neg_glmm_df$actual) * 0.6,
+           y = max(neg_glmm_df$predicted) * 0.1,   # move inside plot
+           label = metrics_text,
+           hjust = 0,
+           size = 4) +
+  
+  coord_cartesian(clip = "off") +  # prevents clipping
+  
+  labs(
+    title = "Negative Factorised GLMM Model - Predicted vs Actual (Test set)",
+    x = "Actual Values",
+    y = "Predicted Values"
+  ) +
+  theme_minimal() +
+  theme(plot.margin = margin(10, 40, 10, 10))  # extra space
+
+p1
+
+# residual plot
+p2 <- ggplot(neg_glmm_df, aes(x = predicted, y = residuals)) +
+  geom_point(alpha = 0.5, color = "#74A9CF") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  
+  labs(
+    title = "Negative Factorised GLMM Model - Residual Plot (Test set)",
+    x = "Predicted Values",
+    y = "Residuals (Actual - Predicted)"
+  ) +
+  theme_minimal()
+
+p2
 ```
 
