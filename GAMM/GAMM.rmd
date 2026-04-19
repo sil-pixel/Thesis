@@ -11,8 +11,11 @@ set.seed(42)
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(mgcv)
-library(lme4)
 library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(kableExtra)
+library(patchwork)
 ```
 
 ## Load the simulated Data
@@ -75,15 +78,7 @@ ACE_vars <- grep("^ACE", names(catss), value = TRUE)
 SES_vars <- grep("^SES", names(catss), value = TRUE)
 PCA_vars <- grep("^PC", names(catss), value = TRUE)[1:2]
 Sex_var <- grep("^SEX", names(catss), value = TRUE)
-Batch_var <- grep("^batch", names(catss), value = TRUE)
-
-factor_terms <- paste(
-  c(
-    paste0("factor(", SUD15_vars, ")")
-  ),
-  collapse = " + "
-)
-
+Batch_var <- grep("^batch", names(catss), value = TRUE)[1]
 
 covariate_terms <- paste(
   c(SUD15_vars, SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PRS_vars, Sex_var),
@@ -99,19 +94,6 @@ genetic_confounding_terms <- paste(
 )
 
 # create interaction terms between SUD15 variables and all other covariates
-factor_interaction_terms <- paste(
-  c(
-    paste0("factor(", SUD15_vars, "):(", SCZ15_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", ADHD9_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", ASD9_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", ACE_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", SES_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", PRS_vars, ")"),
-    paste0("factor(", SUD15_vars, "):(", Sex_var, ")")
-  ),
-  collapse = " + "
-)
-
 interaction_terms <- paste(
   c(
     paste0(SUD15_vars ,":", SCZ15_vars),
@@ -153,6 +135,37 @@ pos_gamm_model <- gam(
 summary(pos_gamm_model)
 ```
 
+
+### View significance
+
+```{r}
+param_coefs <- as.data.frame(summary(pos_gamm_model)$p.table)
+
+smooth_coefs <- as.data.frame(summary(pos_gamm_model)$s.table)
+
+# Prepare clean table
+pos_coefs_table <- param_coefs %>%
+  mutate(Variable = rownames(.)) %>%
+  rename(p_value = `Pr(>|t|)`) %>%
+  mutate(significance = cut(
+    p_value,
+    breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+    labels = c("***", "**", "*", ".", "")
+  )) %>%
+  filter(p_value < 0.05, Variable != "(Intercept)") %>%
+  arrange(p_value) %>%
+  select(Estimate, `Std. Error`, p_value, significance) %>%
+  mutate(
+    Estimate = round(Estimate, 3),
+    `Std. Error` = round(`Std. Error`, 3),
+    p_value = signif(p_value, 3)
+  )
+
+kable(pos_coefs_table, format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
 ### Check the twin random effect
 
 ```{r}
@@ -165,23 +178,64 @@ plot(pos_gamm_model, select = 1, main = "Random Effect of Twin ID in Positive GA
 pos_gamm_y_pred <- predict(pos_gamm_model, newdata = test_df, type = "response")
 pos_y_true <- test_df$SCZ18_Pos_Norm
 
+# Create dataframe
+pos_gamm_df <- data.frame(
+  actual = pos_y_true,
+  predicted = pos_gamm_y_pred
+)
 
-pos_gamm_rmse <- sqrt(mean((pos_y_true - pos_gamm_y_pred)^2))
-pos_gamm_mae <- mean(abs(pos_y_true - pos_gamm_y_pred))
-pos_gamm_r2 <- 1 - sum((pos_y_true - pos_gamm_y_pred)^2) / sum((pos_y_true - mean(pos_y_true))^2)
-pos_gamm_corr <- cor(pos_y_true, pos_gamm_y_pred)
+# Residuals
+pos_gamm_df$residuals <- pos_gamm_df$actual - pos_gamm_df$predicted
 
-cat("Positive GAMM RMSE:", pos_gamm_rmse, "\n")
-cat("Positive GAMM MAE:", pos_gamm_mae, "\n")
-cat("Positive GAMM R2:", pos_gamm_r2, "\n")
-cat("Positive GAMM Correlation:", pos_gamm_corr, "\n")
-```
+# Metrics
+r2 <- cor(pos_gamm_df$actual, pos_gamm_df$predicted)^2
+mae <- mean(abs(pos_gamm_df$actual - pos_gamm_df$predicted))
+pearson_r <- cor(pos_gamm_df$actual, pos_gamm_df$predicted)
+spearman_r <- cor(pos_gamm_df$actual, pos_gamm_df$predicted, method = "spearman")
 
-### Plot predicted vs true values
+metrics_text <- sprintf(
+  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, mae, spearman_r, pearson_r
+)
 
-```{r}
-plot(pos_y_true, pos_gamm_y_pred, main = "Predicted vs True Values in Positive GAMM Model", xlab = "True Values", ylab = "Predicted Values")
-abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+# predicted vs actual plot
+p1 <- ggplot(pos_gamm_df, aes(x = actual, y = predicted)) +
+  geom_point(alpha = 0.5, color = "#2C7FB8") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  
+  annotate("text",
+           x = max(pos_gamm_df$actual) * 0.6,
+           y = max(pos_gamm_df$predicted) * 0.1,   # move inside plot
+           label = metrics_text,
+           hjust = 0,
+           size = 4) +
+  
+  coord_cartesian(clip = "off") +  # prevents clipping
+  
+  labs(
+    title = "Positive GAMM Model - Predicted vs Actual (Test set)",
+    x = "Actual Values",
+    y = "Predicted Values"
+  ) +
+  theme_minimal() +
+  theme(plot.margin = margin(10, 40, 10, 10))  # extra space
+
+p1 
+
+# residual plot
+p2 <- ggplot(pos_gamm_df, aes(x = predicted, y = residuals)) +
+  geom_point(alpha = 0.5, color = "#74A9CF") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  
+  labs(
+    title = "Positive GAMM Model - Residual Plot (Test set)",
+    x = "Predicted Values",
+    y = "Residuals (Actual - Predicted)"
+  ) +
+  theme_minimal()
+
+p2
 ```
 
 
@@ -208,6 +262,37 @@ neg_gamm_model <- gam(
 summary(neg_gamm_model)
 ```
 
+
+### View significance
+
+```{r}
+param_coefs <- as.data.frame(summary(neg_gamm_model)$p.table)
+
+smooth_coefs <- as.data.frame(summary(neg_gamm_model)$s.table)
+
+# Prepare clean table
+neg_coefs_table <- param_coefs %>%
+  mutate(Variable = rownames(.)) %>%
+  rename(p_value = `Pr(>|t|)`) %>%
+  mutate(significance = cut(
+    p_value,
+    breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+    labels = c("***", "**", "*", ".", "")
+  )) %>%
+  filter(p_value < 0.05, Variable != "(Intercept)") %>%
+  arrange(p_value) %>%
+  select(Estimate, `Std. Error`, p_value, significance) %>%
+  mutate(
+    Estimate = round(Estimate, 3),
+    `Std. Error` = round(`Std. Error`, 3),
+    p_value = signif(p_value, 3)
+  )
+
+kable(neg_coefs_table, format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
 ### Check the twin random effect
 
 ```{r}
@@ -220,21 +305,62 @@ plot(neg_gamm_model, select = 1, main = "Random Effect of Twin ID in Negative GA
 neg_gamm_y_pred <- predict(neg_gamm_model, newdata = test_df, type = "response")
 neg_y_true <- test_df$SCZ18_Neg_Norm
 
+# Create data frame
+neg_gamm_df <- data.frame(
+  actual = neg_y_true,
+  predicted = neg_gamm_y_pred
+)
 
-neg_gamm_rmse <- sqrt(mean((neg_y_true - neg_gamm_y_pred)^2))
-neg_gamm_mae <- mean(abs(neg_y_true - neg_gamm_y_pred))
-neg_gamm_r2 <- 1 - sum((neg_y_true - neg_gamm_y_pred)^2) / sum((neg_y_true - mean(neg_y_true))^2)
-neg_gamm_corr <- cor(neg_y_true, neg_gamm_y_pred)
+# Residuals
+neg_gamm_df$residuals <- neg_gamm_df$actual - neg_gamm_df$predicted
 
-cat("Negative GAMM RMSE:", neg_gamm_rmse, "\n")
-cat("Negative GAMM MAE:", neg_gamm_mae, "\n")
-cat("Negative GAMM R2:", neg_gamm_r2, "\n")
-cat("Negative GAMM Correlation:", neg_gamm_corr, "\n")
-```
+# Metrics
+r2 <- cor(neg_gamm_df$actual, neg_gamm_df$predicted)^2
+mae <- mean(abs(neg_gamm_df$actual - neg_gamm_df$predicted))
+pearson_r <- cor(neg_gamm_df$actual, neg_gamm_df$predicted)
+spearman_r <- cor(neg_gamm_df$actual, neg_gamm_df$predicted, method = "spearman")
 
-### Plot predicted vs true values
+metrics_text <- sprintf(
+  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, mae, spearman_r, pearson_r
+)
 
-```{r}
-plot(neg_y_true, neg_gamm_y_pred, main = "Predicted vs True Values in Negative GAMM Model", xlab = "True Values", ylab = "Predicted Values")
-abline(a = 0, b = 1, col = "red") # indicating perfect predictions
+# predicted vs actual plot
+p1 <- ggplot(neg_gamm_df, aes(x = actual, y = predicted)) +
+  geom_point(alpha = 0.5, color = "#2C7FB8") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  
+  annotate("text",
+           x = max(neg_gamm_df$actual) * 0.6,
+           y = max(neg_gamm_df$predicted) * 0.1,   # move inside plot
+           label = metrics_text,
+           hjust = 0,
+           size = 4) +
+  
+  coord_cartesian(clip = "off") +  # prevents clipping
+  
+  labs(
+    title = "Negative GAMM Model - Predicted vs Actual (Test set)",
+    x = "Actual Values",
+    y = "Predicted Values"
+  ) +
+  theme_minimal() +
+  theme(plot.margin = margin(10, 40, 10, 10))  # extra space
+
+p1
+
+# residual plot
+p2 <- ggplot(neg_gamm_df, aes(x = predicted, y = residuals)) +
+  geom_point(alpha = 0.5, color = "#74A9CF") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  
+  labs(
+    title = "Negative GAMM Model - Residual Plot (Test set)",
+    x = "Predicted Values",
+    y = "Residuals (Actual - Predicted)"
+  ) +
+  theme_minimal()
+
+p2
 ```
