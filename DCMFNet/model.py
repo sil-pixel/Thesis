@@ -109,7 +109,7 @@ vectors in tabular/multi-modal settings.
 
 How it works:
   1. Squeeze:  Global average pooling collapses the input to a single scalar 
-               per feature — captures "how active is this feature on average."
+               per feature - captures "how active is this feature on average."
                For a 1D vector (batch, D), this is just the input itself, so 
                squeeze is implicit.
   2. Excitation: A bottleneck MLP (D -> D//r -> D) learns channel-wise 
@@ -155,7 +155,7 @@ class SEAttention(nn.Module):
         Args:
             x: (batch, D)
         Returns:
-            out: (batch, D) — recalibrated features
+            out: (batch, D) - recalibrated features
         '''
         # Squeeze is implicit for 1D vectors (no spatial dims to pool over)
         # Excitation: learn per-feature gates
@@ -254,26 +254,19 @@ class DeepCrossModalFusionModel(nn.Module):
         #print(f"Shape of the fused output after attention: {F_out.shape}")
 
         # Pass independent modalities through the fully connected layer for prediction
-        #print(f"Shape of all independent modalities before attention: {X_ind.shape}")
-        #print(f"Shape of the input modality 'X' before attention: {X.shape}")
-        #print(f"Shape of the modalities before attention: {[modality.shape for modality in modalities]}")
         X_independent = torch.cat([X] + modalities + [X_ind], dim=-1)  # Concatenate all the independent modalities
         #print(f"Shape of the concatenated independent modalities before attention: {X_independent.shape}")
         X_independent = self.attn_independent(X_independent)  # Apply attention to the concatenated independent modalities
         #print(f"Shape of the independent modalities after attention: {X_independent.shape}")
 
-
         # Concatenate the outputs of the independent modalities and the convolutional fusion
         F_final = torch.cat((F_out, X_independent), dim=-1)
-        #print(f"Shape of the concatenated output of the fused output and independent modalities before attention: {F_final.shape}")
         F_final = self.attn_final(F_final)  # Apply attention to the concatenated output of the fused output and independent modalities
-       #print(f"Shape of the concatenated output of the fused output and independent modalities after attention: {F_final.shape}")
 
         # Pass through the fully connected layer for prediction
         output = self.fc(F_final) 
         #print(f"Shape of the output from the fully connected layer after activation: {output.shape}")
         #print(f"Output from the fully connected layer after activation: {output}")
-        #output = torch.sigmoid(output)  # Apply sigmoid activation to get the final output in the range [0, 1]
         return output
 
 
