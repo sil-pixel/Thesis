@@ -202,7 +202,7 @@ pos_qq <- qqnorm(pos_re, plot.it = FALSE)
 plot(pos_qq$x, pos_qq$y,
      xlab = "Gaussian quantiles",
      ylab = "effects",
-     main = "Random Effect of Twin ID in Positive GLMM Model")
+     main = "Random Effect of Twin ID in Positive Factorised GLMM Model")
 abline(lm(pos_qq$y ~ pos_qq$x), col = "black")
 ```
 
@@ -343,7 +343,7 @@ neg_qq <- qqnorm(neg_re, plot.it = FALSE)
 plot(neg_qq$x, neg_qq$y,
      xlab = "Gaussian quantiles",
      ylab = "effects",
-     main = "Random Effect of Twin ID in Negative GLMM Model")
+     main = "Random Effect of Twin ID in Negative Factorised GLMM Model")
 abline(lm(neg_qq$y ~ neg_qq$x), col = "black")
 ```
 
