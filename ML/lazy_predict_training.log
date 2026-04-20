@@ -1,0 +1,113 @@
+Data shape after dropping na: (4033, 125)
+Train: 3005 rows (2017 IDs),Test: 1028 rows (673 IDs) 
+
+
+============================================================
+  Training Pos symptom model
+============================================================
+Input columns: ['SUD15_Cigarettes15', 'SUD15_Snuff15', 'SUD15_Alcohol15', 'SUD15_Cannabis15', 'SUD15_Painkillers_opioids15', 'SCZ15_Spied15', 'SCZ15_Others_Read_thoughts15', 'SCZ15_Special_messages15', 'SCZ15_Special_powers15', 'SCZ15_Under_control_special_power15', 'SCZ15_Read_others_minds15', 'SCZ15_Seen_hallucinations15', 'SCZ15_Extreme_excitement15', 'SCZ15_Irritable15', 'SCZ15_Unrealistic_abilities15', 'SCZ15_Not_tired15', 'SCZ15_Too_much_energy15', 'SCZ15_Racing_thoughts15', 'SCZ15_Talking_fast15', 'SCZ15_Sexual_inappropriate15', 'SCZ15_Rage_attacks15', 'SCZ15_Hear_voices15', 'SCZ15_headaches15', 'SCZ15_worry15', 'SCZ15_unhappy15', 'SCZ15_lose_confidence15', 'SCZ15_easily_scared15', 'ACE15_bullied_often15', 'ACE15_tease_bullying15', 'ACE15_emotional_bullying15', 'ACE15_rumours_bullying15', 'ACE15_bullying_by_num15', 'ACE15_bullying_time15', 'SES_birth_country_mother', 'SES_education_mother', 'SES_birth_country_father', 'SES_education_father', 'SUD18_cigarettes18', 'SUD18_alcohol_often18', 'SUD18_snuff18', 'SUD18_drugs_often18', 'ACE18_emotional_abuse18', 'ACE18_witness_crime18', 'ACE18_hate_crime18', 'SEX', 'ADHD9_fail_close_attention9', 'ADHD9_difficulty_with_attention9', 'ADHD9_not_listening9', 'ADHD9_difficulty_following_instructions9', 'ADHD9_difficulty_organizing_tasks9', 'ADHD9_avoid_mental_effort_tasks9', 'ADHD9_often_lose_things9', 'ADHD9_easily_distracted9', 'ADHD9_often_forgetful9', 'ADHD9_difficulty_hold_still9', 'ADHD9_often_move9', 'ADHD9_often_run9', 'ADHD9_difficulty_calm9', 'ADHD9_often_motor9', 'ADHD9_talk_excess9', 'ADHD9_often_blurt_out9', 'ADHD9_difficulty_waiting9', 'ADHD9_often_interrupt9', 'ADHD9_easily_bored9', 'ASD9_delay_language9', 'ASD9_difficulty_converse9', 'ASD9_repeat_words9', 'ASD9_difficulty_pretend_play9', 'ASD9_talk_too_high_low9', 'ASD9_difficulty_on_track9', 'ASD9_difficulty_express9', 'ASD9_difficulty_socialize9', 'ASD9_uninterested_sharing9', 'ASD9_own_terms9', 'ASD9_difficulty_expect_behavior9', 'ASD9_easily_influenced9', 'ASD9_absorbed_own9', 'ASD9_absorbed_problems9', 'ASD9_strange_movements9', 'ASD9_absorbed_details9', 'ASD9_dislike_change9', 'SCZ15_PROD_seen_hallucinations9', 'SUD15_OtherDrugs15', 'ACE15_other_bullying15', 'ACE18_other_abuse18', 'PRS_Amygdala_excitatory', 'PRS_Cerebellar_inhibitory', 'PRS_CGE_interneuron', 'PRS_Deep_layer_corticothalamic', 'PRS_Deep_layer_intratelencepha', 'PRS_Eccentric_medium_spiny_neu', 'PRS_Hippocampal_CA1_3', 'PRS_Hippocampal_CA4', 'PRS_Hippocampal_dentate_gyrus', 'PRS_LAMP5_LHX6_and_Chandelier', 'PRS_Medium_spiny_neuron', 'PRS_MGE_interneuron', 'PRS_Miscellaneous', 'PRS_Thalamic_excitatory', 'PRS_Upper_layer_intratelenceph', 'PRS_all', 'batch_GSA3_x_PC1', 'batch_GSA3_x_PC2', 'batch_PSYC_x_PC1', 'batch_PSYC_x_PC2']
+Target column: SCZ18_Pos_Norm
+
+count of input columns :105
+                               Adjusted R-Squared  ...  Time Taken
+Model                                              ...            
+LarsCV                                   0.212834  ...    0.050607
+LassoCV                                  0.212715  ...    0.043591
+LassoLarsCV                              0.212696  ...    0.049539
+ElasticNetCV                             0.212679  ...    0.043684
+LassoLarsIC                              0.211136  ...    0.024531
+BayesianRidge                            0.200815  ...    0.022860
+HuberRegressor                           0.198248  ...    0.025443
+RidgeCV                                  0.195172  ...    0.022815
+Ridge                                    0.194965  ...    0.010600
+Lars                                     0.194942  ...    0.016042
+LinearRegression                         0.194942  ...    0.015656
+TransformedTargetRegressor               0.194942  ...    0.016375
+TweedieRegressor                         0.187561  ...    0.009993
+OrthogonalMatchingPursuit                0.184316  ...    0.010970
+GradientBoostingRegressor                0.181531  ...    1.489392
+RandomForestRegressor                    0.179696  ...    4.030140
+OrthogonalMatchingPursuitCV              0.177563  ...    0.017313
+ExtraTreesRegressor                      0.171552  ...    2.612579
+HistGradientBoostingRegressor            0.134362  ...    0.377227
+LGBMRegressor                            0.125842  ...    0.203731
+BaggingRegressor                         0.083733  ...    0.414462
+PoissonRegressor                         0.080400  ...    0.010369
+SVR                                      0.066463  ...    0.166944
+NuSVR                                   -0.000588  ...    1.265485
+LinearSVR                               -0.002522  ...    0.424770
+AdaBoostRegressor                       -0.042641  ...    0.547686
+PassiveAggressiveRegressor              -0.060623  ...    0.012391
+KNeighborsRegressor                     -0.083718  ...    0.044127
+Lasso                                   -0.113990  ...    0.009490
+LassoLars                               -0.113990  ...    0.009982
+DummyRegressor                          -0.113990  ...    0.008566
+ElasticNet                              -0.113990  ...    0.009395
+QuantileRegressor                       -0.114376  ...    0.373138
+ExtraTreeRegressor                      -0.654425  ...    0.035057
+DecisionTreeRegressor                   -0.705577  ...    0.075240
+KernelRidge                             -1.680689  ...    0.295723
+GaussianProcessRegressor                -2.053241  ...    1.036018
+MLPRegressor                            -4.024092  ...    0.526173
+RANSACRegressor                        -15.371240  ...    0.146599
+SGDRegressor                          -309.902242  ...    0.012274
+
+[40 rows x 4 columns]
+Saved model performance metrics to lazy_predict_results_Pos.csv
+Time taken for Pos model: 14.53 seconds
+
+
+============================================================
+  Training Neg symptom model
+============================================================
+Input columns: ['SUD15_Cigarettes15', 'SUD15_Snuff15', 'SUD15_Alcohol15', 'SUD15_Cannabis15', 'SUD15_Painkillers_opioids15', 'SCZ15_Spied15', 'SCZ15_Others_Read_thoughts15', 'SCZ15_Special_messages15', 'SCZ15_Special_powers15', 'SCZ15_Under_control_special_power15', 'SCZ15_Read_others_minds15', 'SCZ15_Seen_hallucinations15', 'SCZ15_Extreme_excitement15', 'SCZ15_Irritable15', 'SCZ15_Unrealistic_abilities15', 'SCZ15_Not_tired15', 'SCZ15_Too_much_energy15', 'SCZ15_Racing_thoughts15', 'SCZ15_Talking_fast15', 'SCZ15_Sexual_inappropriate15', 'SCZ15_Rage_attacks15', 'SCZ15_Hear_voices15', 'SCZ15_headaches15', 'SCZ15_worry15', 'SCZ15_unhappy15', 'SCZ15_lose_confidence15', 'SCZ15_easily_scared15', 'ACE15_bullied_often15', 'ACE15_tease_bullying15', 'ACE15_emotional_bullying15', 'ACE15_rumours_bullying15', 'ACE15_bullying_by_num15', 'ACE15_bullying_time15', 'SES_birth_country_mother', 'SES_education_mother', 'SES_birth_country_father', 'SES_education_father', 'SUD18_cigarettes18', 'SUD18_alcohol_often18', 'SUD18_snuff18', 'SUD18_drugs_often18', 'ACE18_emotional_abuse18', 'ACE18_witness_crime18', 'ACE18_hate_crime18', 'SEX', 'ADHD9_fail_close_attention9', 'ADHD9_difficulty_with_attention9', 'ADHD9_not_listening9', 'ADHD9_difficulty_following_instructions9', 'ADHD9_difficulty_organizing_tasks9', 'ADHD9_avoid_mental_effort_tasks9', 'ADHD9_often_lose_things9', 'ADHD9_easily_distracted9', 'ADHD9_often_forgetful9', 'ADHD9_difficulty_hold_still9', 'ADHD9_often_move9', 'ADHD9_often_run9', 'ADHD9_difficulty_calm9', 'ADHD9_often_motor9', 'ADHD9_talk_excess9', 'ADHD9_often_blurt_out9', 'ADHD9_difficulty_waiting9', 'ADHD9_often_interrupt9', 'ADHD9_easily_bored9', 'ASD9_delay_language9', 'ASD9_difficulty_converse9', 'ASD9_repeat_words9', 'ASD9_difficulty_pretend_play9', 'ASD9_talk_too_high_low9', 'ASD9_difficulty_on_track9', 'ASD9_difficulty_express9', 'ASD9_difficulty_socialize9', 'ASD9_uninterested_sharing9', 'ASD9_own_terms9', 'ASD9_difficulty_expect_behavior9', 'ASD9_easily_influenced9', 'ASD9_absorbed_own9', 'ASD9_absorbed_problems9', 'ASD9_strange_movements9', 'ASD9_absorbed_details9', 'ASD9_dislike_change9', 'SCZ15_PROD_seen_hallucinations9', 'SUD15_OtherDrugs15', 'ACE15_other_bullying15', 'ACE18_other_abuse18', 'PRS_Amygdala_excitatory', 'PRS_Cerebellar_inhibitory', 'PRS_CGE_interneuron', 'PRS_Deep_layer_corticothalamic', 'PRS_Deep_layer_intratelencepha', 'PRS_Eccentric_medium_spiny_neu', 'PRS_Hippocampal_CA1_3', 'PRS_Hippocampal_CA4', 'PRS_Hippocampal_dentate_gyrus', 'PRS_LAMP5_LHX6_and_Chandelier', 'PRS_Medium_spiny_neuron', 'PRS_MGE_interneuron', 'PRS_Miscellaneous', 'PRS_Thalamic_excitatory', 'PRS_Upper_layer_intratelenceph', 'PRS_all', 'batch_GSA3_x_PC1', 'batch_GSA3_x_PC2', 'batch_PSYC_x_PC1', 'batch_PSYC_x_PC2']
+Target column: SCZ18_Neg_Norm
+
+count of input columns :105
+                               Adjusted R-Squared  ...  Time Taken
+Model                                              ...            
+LassoLarsIC                              0.173377  ...    0.024679
+LarsCV                                   0.170810  ...    0.049071
+LassoLarsCV                              0.170810  ...    0.049122
+LassoCV                                  0.170476  ...    0.042362
+ElasticNetCV                             0.170440  ...    0.042116
+BayesianRidge                            0.169134  ...    0.021504
+OrthogonalMatchingPursuitCV              0.163640  ...    0.017465
+OrthogonalMatchingPursuit                0.163640  ...    0.010970
+RidgeCV                                  0.160556  ...    0.022490
+Ridge                                    0.160239  ...    0.010742
+LinearRegression                         0.160203  ...    0.015523
+TransformedTargetRegressor               0.160203  ...    0.016665
+Lars                                     0.160203  ...    0.016157
+TweedieRegressor                         0.153930  ...    0.010005
+HuberRegressor                           0.148918  ...    0.023514
+GradientBoostingRegressor                0.138655  ...    1.487026
+LGBMRegressor                            0.124032  ...    0.152745
+PoissonRegressor                         0.095716  ...    0.010270
+HistGradientBoostingRegressor            0.093399  ...    0.371667
+RandomForestRegressor                    0.089986  ...    4.231522
+ExtraTreesRegressor                      0.052558  ...    2.648602
+SVR                                      0.037215  ...    0.315151
+LinearSVR                                0.021589  ...    0.406926
+BaggingRegressor                         0.003144  ...    0.431399
+NuSVR                                    0.000155  ...    1.166744
+DummyRegressor                          -0.114418  ...    0.008929
+LassoLars                               -0.114418  ...    0.009920
+ElasticNet                              -0.114418  ...    0.009190
+Lasso                                   -0.114418  ...    0.009496
+AdaBoostRegressor                       -0.114550  ...    0.578830
+QuantileRegressor                       -0.142006  ...    0.339667
+KNeighborsRegressor                     -0.163048  ...    0.025395
+PassiveAggressiveRegressor              -0.261239  ...    0.013164
+ExtraTreeRegressor                      -0.681047  ...    0.035561
+DecisionTreeRegressor                   -0.711736  ...    0.076553
+MLPRegressor                            -1.664985  ...    0.735865
+KernelRidge                             -1.917488  ...    0.294306
+GaussianProcessRegressor                -2.240574  ...    1.031034
+RANSACRegressor                         -4.202185  ...    0.144099
+SGDRegressor                           -18.995790  ...    0.012794
+
+[40 rows x 4 columns]
+Saved model performance metrics to lazy_predict_results_Neg.csv
+Time taken for Neg model: 14.93 seconds
+

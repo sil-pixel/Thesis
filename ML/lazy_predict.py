@@ -8,6 +8,11 @@ Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substan
 
 import lazypredict
 from lazypredict.Supervised import LazyRegressor
+import pandas as pd
+import re
+import torch
+from sklearn.model_selection import train_test_split
+import time
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -34,15 +39,11 @@ Get the input and output columns for the given model tag (Pos or Neg) based on t
 def get_input_output_cols(df, model_tag):
     input_modalities = ["SUD15", "PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "SEX"]
     regex_patterns = [r"^batch_.*_x_PC"]
-    target_modality = []
-    if model_tag == "Pos":
-        target_modality = ["SCZ18_Pos_Norm"]
-    elif model_tag == "Neg":
-        target_modality = ["SCZ18_Neg_Norm"]
+    target_col = f"SCZ18_{model_tag}_Norm"
     input_cols = [col for col in df.columns if any(col.startswith(mod) for mod in input_modalities)]
     input_cols += [col for pattern in regex_patterns for col in df.columns if re.match(pattern, col)]
-    target_col = [col for col in df.columns if target_modality in col]
     print(f"Input columns: {input_cols}\nTarget column: {target_col}\n")
+    print(f"count of input columns :{len(input_cols)}")
     return input_cols, target_col
 
 
