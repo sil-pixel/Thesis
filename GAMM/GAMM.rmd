@@ -81,7 +81,7 @@ Sex_var <- grep("^SEX", names(catss), value = TRUE)
 Batch_var <- grep("^batch", names(catss), value = TRUE)[1]
 
 covariate_terms <- paste(
-  c(SUD15_vars, SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, PRS_vars, Sex_var),
+  c(SUD15_vars, SCZ15_vars, ADHD9_vars, ASD9_vars, ACE_vars, SES_vars, paste0("s(", PRS_vars, ")"), Sex_var),
   collapse = " + "
 )
 
@@ -169,7 +169,7 @@ kable(pos_coefs_table, format = "html") %>%
 ### Check the twin random effect
 
 ```{r}
-plot(pos_gamm_model, select = 1, main = "Random Effect of Twin ID in Positive GAMM Model")
+plot(pos_gamm_model, select = 17, main = "Random Effect of Twin ID in Positive GAMM Model")
 ```
 
 ### Evaluate the model predictions
@@ -296,7 +296,7 @@ kable(neg_coefs_table, format = "html") %>%
 ### Check the twin random effect
 
 ```{r}
-plot(neg_gamm_model, select = 1, main = "Random Effect of Twin ID in Negative GAMM Model")
+plot(neg_gamm_model, select = 17, main = "Random Effect of Twin ID in Negative GAMM Model")
 ```
 
 ### Evaluate the model predictions
