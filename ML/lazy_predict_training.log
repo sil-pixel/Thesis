@@ -11,50 +11,56 @@ Target column: SCZ18_Pos_Norm
 count of input columns :105
                                Adjusted R-Squared  ...  Time Taken
 Model                                              ...            
-LarsCV                                   0.212834  ...    0.050607
-LassoCV                                  0.212715  ...    0.043591
-LassoLarsCV                              0.212696  ...    0.049539
-ElasticNetCV                             0.212679  ...    0.043684
-LassoLarsIC                              0.211136  ...    0.024531
-BayesianRidge                            0.200815  ...    0.022860
-HuberRegressor                           0.198248  ...    0.025443
-RidgeCV                                  0.195172  ...    0.022815
-Ridge                                    0.194965  ...    0.010600
-Lars                                     0.194942  ...    0.016042
-LinearRegression                         0.194942  ...    0.015656
-TransformedTargetRegressor               0.194942  ...    0.016375
-TweedieRegressor                         0.187561  ...    0.009993
-OrthogonalMatchingPursuit                0.184316  ...    0.010970
-GradientBoostingRegressor                0.181531  ...    1.489392
-RandomForestRegressor                    0.179696  ...    4.030140
-OrthogonalMatchingPursuitCV              0.177563  ...    0.017313
-ExtraTreesRegressor                      0.171552  ...    2.612579
-HistGradientBoostingRegressor            0.134362  ...    0.377227
-LGBMRegressor                            0.125842  ...    0.203731
-BaggingRegressor                         0.083733  ...    0.414462
-PoissonRegressor                         0.080400  ...    0.010369
-SVR                                      0.066463  ...    0.166944
-NuSVR                                   -0.000588  ...    1.265485
-LinearSVR                               -0.002522  ...    0.424770
-AdaBoostRegressor                       -0.042641  ...    0.547686
-PassiveAggressiveRegressor              -0.060623  ...    0.012391
-KNeighborsRegressor                     -0.083718  ...    0.044127
-Lasso                                   -0.113990  ...    0.009490
-LassoLars                               -0.113990  ...    0.009982
-DummyRegressor                          -0.113990  ...    0.008566
-ElasticNet                              -0.113990  ...    0.009395
-QuantileRegressor                       -0.114376  ...    0.373138
-ExtraTreeRegressor                      -0.654425  ...    0.035057
-DecisionTreeRegressor                   -0.705577  ...    0.075240
-KernelRidge                             -1.680689  ...    0.295723
-GaussianProcessRegressor                -2.053241  ...    1.036018
-MLPRegressor                            -4.024092  ...    0.526173
-RANSACRegressor                        -15.371240  ...    0.146599
-SGDRegressor                          -309.902242  ...    0.012274
+LarsCV                                   0.212834  ...    0.099814
+LassoCV                                  0.212715  ...    0.070151
+LassoLarsCV                              0.212696  ...    0.063547
+ElasticNetCV                             0.212679  ...    0.076607
+LassoLarsIC                              0.211136  ...    2.049044
+BayesianRidge                            0.200815  ...    0.214896
+HuberRegressor                           0.198248  ...    0.328497
+RidgeCV                                  0.195172  ...    0.101015
+Ridge                                    0.194965  ...    0.010657
+Lars                                     0.194942  ...    0.034726
+LinearRegression                         0.194942  ...    0.030700
+TransformedTargetRegressor               0.194942  ...    0.029932
+TweedieRegressor                         0.187561  ...    0.183920
+OrthogonalMatchingPursuit                0.184316  ...    0.011221
+GradientBoostingRegressor                0.181531  ...    1.500845
+RandomForestRegressor                    0.179696  ...    4.048257
+OrthogonalMatchingPursuitCV              0.177563  ...    0.019233
+ExtraTreesRegressor                      0.171552  ...    2.625550
+HistGradientBoostingRegressor            0.134362  ...    0.719472
+LGBMRegressor                            0.125842  ...    0.227982
+BaggingRegressor                         0.083733  ...    0.414806
+PoissonRegressor                         0.080400  ...    0.274274
+SVR                                      0.066463  ...    0.184381
+NuSVR                                   -0.000588  ...    1.309571
+LinearSVR                               -0.002522  ...    0.440398
+AdaBoostRegressor                       -0.042641  ...    0.545726
+PassiveAggressiveRegressor              -0.060623  ...    0.015486
+KNeighborsRegressor                     -0.083702  ...    0.076261
+Lasso                                   -0.113990  ...    0.011980
+LassoLars                               -0.113990  ...    0.012329
+DummyRegressor                          -0.113990  ...    0.008783
+ElasticNet                              -0.113990  ...    0.009589
+QuantileRegressor                       -0.114376  ...    0.384349
+ExtraTreeRegressor                      -0.654425  ...    0.044145
+DecisionTreeRegressor                   -0.705577  ...    0.095147
+KernelRidge                             -1.680689  ...    0.303483
+GaussianProcessRegressor                -2.053241  ...    0.860212
+MLPRegressor                            -4.024092  ...    0.774567
+RANSACRegressor                        -15.371240  ...    0.521407
+SGDRegressor                          -309.902242  ...    0.015380
 
 [40 rows x 4 columns]
-Saved model performance metrics to lazy_predict_results_Pos.csv
-Time taken for Pos model: 14.53 seconds
+Saved Lazy Predict results to lazy_predict_results_Pos.csv
+
+Predictions for Pos model:
+Empty DataFrame
+Columns: []
+Index: []
+
+Time taken for Pos model: 18.80 seconds
 
 
 ============================================================
@@ -66,48 +72,54 @@ Target column: SCZ18_Neg_Norm
 count of input columns :105
                                Adjusted R-Squared  ...  Time Taken
 Model                                              ...            
-LassoLarsIC                              0.173377  ...    0.024679
-LarsCV                                   0.170810  ...    0.049071
-LassoLarsCV                              0.170810  ...    0.049122
-LassoCV                                  0.170476  ...    0.042362
-ElasticNetCV                             0.170440  ...    0.042116
-BayesianRidge                            0.169134  ...    0.021504
-OrthogonalMatchingPursuitCV              0.163640  ...    0.017465
-OrthogonalMatchingPursuit                0.163640  ...    0.010970
-RidgeCV                                  0.160556  ...    0.022490
-Ridge                                    0.160239  ...    0.010742
-LinearRegression                         0.160203  ...    0.015523
-TransformedTargetRegressor               0.160203  ...    0.016665
-Lars                                     0.160203  ...    0.016157
-TweedieRegressor                         0.153930  ...    0.010005
-HuberRegressor                           0.148918  ...    0.023514
-GradientBoostingRegressor                0.138655  ...    1.487026
-LGBMRegressor                            0.124032  ...    0.152745
-PoissonRegressor                         0.095716  ...    0.010270
-HistGradientBoostingRegressor            0.093399  ...    0.371667
-RandomForestRegressor                    0.089986  ...    4.231522
-ExtraTreesRegressor                      0.052558  ...    2.648602
-SVR                                      0.037215  ...    0.315151
-LinearSVR                                0.021589  ...    0.406926
-BaggingRegressor                         0.003144  ...    0.431399
-NuSVR                                    0.000155  ...    1.166744
-DummyRegressor                          -0.114418  ...    0.008929
-LassoLars                               -0.114418  ...    0.009920
-ElasticNet                              -0.114418  ...    0.009190
-Lasso                                   -0.114418  ...    0.009496
-AdaBoostRegressor                       -0.114550  ...    0.578830
-QuantileRegressor                       -0.142006  ...    0.339667
-KNeighborsRegressor                     -0.163048  ...    0.025395
-PassiveAggressiveRegressor              -0.261239  ...    0.013164
-ExtraTreeRegressor                      -0.681047  ...    0.035561
-DecisionTreeRegressor                   -0.711736  ...    0.076553
-MLPRegressor                            -1.664985  ...    0.735865
-KernelRidge                             -1.917488  ...    0.294306
-GaussianProcessRegressor                -2.240574  ...    1.031034
-RANSACRegressor                         -4.202185  ...    0.144099
-SGDRegressor                           -18.995790  ...    0.012794
+LassoLarsIC                              0.173377  ...    0.104410
+LarsCV                                   0.170810  ...    0.061049
+LassoLarsCV                              0.170810  ...    0.061902
+LassoCV                                  0.170476  ...    0.052386
+ElasticNetCV                             0.170440  ...    0.049386
+BayesianRidge                            0.169134  ...    0.068896
+OrthogonalMatchingPursuitCV              0.163640  ...    0.017306
+OrthogonalMatchingPursuit                0.163640  ...    0.011138
+RidgeCV                                  0.160556  ...    0.047467
+Ridge                                    0.160239  ...    0.010556
+LinearRegression                         0.160203  ...    0.030979
+TransformedTargetRegressor               0.160203  ...    0.030205
+Lars                                     0.160203  ...    0.023137
+TweedieRegressor                         0.153930  ...    0.219509
+HuberRegressor                           0.148918  ...    0.028748
+GradientBoostingRegressor                0.138655  ...    1.493816
+LGBMRegressor                            0.124032  ...    0.181724
+PoissonRegressor                         0.095716  ...    0.221909
+HistGradientBoostingRegressor            0.093399  ...    0.315392
+RandomForestRegressor                    0.089986  ...    4.195182
+ExtraTreesRegressor                      0.052558  ...    2.642744
+SVR                                      0.037215  ...    0.329984
+LinearSVR                                0.021589  ...    0.417204
+BaggingRegressor                         0.003144  ...    0.431411
+NuSVR                                    0.000155  ...    1.175497
+DummyRegressor                          -0.114418  ...    0.008680
+LassoLars                               -0.114418  ...    0.012212
+ElasticNet                              -0.114418  ...    0.009242
+Lasso                                   -0.114418  ...    0.012009
+AdaBoostRegressor                       -0.114550  ...    0.578690
+QuantileRegressor                       -0.142006  ...    0.343725
+KNeighborsRegressor                     -0.163412  ...    0.017208
+PassiveAggressiveRegressor              -0.261239  ...    0.013149
+ExtraTreeRegressor                      -0.681047  ...    0.044085
+DecisionTreeRegressor                   -0.711736  ...    0.086384
+MLPRegressor                            -1.664985  ...    1.160640
+KernelRidge                             -1.917488  ...    0.182793
+GaussianProcessRegressor                -2.240574  ...    0.721591
+RANSACRegressor                         -4.202185  ...    0.210418
+SGDRegressor                           -18.995790  ...    0.015807
 
 [40 rows x 4 columns]
-Saved model performance metrics to lazy_predict_results_Neg.csv
-Time taken for Neg model: 14.93 seconds
+Saved Lazy Predict results to lazy_predict_results_Neg.csv
+
+Predictions for Neg model:
+Empty DataFrame
+Columns: []
+Index: []
+
+Time taken for Neg model: 15.65 seconds
 
