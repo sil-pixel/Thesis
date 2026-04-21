@@ -61,11 +61,12 @@ def train_lazy_predict(train_df, test_df, input_cols, target_col):
     
     print(models)
     # save the predictions and model performance metrics to a CSV file
+    models['Model'] = models.index
     results_df = pd.DataFrame(models)
     results_df.to_csv(f"lazy_predict_results_{model_tag}.csv", index=False)
-    predictions_df = pd.DataFrame(predictions)
-    predictions_df.to_csv(f"lazy_predict_predictions_{model_tag}.csv", index=False)
-    print(f"Saved model performance metrics to lazy_predict_results_{model_tag}.csv")
+    print(f"Saved Lazy Predict results to lazy_predict_results_{model_tag}.csv\n")
+    print(f"Predictions for {model_tag} model:\n{predictions}\n")
+
 
 
 if __name__ == "__main__":
