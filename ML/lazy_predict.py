@@ -3,18 +3,18 @@ Lazy Predict to find the best ML model for the given dataset and hyperparameters
 Author: Silpa Soni Nallacheruvu
 Date: 20/04/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
-
 '''
 
 import lazypredict
-from lazypredict.Supervised import LazyRegressor
+from lazypredict.Supervised import REGRESSORS
 import pandas as pd
 import re
 import torch
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from scipy.stats import pearsonr
+from scipy.stats import spearmanr, pearsonr
 import time
+import numpy as np
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -52,7 +52,7 @@ def get_input_output_cols(df, model_tag):
 '''
 Train a LazyRegressor model on the training data and evaluate it on the test data, printing the model performance metrics and saving the results to CSV files.
 '''
-def train_lazy_predict(train_df, test_df, input_cols, target_col):
+def train_lazy_predict(train_df, test_df, input_cols, target_col, model_tag):
     X_train = train_df[input_cols]
     y_train = train_df[target_col]
     X_test = test_df[input_cols]
@@ -66,24 +66,25 @@ def train_lazy_predict(train_df, test_df, input_cols, target_col):
             model.fit(X_train, y_train)
             preds = model.predict(X_test)
             
-            rmse = mean_squared_error(y_test, preds, squared=False)
-            corr, p_val = pearsonr(y_test, preds)
+            rmse = np.sqrt(mean_squared_error(y_test, preds))
+            pearson_r, pearson_p_val = pearsonr(y_test, preds)
             spearman_corr, spearman_p_val = spearmanr(y_test, preds)
             
             results.append({
                 'Model': name,
-                'RMSE': rmse,
-                'Pearson Correlation': corr,
-                'Pearson Correlation P value': p_val,
-                'Spearman Correlation': spearman_corr,
-                'Spearman Correlation P value': spearman_p_val
+                f'RMSE': f"{rmse:.4f}",
+                f'pearson_r': f"{pearson_r:.4f}",
+                f'pearson_p': f"{pearson_p_val:.4e}",
+                f'spearman_rho': f"{spearman_corr:.4f}",
+                f'spearman_p': f"{spearman_p_val:.4f}"
             })
         except Exception as e:
             print(f"Skipping {name}: {e}")
             continue
 
-    results_df = pd.DataFrame(results).sort_values('Pearson Correlation', ascending=False)
+    results_df = pd.DataFrame(results).sort_values('RMSE', ascending=True)
     print(results_df)
+    results_df.to_csv(f"lazy_predict_results_{model_tag}.csv", index=False)
 
 
 
@@ -102,7 +103,7 @@ if __name__ == "__main__":
             print(f"{'='*60}")
             start_time = time.time()
             input_cols, target_col = get_input_output_cols(train_df, model_tag=model_tag)
-            train_lazy_predict(train_df, test_df, input_cols, target_col)
+            train_lazy_predict(train_df, test_df, input_cols, target_col, model_tag=model_tag)
             end_time = time.time()
             print(f"Time taken for {model_tag} model: {end_time - start_time:.2f} seconds\n")
 

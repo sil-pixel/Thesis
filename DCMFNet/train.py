@@ -195,7 +195,7 @@ def evaluate(model, dataloader):
           f"std: {np.std(all_predictions):.4f}")
     print(f"  RMSE : {rmse:.4f}, R2: {r2:.4f}, MAE: {mae:.4f}, "
           f"Spearman rho: {spearman_rho:.4f}, Spearman p: {spearman_p_value:.4e}, "
-          f"Pearson r: {pearson_r:.4f}, Pearson p: {p_value:.4e}")
+          f"Pearson r: {pearson_r:.4f}, Pearson p: {pearson_p_value:.4e}")
  
     model.train()
     return metrics, all_predictions, all_targets
