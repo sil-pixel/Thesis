@@ -170,7 +170,7 @@ def evaluate(model, dataloader):
     all_targets = torch.cat(all_targets).numpy().flatten()
     
     mae = mean_absolute_error(all_targets, all_predictions)
-    mse = mean_squared_error(all_targets, all_predictions)
+    rmse = np.sqrt(mean_squared_error(all_targets, all_predictions))
     r2 = r2_score(all_targets, all_predictions)
     
     if np.std(all_predictions) < 1e-6:
@@ -183,7 +183,7 @@ def evaluate(model, dataloader):
     
     metrics = {
         'mae': mae,
-        'mse': mse,
+        'rmse': rmse,
         'r2': r2,
         'spearman_rho': spearman_rho,
         'pearson_r': pearson_r,
@@ -191,7 +191,7 @@ def evaluate(model, dataloader):
     
     print(f"  Pred range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}], "
           f"std: {np.std(all_predictions):.4f}")
-    print(f"  MAE: {mae:.4f}, R2: {r2:.4f}, "
+    print(f"  RMSE : {rmse:.4f}, R2: {r2:.4f}, MAE: {mae:.4f}, "
           f"Spearman rho: {spearman_rho:.4f}, Pearson r: {pearson_r:.4f}")
  
     model.train()
@@ -223,7 +223,7 @@ def plot_predicted_vs_actual(predictions, targets, metrics, seed, model_tag, spl
     ax1.set_title(f'{model_tag} - Predicted vs Actual ({split_name})')
     ax1.legend(loc='upper left')
     textstr = (f"R2 = {metrics['r2']:.4f}\n"
-               f"MAE = {metrics['mae']:.4f}\n"
+               f"RMSE = {metrics['rmse']:.4f}\n"
                f"Spearman rho = {metrics['spearman_rho']:.4f}\n"
                f"Pearson r = {metrics['pearson_r']:.4f}")
     ax1.text(0.97, 0.03, textstr, transform=ax1.transAxes, fontsize=9,
@@ -248,7 +248,7 @@ def plot_predicted_vs_actual(predictions, targets, metrics, seed, model_tag, spl
 '''
 Plot training curves: Loss, MAE, Spearman rho, and R2 over epochs.
 '''
-def plot_training_curves(train_losses, train_maes, val_maes, 
+def plot_training_curves(train_losses, train_rmses, val_rmses, 
                          train_spearmans, val_spearmans,
                          train_r2s, val_r2s, seed, model_tag):
     epochs = range(1, len(train_losses) + 1)
@@ -262,11 +262,11 @@ def plot_training_curves(train_losses, train_maes, val_maes,
     axes[0, 0].legend()
  
     # MAE
-    axes[0, 1].plot(epochs, train_maes, label='Training MAE')
-    axes[0, 1].plot(epochs, val_maes, label='Validation MAE')
+    axes[0, 1].plot(epochs, train_rmses, label='Training RMSE')
+    axes[0, 1].plot(epochs, val_rmses, label='Validation RMSE')
     axes[0, 1].set_xlabel('Epochs')
-    axes[0, 1].set_ylabel('MAE')
-    axes[0, 1].set_title('Training and Validation MAE')
+    axes[0, 1].set_ylabel('RMSE')
+    axes[0, 1].set_title('Training and Validation RMSE')
     axes[0, 1].legend()
  
     # Spearman rho
@@ -304,8 +304,8 @@ Output:
 '''
 def train(train_df, seed, n_features_per_modality, model_tag):
     train_losses = []
-    train_maes = []
-    val_maes = []
+    train_rmses = []
+    val_rmses = []
     train_spearmans = []
     val_spearmans = []
     train_r2s = []
@@ -367,14 +367,14 @@ def train(train_df, seed, n_features_per_modality, model_tag):
               f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f}")
  
         train_losses.append(avg_loss)
-        train_maes.append(train_metrics['mae'])
-        val_maes.append(val_metrics['mae'])
+        train_rmses.append(train_metrics['rmse'])
+        val_rmses.append(val_metrics['rmse'])
         train_spearmans.append(train_metrics['spearman_rho'])
         val_spearmans.append(val_metrics['spearman_rho'])
         train_r2s.append(train_metrics['r2'])
         val_r2s.append(val_metrics['r2'])
  
-    return (model, train_losses, train_maes, val_maes, 
+    return (model, train_losses, train_rmses, val_rmses, 
             train_spearmans, val_spearmans, train_r2s, val_r2s,
             val_preds, val_targets, val_metrics)
 
@@ -384,7 +384,7 @@ def evaluate_final_test(model, test_df, model_tag, seed):
     X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
     test_metrics, test_preds, test_targets = evaluate(model, test_dataloader)
-    print(f'\nFinal Test - MAE: {test_metrics["mae"]:.4f}, R2: {test_metrics["r2"]:.4f}, '
+    print(f'\nFinal Test - RMSE: {test_metrics["rmse"]:.4f}, R2: {test_metrics["r2"]:.4f}, '
           f'Spearman rho: {test_metrics["spearman_rho"]:.4f}')
     plot_predicted_vs_actual(test_preds, test_targets, test_metrics, seed, model_tag, split_name="test")
     return test_metrics
@@ -408,14 +408,14 @@ if __name__ == "__main__":
             print(f"{'='*60}")
             start_time = time.time()
 
-            (model, train_losses, train_maes, val_maes, 
+            (model, train_losses, train_rmses, val_rmses, 
                 train_spearmans, val_spearmans, train_r2s, val_r2s,
                 val_preds, val_targets, val_metrics) = train(train_df, seed, modality_sizes, model_tag)
 
             elapsed = (time.time() - start_time) / 60
             print(f"\nTime taken for {model_tag} model: {elapsed:.2f} minutes")
 
-            plot_training_curves(train_losses, train_maes, val_maes,
+            plot_training_curves(train_losses, train_rmses, val_rmses,
                                     train_spearmans, val_spearmans,
                                     train_r2s, val_r2s, seed, model_tag)
             plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
