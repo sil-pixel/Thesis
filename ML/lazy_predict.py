@@ -12,6 +12,8 @@ import pandas as pd
 import re
 import torch
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from scipy.stats import pearsonr
 import time
 
 '''
@@ -56,16 +58,32 @@ def train_lazy_predict(train_df, test_df, input_cols, target_col):
     X_test = test_df[input_cols]
     y_test = test_df[target_col]
     
-    reg = LazyRegressor(verbose=0, ignore_warnings=True, custom_metric=None)
-    models, predictions = reg.fit(X_train, X_test, y_train, y_test)
-    
-    print(models)
-    # save the predictions and model performance metrics to a CSV file
-    models['Model'] = models.index
-    results_df = pd.DataFrame(models)
-    results_df.to_csv(f"lazy_predict_results_{model_tag}.csv", index=False)
-    print(f"Saved Lazy Predict results to lazy_predict_results_{model_tag}.csv\n")
-    print(f"Predictions for {model_tag} model:\n{predictions}\n")
+    results = []
+
+    for name, model_class in REGRESSORS:
+        try:
+            model = model_class()
+            model.fit(X_train, y_train)
+            preds = model.predict(X_test)
+            
+            rmse = mean_squared_error(y_test, preds, squared=False)
+            corr, p_val = pearsonr(y_test, preds)
+            spearman_corr, spearman_p_val = spearmanr(y_test, preds)
+            
+            results.append({
+                'Model': name,
+                'RMSE': rmse,
+                'Pearson Correlation': corr,
+                'Pearson Correlation P value': p_val,
+                'Spearman Correlation': spearman_corr,
+                'Spearman Correlation P value': spearman_p_val
+            })
+        except Exception as e:
+            print(f"Skipping {name}: {e}")
+            continue
+
+    results_df = pd.DataFrame(results).sort_values('Pearson Correlation', ascending=False)
+    print(results_df)
 
 
 

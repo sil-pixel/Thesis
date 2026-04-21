@@ -178,21 +178,24 @@ def evaluate(model, dataloader):
         spearman_rho = float('nan')
         pearson_r = float('nan')
     else:
-        spearman_rho, _ = spearmanr(all_targets, all_predictions)
-        pearson_r, _ = pearsonr(all_targets, all_predictions)
+        spearman_rho, spearman_p_value = spearmanr(all_targets, all_predictions)
+        pearson_r, pearson_p_value = pearsonr(all_targets, all_predictions)
     
     metrics = {
         'mae': mae,
         'rmse': rmse,
         'r2': r2,
         'spearman_rho': spearman_rho,
+        'spearman_p': spearman_p_value,
         'pearson_r': pearson_r,
+        'pearson_p': pearson_p_value
     }
     
     print(f"  Pred range: [{all_predictions.min():.4f}, {all_predictions.max():.4f}], "
           f"std: {np.std(all_predictions):.4f}")
     print(f"  RMSE : {rmse:.4f}, R2: {r2:.4f}, MAE: {mae:.4f}, "
-          f"Spearman rho: {spearman_rho:.4f}, Pearson r: {pearson_r:.4f}")
+          f"Spearman rho: {spearman_rho:.4f}, Spearman p: {spearman_p_value:.4e}, "
+          f"Pearson r: {pearson_r:.4f}, Pearson p: {p_value:.4e}")
  
     model.train()
     return metrics, all_predictions, all_targets
@@ -225,7 +228,9 @@ def plot_predicted_vs_actual(predictions, targets, metrics, seed, model_tag, spl
     textstr = (f"R2 = {metrics['r2']:.4f}\n"
                f"RMSE = {metrics['rmse']:.4f}\n"
                f"Spearman rho = {metrics['spearman_rho']:.4f}\n"
-               f"Pearson r = {metrics['pearson_r']:.4f}")
+               f"Spearman p = {metrics['spearman_p']:.4e}\n"
+               f"Pearson r = {metrics['pearson_r']:.4f}\n"
+               f"Pearson p = {metrics['pearson_p']:.4e}")
     ax1.text(0.97, 0.03, textstr, transform=ax1.transAxes, fontsize=9,
              verticalalignment='bottom', horizontalalignment='right',
              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
@@ -364,7 +369,9 @@ def train(train_df, seed, n_features_per_modality, model_tag):
         val_metrics, val_preds, val_targets = evaluate(model, val_dataloader)
         print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | "
               f"Train rho: {train_metrics['spearman_rho']:.4f}, Val rho: {val_metrics['spearman_rho']:.4f} | "
-              f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f}")
+              f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f} |"
+              f"Train RMSE: {train_metrics['rmse']:.4f}, Val RMSE: {val_metrics['rmse']:.4f} |"
+              f"Train Pearson r: {train_metrics['pearson_r']:.4f}, Val Pearson r: {val_metrics['pearson_r']:.4f}")
  
         train_losses.append(avg_loss)
         train_rmses.append(train_metrics['rmse'])
