@@ -163,13 +163,16 @@ pos_coefs_table <- param_coefs %>%
 
 kable(pos_coefs_table, format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+readr::write_csv(pos_coefs_table, "GAMM_Pos_significant_table.csv")
 ```
 
 
 ### Check the twin random effect
 
 ```{r}
+png("GAMM_Pos_twin_random_effect.png", width = 800, height = 600, res = 300)
 plot(pos_gamm_model, select = 17, main = "Random Effect of Twin ID in Positive GAMM Model")
+dev.off()
 ```
 
 ### Evaluate the model predictions
@@ -189,13 +192,13 @@ pos_gamm_df$residuals <- pos_gamm_df$actual - pos_gamm_df$predicted
 
 # Metrics
 r2 <- cor(pos_gamm_df$actual, pos_gamm_df$predicted)^2
-mae <- mean(abs(pos_gamm_df$actual - pos_gamm_df$predicted))
+rmse <- sqrt(mean((pos_gamm_df$actual - pos_gamm_df$predicted)^2))
 pearson_r <- cor(pos_gamm_df$actual, pos_gamm_df$predicted)
 spearman_r <- cor(pos_gamm_df$actual, pos_gamm_df$predicted, method = "spearman")
 
 metrics_text <- sprintf(
-  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
-  r2, mae, spearman_r, pearson_r
+  "R² = %.4f\nRMSE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, rmse, spearman_r, pearson_r
 )
 
 # predicted vs actual plot
@@ -290,13 +293,16 @@ neg_coefs_table <- param_coefs %>%
 
 kable(neg_coefs_table, format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+readr::write_csv(neg_coefs_table, "GAMM_Neg_significant_table.csv")
 ```
 
 
 ### Check the twin random effect
 
 ```{r}
+png("GAMM_Neg_twin_random_effect.png", width = 800, height = 600, res = 300)
 plot(neg_gamm_model, select = 17, main = "Random Effect of Twin ID in Negative GAMM Model")
+dev.off()
 ```
 
 ### Evaluate the model predictions
@@ -316,13 +322,13 @@ neg_gamm_df$residuals <- neg_gamm_df$actual - neg_gamm_df$predicted
 
 # Metrics
 r2 <- cor(neg_gamm_df$actual, neg_gamm_df$predicted)^2
-mae <- mean(abs(neg_gamm_df$actual - neg_gamm_df$predicted))
+rmse <- sqrt(mean((neg_gamm_df$actual - neg_gamm_df$predicted)^2))
 pearson_r <- cor(neg_gamm_df$actual, neg_gamm_df$predicted)
 spearman_r <- cor(neg_gamm_df$actual, neg_gamm_df$predicted, method = "spearman")
 
 metrics_text <- sprintf(
-  "R² = %.4f\nMAE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
-  r2, mae, spearman_r, pearson_r
+  "R² = %.4f\nRMSE = %.4f\nSpearman rho = %.4f\nPearson R = %.4f",
+  r2, rmse, spearman_r, pearson_r
 )
 
 # predicted vs actual plot
