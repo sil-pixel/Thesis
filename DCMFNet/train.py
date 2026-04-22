@@ -47,7 +47,6 @@ num_modalities = 9
 num_layers = 5  # 5 is the default layers for now
 fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
-
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
 Input:
@@ -427,4 +426,4 @@ if __name__ == "__main__":
                                     train_r2s, val_r2s, seed, model_tag)
             plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
                                         seed, model_tag, split_name="val")
-            evaluate_final_test(model, test_df, model_tag, seed)
+            #evaluate_final_test(model, test_df, model_tag, seed)

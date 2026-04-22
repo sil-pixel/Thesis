@@ -131,16 +131,16 @@ Interface:
 
 Parameters:
     n_features: dimension D of the input vector
-    reduction: bottleneck reduction ratio (default: 2). 
-                Hidden dim = max(D // reduction, 8).
+    se_reduction: bottleneck reduction ratio (default: 2). 
+                Hidden dim = max(D // se_reduction, 8).
     dropout: dropout applied inside the excitation path (default: 0.3)
 '''
 
 class SEAttention(nn.Module):
 
-    def __init__(self, n_features, reduction=2, dropout=0.3):
+    def __init__(self, n_features, se_reduction=2, dropout=0.3):
         super().__init__()
-        hidden_dim = max(n_features // reduction, 8)
+        hidden_dim = max(n_features // se_reduction, 8)
 
         self.excitation = nn.Sequential(
             nn.Linear(n_features, hidden_dim),
@@ -177,12 +177,12 @@ Output:
     F_next: tensor of shape (batch_size, n_features_m * L)
 '''
 class IterativeGatedFusionModule(nn.Module):
-    def __init__(self, L, n_features_x, n_features_m, dropout=0.3):
+    def __init__(self, L, n_features_x, n_features_m, se_reduction=2, dropout=0.3):
         super().__init__()
         self.L = L
         # using nn.ModuleList to store the Gated Fusion Layers
         self.gated_fusion_layers = nn.ModuleList([GatedFusionLayer(n_features_x, n_features_m) for _ in range(self.L)])
-        self.attention = SEAttention(n_features_m * self.L, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
+        self.attention = SEAttention(n_features_m * self.L, se_reduction, dropout=dropout)  # Learnable parameter for the attention operation on the concatenated output of all the Gated Fusion Layers
 
 
     def forward(self, X, X_modality):
@@ -214,7 +214,7 @@ Variables:
     fc: fully connected layer for prediction, in_features is the total number of features after concatenating the fused output and independent modalities, out_features is 1 for continuous output for prediction.
 '''
 class DeepCrossModalFusionModel(nn.Module):
-    def __init__(self, M, L, n_features_per_modality, dropout=0.3):
+    def __init__(self, M, L, n_features_per_modality, se_reduction=2, dropout=0.3):
         super().__init__()
         self.M = M
         n_features_x = n_features_per_modality[0]
@@ -228,9 +228,9 @@ class DeepCrossModalFusionModel(nn.Module):
         fused_dim = L * sum(n_features_per_modality[:M])
         independent_dim = n_features_x + sum(n_features_per_modality)
         total_final_features = fused_dim + independent_dim
-        self.attn_fused =  SEAttention(fused_dim, dropout=dropout)  
-        self.attn_independent = SEAttention(independent_dim, dropout=dropout)
-        self.attn_final = SEAttention(total_final_features, dropout=dropout) 
+        self.attn_fused =  SEAttention(fused_dim, se_reduction=se_reduction, dropout=dropout)  
+        self.attn_independent = SEAttention(independent_dim, se_reduction=se_reduction, dropout=dropout)
+        self.attn_final = SEAttention(total_final_features, se_reduction=se_reduction, dropout=dropout) 
         #print(f"Total features after concatenating the fused output and independent modalities: {total_final_features}")
         self.fc = nn.Linear(in_features=total_final_features, out_features=1)  # Learnable parameter for the fully connected layer for prediction
 
