@@ -4,7 +4,7 @@ Author: Silpa Soni Nallacheruvu
 Date: 22/04/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
 
-This script imports from training.py and model.py to run multiple training trials with different hyperparameters suggested by Optuna.
+This script imports from train.py and model.py to run multiple training trials with different hyperparameters suggested by Optuna.
 
 Usage:
     pip install optuna plotly
@@ -23,7 +23,7 @@ import optuna
 from optuna.exceptions import TrialPruned
 
 # Import functions from existing files
-from training import (
+from train import (
     random_split, prepare_data, calculate_modality_sizes,
     create_dataloader, evaluate
 )
@@ -39,7 +39,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     '''
     Single Optuna trial: suggest hyperparameters, train, return best val Spearman rho.
     '''
-    # ── Suggest hyperparameters ──
+    # -- Suggest hyperparameters --
     
     # Training hyperparameters
     learning_rate = trial.suggest_float('learning_rate', 1e-5, 1e-2, log=True)
@@ -58,7 +58,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     focal_gamma = trial.suggest_float('focal_gamma', 0.5, 3.0)
     n_bins = trial.suggest_int('n_bins', 5, 20)
 
-    # ── Create train/val split ──
+    # -- Create train/val split --
     seed = 42
     train_split, val_split = random_split(train_df, test_size=0.2, random_state=seed)
     X_train, Y_train = prepare_data(train_split, model_tag)
@@ -72,7 +72,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
         all_train_labels.append(labels)
     all_train_labels = torch.cat(all_train_labels)
 
-    # ── Initialize model ──
+    # -- Initialize model --
     model = DCMFNet(NUM_MODALITIES, num_layers, modality_sizes, se_reduction=se_reduction, dropout=dropout)
 
     criterion = ImbalancedRegressionLoss(
@@ -84,7 +84,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     )
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
-    # ── Training loop (minimal, no printing) ──
+    # -- Training loop (minimal, no printing) --
     best_val_spearman = float('-inf')
 
     for epoch in range(num_epochs):
@@ -123,10 +123,10 @@ def print_best_params(study, model_tag):
     print(f"{'='*60}")
     print(f"  Spearman rho: {best.value:.4f}")
     print(f"\n  Copy these into training.py:")
-    print(f"  {'─'*40}")
+    print(f"  {'-'*40}")
     for key, value in best.params.items():
         print(f"  {key} = {repr(value)}")
-    print(f"  {'─'*40}\n")
+    print(f"  {'-'*40}\n")
 
 
 def save_visualizations(study, model_tag):
@@ -159,16 +159,16 @@ def save_visualizations(study, model_tag):
 
 
 if __name__ == "__main__":
-    # ── Load data ──
+    # -- Load data --
     df = pd.read_csv("catss_final_data.csv")
     df = df.dropna()
     print(f"Data shape: {df.shape}")
     modality_sizes = calculate_modality_sizes(df)
 
-    # Hold out test set — NOT used during tuning
+    # Hold out test set - NOT used during tuning
     train_df, test_df = random_split(df, test_size=0.25, random_state=42)
 
-    # ── Configuration ──
+    # -- Configuration --
     N_TRIALS = 50           # adjust based on compute budget
     MODEL_TAGS = ["Pos", "Neg"]
 
@@ -196,7 +196,7 @@ if __name__ == "__main__":
         )
         elapsed = (time.time() - start_time) / 60
 
-        # ── Results ──
+        # -- Results --
         n_pruned = len([t for t in study.trials 
                         if t.state == optuna.trial.TrialState.PRUNED])
         n_complete = len([t for t in study.trials 
