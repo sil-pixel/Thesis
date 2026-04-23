@@ -1,0 +1,43 @@
+{
+    "Pos" : {
+        "learning_rate" : 0.0033108816734408737,
+        "batch_size" : 4,
+        "num_epochs" : 28,
+        "weight_decay" : 0.000922228071529392,
+        "num_layers" : 6,
+        "dropout" : 0.34463142116715917,
+        "se_reduction" : 2,
+        "base_loss" : "huber",
+        "huber_delta" : 0.021179211788587164,
+        "focal_gamma" : 1.3495962555933831,
+        "n_bins" : 12
+
+    },
+    
+    "Neg" : {
+        "learning_rate" : 0.00023409356914897095,
+        "batch_size" : 6,
+        "num_epochs" : 17,
+        "weight_decay" : 1.0356284217948002e-05,
+        "num_layers" : 7,
+        "dropout" : 0.49990374396682713,
+        "se_reduction" : 5,
+        "base_loss" : "huber",
+        "huber_delta" : 0.05798614162210013,
+        "focal_gamma" : 1.5204850468742117,
+        "n_bins" : 19
+    }, 
+    "default": {
+        "learning_rate" : 1.82e-4,
+        "batch_size" : 8,
+        "num_epochs" : 15,
+        "weight_decay" : 1e-3,
+        "num_layers" : 5,
+        "dropout" : 0.5,
+        "se_reduction" : 2,
+        "base_loss" : "huber",
+        "huber_delta" : 0.05,
+        "focal_gamma" : 2.0,
+        "n_bins" : 10
+    }
+}

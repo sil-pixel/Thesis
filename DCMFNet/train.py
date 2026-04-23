@@ -29,13 +29,9 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from loss import ImbalancedRegressionLoss
 import re
 
-# Hyperparameters
-learning_rate = 1.82e-4
-batch_size = 8
-num_epochs = 15
-
-# Add regularization techniques such as dropout and weight decay to prevent overfitting, especially given the small batch size and number of epochs.
-weight_decay = 1e-3  # Example weight decay for L2 regularization
+# Load hyperparameters json
+with open("hyperparameters.json", "r") as f:
+    hyperparameters_json = json.load(f)
 
 # Initialize model parameters
 '''
@@ -44,8 +40,6 @@ weight_decay = 1e-3  # Example weight decay for L2 regularization
  but can check for 1-7 and compare the performance of the model.
 '''
 num_modalities = 9 
-num_layers = 5  # 5 is the default layers for now
-fusion_iterations = np.arange(1, 8)  # Check for 1 to 7 iterations for fusion
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -141,7 +135,7 @@ Output:
         train_dataloader: data loader containing the training data
         val_dataloader: data loader containing the validation data
 '''
-def create_cross_validation_data_loaders(df, seed, model_tag):
+def create_cross_validation_data_loaders(df, seed, model_tag, batch_size=batch_size):
     # attach the input and target modalities 
     train_df, val_df = random_split(df, test_size=0.2, random_state=seed)
     X_train, Y_train = prepare_data(train_df, model_tag)
@@ -304,9 +298,19 @@ Input:
     n_features_per_modality: List of number of features in each modality
     model_tag: tag to distinguihs between positive or negative schizophrenic symptom model
 Output:
-    None
+    model: trained model
+    train_losses: list of training losses over epochs
+    train_rmses: list of training RMSEs over epochs
+    val_rmses: list of validation RMSEs over epochs
+    train_spearmans: list of training Spearman rhos over epochs
+    val_spearmans: list of validation Spearman rhos over epochs
+    train_r2s: list of training R2s over epochs
+    val_r2s: list of validation R2s over epochs
+    val_preds: list of validation predictions
+    val_targets: list of validation targets
+    val_metrics: dictionary of validation metrics
 '''
-def train(train_df, seed, n_features_per_modality, model_tag):
+def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
     train_losses = []
     train_rmses = []
     val_rmses = []
@@ -317,16 +321,26 @@ def train(train_df, seed, n_features_per_modality, model_tag):
 
     all_training_labels = []
     # Create DataLoader
-    train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag)
+    train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag, batch_size=hyperparams["batch_size"])
     for inputs, labels in train_dataloader:
         all_training_labels.append(labels)
     all_training_labels = torch.cat(all_training_labels)
     # Initialize model
-    model = DCMFNet(num_modalities, num_layers, n_features_per_modality) 
+    model = DCMFNet(num_modalities, hyperparams["num_layers"], n_features_per_modality) 
     # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
-    criterion = ImbalancedRegressionLoss(all_training_labels, base_loss='huber', huber_delta=0.05)
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)  # Add weight decay for regularization
+    criterion = ImbalancedRegressionLoss(
+        all_train_labels,
+        n_bins=hyperparams["n_bins"],
+        focal_gamma=hyperparams["focal_gamma"],
+        base_loss=hyperparams["base_loss"],
+        huber_delta=hyperparams["huber_delta"]
+    )
+    optimizer = optim.Adam(model.parameters(), 
+    lr=hyperparams["learning_rate"], 
+    weight_decay=hyperparams["weight_decay"]
+    )  # Add weight decay for regularization
 
+    num_epochs = hyperparams["num_epochs"]
     # Training loop
     for epoch in range(num_epochs):
         print(f"\nEpoch {epoch+1}/{num_epochs}")
@@ -386,7 +400,7 @@ def train(train_df, seed, n_features_per_modality, model_tag):
 
 
 
-def evaluate_final_test(model, test_df, model_tag, seed):
+def evaluate_final_test(model, test_df, model_tag, seed, batch_size=batch_size):
     X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
     test_metrics, test_preds, test_targets = evaluate(model, test_dataloader)
@@ -413,10 +427,11 @@ if __name__ == "__main__":
             print(f"  Training {model_tag} symptom model")
             print(f"{'='*60}")
             start_time = time.time()
+            hyperparams = hyperparameters_json[model_tag]
 
             (model, train_losses, train_rmses, val_rmses, 
                 train_spearmans, val_spearmans, train_r2s, val_r2s,
-                val_preds, val_targets, val_metrics) = train(train_df, seed, modality_sizes, model_tag)
+                val_preds, val_targets, val_metrics) = train(train_df, seed, modality_sizes, model_tag, hyperparams)
 
             elapsed = (time.time() - start_time) / 60
             print(f"\nTime taken for {model_tag} model: {elapsed:.2f} minutes")
@@ -426,4 +441,4 @@ if __name__ == "__main__":
                                     train_r2s, val_r2s, seed, model_tag)
             plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
                                         seed, model_tag, split_name="val")
-            #evaluate_final_test(model, test_df, model_tag, seed)
+            evaluate_final_test(model, test_df, model_tag, seed, batch_size=hyperparams["batch_size"])
