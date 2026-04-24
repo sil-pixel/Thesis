@@ -11,6 +11,7 @@ Hyperparameters mentioned in the paper:
 - Number of epochs: 15
 - Optimizer: Adam
 - Loss function: Sigmoid Cross-entropy loss
+- Number of Layers: 5
 '''
 
 import torch
@@ -35,11 +36,9 @@ with open("hyperparameters.json", "r") as f:
 
 # Initialize model parameters
 '''
-7 modalities (input features)
-5 iterative fusion layers (number of iterations for fusion) are found optimal in the paper,
- but can check for 1-7 and compare the performance of the model.
+9 modalities (input features)
 '''
-num_modalities = 9 
+NUM_MODALITIES = 9 
 
 '''
 Split the data into test and train sets using twin_id as the identifier and return the train and test dataframes with input and target modalities.
@@ -326,7 +325,13 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         all_training_labels.append(labels)
     all_training_labels = torch.cat(all_training_labels)
     # Initialize model
-    model = DCMFNet(num_modalities, hyperparams["num_layers"], n_features_per_modality) 
+    model = DCMFNet(
+        NUM_MODALITIES, 
+        hyperparams["num_layers"], 
+        n_features_per_modality, 
+        se_reduction=hyperparams["se_reduction"],
+        dropout=hyperparams["dropout"]
+    ) 
     # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
     criterion = ImbalancedRegressionLoss(
         all_train_labels,
@@ -335,9 +340,10 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         base_loss=hyperparams["base_loss"],
         huber_delta=hyperparams["huber_delta"]
     )
-    optimizer = optim.Adam(model.parameters(), 
-    lr=hyperparams["learning_rate"], 
-    weight_decay=hyperparams["weight_decay"]
+    optimizer = optim.Adam(
+        model.parameters(), 
+        lr=hyperparams["learning_rate"], 
+        weight_decay=hyperparams["weight_decay"]
     )  # Add weight decay for regularization
 
     num_epochs = hyperparams["num_epochs"]
