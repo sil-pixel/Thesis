@@ -37,7 +37,7 @@ NUM_MODALITIES = 9
 
 def objective(trial, train_df, modality_sizes, model_tag):
     '''
-    Single Optuna trial: suggest hyperparameters, train, return best val Spearman rho.
+    Single Optuna trial: suggest hyperparameters, train, return best val RMSE.
     '''
     # -- Suggest hyperparameters --
     
@@ -51,6 +51,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     num_layers = trial.suggest_int('num_layers', 1, 7)
     dropout = trial.suggest_float('dropout', 0.1, 0.5)
     se_reduction = trial.suggest_int('se_reduction', 2, 8)
+    hidden_dim_min = trial.suggest_int('hidden_dim_min', 2, 16)
 
     # Loss function hyperparameters
     base_loss = trial.suggest_categorical('base_loss', ['mse', 'huber'])
@@ -73,7 +74,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     all_train_labels = torch.cat(all_train_labels)
 
     # -- Initialize model --
-    model = DCMFNet(NUM_MODALITIES, num_layers, modality_sizes, se_reduction=se_reduction, dropout=dropout)
+    model = DCMFNet(NUM_MODALITIES, num_layers, modality_sizes, se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min)
 
     criterion = ImbalancedRegressionLoss(
         all_train_labels,
@@ -85,7 +86,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
     # -- Training loop (minimal, no printing) --
-    best_val_spearman = float('-inf')
+    best_val_rmse = float('inf')
 
     for epoch in range(num_epochs):
         model.train()
@@ -99,34 +100,34 @@ def objective(trial, train_df, modality_sizes, model_tag):
 
         # Evaluate using training.py's evaluate function
         val_metrics, _, _ = evaluate(model, val_dataloader)
-        val_spearman = val_metrics['spearman_rho']
+        val_rmse = val_metrics['rmse']
 
-        # Handle NaN (constant predictions)
-        if np.isnan(val_spearman):
-            val_spearman = -1.0
-
-        best_val_spearman = max(best_val_spearman, val_spearman)
+        best_val_rmse = min(best_val_rmse, val_rmse)
 
         # Report to Optuna for pruning
-        trial.report(val_spearman, epoch)
+        trial.report(val_rmse, epoch)
         if trial.should_prune():
             raise TrialPruned()
 
-    return best_val_spearman
+    return best_val_rmse
 
 
 def print_best_params(study, model_tag):
-    '''Print the best hyperparameters in a copy-paste format for training.py'''
+    '''Print and save the best hyperparameters in a copy-paste format for training.py'''
     best = study.best_trial
     print(f"\n{'='*60}")
     print(f"  Best {model_tag} trial")
     print(f"{'='*60}")
-    print(f"  Spearman rho: {best.value:.4f}")
+    print(f"  RMSE: {best.value:.4f}")
     print(f"\n  Copy these into training.py:")
     print(f"  {'-'*40}")
     for key, value in best.params.items():
         print(f"  {key} = {repr(value)}")
     print(f"  {'-'*40}\n")
+    with open(f'{model_tag}_best_params.txt', 'w') as f:
+        for key, value in best.params.items():
+            f.write(f"{key} : {repr(value)}\n")
+    print(f"Best hyperparameters saved to '{model_tag}_best_params.txt'")
 
 
 def save_visualizations(study, model_tag):
@@ -179,7 +180,7 @@ if __name__ == "__main__":
 
         # Create study
         study = optuna.create_study(
-            direction='maximize',       # maximize Spearman rho
+            direction='minimize',       # minimize RMSE
             study_name=f'DCMFNet_{model_tag}',
             pruner=optuna.pruners.MedianPruner(
                 n_startup_trials=5,     # run first 5 trials fully
