@@ -38,6 +38,7 @@
         "base_loss" : "huber",
         "huber_delta" : 0.05,
         "focal_gamma" : 2.0,
-        "n_bins" : 10
+        "n_bins" : 10,
+        "hidden_dim_min": 8
     }
 }
