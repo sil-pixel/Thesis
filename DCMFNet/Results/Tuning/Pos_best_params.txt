@@ -1,0 +1,12 @@
+learning_rate : 0.00016915209942403402
+batch_size : 4
+num_epochs : 23
+weight_decay : 1.5680908594903703e-05
+num_layers : 2
+dropout : 0.41408286004642436
+se_reduction : 3
+hidden_dim_min : 8
+base_loss : 'huber'
+huber_delta : 0.020573324907960495
+focal_gamma : 2.395966631523962
+n_bins : 16

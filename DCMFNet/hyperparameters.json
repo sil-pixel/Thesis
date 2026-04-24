@@ -1,31 +1,33 @@
 {
     "Pos" : {
-        "learning_rate" : 0.0033108816734408737,
+        "learning_rate" : 0.00016915209942403402,
         "batch_size" : 4,
-        "num_epochs" : 28,
-        "weight_decay" : 0.000922228071529392,
-        "num_layers" : 6,
-        "dropout" : 0.34463142116715917,
-        "se_reduction" : 2,
+        "num_epochs" : 23,
+        "weight_decay" : 1.5680908594903703e-05,
+        "num_layers" : 2,
+        "dropout" : 0.41408286004642436,
+        "se_reduction" : 3,
+        "hidden_dim_min" : 8,
         "base_loss" : "huber",
-        "huber_delta" : 0.021179211788587164,
-        "focal_gamma" : 1.3495962555933831,
-        "n_bins" : 12
-
+        "huber_delta" : 0.020573324907960495,
+        "focal_gamma" : 2.395966631523962,
+        "n_bins" : 16        
     },
     
     "Neg" : {
-        "learning_rate" : 0.00023409356914897095,
-        "batch_size" : 6,
-        "num_epochs" : 17,
-        "weight_decay" : 1.0356284217948002e-05,
+        "learning_rate" : 0.0005516856707508433,
+        "batch_size" : 4,
+        "num_epochs" : 14,
+        "weight_decay" : 0.0007782956577174175,
         "num_layers" : 7,
-        "dropout" : 0.49990374396682713,
-        "se_reduction" : 5,
+        "dropout" : 0.4042154924389091,
+        "se_reduction" : 4,
+        "hidden_dim_min" : 11,
         "base_loss" : "huber",
-        "huber_delta" : 0.05798614162210013,
-        "focal_gamma" : 1.5204850468742117,
-        "n_bins" : 19
+        "huber_delta" : 0.10348155508077449,
+        "focal_gamma" : 2.304350856101485,
+        "n_bins" : 10
+        
     }, 
     "default": {
         "learning_rate" : 1.82e-4,

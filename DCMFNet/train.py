@@ -29,6 +29,7 @@ from scipy.stats import spearmanr, pearsonr
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from loss import ImbalancedRegressionLoss
 import re
+import json
 
 # Load hyperparameters json
 with open("hyperparameters.json", "r") as f:
@@ -134,7 +135,7 @@ Output:
         train_dataloader: data loader containing the training data
         val_dataloader: data loader containing the validation data
 '''
-def create_cross_validation_data_loaders(df, seed, model_tag, batch_size=batch_size):
+def create_cross_validation_data_loaders(df, seed, model_tag, batch_size):
     # attach the input and target modalities 
     train_df, val_df = random_split(df, test_size=0.2, random_state=seed)
     X_train, Y_train = prepare_data(train_df, model_tag)
@@ -330,11 +331,12 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         hyperparams["num_layers"], 
         n_features_per_modality, 
         se_reduction=hyperparams["se_reduction"],
-        dropout=hyperparams["dropout"]
+        dropout=hyperparams["dropout"],
+        hidden_dim_min=hyperparams["hidden_dim_min"]
     ) 
     # using a custom loss function that has inverse frequency weighting and focal modulation to handle the imbalance in the regression labels and focus on harder samples
     criterion = ImbalancedRegressionLoss(
-        all_train_labels,
+        all_training_labels,
         n_bins=hyperparams["n_bins"],
         focal_gamma=hyperparams["focal_gamma"],
         base_loss=hyperparams["base_loss"],
@@ -406,7 +408,7 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
 
 
 
-def evaluate_final_test(model, test_df, model_tag, seed, batch_size=batch_size):
+def evaluate_final_test(model, test_df, model_tag, seed, batch_size):
     X_test, Y_test = prepare_data(test_df, model_tag)
     test_dataloader = create_dataloader(X_test, Y_test, batch_size)
     test_metrics, test_preds, test_targets = evaluate(model, test_dataloader)
