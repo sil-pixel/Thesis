@@ -374,8 +374,7 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         mode='min',                    # minimize val RMSE
         patience=scheduler_patience,   # wait this many epochs before reducing
         factor=scheduler_factor,       # multiply LR by this when reducing
-        min_lr=1e-6,                   # don't go below this
-        verbose=True
+        min_lr=1e-6                    # don't go below this
     )
 
     # Early stopping setup
@@ -421,10 +420,6 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
 
         avg_loss = total_loss / len(train_dataloader)
 
-        # Track current learning rate
-        current_lr = optimizer.param_groups[0]['lr']
-        learning_rates.append(current_lr)
-
         # Evaluate on both sets
         print("  [Train]", end="")
         train_metrics, _, _ = evaluate(model, train_dataloader)
@@ -436,7 +431,7 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         # Step the scheduler based on validation RMSE
         scheduler.step(val_rmse)
 
-        print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | LR: {current_lr:.2e} | "
+        print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | LR: {optimizer.param_groups[0]['lr']:.2e} | "
               f"Train rho: {train_metrics['spearman_rho']:.4f}, Val rho: {val_metrics['spearman_rho']:.4f} | "
               f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f} | "
               f"Train RMSE: {train_metrics['rmse']:.4f}, Val RMSE: {val_rmse:.4f} | "
@@ -464,6 +459,8 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         val_spearmans.append(val_metrics['spearman_rho'])
         train_r2s.append(train_metrics['r2'])
         val_r2s.append(val_metrics['r2'])
+        learning_rates.append(optimizer.param_groups[0]['lr'])
+
 
     # Restore best model
     if best_model_state is not None:
@@ -496,7 +493,7 @@ if __name__ == "__main__":
     modality_sizes = calculate_modality_sizes(df)
     #df = df.sample(frac=0.1, random_state=42)
     #print(f"Data shape: {df.shape}")
-    seeds = [42] #[42, 43, 44, 45, 46]  # Example seeds for multiple runs
+    seeds = [42, 43, 44, 45, 46]  # Example seeds for multiple runs
     for seed in seeds:
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
