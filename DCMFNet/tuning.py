@@ -4,14 +4,16 @@ Author: Silpa Soni Nallacheruvu
 Date: 22/04/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
 
-This script imports from train.py and model.py to run multiple training trials with different hyperparameters suggested by Optuna.
+This script imports from train.py and model.py to run multiple training trials 
+with different hyperparameters suggested by Optuna.
 
 Usage:
     pip install optuna plotly
     python tuning.py
 
 Tunes: learning_rate, batch_size, num_epochs, num_layers, weight_decay,
-       dropout, base_loss, huber_delta, focal_gamma, n_bins, se_reduction
+       dropout, base_loss, huber_delta, focal_gamma, n_bins, se_reduction,
+       scheduler_patience, scheduler_factor, early_stopping_patience
 '''
 
 import torch
@@ -19,6 +21,7 @@ import torch.optim as optim
 import numpy as np
 import pandas as pd
 import time
+import copy
 import optuna
 from optuna.exceptions import TrialPruned
 
@@ -37,7 +40,8 @@ NUM_MODALITIES = 9
 
 def objective(trial, train_df, modality_sizes, model_tag):
     '''
-    Single Optuna trial: suggest hyperparameters, train, return best val RMSE.
+    Single Optuna trial: suggest hyperparameters, train with LR scheduler 
+    and early stopping, return best val RMSE.
     '''
     # -- Suggest hyperparameters --
     
@@ -59,6 +63,13 @@ def objective(trial, train_df, modality_sizes, model_tag):
     focal_gamma = trial.suggest_float('focal_gamma', 0.5, 3.0)
     n_bins = trial.suggest_int('n_bins', 5, 20)
 
+    # Scheduler hyperparameters
+    scheduler_patience = trial.suggest_int('scheduler_patience', 2, 5)
+    scheduler_factor = trial.suggest_float('scheduler_factor', 0.3, 0.7)
+
+    # Early stopping hyperparameters
+    early_stopping_patience = trial.suggest_int('early_stopping_patience', 3, 8)
+
     # -- Create train/val split --
     seed = 42
     train_split, val_split = random_split(train_df, test_size=0.2, random_state=seed)
@@ -74,7 +85,10 @@ def objective(trial, train_df, modality_sizes, model_tag):
     all_train_labels = torch.cat(all_train_labels)
 
     # -- Initialize model --
-    model = DCMFNet(NUM_MODALITIES, num_layers, modality_sizes, se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min)
+    model = DCMFNet(
+        NUM_MODALITIES, num_layers, modality_sizes,
+        se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min
+    )
 
     criterion = ImbalancedRegressionLoss(
         all_train_labels,
@@ -85,8 +99,18 @@ def objective(trial, train_df, modality_sizes, model_tag):
     )
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
-    # -- Training loop (minimal, no printing) --
+    # Learning rate scheduler
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='min',
+        patience=scheduler_patience,
+        factor=scheduler_factor,
+        min_lr=1e-6
+    )
+
+    # -- Training loop with early stopping --
     best_val_rmse = float('inf')
+    patience_counter = 0
 
     for epoch in range(num_epochs):
         model.train()
@@ -98,11 +122,21 @@ def objective(trial, train_df, modality_sizes, model_tag):
             loss.backward()
             optimizer.step()
 
-        # Evaluate using training.py's evaluate function
+        # Evaluate
         val_metrics, _, _ = evaluate(model, val_dataloader)
         val_rmse = val_metrics['rmse']
 
-        best_val_rmse = min(best_val_rmse, val_rmse)
+        # Step scheduler
+        scheduler.step(val_rmse)
+
+        # Early stopping check
+        if val_rmse < best_val_rmse:
+            best_val_rmse = val_rmse
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            if patience_counter >= early_stopping_patience:
+                break
 
         # Report to Optuna for pruning
         trial.report(val_rmse, epoch)
@@ -113,13 +147,13 @@ def objective(trial, train_df, modality_sizes, model_tag):
 
 
 def print_best_params(study, model_tag):
-    '''Print and save the best hyperparameters in a copy-paste format for training.py'''
+    '''Print and save the best hyperparameters.'''
     best = study.best_trial
     print(f"\n{'='*60}")
     print(f"  Best {model_tag} trial")
     print(f"{'='*60}")
     print(f"  RMSE: {best.value:.4f}")
-    print(f"\n  Copy these into training.py:")
+    print(f"\n  Copy these into hyperparameters.json:")
     print(f"  {'-'*40}")
     for key, value in best.params.items():
         print(f"  {key} = {repr(value)}")
@@ -170,7 +204,7 @@ if __name__ == "__main__":
     train_df, test_df = random_split(df, test_size=0.25, random_state=42)
 
     # -- Configuration --
-    N_TRIALS = 50           # adjust based on compute budget
+    N_TRIALS = 50
     MODEL_TAGS = ["Pos", "Neg"]
 
     for model_tag in MODEL_TAGS:
@@ -183,8 +217,8 @@ if __name__ == "__main__":
             direction='minimize',       # minimize RMSE
             study_name=f'DCMFNet_{model_tag}',
             pruner=optuna.pruners.MedianPruner(
-                n_startup_trials=5,     # run first 5 trials fully
-                n_warmup_steps=5        # don't prune before epoch 5
+                n_startup_trials=5,
+                n_warmup_steps=5
             )
         )
 

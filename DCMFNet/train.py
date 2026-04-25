@@ -30,6 +30,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from loss import ImbalancedRegressionLoss
 import re
 import json
+import copy
 
 # Load hyperparameters json
 with open("hyperparameters.json", "r") as f:
@@ -169,7 +170,9 @@ def evaluate(model, dataloader):
     if np.std(all_predictions) < 1e-6:
         print("WARNING: predictions are constant, correlation undefined")
         spearman_rho = float('nan')
+        spearman_p_value = float('nan')
         pearson_r = float('nan')
+        pearson_p_value = float('nan')
     else:
         spearman_rho, spearman_p_value = spearmanr(all_targets, all_predictions)
         pearson_r, pearson_p_value = pearsonr(all_targets, all_predictions)
@@ -248,9 +251,9 @@ Plot training curves: Loss, MAE, Spearman rho, and R2 over epochs.
 '''
 def plot_training_curves(train_losses, train_rmses, val_rmses, 
                          train_spearmans, val_spearmans,
-                         train_r2s, val_r2s, seed, model_tag):
+                         train_r2s, val_r2s, learning_rates, seed, model_tag):
     epochs = range(1, len(train_losses) + 1)
-    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    fig, axes = plt.subplots(2, 3, figsize=(20, 10))
     
     # Training loss
     axes[0, 0].plot(epochs, train_losses, label='Training Loss')
@@ -259,7 +262,7 @@ def plot_training_curves(train_losses, train_rmses, val_rmses,
     axes[0, 0].set_title('Training Loss')
     axes[0, 0].legend()
  
-    # MAE
+    # RMSE
     axes[0, 1].plot(epochs, train_rmses, label='Training RMSE')
     axes[0, 1].plot(epochs, val_rmses, label='Validation RMSE')
     axes[0, 1].set_xlabel('Epochs')
@@ -268,20 +271,31 @@ def plot_training_curves(train_losses, train_rmses, val_rmses,
     axes[0, 1].legend()
  
     # Spearman rho
-    axes[1, 0].plot(epochs, train_spearmans, label='Training Spearman rho')
-    axes[1, 0].plot(epochs, val_spearmans, label='Validation Spearman rho')
-    axes[1, 0].set_xlabel('Epochs')
-    axes[1, 0].set_ylabel('Spearman rho')
-    axes[1, 0].set_title('Training and Validation Spearman rho')
-    axes[1, 0].legend()
+    axes[0, 2].plot(epochs, train_spearmans, label='Training Spearman rho')
+    axes[0, 2].plot(epochs, val_spearmans, label='Validation Spearman rho')
+    axes[0, 2].set_xlabel('Epochs')
+    axes[0, 2].set_ylabel('Spearman rho')
+    axes[0, 2].set_title('Training and Validation Spearman rho')
+    axes[0, 2].legend()
  
     # R2
-    axes[1, 1].plot(epochs, train_r2s, label='Training R2')
-    axes[1, 1].plot(epochs, val_r2s, label='Validation R2')
+    axes[1, 0].plot(epochs, train_r2s, label='Training R2')
+    axes[1, 0].plot(epochs, val_r2s, label='Validation R2')
+    axes[1, 0].set_xlabel('Epochs')
+    axes[1, 0].set_ylabel('R2')
+    axes[1, 0].set_title('Training and Validation R2')
+    axes[1, 0].legend()
+
+    # Learning rate
+    axes[1, 1].plot(epochs, learning_rates, label='Learning Rate', color='green')
     axes[1, 1].set_xlabel('Epochs')
-    axes[1, 1].set_ylabel('R2')
-    axes[1, 1].set_title('Training and Validation R2')
+    axes[1, 1].set_ylabel('Learning Rate')
+    axes[1, 1].set_title('Learning Rate Schedule')
+    axes[1, 1].set_yscale('log')
     axes[1, 1].legend()
+
+    # Hide unused subplot
+    axes[1, 2].axis('off')
     
     plt.suptitle(f'{model_tag} Model - Seed {seed}', fontsize=14)
     plt.tight_layout()
@@ -318,13 +332,17 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
     val_spearmans = []
     train_r2s = []
     val_r2s = []
+    learning_rates = []
 
     all_training_labels = []
     # Create DataLoader
-    train_dataloader, val_dataloader = create_cross_validation_data_loaders(train_df, seed, model_tag, batch_size=hyperparams["batch_size"])
+    train_dataloader, val_dataloader = create_cross_validation_data_loaders(
+        train_df, seed, model_tag, batch_size=hyperparams["batch_size"]
+    )
     for inputs, labels in train_dataloader:
         all_training_labels.append(labels)
     all_training_labels = torch.cat(all_training_labels)
+
     # Initialize model
     model = DCMFNet(
         NUM_MODALITIES, 
@@ -346,9 +364,29 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         model.parameters(), 
         lr=hyperparams["learning_rate"], 
         weight_decay=hyperparams["weight_decay"]
-    )  # Add weight decay for regularization
+    )
+
+    # Learning rate scheduler: reduce LR when val RMSE plateaus
+    scheduler_patience = hyperparams.get("scheduler_patience", 3)
+    scheduler_factor = hyperparams.get("scheduler_factor", 0.5)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, 
+        mode='min',                    # minimize val RMSE
+        patience=scheduler_patience,   # wait this many epochs before reducing
+        factor=scheduler_factor,       # multiply LR by this when reducing
+        min_lr=1e-6,                   # don't go below this
+        verbose=True
+    )
+
+    # Early stopping setup
+    early_stopping_patience = hyperparams.get("early_stopping_patience", 5)
+    best_val_rmse = float('inf')
+    best_model_state = None
+    patience_counter = 0
+    best_epoch = 0
 
     num_epochs = hyperparams["num_epochs"]
+
     # Training loop
     for epoch in range(num_epochs):
         print(f"\nEpoch {epoch+1}/{num_epochs}")
@@ -383,29 +421,62 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
 
         avg_loss = total_loss / len(train_dataloader)
 
+        # Track current learning rate
+        current_lr = optimizer.param_groups[0]['lr']
+        learning_rates.append(current_lr)
+
         # Evaluate on both sets
         print("  [Train]", end="")
         train_metrics, _, _ = evaluate(model, train_dataloader)
         print("  [Val]  ", end="")
         val_metrics, val_preds, val_targets = evaluate(model, val_dataloader)
-        print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | "
+
+        val_rmse = val_metrics['rmse']
+
+        # Step the scheduler based on validation RMSE
+        scheduler.step(val_rmse)
+
+        print(f"  Epoch [{epoch+1}/{num_epochs}] Loss: {avg_loss:.4f} | LR: {current_lr:.2e} | "
               f"Train rho: {train_metrics['spearman_rho']:.4f}, Val rho: {val_metrics['spearman_rho']:.4f} | "
-              f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f} |"
-              f"Train RMSE: {train_metrics['rmse']:.4f}, Val RMSE: {val_metrics['rmse']:.4f} |"
+              f"Train R2: {train_metrics['r2']:.4f}, Val R2: {val_metrics['r2']:.4f} | "
+              f"Train RMSE: {train_metrics['rmse']:.4f}, Val RMSE: {val_rmse:.4f} | "
               f"Train Pearson r: {train_metrics['pearson_r']:.4f}, Val Pearson r: {val_metrics['pearson_r']:.4f}")
- 
+
+        # Early stopping check
+        if val_rmse < best_val_rmse:
+            best_val_rmse = val_rmse
+            best_model_state = copy.deepcopy(model.state_dict())
+            best_epoch = epoch + 1
+            patience_counter = 0
+            print(f"  >> New best val RMSE: {best_val_rmse:.4f}")
+        else:
+            patience_counter += 1
+            print(f"  >> No improvement for {patience_counter}/{early_stopping_patience} epochs")
+            if patience_counter >= early_stopping_patience:
+                print(f"\n  Early stopping at epoch {epoch+1}. "
+                      f"Best val RMSE: {best_val_rmse:.4f} at epoch {best_epoch}")
+                break
+
         train_losses.append(avg_loss)
         train_rmses.append(train_metrics['rmse'])
-        val_rmses.append(val_metrics['rmse'])
+        val_rmses.append(val_rmse)
         train_spearmans.append(train_metrics['spearman_rho'])
         val_spearmans.append(val_metrics['spearman_rho'])
         train_r2s.append(train_metrics['r2'])
         val_r2s.append(val_metrics['r2'])
- 
+
+    # Restore best model
+    if best_model_state is not None:
+        model.load_state_dict(best_model_state)
+        print(f"\n  Restored best model from epoch {best_epoch} (val RMSE: {best_val_rmse:.4f})")
+
+    # Re-evaluate with best model to get final predictions
+    print("  [Final Val evaluation with best model]")
+    val_metrics, val_preds, val_targets = evaluate(model, val_dataloader)
+
     return (model, train_losses, train_rmses, val_rmses, 
             train_spearmans, val_spearmans, train_r2s, val_r2s,
-            val_preds, val_targets, val_metrics)
-
+            val_preds, val_targets, val_metrics, learning_rates)
 
 
 def evaluate_final_test(model, test_df, model_tag, seed, batch_size):
@@ -416,6 +487,7 @@ def evaluate_final_test(model, test_df, model_tag, seed, batch_size):
           f'Spearman rho: {test_metrics["spearman_rho"]:.4f}')
     plot_predicted_vs_actual(test_preds, test_targets, test_metrics, seed, model_tag, split_name="test")
     return test_metrics
+
 
 if __name__ == "__main__":
     df = pd.read_csv("catss_final_data.csv")
@@ -439,14 +511,17 @@ if __name__ == "__main__":
 
             (model, train_losses, train_rmses, val_rmses, 
                 train_spearmans, val_spearmans, train_r2s, val_r2s,
-                val_preds, val_targets, val_metrics) = train(train_df, seed, modality_sizes, model_tag, hyperparams)
+                val_preds, val_targets, val_metrics, learning_rates) = train(
+                    train_df, seed, modality_sizes, model_tag, hyperparams
+                )
 
             elapsed = (time.time() - start_time) / 60
             print(f"\nTime taken for {model_tag} model: {elapsed:.2f} minutes")
 
             plot_training_curves(train_losses, train_rmses, val_rmses,
                                     train_spearmans, val_spearmans,
-                                    train_r2s, val_r2s, seed, model_tag)
+                                    train_r2s, val_r2s, learning_rates, seed, model_tag)
             plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
                                         seed, model_tag, split_name="val")
-            evaluate_final_test(model, test_df, model_tag, seed, batch_size=hyperparams["batch_size"])
+            evaluate_final_test(model, test_df, model_tag, seed, 
+                                batch_size=hyperparams["batch_size"])
