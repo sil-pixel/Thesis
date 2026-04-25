@@ -1,0 +1,218 @@
+Data shape after dropping na: (4033, 125)
+
+============================================================
+  Benchmarking Pos symptom model (5 seeds)
+============================================================
+Input columns: ['SUD15_Cigarettes15', 'SUD15_Snuff15', 'SUD15_Alcohol15', 'SUD15_Cannabis15', 'SUD15_Painkillers_opioids15', 'SCZ15_Spied15', 'SCZ15_Others_Read_thoughts15', 'SCZ15_Special_messages15', 'SCZ15_Special_powers15', 'SCZ15_Under_control_special_power15', 'SCZ15_Read_others_minds15', 'SCZ15_Seen_hallucinations15', 'SCZ15_Extreme_excitement15', 'SCZ15_Irritable15', 'SCZ15_Unrealistic_abilities15', 'SCZ15_Not_tired15', 'SCZ15_Too_much_energy15', 'SCZ15_Racing_thoughts15', 'SCZ15_Talking_fast15', 'SCZ15_Sexual_inappropriate15', 'SCZ15_Rage_attacks15', 'SCZ15_Hear_voices15', 'SCZ15_headaches15', 'SCZ15_worry15', 'SCZ15_unhappy15', 'SCZ15_lose_confidence15', 'SCZ15_easily_scared15', 'ACE15_bullied_often15', 'ACE15_tease_bullying15', 'ACE15_emotional_bullying15', 'ACE15_rumours_bullying15', 'ACE15_bullying_by_num15', 'ACE15_bullying_time15', 'SES_birth_country_mother', 'SES_education_mother', 'SES_birth_country_father', 'SES_education_father', 'SUD18_cigarettes18', 'SUD18_alcohol_often18', 'SUD18_snuff18', 'SUD18_drugs_often18', 'ACE18_emotional_abuse18', 'ACE18_witness_crime18', 'ACE18_hate_crime18', 'SEX', 'ADHD9_fail_close_attention9', 'ADHD9_difficulty_with_attention9', 'ADHD9_not_listening9', 'ADHD9_difficulty_following_instructions9', 'ADHD9_difficulty_organizing_tasks9', 'ADHD9_avoid_mental_effort_tasks9', 'ADHD9_often_lose_things9', 'ADHD9_easily_distracted9', 'ADHD9_often_forgetful9', 'ADHD9_difficulty_hold_still9', 'ADHD9_often_move9', 'ADHD9_often_run9', 'ADHD9_difficulty_calm9', 'ADHD9_often_motor9', 'ADHD9_talk_excess9', 'ADHD9_often_blurt_out9', 'ADHD9_difficulty_waiting9', 'ADHD9_often_interrupt9', 'ADHD9_easily_bored9', 'ASD9_delay_language9', 'ASD9_difficulty_converse9', 'ASD9_repeat_words9', 'ASD9_difficulty_pretend_play9', 'ASD9_talk_too_high_low9', 'ASD9_difficulty_on_track9', 'ASD9_difficulty_express9', 'ASD9_difficulty_socialize9', 'ASD9_uninterested_sharing9', 'ASD9_own_terms9', 'ASD9_difficulty_expect_behavior9', 'ASD9_easily_influenced9', 'ASD9_absorbed_own9', 'ASD9_absorbed_problems9', 'ASD9_strange_movements9', 'ASD9_absorbed_details9', 'ASD9_dislike_change9', 'SCZ15_PROD_seen_hallucinations9', 'SUD15_OtherDrugs15', 'ACE15_other_bullying15', 'ACE18_other_abuse18', 'PRS_Amygdala_excitatory', 'PRS_Cerebellar_inhibitory', 'PRS_CGE_interneuron', 'PRS_Deep_layer_corticothalamic', 'PRS_Deep_layer_intratelencepha', 'PRS_Eccentric_medium_spiny_neu', 'PRS_Hippocampal_CA1_3', 'PRS_Hippocampal_CA4', 'PRS_Hippocampal_dentate_gyrus', 'PRS_LAMP5_LHX6_and_Chandelier', 'PRS_Medium_spiny_neuron', 'PRS_MGE_interneuron', 'PRS_Miscellaneous', 'PRS_Thalamic_excitatory', 'PRS_Upper_layer_intratelenceph', 'PRS_all', 'batch_GSA3_x_PC1', 'batch_GSA3_x_PC2', 'batch_PSYC_x_PC1', 'batch_PSYC_x_PC2']
+Target column: SCZ18_Pos_Norm
+
+count of input columns :105
+
+  Seed 42...
+Train: 3005 rows (2017 IDs),Test: 1028 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 42): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001335 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4979
+[LightGBM] [Info] Number of data points in the train set: 3005, number of used features: 104
+[LightGBM] [Info] Start training from score 0.131563
+
+  Seed 43...
+Train: 3023 rows (2017 IDs),Test: 1010 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 43): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001428 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4973
+[LightGBM] [Info] Number of data points in the train set: 3023, number of used features: 104
+[LightGBM] [Info] Start training from score 0.131830
+
+  Seed 44...
+Train: 3035 rows (2017 IDs),Test: 998 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 44): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001382 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4974
+[LightGBM] [Info] Number of data points in the train set: 3035, number of used features: 104
+[LightGBM] [Info] Start training from score 0.131746
+
+  Seed 45...
+Train: 3018 rows (2017 IDs),Test: 1015 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 45): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001330 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4981
+[LightGBM] [Info] Number of data points in the train set: 3018, number of used features: 104
+[LightGBM] [Info] Start training from score 0.133078
+
+  Seed 46...
+Train: 3012 rows (2017 IDs),Test: 1021 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 46): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001363 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4979
+[LightGBM] [Info] Number of data points in the train set: 3012, number of used features: 104
+[LightGBM] [Info] Start training from score 0.132701
+
+Total time for Pos: 73.3 seconds
+
+====================================================================================================
+  Pos Symptom Model - Benchmark Results (mean ± std across seeds)
+====================================================================================================
+  Model                                    RMSE             R2   Spearman rho      Pearson r
+  --------------------------------------------------------------------------------------
+  LassoCV                         0.0871±0.0017  0.2614±0.0192  0.4925±0.0186  0.5132±0.0181
+  LassoLarsCV                     0.0871±0.0017  0.2614±0.0193  0.4923±0.0187  0.5131±0.0182
+  ElasticNetCV                    0.0871±0.0017  0.2614±0.0192  0.4925±0.0186  0.5132±0.0181
+  LassoLarsIC                     0.0871±0.0017  0.2613±0.0194  0.4923±0.0190  0.5130±0.0182
+  LarsCV                          0.0872±0.0019  0.2592±0.0207  0.4909±0.0182  0.5110±0.0197
+  BayesianRidge                   0.0874±0.0017  0.2553±0.0211  0.4858±0.0223  0.5068±0.0193
+  RidgeCV                         0.0880±0.0016  0.2459±0.0216  0.4780±0.0216  0.4998±0.0186
+  KernelRidge                     0.0881±0.0017  0.2440±0.0208  0.4746±0.0208  0.4986±0.0178
+  Ridge                           0.0882±0.0016  0.2419±0.0209  0.4745±0.0210  0.4969±0.0178
+  HuberRegressor                  0.0883±0.0019  0.2402±0.0223  0.4788±0.0202  0.4995±0.0194
+  LinearRegression                0.0884±0.0017  0.2393±0.0212  0.4728±0.0215  0.4949±0.0179
+  TransformedTargetRegressor      0.0884±0.0017  0.2393±0.0212  0.4728±0.0215  0.4949±0.0179
+  Lars                            0.0886±0.0019  0.2357±0.0221  0.4705±0.0206  0.4927±0.0184
+  GradientBoostingRegressor       0.0890±0.0018  0.2294±0.0186  0.4613±0.0154  0.4810±0.0182
+  SGDRegressor                    0.0890±0.0021  0.2280±0.0291  0.4690±0.0210  0.4943±0.0199
+  OrthogonalMatchingPursuitCV     0.0892±0.0018  0.2246±0.0231  0.4629±0.0176  0.4755±0.0223
+  OrthogonalMatchingPursuit       0.0892±0.0018  0.2246±0.0231  0.4629±0.0176  0.4755±0.0223
+  RandomForestRegressor           0.0894±0.0015  0.2214±0.0211  0.4554±0.0132  0.4717±0.0218
+  TweedieRegressor                0.0900±0.0015  0.2110±0.0156  0.4580±0.0212  0.4779±0.0198
+  ExtraTreesRegressor             0.0901±0.0017  0.2091±0.0261  0.4461±0.0181  0.4644±0.0234
+  HistGradientBoostingRegressor   0.0907±0.0016  0.1992±0.0151  0.4384±0.0056  0.4574±0.0130
+  LGBMRegressor                   0.0909±0.0017  0.1958±0.0176  0.4333±0.0103  0.4543±0.0167
+  SVR                             0.0920±0.0008  0.1756±0.0153  0.4083±0.0079  0.4357±0.0086
+  NuSVR                           0.0930±0.0015  0.1577±0.0271  0.4225±0.0139  0.4436±0.0208
+  BaggingRegressor                0.0944±0.0022  0.1322±0.0292  0.3740±0.0213  0.3930±0.0285
+  PoissonRegressor                0.0956±0.0012  0.1098±0.0083  0.4352±0.0215  0.4481±0.0235
+  LinearSVR                       0.0976±0.0038  0.0701±0.0766  0.4394±0.0356  0.4561±0.0376
+  PassiveAggressiveRegressor      0.0994±0.0115  0.0240±0.2493  0.4039±0.0337  0.4332±0.0228
+  KNeighborsRegressor             0.0996±0.0016  0.0335±0.0143  0.3148±0.0171  0.3323±0.0147
+  AdaBoostRegressor               0.0999±0.0019  0.0284±0.0341  0.3872±0.0293  0.4123±0.0204
+  QuantileRegressor               0.1013±0.0011 -0.0003±0.0002        nan±nan        nan±nan
+  ElasticNet                      0.1014±0.0011 -0.0008±0.0010        nan±nan        nan±nan
+  LassoLars                       0.1014±0.0011 -0.0008±0.0010        nan±nan        nan±nan
+  DummyRegressor                  0.1014±0.0011 -0.0008±0.0010        nan±nan        nan±nan
+  Lasso                           0.1014±0.0011 -0.0008±0.0010        nan±nan        nan±nan
+  MLPRegressor                    0.1180±0.0068 -0.3590±0.1440  0.2953±0.0215  0.3080±0.0393
+  DecisionTreeRegressor           0.1271±0.0023 -0.5738±0.0659  0.2098±0.0179  0.2267±0.0161
+  ExtraTreeRegressor              0.1272±0.0033 -0.5775±0.1111  0.2264±0.0303  0.2378±0.0266
+  GaussianProcessRegressor        0.1623±0.0019 -1.5669±0.0432 -0.3286±0.0078 -0.2240±0.0219
+  RANSACRegressor                 0.3295±0.0640 -9.9018±4.3745  0.1851±0.0345  0.1734±0.0160
+  --------------------------------------------------------------------------------------
+Saved: 'Pos_benchmark_summary.csv' and 'Pos_benchmark_per_seed.csv'
+
+============================================================
+  Benchmarking Neg symptom model (5 seeds)
+============================================================
+Input columns: ['SUD15_Cigarettes15', 'SUD15_Snuff15', 'SUD15_Alcohol15', 'SUD15_Cannabis15', 'SUD15_Painkillers_opioids15', 'SCZ15_Spied15', 'SCZ15_Others_Read_thoughts15', 'SCZ15_Special_messages15', 'SCZ15_Special_powers15', 'SCZ15_Under_control_special_power15', 'SCZ15_Read_others_minds15', 'SCZ15_Seen_hallucinations15', 'SCZ15_Extreme_excitement15', 'SCZ15_Irritable15', 'SCZ15_Unrealistic_abilities15', 'SCZ15_Not_tired15', 'SCZ15_Too_much_energy15', 'SCZ15_Racing_thoughts15', 'SCZ15_Talking_fast15', 'SCZ15_Sexual_inappropriate15', 'SCZ15_Rage_attacks15', 'SCZ15_Hear_voices15', 'SCZ15_headaches15', 'SCZ15_worry15', 'SCZ15_unhappy15', 'SCZ15_lose_confidence15', 'SCZ15_easily_scared15', 'ACE15_bullied_often15', 'ACE15_tease_bullying15', 'ACE15_emotional_bullying15', 'ACE15_rumours_bullying15', 'ACE15_bullying_by_num15', 'ACE15_bullying_time15', 'SES_birth_country_mother', 'SES_education_mother', 'SES_birth_country_father', 'SES_education_father', 'SUD18_cigarettes18', 'SUD18_alcohol_often18', 'SUD18_snuff18', 'SUD18_drugs_often18', 'ACE18_emotional_abuse18', 'ACE18_witness_crime18', 'ACE18_hate_crime18', 'SEX', 'ADHD9_fail_close_attention9', 'ADHD9_difficulty_with_attention9', 'ADHD9_not_listening9', 'ADHD9_difficulty_following_instructions9', 'ADHD9_difficulty_organizing_tasks9', 'ADHD9_avoid_mental_effort_tasks9', 'ADHD9_often_lose_things9', 'ADHD9_easily_distracted9', 'ADHD9_often_forgetful9', 'ADHD9_difficulty_hold_still9', 'ADHD9_often_move9', 'ADHD9_often_run9', 'ADHD9_difficulty_calm9', 'ADHD9_often_motor9', 'ADHD9_talk_excess9', 'ADHD9_often_blurt_out9', 'ADHD9_difficulty_waiting9', 'ADHD9_often_interrupt9', 'ADHD9_easily_bored9', 'ASD9_delay_language9', 'ASD9_difficulty_converse9', 'ASD9_repeat_words9', 'ASD9_difficulty_pretend_play9', 'ASD9_talk_too_high_low9', 'ASD9_difficulty_on_track9', 'ASD9_difficulty_express9', 'ASD9_difficulty_socialize9', 'ASD9_uninterested_sharing9', 'ASD9_own_terms9', 'ASD9_difficulty_expect_behavior9', 'ASD9_easily_influenced9', 'ASD9_absorbed_own9', 'ASD9_absorbed_problems9', 'ASD9_strange_movements9', 'ASD9_absorbed_details9', 'ASD9_dislike_change9', 'SCZ15_PROD_seen_hallucinations9', 'SUD15_OtherDrugs15', 'ACE15_other_bullying15', 'ACE18_other_abuse18', 'PRS_Amygdala_excitatory', 'PRS_Cerebellar_inhibitory', 'PRS_CGE_interneuron', 'PRS_Deep_layer_corticothalamic', 'PRS_Deep_layer_intratelencepha', 'PRS_Eccentric_medium_spiny_neu', 'PRS_Hippocampal_CA1_3', 'PRS_Hippocampal_CA4', 'PRS_Hippocampal_dentate_gyrus', 'PRS_LAMP5_LHX6_and_Chandelier', 'PRS_Medium_spiny_neuron', 'PRS_MGE_interneuron', 'PRS_Miscellaneous', 'PRS_Thalamic_excitatory', 'PRS_Upper_layer_intratelenceph', 'PRS_all', 'batch_GSA3_x_PC1', 'batch_GSA3_x_PC2', 'batch_PSYC_x_PC1', 'batch_PSYC_x_PC2']
+Target column: SCZ18_Neg_Norm
+
+count of input columns :105
+
+  Seed 42...
+Train: 3005 rows (2017 IDs),Test: 1028 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 42): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001428 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4979
+[LightGBM] [Info] Number of data points in the train set: 3005, number of used features: 104
+[LightGBM] [Info] Start training from score 0.243483
+
+  Seed 43...
+Train: 3023 rows (2017 IDs),Test: 1010 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 43): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001443 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4973
+[LightGBM] [Info] Number of data points in the train set: 3023, number of used features: 104
+[LightGBM] [Info] Start training from score 0.243106
+
+  Seed 44...
+Train: 3035 rows (2017 IDs),Test: 998 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 44): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001282 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4974
+[LightGBM] [Info] Number of data points in the train set: 3035, number of used features: 104
+[LightGBM] [Info] Start training from score 0.239049
+
+  Seed 45...
+Train: 3018 rows (2017 IDs),Test: 1015 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 45): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001236 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4981
+[LightGBM] [Info] Number of data points in the train set: 3018, number of used features: 104
+[LightGBM] [Info] Start training from score 0.243709
+
+  Seed 46...
+Train: 3012 rows (2017 IDs),Test: 1021 rows (673 IDs) 
+
+ Skipping GammaRegressor (seed 46): Some value(s) of y are out of the valid range of the loss 'HalfGammaLoss'.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001307 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4979
+[LightGBM] [Info] Number of data points in the train set: 3012, number of used features: 104
+[LightGBM] [Info] Start training from score 0.244034
+
+Total time for Neg: 78.9 seconds
+
+====================================================================================================
+  Neg Symptom Model - Benchmark Results (mean ± std across seeds)
+====================================================================================================
+  Model                                    RMSE             R2   Spearman rho      Pearson r
+  --------------------------------------------------------------------------------------
+  LarsCV                          0.1527±0.0021  0.2346±0.0156  0.4716±0.0187  0.4879±0.0147
+  LassoLarsIC                     0.1527±0.0022  0.2344±0.0175  0.4713±0.0194  0.4882±0.0157
+  LassoCV                         0.1527±0.0020  0.2341±0.0166  0.4716±0.0196  0.4877±0.0154
+  LassoLarsCV                     0.1527±0.0020  0.2341±0.0166  0.4716±0.0197  0.4877±0.0154
+  ElasticNetCV                    0.1528±0.0020  0.2339±0.0168  0.4714±0.0198  0.4875±0.0155
+  OrthogonalMatchingPursuit       0.1535±0.0017  0.2266±0.0152  0.4618±0.0190  0.4796±0.0156
+  OrthogonalMatchingPursuitCV     0.1535±0.0017  0.2266±0.0152  0.4618±0.0190  0.4796±0.0156
+  BayesianRidge                   0.1536±0.0022  0.2258±0.0196  0.4611±0.0199  0.4802±0.0172
+  RidgeCV                         0.1544±0.0025  0.2177±0.0241  0.4560±0.0207  0.4764±0.0184
+  Ridge                           0.1546±0.0026  0.2153±0.0250  0.4543±0.0206  0.4751±0.0188
+  KernelRidge                     0.1546±0.0026  0.2151±0.0248  0.4539±0.0205  0.4750±0.0187
+  LinearRegression                0.1546±0.0026  0.2150±0.0253  0.4531±0.0203  0.4751±0.0190
+  TransformedTargetRegressor      0.1546±0.0026  0.2150±0.0253  0.4531±0.0203  0.4751±0.0190
+  GradientBoostingRegressor       0.1547±0.0026  0.2142±0.0122  0.4555±0.0191  0.4673±0.0094
+  Lars                            0.1547±0.0027  0.2138±0.0246  0.4518±0.0192  0.4741±0.0184
+  SGDRegressor                    0.1553±0.0029  0.2083±0.0175  0.4508±0.0168  0.4716±0.0169
+  HuberRegressor                  0.1555±0.0026  0.2060±0.0228  0.4536±0.0222  0.4726±0.0183
+  RandomForestRegressor           0.1576±0.0022  0.1852±0.0160  0.4207±0.0269  0.4385±0.0118
+  LGBMRegressor                   0.1579±0.0031  0.1817±0.0290  0.4256±0.0303  0.4443±0.0199
+  TweedieRegressor                0.1579±0.0027  0.1813±0.0132  0.4381±0.0181  0.4477±0.0215
+  HistGradientBoostingRegressor   0.1586±0.0013  0.1738±0.0248  0.4197±0.0258  0.4370±0.0188
+  SVR                             0.1604±0.0015  0.1554±0.0260  0.4134±0.0247  0.4216±0.0179
+  NuSVR                           0.1619±0.0022  0.1398±0.0258  0.4121±0.0242  0.4172±0.0149
+  ExtraTreesRegressor             0.1621±0.0020  0.1375±0.0297  0.3963±0.0348  0.4092±0.0187
+  BaggingRegressor                0.1640±0.0016  0.1164±0.0189  0.3798±0.0137  0.3901±0.0153
+  PoissonRegressor                0.1643±0.0031  0.1143±0.0098  0.4131±0.0211  0.4159±0.0264
+  LinearSVR                       0.1654±0.0052  0.1013±0.0561  0.4228±0.0182  0.4426±0.0153
+  KNeighborsRegressor             0.1729±0.0039  0.0181±0.0313  0.3018±0.0299  0.3110±0.0305
+  AdaBoostRegressor               0.1742±0.0048  0.0046±0.0325  0.4200±0.0148  0.4319±0.0097
+  ElasticNet                      0.1747±0.0034 -0.0018±0.0023        nan±nan        nan±nan
+  Lasso                           0.1747±0.0034 -0.0018±0.0023        nan±nan        nan±nan
+  DummyRegressor                  0.1747±0.0034 -0.0018±0.0023        nan±nan        nan±nan
+  LassoLars                       0.1747±0.0034 -0.0018±0.0023        nan±nan        nan±nan
+  QuantileRegressor               0.1790±0.0062 -0.0524±0.0561        nan±nan        nan±nan
+  PassiveAggressiveRegressor      0.1897±0.0347 -0.2261±0.5115  0.4054±0.0349  0.4211±0.0340
+  MLPRegressor                    0.2020±0.0097 -0.3441±0.1529  0.2890±0.0198  0.2877±0.0333
+  DecisionTreeRegressor           0.2173±0.0023 -0.5516±0.0730  0.2104±0.0070  0.2428±0.0102
+  ExtraTreeRegressor              0.2190±0.0032 -0.5752±0.0674  0.2244±0.0202  0.2343±0.0232
+  GaussianProcessRegressor        0.2899±0.0058 -1.7588±0.0930 -0.2126±0.0317 -0.1406±0.0152
+  RANSACRegressor                 0.4723±0.0623 -6.4205±1.8266  0.1261±0.0305  0.1037±0.0340
+  --------------------------------------------------------------------------------------
+Saved: 'Neg_benchmark_summary.csv' and 'Neg_benchmark_per_seed.csv'
