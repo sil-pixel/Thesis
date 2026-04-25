@@ -491,34 +491,88 @@ if __name__ == "__main__":
     df = df.dropna()
     print(f"Data shape after dropping na: {df.shape}")
     modality_sizes = calculate_modality_sizes(df)
-    #df = df.sample(frac=0.1, random_state=42)
-    #print(f"Data shape: {df.shape}")
-    seeds = [42, 43, 44, 45, 46]  # Example seeds for multiple runs
+ 
+    seeds = [42, 43, 44, 45, 46]
+    
+    # Collect results: {model_tag: [metrics_dict_per_seed]}
+    all_results = {"Pos": [], "Neg": []}
+ 
     for seed in seeds:
         torch.manual_seed(seed)
         train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
-
-        # Positive and negative symptom model training
+ 
         for model_tag in ["Pos", "Neg"]:
             print(f"\n{'='*60}")
-            print(f"  Training {model_tag} symptom model")
+            print(f"  Training {model_tag} symptom model | Seed {seed}")
             print(f"{'='*60}")
             start_time = time.time()
             hyperparams = hyperparameters_json[model_tag]
-
+ 
             (model, train_losses, train_rmses, val_rmses, 
                 train_spearmans, val_spearmans, train_r2s, val_r2s,
                 val_preds, val_targets, val_metrics, learning_rates) = train(
                     train_df, seed, modality_sizes, model_tag, hyperparams
                 )
-
+ 
             elapsed = (time.time() - start_time) / 60
             print(f"\nTime taken for {model_tag} model: {elapsed:.2f} minutes")
-
+ 
             plot_training_curves(train_losses, train_rmses, val_rmses,
                                     train_spearmans, val_spearmans,
                                     train_r2s, val_r2s, learning_rates, seed, model_tag)
             plot_predicted_vs_actual(val_preds, val_targets, val_metrics, 
                                         seed, model_tag, split_name="val")
-            evaluate_final_test(model, test_df, model_tag, seed, 
+            
+            test_metrics = evaluate_final_test(model, test_df, model_tag, seed, 
                                 batch_size=hyperparams["batch_size"])
+            
+            # Store seed info with metrics
+            test_metrics['seed'] = seed
+            all_results[model_tag].append(test_metrics)
+ 
+    # --- Summary across seeds ---
+    print(f"\n\n{'='*80}")
+    print(f"  SUMMARY ACROSS {len(seeds)} SEEDS")
+    print(f"{'='*80}")
+ 
+    metric_names = ['rmse', 'r2', 'mae', 'spearman_rho', 'spearman_p', 'pearson_r', 'pearson_p']
+    summary_rows = []
+ 
+    for model_tag in ["Pos", "Neg"]:
+        print(f"\n  {model_tag} Symptom Model:")
+        print(f"  {'-'*50}")
+        print(f"  {'Metric':<20} {'Mean':>10} {'± Std':>10}")
+        print(f"  {'-'*50}")
+ 
+        row = {'Model': model_tag}
+        for metric in metric_names:
+            values = [r[metric] for r in all_results[model_tag]]
+            mean_val = np.mean(values)
+            std_val = np.std(values)
+            print(f"  {metric:<20} {mean_val:>10.4f} {std_val:>10.4f}")
+            row[f'{metric}_mean'] = mean_val
+            row[f'{metric}_std'] = std_val
+ 
+        print(f"  {'-'*50}")
+ 
+        # Per-seed breakdown
+        print(f"\n  Per-seed results:")
+        print(f"  {'Seed':<8} {'RMSE':>8} {'R2':>8} {'Spearman':>10} {'Pearson':>10}")
+        print(f"  {'-'*50}")
+        for r in all_results[model_tag]:
+            print(f"  {r['seed']:<8} {r['rmse']:>8.4f} {r['r2']:>8.4f} "
+                  f"{r['spearman_rho']:>10.4f} {r['pearson_r']:>10.4f}")
+        
+        summary_rows.append(row)
+ 
+    # Save summary to CSV
+    summary_df = pd.DataFrame(summary_rows)
+    summary_df.to_csv('test_results_summary.csv', index=False)
+    print(f"\nSummary saved to 'test_results_summary.csv'")
+ 
+    # Save per-seed details to CSV
+    for model_tag in ["Pos", "Neg"]:
+        per_seed_df = pd.DataFrame(all_results[model_tag])
+        per_seed_df.to_csv(f'{model_tag}_test_results_per_seed.csv', index=False)
+        print(f"Per-seed results saved to '{model_tag}_test_results_per_seed.csv'")
+ 
