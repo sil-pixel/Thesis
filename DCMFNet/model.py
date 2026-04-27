@@ -204,7 +204,8 @@ class IterativeGatedFusionModule(nn.Module):
 The Deep Cross Modal Fusion Model consisting of 'M' Iterative Gated Fusion Modules and a final fully connected layer for prediction.
 Variables:
     M: number of Iterative Gated Fusion Modules
-    L: number of Gated Fusion Layers in each Iterative Gated Fusion Module
+    L: int or list of int. If int, all IGF modules use the same depth.
+           If list, L[m] is the number of layers for the m-th IGF module.
     n_features_x: number of features in the input modality 'X'
     n_features_per_modality: list of number of features in each of the 'M' modalities, can be changed based on the dataset used.
     dropout: dropout rate for the attention layers (default: 0.3)
@@ -220,12 +221,29 @@ class DeepCrossModalFusionModel(nn.Module):
         n_features_x = n_features_per_modality[0]
         n_features_per_modality = n_features_per_modality[1:]
         print(f"n_features_x : {n_features_x}, n_features_per_modality: {n_features_per_modality}")
+
+        # Handle L as int (uniform) or list (per-modality)
+        if isinstance(L, int):
+            self.layers_per_modality = [L] * M
+        else:
+            assert len(L) == M, f"L must have {M} elements, got {len(L)}"
+            self.layers_per_modality = list(L)
+ 
+
         self.igf_modules = nn.ModuleList([
-            IterativeGatedFusionModule(L, n_features_x, n_features_per_modality[m])
-             for m in range(self.M)])
+            IterativeGatedFusionModule(
+                self.layers_per_modality[m], n_features_x, n_features_per_modality[m],
+                se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min
+            )
+            for m in range(self.M)
+        ])
         
         # Dimensions for each attention layer
-        fused_dim = L * sum(n_features_per_modality[:M])
+        # Fused dim depends on per-modality layer counts
+        fused_dim = sum(
+            self.layers_per_modality[m] * n_features_per_modality[m]
+            for m in range(self.M)
+        )
         independent_dim = n_features_x + sum(n_features_per_modality)
         total_final_features = fused_dim + independent_dim
         self.attn_fused =  SEAttention(fused_dim, se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min)  
@@ -254,7 +272,7 @@ class DeepCrossModalFusionModel(nn.Module):
         #print(f"Shape of the fused output after attention: {F_out.shape}")
 
         # Pass independent modalities through the fully connected layer for prediction
-        X_independent = torch.cat([X] + modalities + [X_ind], dim=-1)  # Concatenate all the independent modalities
+        X_independent = torch.cat([X] + list(modalities) + [X_ind], dim=-1)  # Concatenate all the independent modalities
         #print(f"Shape of the concatenated independent modalities before attention: {X_independent.shape}")
         X_independent = self.attn_independent(X_independent)  # Apply attention to the concatenated independent modalities
         #print(f"Shape of the independent modalities after attention: {X_independent.shape}")

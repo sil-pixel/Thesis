@@ -343,10 +343,12 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
         all_training_labels.append(labels)
     all_training_labels = torch.cat(all_training_labels)
 
+    # num_layers can be int or list
+    num_layers = hyperparams["num_layers"]
     # Initialize model
     model = DCMFNet(
         NUM_MODALITIES, 
-        hyperparams["num_layers"], 
+        num_layers, 
         n_features_per_modality, 
         se_reduction=hyperparams["se_reduction"],
         dropout=hyperparams["dropout"],
@@ -405,16 +407,16 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
             #print(f"Shape of the outputs: {outputs.shape}")
             #print(f"Outputs: {outputs}")
             labels = labels.unsqueeze(1)  # Reshape to (batch_size, 1)
-            print(f"Shape of the labels: {labels.shape}")
+            #print(f"Shape of the labels: {labels.shape}")
             #print(f"Labels: {labels}")
             loss = criterion(outputs, labels)
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
-            print(f"Loss: {loss.item()}")
+            #print(f"Loss: {loss.item()}")
             predicted = outputs
-            print(f"Shape of the Predicted: {predicted.shape}")
+            #print(f"Shape of the Predicted: {predicted.shape}")
             #print(f"Predicted: {predicted}")
             i += 1
 

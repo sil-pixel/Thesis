@@ -1,5 +1,5 @@
 '''
-SE Attention Gate Analysis for DCMFNet.
+Importance Analysis from SE Attention Gates in DCMFNet Model.
 Extracts gate values from all three SE attention layers and analyzes
 which modalities the model weighs most heavily for high-SCZ vs low-SCZ predictions.
 Author: Silpa Soni Nallacheruvu
