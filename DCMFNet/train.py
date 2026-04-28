@@ -399,7 +399,7 @@ def train(train_df, seed, n_features_per_modality, model_tag, hyperparams=None):
 
 
         for inputs, labels in train_dataloader:
-            print(f"Batch {i+1}...")
+            #print(f"Batch {i+1}...")
             optimizer.zero_grad()
             # Forward pass
             #print(f"Forward pass for batch of size {inputs[0].size(0)}...")
