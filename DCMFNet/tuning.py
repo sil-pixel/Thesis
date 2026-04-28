@@ -54,15 +54,15 @@ def objective(trial, train_df, modality_sizes, model_tag):
     # Model architecture hyperparameters
     # Per-modality IGF depth
     layers_per_modality = [
-        trial.suggest_int('layers_PRS', 1, 7),
-        trial.suggest_int('layers_SCZ15', 1, 7),
-        trial.suggest_int('layers_ADHD9', 1, 7),
-        trial.suggest_int('layers_ASD9', 1, 7),
-        trial.suggest_int('layers_ACE15', 1, 7),
-        trial.suggest_int('layers_ACE18', 1, 7),
-        trial.suggest_int('layers_SUD18', 1, 7),
-        trial.suggest_int('layers_SES', 1, 7),
-        trial.suggest_int('layers_SEX', 1, 7),
+        trial.suggest_int('layers_PRS', 1, 5),
+        trial.suggest_int('layers_SCZ15', 1, 5),
+        trial.suggest_int('layers_ADHD9', 1, 5),
+        trial.suggest_int('layers_ASD9', 1, 5),
+        trial.suggest_int('layers_ACE15', 1, 5),
+        trial.suggest_int('layers_ACE18', 1, 5),
+        trial.suggest_int('layers_SUD18', 1, 5),
+        trial.suggest_int('layers_SES', 1, 5),
+        trial.suggest_int('layers_SEX', 1, 5)
     ]
     dropout = trial.suggest_float('dropout', 0.1, 0.5)
     se_reduction = trial.suggest_int('se_reduction', 2, 8)
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     train_df, test_df = random_split(df, test_size=0.25, random_state=42)
 
     # -- Configuration --
-    N_TRIALS = 100
+    N_TRIALS = 50
     MODEL_TAGS = ["Pos", "Neg"]
 
     for model_tag in MODEL_TAGS:
