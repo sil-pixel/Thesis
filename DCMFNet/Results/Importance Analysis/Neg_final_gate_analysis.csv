@@ -1,3 +1,3 @@
 Modality,High SCZ gate (mean),High SCZ gate (std),Low SCZ gate (mean),Low SCZ gate (std),Difference,p_value
-Fused stream,0.5,0.0,0.5,0.0,0.0,1.0
-Independent stream,0.50001705,0.0,0.50001705,0.0,0.0,1.0
+Independent stream,0.5026346,0.00066216406,0.5021575,0.00062080723,0.00047707558,1.1966377e-12
+Fused stream,0.50094515,0.000117808086,0.5008462,8.833471e-05,9.894371e-05,2.3787981e-20
