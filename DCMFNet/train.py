@@ -566,15 +566,17 @@ if __name__ == "__main__":
                   f"{r['spearman_rho']:>10.4f} {r['pearson_r']:>10.4f}")
         
         summary_rows.append(row)
+        
+        # Save per-seed details to CSV
+        per_seed_df = pd.DataFrame(all_results[model_tag])
+        per_seed_df.to_csv(f'{model_tag}_test_results_per_seed.csv', index=False)
+        print(f"Per-seed results saved to '{model_tag}_test_results_per_seed.csv'")
  
     # Save summary to CSV
     summary_df = pd.DataFrame(summary_rows)
     summary_df.to_csv('test_results_summary.csv', index=False)
     print(f"\nSummary saved to 'test_results_summary.csv'")
  
-    # Save per-seed details to CSV
-    for model_tag in ["Pos", "Neg"]:
-        per_seed_df = pd.DataFrame(all_results[model_tag])
-        per_seed_df.to_csv(f'{model_tag}_test_results_per_seed.csv', index=False)
-        print(f"Per-seed results saved to '{model_tag}_test_results_per_seed.csv'")
+
+
  

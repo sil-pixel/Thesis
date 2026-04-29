@@ -1,0 +1,892 @@
+Data shape after dropping na: (4033, 125)
+modality sizes for ['SUD15', 'PRS', 'SCZ15', 'ADHD9', 'ASD9', 'ACE15', 'ACE18', 'SUD18', 'SES', 'SEX', '^batch_.*_x_PC'] : [6, 16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+Train: 3005 rows (2017 IDs),Test: 1028 rows (673 IDs) 
+
+
+============================================================
+  Training Neg symptom model | Seed 42
+============================================================
+Train: 2407 rows (1613 IDs),Test: 598 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count=  961, weight=0.041
+  Bin [0.17, 0.33): count=  848, weight=0.047
+  Bin [0.33, 0.50): count=  353, weight=0.112
+  Bin [0.50, 0.67): count=  176, weight=0.224
+  Bin [0.67, 0.83): count=   62, weight=0.628
+  Bin [0.83, 1.00): count=    7, weight=4.948
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0933, 0.7438], std: 0.0856
+  RMSE : 0.1637, R2: 0.1276, MAE: 0.1337, Spearman rho: 0.4275, Spearman p: 1.4413e-107, Pearson r: 0.4351, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0995, 0.5661], std: 0.0824
+  RMSE : 0.1635, R2: 0.1082, MAE: 0.1367, Spearman rho: 0.4367, Spearman p: 3.0303e-29, Pearson r: 0.4566, Pearson p: 3.8554e-32
+  Epoch [1/17] Loss: 0.0134 | LR: 5.61e-04 | Train rho: 0.4275, Val rho: 0.4367 | Train R2: 0.1276, Val R2: 0.1082 | Train RMSE: 0.1637, Val RMSE: 0.1635 | Train Pearson r: 0.4351, Val Pearson r: 0.4566
+  >> New best val RMSE: 0.1635
+
+Epoch 2/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0737, 0.6933], std: 0.0849
+  RMSE : 0.1541, R2: 0.2270, MAE: 0.1216, Spearman rho: 0.4666, Spearman p: 2.0725e-130, Pearson r: 0.4798, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0913, 0.5472], std: 0.0809
+  RMSE : 0.1528, R2: 0.2206, MAE: 0.1232, Spearman rho: 0.4695, Spearman p: 4.0454e-34, Pearson r: 0.4863, Pearson p: 8.1088e-37
+  Epoch [2/17] Loss: 0.0126 | LR: 5.61e-04 | Train rho: 0.4666, Val rho: 0.4695 | Train R2: 0.2270, Val R2: 0.2206 | Train RMSE: 0.1541, Val RMSE: 0.1528 | Train Pearson r: 0.4798, Val Pearson r: 0.4863
+  >> New best val RMSE: 0.1528
+
+Epoch 3/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0910, 0.7437], std: 0.0901
+  RMSE : 0.1553, R2: 0.2149, MAE: 0.1250, Spearman rho: 0.4806, Spearman p: 2.2549e-139, Pearson r: 0.4957, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1046, 0.5932], std: 0.0854
+  RMSE : 0.1559, R2: 0.1886, MAE: 0.1284, Spearman rho: 0.4809, Spearman p: 6.1546e-36, Pearson r: 0.4971, Pearson p: 1.1965e-38
+  Epoch [3/17] Loss: 0.0121 | LR: 5.61e-04 | Train rho: 0.4806, Val rho: 0.4809 | Train R2: 0.2149, Val R2: 0.1886 | Train RMSE: 0.1553, Val RMSE: 0.1559 | Train Pearson r: 0.4957, Val Pearson r: 0.4971
+  >> No improvement for 1/6 epochs
+
+Epoch 4/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0637, 0.7339], std: 0.0950
+  RMSE : 0.1513, R2: 0.2544, MAE: 0.1187, Spearman rho: 0.4919, Spearman p: 7.0306e-147, Pearson r: 0.5078, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0711, 0.5810], std: 0.0911
+  RMSE : 0.1505, R2: 0.2438, MAE: 0.1201, Spearman rho: 0.4936, Spearman p: 4.8516e-38, Pearson r: 0.5072, Pearson p: 2.1029e-40
+  Epoch [4/17] Loss: 0.0119 | LR: 5.61e-04 | Train rho: 0.4919, Val rho: 0.4936 | Train R2: 0.2544, Val R2: 0.2438 | Train RMSE: 0.1513, Val RMSE: 0.1505 | Train Pearson r: 0.5078, Val Pearson r: 0.5072
+  >> New best val RMSE: 0.1505
+
+Epoch 5/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0761, 0.7134], std: 0.0916
+  RMSE : 0.1504, R2: 0.2632, MAE: 0.1184, Spearman rho: 0.4970, Spearman p: 2.4389e-150, Pearson r: 0.5160, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0803, 0.5608], std: 0.0869
+  RMSE : 0.1502, R2: 0.2467, MAE: 0.1205, Spearman rho: 0.4977, Spearman p: 9.4623e-39, Pearson r: 0.5113, Pearson p: 3.9077e-41
+  Epoch [5/17] Loss: 0.0120 | LR: 5.61e-04 | Train rho: 0.4970, Val rho: 0.4977 | Train R2: 0.2632, Val R2: 0.2467 | Train RMSE: 0.1504, Val RMSE: 0.1502 | Train Pearson r: 0.5160, Val Pearson r: 0.5113
+  >> New best val RMSE: 0.1502
+
+Epoch 6/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0858, 0.7426], std: 0.0939
+  RMSE : 0.1533, R2: 0.2354, MAE: 0.1233, Spearman rho: 0.4993, Spearman p: 5.8675e-152, Pearson r: 0.5187, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0942, 0.5937], std: 0.0887
+  RMSE : 0.1549, R2: 0.1993, MAE: 0.1274, Spearman rho: 0.4986, Spearman p: 6.6864e-39, Pearson r: 0.5107, Pearson p: 4.9222e-41
+  Epoch [6/17] Loss: 0.0119 | LR: 5.61e-04 | Train rho: 0.4993, Val rho: 0.4986 | Train R2: 0.2354, Val R2: 0.1993 | Train RMSE: 0.1533, Val RMSE: 0.1549 | Train Pearson r: 0.5187, Val Pearson r: 0.5107
+  >> No improvement for 1/6 epochs
+
+Epoch 7/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0522, 0.6935], std: 0.0930
+  RMSE : 0.1492, R2: 0.2757, MAE: 0.1154, Spearman rho: 0.5070, Spearman p: 2.1786e-157, Pearson r: 0.5260, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0532, 0.5524], std: 0.0877
+  RMSE : 0.1484, R2: 0.2649, MAE: 0.1170, Spearman rho: 0.5023, Spearman p: 1.5367e-39, Pearson r: 0.5158, Pearson p: 5.9415e-42
+  Epoch [7/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5070, Val rho: 0.5023 | Train R2: 0.2757, Val R2: 0.2649 | Train RMSE: 0.1492, Val RMSE: 0.1484 | Train Pearson r: 0.5260, Val Pearson r: 0.5158
+  >> New best val RMSE: 0.1484
+
+Epoch 8/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.1009, 0.7808], std: 0.0995
+  RMSE : 0.1575, R2: 0.1927, MAE: 0.1281, Spearman rho: 0.5044, Spearman p: 1.4322e-155, Pearson r: 0.5229, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0946, 0.6187], std: 0.0947
+  RMSE : 0.1602, R2: 0.1435, MAE: 0.1331, Spearman rho: 0.5014, Spearman p: 2.1877e-39, Pearson r: 0.5144, Pearson p: 1.0440e-41
+  Epoch [8/17] Loss: 0.0118 | LR: 5.61e-04 | Train rho: 0.5044, Val rho: 0.5014 | Train R2: 0.1927, Val R2: 0.1435 | Train RMSE: 0.1575, Val RMSE: 0.1602 | Train Pearson r: 0.5229, Val Pearson r: 0.5144
+  >> No improvement for 1/6 epochs
+
+Epoch 9/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0860, 0.7885], std: 0.1019
+  RMSE : 0.1541, R2: 0.2265, MAE: 0.1240, Spearman rho: 0.5056, Spearman p: 2.1843e-156, Pearson r: 0.5244, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0811, 0.6106], std: 0.0970
+  RMSE : 0.1558, R2: 0.1896, MAE: 0.1279, Spearman rho: 0.5011, Spearman p: 2.4415e-39, Pearson r: 0.5171, Pearson p: 3.3939e-42
+  Epoch [9/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5056, Val rho: 0.5011 | Train R2: 0.2265, Val R2: 0.1896 | Train RMSE: 0.1541, Val RMSE: 0.1558 | Train Pearson r: 0.5244, Val Pearson r: 0.5171
+  >> No improvement for 2/6 epochs
+
+Epoch 10/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0813, 0.7852], std: 0.1008
+  RMSE : 0.1535, R2: 0.2334, MAE: 0.1234, Spearman rho: 0.5094, Spearman p: 4.0668e-159, Pearson r: 0.5276, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0760, 0.6172], std: 0.0952
+  RMSE : 0.1553, R2: 0.1951, MAE: 0.1273, Spearman rho: 0.5024, Spearman p: 1.4508e-39, Pearson r: 0.5176, Pearson p: 2.7297e-42
+  Epoch [10/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5094, Val rho: 0.5024 | Train R2: 0.2334, Val R2: 0.1951 | Train RMSE: 0.1535, Val RMSE: 0.1553 | Train Pearson r: 0.5276, Val Pearson r: 0.5176
+  >> No improvement for 3/6 epochs
+
+Epoch 11/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0647, 0.7452], std: 0.0985
+  RMSE : 0.1503, R2: 0.2645, MAE: 0.1193, Spearman rho: 0.5072, Spearman p: 1.4778e-157, Pearson r: 0.5278, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0752, 0.5856], std: 0.0937
+  RMSE : 0.1510, R2: 0.2387, MAE: 0.1217, Spearman rho: 0.5037, Spearman p: 8.6020e-40, Pearson r: 0.5192, Pearson p: 1.3901e-42
+  Epoch [11/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5072, Val rho: 0.5037 | Train R2: 0.2645, Val R2: 0.2387 | Train RMSE: 0.1503, Val RMSE: 0.1510 | Train Pearson r: 0.5278, Val Pearson r: 0.5192
+  >> No improvement for 4/6 epochs
+
+Epoch 12/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0592, 0.7176], std: 0.0944
+  RMSE : 0.1487, R2: 0.2803, MAE: 0.1169, Spearman rho: 0.5118, Spearman p: 7.9775e-161, Pearson r: 0.5321, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0682, 0.5685], std: 0.0896
+  RMSE : 0.1493, R2: 0.2555, MAE: 0.1194, Spearman rho: 0.5012, Spearman p: 2.3855e-39, Pearson r: 0.5177, Pearson p: 2.6541e-42
+  Epoch [12/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5118, Val rho: 0.5012 | Train R2: 0.2803, Val R2: 0.2555 | Train RMSE: 0.1487, Val RMSE: 0.1493 | Train Pearson r: 0.5321, Val Pearson r: 0.5177
+  >> No improvement for 5/6 epochs
+
+Epoch 13/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0548, 0.6933], std: 0.0924
+  RMSE : 0.1485, R2: 0.2821, MAE: 0.1167, Spearman rho: 0.5122, Spearman p: 3.8696e-161, Pearson r: 0.5328, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0691, 0.5476], std: 0.0869
+  RMSE : 0.1492, R2: 0.2569, MAE: 0.1193, Spearman rho: 0.5002, Spearman p: 3.4602e-39, Pearson r: 0.5170, Pearson p: 3.4920e-42
+  Epoch [13/17] Loss: 0.0117 | LR: 3.74e-04 | Train rho: 0.5122, Val rho: 0.5002 | Train R2: 0.2821, Val R2: 0.2569 | Train RMSE: 0.1485, Val RMSE: 0.1492 | Train Pearson r: 0.5328, Val Pearson r: 0.5170
+  >> No improvement for 6/6 epochs
+
+  Early stopping at epoch 13. Best val RMSE: 0.1484 at epoch 7
+
+  Restored best model from epoch 7 (val RMSE: 0.1484)
+  [Final Val evaluation with best model]
+  Pred range: [0.0532, 0.5524], std: 0.0877
+  RMSE : 0.1484, R2: 0.2649, MAE: 0.1170, Spearman rho: 0.5023, Spearman p: 1.5367e-39, Pearson r: 0.5158, Pearson p: 5.9415e-42
+
+Time taken for Neg model: 2.34 minutes
+Saved: 'Neg_training_curves_seed_42.png'
+Saved: 'Neg_pred_vs_actual_val_seed_42.png'
+  Pred range: [0.0623, 0.7678], std: 0.0945
+  RMSE : 0.1518, R2: 0.2339, MAE: 0.1207, Spearman rho: 0.4499, Spearman p: 2.2735e-52, Pearson r: 0.4874, Pearson p: 0.0000e+00
+
+Final Test - RMSE: 0.1518, R2: 0.2339, Spearman rho: 0.4499
+Saved: 'Neg_pred_vs_actual_test_seed_42.png'
+Train: 3023 rows (2017 IDs),Test: 1010 rows (673 IDs) 
+
+
+============================================================
+  Training Neg symptom model | Seed 43
+============================================================
+Train: 2421 rows (1613 IDs),Test: 602 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count=  965, weight=0.040
+  Bin [0.17, 0.33): count=  845, weight=0.046
+  Bin [0.33, 0.50): count=  377, weight=0.103
+  Bin [0.50, 0.67): count=  174, weight=0.222
+  Bin [0.67, 0.83): count=   53, weight=0.721
+  Bin [0.83, 1.00): count=    7, weight=4.867
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0199, 0.6476], std: 0.0703
+  RMSE : 0.1565, R2: 0.1849, MAE: 0.1213, Spearman rho: 0.4222, Spearman p: 2.7234e-105, Pearson r: 0.4543, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0413, 0.4452], std: 0.0636
+  RMSE : 0.1559, R2: 0.1444, MAE: 0.1210, Spearman rho: 0.3903, Spearman p: 2.4074e-23, Pearson r: 0.3916, Pearson p: 1.7028e-23
+  Epoch [1/17] Loss: 0.0127 | LR: 5.61e-04 | Train rho: 0.4222, Val rho: 0.3903 | Train R2: 0.1849, Val R2: 0.1444 | Train RMSE: 0.1565, Val RMSE: 0.1559 | Train Pearson r: 0.4543, Val Pearson r: 0.3916
+  >> New best val RMSE: 0.1559
+
+Epoch 2/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0648, 0.7483], std: 0.0831
+  RMSE : 0.1522, R2: 0.2290, MAE: 0.1242, Spearman rho: 0.4608, Spearman p: 1.3977e-127, Pearson r: 0.4974, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0908, 0.5496], std: 0.0768
+  RMSE : 0.1553, R2: 0.1508, MAE: 0.1266, Spearman rho: 0.4334, Spearman p: 5.8072e-29, Pearson r: 0.4322, Pearson p: 8.6589e-29
+  Epoch [2/17] Loss: 0.0120 | LR: 5.61e-04 | Train rho: 0.4608, Val rho: 0.4334 | Train R2: 0.2290, Val R2: 0.1508 | Train RMSE: 0.1522, Val RMSE: 0.1553 | Train Pearson r: 0.4974, Val Pearson r: 0.4322
+  >> New best val RMSE: 0.1553
+
+Epoch 3/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0835, 0.8620], std: 0.0953
+  RMSE : 0.1588, R2: 0.1607, MAE: 0.1321, Spearman rho: 0.4727, Spearman p: 5.0485e-135, Pearson r: 0.5088, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1304, 0.6272], std: 0.0886
+  RMSE : 0.1628, R2: 0.0667, MAE: 0.1352, Spearman rho: 0.4467, Spearman p: 7.1876e-31, Pearson r: 0.4506, Pearson p: 1.9098e-31
+  Epoch [3/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.4727, Val rho: 0.4467 | Train R2: 0.1607, Val R2: 0.0667 | Train RMSE: 0.1588, Val RMSE: 0.1628 | Train Pearson r: 0.5088, Val Pearson r: 0.4506
+  >> No improvement for 1/6 epochs
+
+Epoch 4/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0502, 0.7603], std: 0.0907
+  RMSE : 0.1481, R2: 0.2701, MAE: 0.1189, Spearman rho: 0.4830, Spearman p: 9.6609e-142, Pearson r: 0.5221, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0917, 0.5706], std: 0.0851
+  RMSE : 0.1508, R2: 0.1989, MAE: 0.1205, Spearman rho: 0.4506, Spearman p: 1.9445e-31, Pearson r: 0.4596, Pearson p: 8.4320e-33
+  Epoch [4/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.4830, Val rho: 0.4506 | Train R2: 0.2701, Val R2: 0.1989 | Train RMSE: 0.1481, Val RMSE: 0.1508 | Train Pearson r: 0.5221, Val Pearson r: 0.4596
+  >> New best val RMSE: 0.1508
+
+Epoch 5/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0512, 0.7354], std: 0.0903
+  RMSE : 0.1475, R2: 0.2762, MAE: 0.1187, Spearman rho: 0.4905, Spearman p: 9.7200e-147, Pearson r: 0.5297, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0930, 0.5667], std: 0.0849
+  RMSE : 0.1506, R2: 0.2015, MAE: 0.1208, Spearman rho: 0.4574, Spearman p: 1.8628e-32, Pearson r: 0.4663, Pearson p: 7.8136e-34
+  Epoch [5/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.4905, Val rho: 0.4574 | Train R2: 0.2762, Val R2: 0.2015 | Train RMSE: 0.1475, Val RMSE: 0.1506 | Train Pearson r: 0.5297, Val Pearson r: 0.4663
+  >> New best val RMSE: 0.1506
+
+Epoch 6/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0865, 0.8358], std: 0.0975
+  RMSE : 0.1573, R2: 0.1767, MAE: 0.1306, Spearman rho: 0.4876, Spearman p: 8.4242e-145, Pearson r: 0.5275, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1204, 0.6381], std: 0.0922
+  RMSE : 0.1628, R2: 0.0663, MAE: 0.1351, Spearman rho: 0.4532, Spearman p: 8.0582e-32, Pearson r: 0.4617, Pearson p: 4.1228e-33
+  Epoch [6/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.4876, Val rho: 0.4532 | Train R2: 0.1767, Val R2: 0.0663 | Train RMSE: 0.1573, Val RMSE: 0.1628 | Train Pearson r: 0.5275, Val Pearson r: 0.4617
+  >> No improvement for 1/6 epochs
+
+Epoch 7/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0605, 0.8053], std: 0.0975
+  RMSE : 0.1509, R2: 0.2422, MAE: 0.1238, Spearman rho: 0.4958, Spearman p: 2.2145e-150, Pearson r: 0.5334, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1033, 0.6036], std: 0.0920
+  RMSE : 0.1561, R2: 0.1414, MAE: 0.1270, Spearman rho: 0.4613, Spearman p: 4.6365e-33, Pearson r: 0.4643, Pearson p: 1.6388e-33
+  Epoch [7/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.4958, Val rho: 0.4613 | Train R2: 0.2422, Val R2: 0.1414 | Train RMSE: 0.1509, Val RMSE: 0.1561 | Train Pearson r: 0.5334, Val Pearson r: 0.4643
+  >> No improvement for 2/6 epochs
+
+Epoch 8/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0756, 0.8033], std: 0.0957
+  RMSE : 0.1511, R2: 0.2404, MAE: 0.1242, Spearman rho: 0.4986, Spearman p: 2.4644e-152, Pearson r: 0.5351, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1112, 0.5955], std: 0.0906
+  RMSE : 0.1562, R2: 0.1411, MAE: 0.1274, Spearman rho: 0.4584, Spearman p: 1.3208e-32, Pearson r: 0.4685, Pearson p: 3.5263e-34
+  Epoch [8/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.4986, Val rho: 0.4584 | Train R2: 0.2404, Val R2: 0.1411 | Train RMSE: 0.1511, Val RMSE: 0.1562 | Train Pearson r: 0.5351, Val Pearson r: 0.4685
+  >> No improvement for 3/6 epochs
+
+Epoch 9/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0364, 0.7578], std: 0.0951
+  RMSE : 0.1468, R2: 0.2833, MAE: 0.1179, Spearman rho: 0.4979, Spearman p: 7.0211e-152, Pearson r: 0.5364, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0817, 0.5679], std: 0.0905
+  RMSE : 0.1508, R2: 0.1992, MAE: 0.1203, Spearman rho: 0.4567, Spearman p: 2.3327e-32, Pearson r: 0.4674, Pearson p: 5.3190e-34
+  Epoch [9/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.4979, Val rho: 0.4567 | Train R2: 0.2833, Val R2: 0.1992 | Train RMSE: 0.1468, Val RMSE: 0.1508 | Train Pearson r: 0.5364, Val Pearson r: 0.4674
+  >> No improvement for 4/6 epochs
+
+Epoch 10/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0142, 0.6998], std: 0.0922
+  RMSE : 0.1477, R2: 0.2743, MAE: 0.1144, Spearman rho: 0.5017, Spearman p: 1.4983e-154, Pearson r: 0.5402, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0528, 0.5203], std: 0.0869
+  RMSE : 0.1492, R2: 0.2156, MAE: 0.1155, Spearman rho: 0.4619, Spearman p: 3.7379e-33, Pearson r: 0.4732, Pearson p: 6.3550e-35
+  Epoch [10/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5017, Val rho: 0.4619 | Train R2: 0.2743, Val R2: 0.2156 | Train RMSE: 0.1477, Val RMSE: 0.1492 | Train Pearson r: 0.5402, Val Pearson r: 0.4732
+  >> New best val RMSE: 0.1492
+
+Epoch 11/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0642, 0.8407], std: 0.1008
+  RMSE : 0.1532, R2: 0.2189, MAE: 0.1262, Spearman rho: 0.4990, Spearman p: 1.3359e-152, Pearson r: 0.5366, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1112, 0.6244], std: 0.0954
+  RMSE : 0.1598, R2: 0.1010, MAE: 0.1312, Spearman rho: 0.4606, Spearman p: 5.9370e-33, Pearson r: 0.4628, Pearson p: 2.7888e-33
+  Epoch [11/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.4990, Val rho: 0.4606 | Train R2: 0.2189, Val R2: 0.1010 | Train RMSE: 0.1532, Val RMSE: 0.1598 | Train Pearson r: 0.5366, Val Pearson r: 0.4628
+  >> No improvement for 1/6 epochs
+
+Epoch 12/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0536, 0.7855], std: 0.0979
+  RMSE : 0.1507, R2: 0.2446, MAE: 0.1234, Spearman rho: 0.4973, Spearman p: 1.9616e-151, Pearson r: 0.5356, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0934, 0.6053], std: 0.0932
+  RMSE : 0.1572, R2: 0.1295, MAE: 0.1282, Spearman rho: 0.4518, Spearman p: 1.3017e-31, Pearson r: 0.4585, Pearson p: 1.2519e-32
+  Epoch [12/17] Loss: 0.0113 | LR: 5.61e-04 | Train rho: 0.4973, Val rho: 0.4518 | Train R2: 0.2446, Val R2: 0.1295 | Train RMSE: 0.1507, Val RMSE: 0.1572 | Train Pearson r: 0.5356, Val Pearson r: 0.4585
+  >> No improvement for 2/6 epochs
+
+Epoch 13/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0533, 0.8014], std: 0.0994
+  RMSE : 0.1488, R2: 0.2634, MAE: 0.1210, Spearman rho: 0.4983, Spearman p: 3.6999e-152, Pearson r: 0.5377, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0874, 0.5949], std: 0.0946
+  RMSE : 0.1539, R2: 0.1654, MAE: 0.1245, Spearman rho: 0.4623, Spearman p: 3.3293e-33, Pearson r: 0.4687, Pearson p: 3.2759e-34
+  Epoch [13/17] Loss: 0.0113 | LR: 5.61e-04 | Train rho: 0.4983, Val rho: 0.4623 | Train R2: 0.2634, Val R2: 0.1654 | Train RMSE: 0.1488, Val RMSE: 0.1539 | Train Pearson r: 0.5377, Val Pearson r: 0.4687
+  >> No improvement for 3/6 epochs
+
+Epoch 14/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0762, 0.8307], std: 0.1016
+  RMSE : 0.1541, R2: 0.2101, MAE: 0.1269, Spearman rho: 0.5024, Spearman p: 5.1318e-155, Pearson r: 0.5380, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1128, 0.6389], std: 0.0968
+  RMSE : 0.1606, R2: 0.0909, MAE: 0.1325, Spearman rho: 0.4630, Spearman p: 2.5879e-33, Pearson r: 0.4676, Pearson p: 5.0105e-34
+  Epoch [14/17] Loss: 0.0112 | LR: 5.61e-04 | Train rho: 0.5024, Val rho: 0.4630 | Train R2: 0.2101, Val R2: 0.0909 | Train RMSE: 0.1541, Val RMSE: 0.1606 | Train Pearson r: 0.5380, Val Pearson r: 0.4676
+  >> No improvement for 4/6 epochs
+
+Epoch 15/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0627, 0.7396], std: 0.0954
+  RMSE : 0.1469, R2: 0.2817, MAE: 0.1188, Spearman rho: 0.5038, Spearman p: 5.0695e-156, Pearson r: 0.5413, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0814, 0.5852], std: 0.0910
+  RMSE : 0.1514, R2: 0.1923, MAE: 0.1219, Spearman rho: 0.4612, Spearman p: 4.8863e-33, Pearson r: 0.4733, Pearson p: 6.2426e-35
+  Epoch [15/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5038, Val rho: 0.4612 | Train R2: 0.2817, Val R2: 0.1923 | Train RMSE: 0.1469, Val RMSE: 0.1514 | Train Pearson r: 0.5413, Val Pearson r: 0.4733
+  >> No improvement for 5/6 epochs
+
+Epoch 16/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0834, 0.8420], std: 0.0999
+  RMSE : 0.1540, R2: 0.2111, MAE: 0.1273, Spearman rho: 0.4991, Spearman p: 1.0042e-152, Pearson r: 0.5385, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1055, 0.6351], std: 0.0952
+  RMSE : 0.1606, R2: 0.0919, MAE: 0.1326, Spearman rho: 0.4585, Spearman p: 1.2674e-32, Pearson r: 0.4667, Pearson p: 6.8412e-34
+  Epoch [16/17] Loss: 0.0112 | LR: 3.74e-04 | Train rho: 0.4991, Val rho: 0.4585 | Train R2: 0.2111, Val R2: 0.0919 | Train RMSE: 0.1540, Val RMSE: 0.1606 | Train Pearson r: 0.5385, Val Pearson r: 0.4667
+  >> No improvement for 6/6 epochs
+
+  Early stopping at epoch 16. Best val RMSE: 0.1492 at epoch 10
+
+  Restored best model from epoch 10 (val RMSE: 0.1492)
+  [Final Val evaluation with best model]
+  Pred range: [0.0528, 0.5203], std: 0.0869
+  RMSE : 0.1492, R2: 0.2156, MAE: 0.1155, Spearman rho: 0.4619, Spearman p: 3.7379e-33, Pearson r: 0.4732, Pearson p: 6.3547e-35
+
+Time taken for Neg model: 2.68 minutes
+Saved: 'Neg_training_curves_seed_43.png'
+Saved: 'Neg_pred_vs_actual_val_seed_43.png'
+  Pred range: [0.0384, 0.5797], std: 0.0870
+  RMSE : 0.1597, R2: 0.2171, MAE: 0.1181, Spearman rho: 0.4774, Spearman p: 1.2335e-58, Pearson r: 0.4869, Pearson p: 0.0000e+00
+
+Final Test - RMSE: 0.1597, R2: 0.2171, Spearman rho: 0.4774
+Saved: 'Neg_pred_vs_actual_test_seed_43.png'
+Train: 3035 rows (2017 IDs),Test: 998 rows (673 IDs) 
+
+
+============================================================
+  Training Neg symptom model | Seed 44
+============================================================
+Train: 2426 rows (1613 IDs),Test: 609 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count= 1015, weight=0.042
+  Bin [0.17, 0.33): count=  846, weight=0.051
+  Bin [0.33, 0.50): count=  334, weight=0.128
+  Bin [0.50, 0.67): count=  166, weight=0.258
+  Bin [0.67, 0.83): count=   57, weight=0.742
+  Bin [0.83, 1.00): count=    8, weight=4.779
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.1090, 0.7698], std: 0.0749
+  RMSE : 0.1622, R2: 0.1347, MAE: 0.1326, Spearman rho: 0.4118, Spearman p: 6.1944e-100, Pearson r: 0.4211, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1363, 0.5403], std: 0.0738
+  RMSE : 0.1584, R2: 0.1603, MAE: 0.1324, Spearman rho: 0.4354, Spearman p: 1.4514e-29, Pearson r: 0.4591, Pearson p: 4.3627e-33
+  Epoch [1/17] Loss: 0.0135 | LR: 5.61e-04 | Train rho: 0.4118, Val rho: 0.4354 | Train R2: 0.1347, Val R2: 0.1603 | Train RMSE: 0.1622, Val RMSE: 0.1584 | Train Pearson r: 0.4211, Val Pearson r: 0.4591
+  >> New best val RMSE: 0.1584
+
+Epoch 2/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.1123, 0.8086], std: 0.0830
+  RMSE : 0.1590, R2: 0.1686, MAE: 0.1300, Spearman rho: 0.4536, Spearman p: 2.0837e-123, Pearson r: 0.4701, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1290, 0.5730], std: 0.0826
+  RMSE : 0.1567, R2: 0.1779, MAE: 0.1308, Spearman rho: 0.4685, Spearman p: 1.4686e-34, Pearson r: 0.4931, Pearson p: 1.2203e-38
+  Epoch [2/17] Loss: 0.0122 | LR: 5.61e-04 | Train rho: 0.4536, Val rho: 0.4685 | Train R2: 0.1686, Val R2: 0.1779 | Train RMSE: 0.1590, Val RMSE: 0.1567 | Train Pearson r: 0.4701, Val Pearson r: 0.4931
+  >> New best val RMSE: 0.1567
+
+Epoch 3/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0863, 0.8245], std: 0.0905
+  RMSE : 0.1543, R2: 0.2172, MAE: 0.1243, Spearman rho: 0.4760, Spearman p: 1.8665e-137, Pearson r: 0.4959, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1045, 0.5781], std: 0.0904
+  RMSE : 0.1523, R2: 0.2229, MAE: 0.1248, Spearman rho: 0.4873, Spearman p: 1.2188e-37, Pearson r: 0.5093, Pearson p: 1.6925e-41
+  Epoch [3/17] Loss: 0.0120 | LR: 5.61e-04 | Train rho: 0.4760, Val rho: 0.4873 | Train R2: 0.2172, Val R2: 0.2229 | Train RMSE: 0.1543, Val RMSE: 0.1523 | Train Pearson r: 0.4959, Val Pearson r: 0.5093
+  >> New best val RMSE: 0.1523
+
+Epoch 4/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0735, 0.7600], std: 0.0887
+  RMSE : 0.1502, R2: 0.2580, MAE: 0.1186, Spearman rho: 0.4864, Spearman p: 2.5789e-144, Pearson r: 0.5108, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0911, 0.5640], std: 0.0885
+  RMSE : 0.1487, R2: 0.2596, MAE: 0.1191, Spearman rho: 0.4939, Spearman p: 9.0084e-39, Pearson r: 0.5147, Pearson p: 1.6872e-42
+  Epoch [4/17] Loss: 0.0119 | LR: 5.61e-04 | Train rho: 0.4864, Val rho: 0.4939 | Train R2: 0.2580, Val R2: 0.2596 | Train RMSE: 0.1502, Val RMSE: 0.1487 | Train Pearson r: 0.5108, Val Pearson r: 0.5147
+  >> New best val RMSE: 0.1487
+
+Epoch 5/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0820, 0.7981], std: 0.0935
+  RMSE : 0.1514, R2: 0.2464, MAE: 0.1215, Spearman rho: 0.4932, Spearman p: 6.9490e-149, Pearson r: 0.5180, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0942, 0.6132], std: 0.0943
+  RMSE : 0.1503, R2: 0.2437, MAE: 0.1224, Spearman rho: 0.5013, Spearman p: 4.6124e-40, Pearson r: 0.5214, Pearson p: 9.5288e-44
+  Epoch [5/17] Loss: 0.0118 | LR: 5.61e-04 | Train rho: 0.4932, Val rho: 0.5013 | Train R2: 0.2464, Val R2: 0.2437 | Train RMSE: 0.1514, Val RMSE: 0.1503 | Train Pearson r: 0.5180, Val Pearson r: 0.5214
+  >> No improvement for 1/6 epochs
+
+Epoch 6/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.1010, 0.8965], std: 0.1004
+  RMSE : 0.1618, R2: 0.1391, MAE: 0.1332, Spearman rho: 0.4922, Spearman p: 2.8906e-148, Pearson r: 0.5178, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1175, 0.6714], std: 0.1018
+  RMSE : 0.1610, R2: 0.1322, MAE: 0.1350, Spearman rho: 0.4999, Spearman p: 8.1321e-40, Pearson r: 0.5260, Pearson p: 1.1210e-44
+  Epoch [6/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.4922, Val rho: 0.4999 | Train R2: 0.1391, Val R2: 0.1322 | Train RMSE: 0.1618, Val RMSE: 0.1610 | Train Pearson r: 0.5178, Val Pearson r: 0.5260
+  >> No improvement for 2/6 epochs
+
+Epoch 7/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0771, 0.8320], std: 0.0991
+  RMSE : 0.1515, R2: 0.2453, MAE: 0.1218, Spearman rho: 0.5001, Spearman p: 1.0614e-153, Pearson r: 0.5259, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0962, 0.6365], std: 0.1000
+  RMSE : 0.1507, R2: 0.2391, MAE: 0.1229, Spearman rho: 0.5035, Spearman p: 1.8678e-40, Pearson r: 0.5275, Pearson p: 5.6052e-45
+  Epoch [7/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5001, Val rho: 0.5035 | Train R2: 0.2453, Val R2: 0.2391 | Train RMSE: 0.1515, Val RMSE: 0.1507 | Train Pearson r: 0.5259, Val Pearson r: 0.5275
+  >> No improvement for 3/6 epochs
+
+Epoch 8/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0989, 0.8474], std: 0.0980
+  RMSE : 0.1577, R2: 0.1826, MAE: 0.1295, Spearman rho: 0.5008, Spearman p: 3.2850e-154, Pearson r: 0.5284, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1117, 0.6591], std: 0.0989
+  RMSE : 0.1578, R2: 0.1666, MAE: 0.1317, Spearman rho: 0.5034, Spearman p: 1.9174e-40, Pearson r: 0.5274, Pearson p: 5.6052e-45
+  Epoch [8/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5008, Val rho: 0.5034 | Train R2: 0.1826, Val R2: 0.1666 | Train RMSE: 0.1577, Val RMSE: 0.1578 | Train Pearson r: 0.5284, Val Pearson r: 0.5274
+  >> No improvement for 4/6 epochs
+
+Epoch 9/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0455, 0.7125], std: 0.0895
+  RMSE : 0.1481, R2: 0.2789, MAE: 0.1142, Spearman rho: 0.5055, Spearman p: 1.5337e-157, Pearson r: 0.5362, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0539, 0.5591], std: 0.0899
+  RMSE : 0.1473, R2: 0.2735, MAE: 0.1147, Spearman rho: 0.5006, Spearman p: 5.9744e-40, Pearson r: 0.5275, Pearson p: 5.6052e-45
+  Epoch [9/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5055, Val rho: 0.5006 | Train R2: 0.2789, Val R2: 0.2735 | Train RMSE: 0.1481, Val RMSE: 0.1473 | Train Pearson r: 0.5362, Val Pearson r: 0.5275
+  >> New best val RMSE: 0.1473
+
+Epoch 10/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0781, 0.8215], std: 0.0968
+  RMSE : 0.1509, R2: 0.2512, MAE: 0.1217, Spearman rho: 0.5059, Spearman p: 8.4727e-158, Pearson r: 0.5328, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0955, 0.6354], std: 0.0973
+  RMSE : 0.1510, R2: 0.2367, MAE: 0.1238, Spearman rho: 0.5027, Spearman p: 2.5654e-40, Pearson r: 0.5284, Pearson p: 2.8026e-45
+  Epoch [10/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5059, Val rho: 0.5027 | Train R2: 0.2512, Val R2: 0.2367 | Train RMSE: 0.1509, Val RMSE: 0.1510 | Train Pearson r: 0.5328, Val Pearson r: 0.5284
+  >> No improvement for 1/6 epochs
+
+Epoch 11/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0555, 0.7721], std: 0.0935
+  RMSE : 0.1474, R2: 0.2853, MAE: 0.1164, Spearman rho: 0.5040, Spearman p: 1.7355e-156, Pearson r: 0.5355, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0659, 0.5812], std: 0.0942
+  RMSE : 0.1471, R2: 0.2756, MAE: 0.1175, Spearman rho: 0.4978, Spearman p: 1.8666e-39, Pearson r: 0.5291, Pearson p: 2.8026e-45
+  Epoch [11/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5040, Val rho: 0.4978 | Train R2: 0.2853, Val R2: 0.2756 | Train RMSE: 0.1474, Val RMSE: 0.1471 | Train Pearson r: 0.5355, Val Pearson r: 0.5291
+  >> New best val RMSE: 0.1471
+
+Epoch 12/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0734, 0.7938], std: 0.0951
+  RMSE : 0.1501, R2: 0.2594, MAE: 0.1211, Spearman rho: 0.5066, Spearman p: 2.5858e-158, Pearson r: 0.5364, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0881, 0.6121], std: 0.0956
+  RMSE : 0.1503, R2: 0.2434, MAE: 0.1231, Spearman rho: 0.5020, Spearman p: 3.4053e-40, Pearson r: 0.5294, Pearson p: 2.8026e-45
+  Epoch [12/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5066, Val rho: 0.5020 | Train R2: 0.2594, Val R2: 0.2434 | Train RMSE: 0.1501, Val RMSE: 0.1503 | Train Pearson r: 0.5364, Val Pearson r: 0.5294
+  >> No improvement for 1/6 epochs
+
+Epoch 13/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0958, 0.8827], std: 0.0997
+  RMSE : 0.1574, R2: 0.1848, MAE: 0.1292, Spearman rho: 0.5060, Spearman p: 6.9418e-158, Pearson r: 0.5333, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1079, 0.6576], std: 0.1009
+  RMSE : 0.1576, R2: 0.1679, MAE: 0.1317, Spearman rho: 0.5037, Spearman p: 1.6807e-40, Pearson r: 0.5338, Pearson p: 0.0000e+00
+  Epoch [13/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5060, Val rho: 0.5037 | Train R2: 0.1848, Val R2: 0.1679 | Train RMSE: 0.1574, Val RMSE: 0.1576 | Train Pearson r: 0.5333, Val Pearson r: 0.5338
+  >> No improvement for 2/6 epochs
+
+Epoch 14/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0369, 0.7337], std: 0.0938
+  RMSE : 0.1472, R2: 0.2874, MAE: 0.1142, Spearman rho: 0.5086, Spearman p: 9.6153e-160, Pearson r: 0.5384, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0456, 0.5654], std: 0.0945
+  RMSE : 0.1467, R2: 0.2790, MAE: 0.1152, Spearman rho: 0.4993, Spearman p: 1.0123e-39, Pearson r: 0.5291, Pearson p: 2.8026e-45
+  Epoch [14/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5086, Val rho: 0.4993 | Train R2: 0.2874, Val R2: 0.2790 | Train RMSE: 0.1472, Val RMSE: 0.1467 | Train Pearson r: 0.5384, Val Pearson r: 0.5291
+  >> New best val RMSE: 0.1467
+
+Epoch 15/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0548, 0.7140], std: 0.0899
+  RMSE : 0.1469, R2: 0.2904, MAE: 0.1149, Spearman rho: 0.5091, Spearman p: 3.6814e-160, Pearson r: 0.5397, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0687, 0.5639], std: 0.0903
+  RMSE : 0.1467, R2: 0.2798, MAE: 0.1162, Spearman rho: 0.5004, Spearman p: 6.6037e-40, Pearson r: 0.5290, Pearson p: 2.8026e-45
+  Epoch [15/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5091, Val rho: 0.5004 | Train R2: 0.2904, Val R2: 0.2798 | Train RMSE: 0.1469, Val RMSE: 0.1467 | Train Pearson r: 0.5397, Val Pearson r: 0.5290
+  >> New best val RMSE: 0.1467
+
+Epoch 16/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0652, 0.7619], std: 0.0932
+  RMSE : 0.1473, R2: 0.2864, MAE: 0.1170, Spearman rho: 0.5095, Spearman p: 1.8643e-160, Pearson r: 0.5395, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0746, 0.5980], std: 0.0937
+  RMSE : 0.1474, R2: 0.2726, MAE: 0.1183, Spearman rho: 0.5037, Spearman p: 1.7415e-40, Pearson r: 0.5301, Pearson p: 2.8026e-45
+  Epoch [16/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5095, Val rho: 0.5037 | Train R2: 0.2864, Val R2: 0.2726 | Train RMSE: 0.1473, Val RMSE: 0.1474 | Train Pearson r: 0.5395, Val Pearson r: 0.5301
+  >> No improvement for 1/6 epochs
+
+Epoch 17/17
+Training on 2426 samples...
+  [Train]  Pred range: [0.0568, 0.7358], std: 0.0915
+  RMSE : 0.1472, R2: 0.2873, MAE: 0.1168, Spearman rho: 0.5089, Spearman p: 5.3595e-160, Pearson r: 0.5392, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0780, 0.5960], std: 0.0922
+  RMSE : 0.1475, R2: 0.2712, MAE: 0.1185, Spearman rho: 0.5019, Spearman p: 3.6232e-40, Pearson r: 0.5268, Pearson p: 8.4078e-45
+  Epoch [17/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5089, Val rho: 0.5019 | Train R2: 0.2873, Val R2: 0.2712 | Train RMSE: 0.1472, Val RMSE: 0.1475 | Train Pearson r: 0.5392, Val Pearson r: 0.5268
+  >> No improvement for 2/6 epochs
+
+  Restored best model from epoch 15 (val RMSE: 0.1467)
+  [Final Val evaluation with best model]
+  Pred range: [0.0687, 0.5639], std: 0.0903
+  RMSE : 0.1467, R2: 0.2798, MAE: 0.1162, Spearman rho: 0.5004, Spearman p: 6.6037e-40, Pearson r: 0.5290, Pearson p: 2.8026e-45
+
+Time taken for Neg model: 2.74 minutes
+Saved: 'Neg_training_curves_seed_44.png'
+Saved: 'Neg_pred_vs_actual_val_seed_44.png'
+  Pred range: [0.0529, 0.6509], std: 0.0966
+  RMSE : 0.1554, R2: 0.2171, MAE: 0.1205, Spearman rho: 0.4484, Spearman p: 1.5788e-50, Pearson r: 0.4738, Pearson p: 0.0000e+00
+
+Final Test - RMSE: 0.1554, R2: 0.2171, Spearman rho: 0.4484
+Saved: 'Neg_pred_vs_actual_test_seed_44.png'
+Train: 3018 rows (2017 IDs),Test: 1015 rows (673 IDs) 
+
+
+============================================================
+  Training Neg symptom model | Seed 45
+============================================================
+Train: 2421 rows (1613 IDs),Test: 597 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count=  959, weight=0.059
+  Bin [0.17, 0.33): count=  866, weight=0.066
+  Bin [0.33, 0.50): count=  353, weight=0.161
+  Bin [0.50, 0.67): count=  176, weight=0.321
+  Bin [0.67, 0.83): count=   55, weight=1.016
+  Bin [0.83, 1.00): count=   12, weight=4.377
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.1221, 0.7387], std: 0.0790
+  RMSE : 0.1615, R2: 0.1594, MAE: 0.1324, Spearman rho: 0.4471, Spearman p: 2.6591e-119, Pearson r: 0.4575, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1405, 0.6667], std: 0.0754
+  RMSE : 0.1629, R2: 0.1035, MAE: 0.1347, Spearman rho: 0.3950, Spearman p: 1.0067e-23, Pearson r: 0.4252, Pearson p: 1.2975e-27
+  Epoch [1/17] Loss: 0.0132 | LR: 5.61e-04 | Train rho: 0.4471, Val rho: 0.3950 | Train R2: 0.1594, Val R2: 0.1035 | Train RMSE: 0.1615, Val RMSE: 0.1629 | Train Pearson r: 0.4575, Val Pearson r: 0.4252
+  >> New best val RMSE: 0.1629
+
+Epoch 2/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.1257, 0.7632], std: 0.0891
+  RMSE : 0.1583, R2: 0.1919, MAE: 0.1296, Spearman rho: 0.4890, Spearman p: 9.1352e-146, Pearson r: 0.5011, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1248, 0.6699], std: 0.0847
+  RMSE : 0.1612, R2: 0.1219, MAE: 0.1336, Spearman rho: 0.4262, Spearman p: 9.5441e-28, Pearson r: 0.4585, Pearson p: 2.2503e-32
+  Epoch [2/17] Loss: 0.0121 | LR: 5.61e-04 | Train rho: 0.4890, Val rho: 0.4262 | Train R2: 0.1919, Val R2: 0.1219 | Train RMSE: 0.1583, Val RMSE: 0.1612 | Train Pearson r: 0.5011, Val Pearson r: 0.4585
+  >> New best val RMSE: 0.1612
+
+Epoch 3/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0929, 0.7212], std: 0.0907
+  RMSE : 0.1517, R2: 0.2584, MAE: 0.1213, Spearman rho: 0.5106, Spearman p: 6.2569e-161, Pearson r: 0.5235, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0948, 0.6342], std: 0.0863
+  RMSE : 0.1544, R2: 0.1944, MAE: 0.1250, Spearman rho: 0.4419, Spearman p: 6.3009e-30, Pearson r: 0.4742, Pearson p: 8.4047e-35
+  Epoch [3/17] Loss: 0.0120 | LR: 5.61e-04 | Train rho: 0.5106, Val rho: 0.4419 | Train R2: 0.2584, Val R2: 0.1944 | Train RMSE: 0.1517, Val RMSE: 0.1544 | Train Pearson r: 0.5235, Val Pearson r: 0.4742
+  >> New best val RMSE: 0.1544
+
+Epoch 4/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0778, 0.7383], std: 0.0960
+  RMSE : 0.1523, R2: 0.2524, MAE: 0.1230, Spearman rho: 0.5180, Spearman p: 2.2752e-166, Pearson r: 0.5351, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0983, 0.6349], std: 0.0919
+  RMSE : 0.1572, R2: 0.1650, MAE: 0.1281, Spearman rho: 0.4393, Spearman p: 1.4855e-29, Pearson r: 0.4721, Pearson p: 1.7824e-34
+  Epoch [4/17] Loss: 0.0119 | LR: 5.61e-04 | Train rho: 0.5180, Val rho: 0.4393 | Train R2: 0.2524, Val R2: 0.1650 | Train RMSE: 0.1523, Val RMSE: 0.1572 | Train Pearson r: 0.5351, Val Pearson r: 0.4721
+  >> No improvement for 1/6 epochs
+
+Epoch 5/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0863, 0.7439], std: 0.0980
+  RMSE : 0.1521, R2: 0.2538, MAE: 0.1231, Spearman rho: 0.5228, Spearman p: 6.1971e-170, Pearson r: 0.5403, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1006, 0.6259], std: 0.0937
+  RMSE : 0.1583, R2: 0.1533, MAE: 0.1287, Spearman rho: 0.4284, Spearman p: 4.8446e-28, Pearson r: 0.4665, Pearson p: 1.3477e-33
+  Epoch [5/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5228, Val rho: 0.4284 | Train R2: 0.2538, Val R2: 0.1533 | Train RMSE: 0.1521, Val RMSE: 0.1583 | Train Pearson r: 0.5403, Val Pearson r: 0.4665
+  >> No improvement for 2/6 epochs
+
+Epoch 6/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0751, 0.7301], std: 0.0960
+  RMSE : 0.1498, R2: 0.2763, MAE: 0.1204, Spearman rho: 0.5261, Spearman p: 1.9638e-172, Pearson r: 0.5460, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0913, 0.5990], std: 0.0915
+  RMSE : 0.1553, R2: 0.1843, MAE: 0.1260, Spearman rho: 0.4380, Spearman p: 2.2211e-29, Pearson r: 0.4739, Pearson p: 9.2751e-35
+  Epoch [6/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5261, Val rho: 0.4380 | Train R2: 0.2763, Val R2: 0.1843 | Train RMSE: 0.1498, Val RMSE: 0.1553 | Train Pearson r: 0.5460, Val Pearson r: 0.4739
+  >> No improvement for 3/6 epochs
+
+Epoch 7/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0766, 0.7722], std: 0.1012
+  RMSE : 0.1539, R2: 0.2365, MAE: 0.1253, Spearman rho: 0.5275, Spearman p: 1.5149e-173, Pearson r: 0.5469, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0942, 0.6270], std: 0.0967
+  RMSE : 0.1607, R2: 0.1274, MAE: 0.1316, Spearman rho: 0.4374, Spearman p: 2.7397e-29, Pearson r: 0.4717, Pearson p: 2.1036e-34
+  Epoch [7/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5275, Val rho: 0.4374 | Train R2: 0.2365, Val R2: 0.1274 | Train RMSE: 0.1539, Val RMSE: 0.1607 | Train Pearson r: 0.5469, Val Pearson r: 0.4717
+  >> No improvement for 4/6 epochs
+
+Epoch 8/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0444, 0.6922], std: 0.0957
+  RMSE : 0.1471, R2: 0.3022, MAE: 0.1163, Spearman rho: 0.5314, Spearman p: 1.6061e-176, Pearson r: 0.5522, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0797, 0.5670], std: 0.0914
+  RMSE : 0.1522, R2: 0.2171, MAE: 0.1213, Spearman rho: 0.4448, Spearman p: 2.4051e-30, Pearson r: 0.4779, Pearson p: 2.1860e-35
+  Epoch [8/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5314, Val rho: 0.4448 | Train R2: 0.3022, Val R2: 0.2171 | Train RMSE: 0.1471, Val RMSE: 0.1522 | Train Pearson r: 0.5522, Val Pearson r: 0.4779
+  >> New best val RMSE: 0.1522
+
+Epoch 9/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0393, 0.6959], std: 0.0983
+  RMSE : 0.1468, R2: 0.3051, MAE: 0.1157, Spearman rho: 0.5312, Spearman p: 2.1642e-176, Pearson r: 0.5538, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0686, 0.5571], std: 0.0937
+  RMSE : 0.1524, R2: 0.2154, MAE: 0.1210, Spearman rho: 0.4397, Spearman p: 1.3053e-29, Pearson r: 0.4758, Pearson p: 4.7264e-35
+  Epoch [9/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5312, Val rho: 0.4397 | Train R2: 0.3051, Val R2: 0.2154 | Train RMSE: 0.1468, Val RMSE: 0.1524 | Train Pearson r: 0.5538, Val Pearson r: 0.4758
+  >> No improvement for 1/6 epochs
+
+Epoch 10/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0221, 0.6902], std: 0.1005
+  RMSE : 0.1468, R2: 0.3049, MAE: 0.1150, Spearman rho: 0.5335, Spearman p: 3.7527e-178, Pearson r: 0.5528, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0694, 0.5724], std: 0.0959
+  RMSE : 0.1518, R2: 0.2216, MAE: 0.1197, Spearman rho: 0.4465, Spearman p: 1.3434e-30, Pearson r: 0.4807, Pearson p: 7.6571e-36
+  Epoch [10/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5335, Val rho: 0.4465 | Train R2: 0.3049, Val R2: 0.2216 | Train RMSE: 0.1468, Val RMSE: 0.1518 | Train Pearson r: 0.5528, Val Pearson r: 0.4807
+  >> New best val RMSE: 0.1518
+
+Epoch 11/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0836, 0.8279], std: 0.1057
+  RMSE : 0.1584, R2: 0.1915, MAE: 0.1300, Spearman rho: 0.5284, Spearman p: 3.2664e-174, Pearson r: 0.5497, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1048, 0.6566], std: 0.1002
+  RMSE : 0.1657, R2: 0.0718, MAE: 0.1370, Spearman rho: 0.4316, Spearman p: 1.7501e-28, Pearson r: 0.4703, Pearson p: 3.4352e-34
+  Epoch [11/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5284, Val rho: 0.4316 | Train R2: 0.1915, Val R2: 0.0718 | Train RMSE: 0.1584, Val RMSE: 0.1657 | Train Pearson r: 0.5497, Val Pearson r: 0.4703
+  >> No improvement for 1/6 epochs
+
+Epoch 12/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0458, 0.6891], std: 0.0984
+  RMSE : 0.1468, R2: 0.3049, MAE: 0.1160, Spearman rho: 0.5318, Spearman p: 7.7450e-177, Pearson r: 0.5547, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0686, 0.5600], std: 0.0935
+  RMSE : 0.1526, R2: 0.2129, MAE: 0.1213, Spearman rho: 0.4394, Spearman p: 1.4242e-29, Pearson r: 0.4754, Pearson p: 5.3571e-35
+  Epoch [12/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5318, Val rho: 0.4394 | Train R2: 0.3049, Val R2: 0.2129 | Train RMSE: 0.1468, Val RMSE: 0.1526 | Train Pearson r: 0.5547, Val Pearson r: 0.4754
+  >> No improvement for 2/6 epochs
+
+Epoch 13/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0142, 0.6883], std: 0.1002
+  RMSE : 0.1469, R2: 0.3038, MAE: 0.1129, Spearman rho: 0.5355, Spearman p: 9.7923e-180, Pearson r: 0.5574, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0553, 0.5534], std: 0.0946
+  RMSE : 0.1510, R2: 0.2291, MAE: 0.1169, Spearman rho: 0.4484, Spearman p: 7.1418e-31, Pearson r: 0.4853, Pearson p: 1.3365e-36
+  Epoch [13/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5355, Val rho: 0.4484 | Train R2: 0.3038, Val R2: 0.2291 | Train RMSE: 0.1469, Val RMSE: 0.1510 | Train Pearson r: 0.5574, Val Pearson r: 0.4853
+  >> New best val RMSE: 0.1510
+
+Epoch 14/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0619, 0.7431], std: 0.1029
+  RMSE : 0.1498, R2: 0.2768, MAE: 0.1206, Spearman rho: 0.5311, Spearman p: 2.8486e-176, Pearson r: 0.5544, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0812, 0.6044], std: 0.0980
+  RMSE : 0.1565, R2: 0.1724, MAE: 0.1265, Spearman rho: 0.4388, Spearman p: 1.7318e-29, Pearson r: 0.4764, Pearson p: 3.7866e-35
+  Epoch [14/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5311, Val rho: 0.4388 | Train R2: 0.2768, Val R2: 0.1724 | Train RMSE: 0.1498, Val RMSE: 0.1565 | Train Pearson r: 0.5544, Val Pearson r: 0.4764
+  >> No improvement for 1/6 epochs
+
+Epoch 15/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0396, 0.7437], std: 0.1017
+  RMSE : 0.1470, R2: 0.3029, MAE: 0.1166, Spearman rho: 0.5309, Spearman p: 3.6297e-176, Pearson r: 0.5557, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0659, 0.5741], std: 0.0969
+  RMSE : 0.1537, R2: 0.2016, MAE: 0.1226, Spearman rho: 0.4295, Spearman p: 3.4289e-28, Pearson r: 0.4716, Pearson p: 2.1635e-34
+  Epoch [15/17] Loss: 0.0113 | LR: 5.61e-04 | Train rho: 0.5309, Val rho: 0.4295 | Train R2: 0.3029, Val R2: 0.2016 | Train RMSE: 0.1470, Val RMSE: 0.1537 | Train Pearson r: 0.5557, Val Pearson r: 0.4716
+  >> No improvement for 2/6 epochs
+
+Epoch 16/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0695, 0.8120], std: 0.1074
+  RMSE : 0.1553, R2: 0.2224, MAE: 0.1268, Spearman rho: 0.5308, Spearman p: 4.4617e-176, Pearson r: 0.5541, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0963, 0.6429], std: 0.1025
+  RMSE : 0.1634, R2: 0.0977, MAE: 0.1339, Spearman rho: 0.4280, Spearman p: 5.4788e-28, Pearson r: 0.4693, Pearson p: 5.0486e-34
+  Epoch [16/17] Loss: 0.0112 | LR: 5.61e-04 | Train rho: 0.5308, Val rho: 0.4280 | Train R2: 0.2224, Val R2: 0.0977 | Train RMSE: 0.1553, Val RMSE: 0.1634 | Train Pearson r: 0.5541, Val Pearson r: 0.4693
+  >> No improvement for 3/6 epochs
+
+Epoch 17/17
+Training on 2421 samples...
+  [Train]  Pred range: [0.0621, 0.7531], std: 0.1007
+  RMSE : 0.1499, R2: 0.2759, MAE: 0.1212, Spearman rho: 0.5334, Spearman p: 4.0473e-178, Pearson r: 0.5568, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0932, 0.6247], std: 0.0962
+  RMSE : 0.1568, R2: 0.1686, MAE: 0.1274, Spearman rho: 0.4379, Spearman p: 2.3354e-29, Pearson r: 0.4741, Pearson p: 8.8279e-35
+  Epoch [17/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5334, Val rho: 0.4379 | Train R2: 0.2759, Val R2: 0.1686 | Train RMSE: 0.1499, Val RMSE: 0.1568 | Train Pearson r: 0.5568, Val Pearson r: 0.4741
+  >> No improvement for 4/6 epochs
+
+  Restored best model from epoch 13 (val RMSE: 0.1510)
+  [Final Val evaluation with best model]
+  Pred range: [0.0553, 0.5534], std: 0.0946
+  RMSE : 0.1510, R2: 0.2291, MAE: 0.1169, Spearman rho: 0.4484, Spearman p: 7.1418e-31, Pearson r: 0.4853, Pearson p: 1.3365e-36
+
+Time taken for Neg model: 2.72 minutes
+Saved: 'Neg_training_curves_seed_45.png'
+Saved: 'Neg_pred_vs_actual_val_seed_45.png'
+  Pred range: [0.0314, 0.6361], std: 0.1005
+  RMSE : 0.1540, R2: 0.1996, MAE: 0.1215, Spearman rho: 0.4344, Spearman p: 5.7389e-48, Pearson r: 0.4629, Pearson p: 0.0000e+00
+
+Final Test - RMSE: 0.1540, R2: 0.1996, Spearman rho: 0.4344
+Saved: 'Neg_pred_vs_actual_test_seed_45.png'
+Train: 3012 rows (2017 IDs),Test: 1021 rows (673 IDs) 
+
+
+============================================================
+  Training Neg symptom model | Seed 46
+============================================================
+Train: 2416 rows (1613 IDs),Test: 596 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count=  992, weight=0.047
+  Bin [0.17, 0.33): count=  835, weight=0.056
+  Bin [0.33, 0.50): count=  348, weight=0.135
+  Bin [0.50, 0.67): count=  173, weight=0.270
+  Bin [0.67, 0.83): count=   59, weight=0.784
+  Bin [0.83, 1.00): count=    9, weight=4.707
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0864, 0.8330], std: 0.0918
+  RMSE : 0.1588, R2: 0.1816, MAE: 0.1293, Spearman rho: 0.4498, Spearman p: 1.2074e-120, Pearson r: 0.4776, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1077, 0.6763], std: 0.0909
+  RMSE : 0.1695, R2: 0.0733, MAE: 0.1375, Spearman rho: 0.3427, Spearman p: 7.1844e-18, Pearson r: 0.3686, Pearson p: 1.2780e-20
+  Epoch [1/17] Loss: 0.0128 | LR: 5.61e-04 | Train rho: 0.4498, Val rho: 0.3427 | Train R2: 0.1816, Val R2: 0.0733 | Train RMSE: 0.1588, Val RMSE: 0.1695 | Train Pearson r: 0.4776, Val Pearson r: 0.3686
+  >> New best val RMSE: 0.1695
+
+Epoch 2/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0505, 0.7411], std: 0.0895
+  RMSE : 0.1507, R2: 0.2636, MAE: 0.1161, Spearman rho: 0.4876, Spearman p: 1.6803e-144, Pearson r: 0.5171, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0693, 0.6501], std: 0.0888
+  RMSE : 0.1630, R2: 0.1429, MAE: 0.1277, Spearman rho: 0.3606, Spearman p: 9.5792e-20, Pearson r: 0.3981, Pearson p: 4.4583e-24
+  Epoch [2/17] Loss: 0.0122 | LR: 5.61e-04 | Train rho: 0.4876, Val rho: 0.3606 | Train R2: 0.2636, Val R2: 0.1429 | Train RMSE: 0.1507, Val RMSE: 0.1630 | Train Pearson r: 0.5171, Val Pearson r: 0.3981
+  >> New best val RMSE: 0.1630
+
+Epoch 3/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0903, 0.8969], std: 0.1012
+  RMSE : 0.1587, R2: 0.1832, MAE: 0.1305, Spearman rho: 0.4956, Spearman p: 5.6290e-150, Pearson r: 0.5249, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1162, 0.7459], std: 0.0993
+  RMSE : 0.1704, R2: 0.0632, MAE: 0.1396, Spearman rho: 0.3720, Spearman p: 5.3071e-21, Pearson r: 0.4101, Pearson p: 1.3907e-25
+  Epoch [3/17] Loss: 0.0118 | LR: 5.61e-04 | Train rho: 0.4956, Val rho: 0.3720 | Train R2: 0.1832, Val R2: 0.0632 | Train RMSE: 0.1587, Val RMSE: 0.1704 | Train Pearson r: 0.5249, Val Pearson r: 0.4101
+  >> No improvement for 1/6 epochs
+
+Epoch 4/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0615, 0.7979], std: 0.0952
+  RMSE : 0.1478, R2: 0.2916, MAE: 0.1155, Spearman rho: 0.5104, Spearman p: 2.0417e-160, Pearson r: 0.5402, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0848, 0.6843], std: 0.0934
+  RMSE : 0.1610, R2: 0.1636, MAE: 0.1280, Spearman rho: 0.3787, Spearman p: 9.3317e-22, Pearson r: 0.4194, Pearson p: 8.6279e-27
+  Epoch [4/17] Loss: 0.0118 | LR: 5.61e-04 | Train rho: 0.5104, Val rho: 0.3787 | Train R2: 0.2916, Val R2: 0.1636 | Train RMSE: 0.1478, Val RMSE: 0.1610 | Train Pearson r: 0.5402, Val Pearson r: 0.4194
+  >> New best val RMSE: 0.1610
+
+Epoch 5/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0664, 0.8165], std: 0.0977
+  RMSE : 0.1472, R2: 0.2966, MAE: 0.1158, Spearman rho: 0.5163, Spearman p: 8.9953e-165, Pearson r: 0.5467, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0830, 0.6894], std: 0.0955
+  RMSE : 0.1606, R2: 0.1675, MAE: 0.1287, Spearman rho: 0.3776, Spearman p: 1.2282e-21, Pearson r: 0.4267, Pearson p: 9.0757e-28
+  Epoch [5/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5163, Val rho: 0.3776 | Train R2: 0.2966, Val R2: 0.1675 | Train RMSE: 0.1472, Val RMSE: 0.1606 | Train Pearson r: 0.5467, Val Pearson r: 0.4267
+  >> New best val RMSE: 0.1606
+
+Epoch 6/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0591, 0.8162], std: 0.0997
+  RMSE : 0.1472, R2: 0.2969, MAE: 0.1164, Spearman rho: 0.5192, Spearman p: 6.8066e-167, Pearson r: 0.5502, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0816, 0.6995], std: 0.0968
+  RMSE : 0.1606, R2: 0.1682, MAE: 0.1291, Spearman rho: 0.3816, Spearman p: 4.2581e-22, Pearson r: 0.4311, Pearson p: 2.2788e-28
+  Epoch [6/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5192, Val rho: 0.3816 | Train R2: 0.2969, Val R2: 0.1682 | Train RMSE: 0.1472, Val RMSE: 0.1606 | Train Pearson r: 0.5502, Val Pearson r: 0.4311
+  >> New best val RMSE: 0.1606
+
+Epoch 7/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0530, 0.7948], std: 0.0987
+  RMSE : 0.1467, R2: 0.3017, MAE: 0.1157, Spearman rho: 0.5221, Spearman p: 4.2760e-169, Pearson r: 0.5523, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0833, 0.6915], std: 0.0955
+  RMSE : 0.1598, R2: 0.1764, MAE: 0.1282, Spearman rho: 0.3849, Spearman p: 1.7706e-22, Pearson r: 0.4354, Pearson p: 5.7836e-29
+  Epoch [7/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5221, Val rho: 0.3849 | Train R2: 0.3017, Val R2: 0.1764 | Train RMSE: 0.1467, Val RMSE: 0.1598 | Train Pearson r: 0.5523, Val Pearson r: 0.4354
+  >> New best val RMSE: 0.1598
+
+Epoch 8/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0678, 0.8417], std: 0.1022
+  RMSE : 0.1484, R2: 0.2855, MAE: 0.1186, Spearman rho: 0.5236, Spearman p: 3.5753e-170, Pearson r: 0.5534, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0900, 0.7189], std: 0.0987
+  RMSE : 0.1619, R2: 0.1543, MAE: 0.1310, Spearman rho: 0.3853, Spearman p: 1.5527e-22, Pearson r: 0.4318, Pearson p: 1.8108e-28
+  Epoch [8/17] Loss: 0.0114 | LR: 5.61e-04 | Train rho: 0.5236, Val rho: 0.3853 | Train R2: 0.2855, Val R2: 0.1543 | Train RMSE: 0.1484, Val RMSE: 0.1619 | Train Pearson r: 0.5534, Val Pearson r: 0.4318
+  >> No improvement for 1/6 epochs
+
+Epoch 9/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0751, 0.8667], std: 0.1040
+  RMSE : 0.1526, R2: 0.2444, MAE: 0.1241, Spearman rho: 0.5236, Spearman p: 3.6338e-170, Pearson r: 0.5526, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0970, 0.7348], std: 0.1002
+  RMSE : 0.1658, R2: 0.1135, MAE: 0.1354, Spearman rho: 0.3821, Spearman p: 3.7505e-22, Pearson r: 0.4288, Pearson p: 4.7323e-28
+  Epoch [9/17] Loss: 0.0112 | LR: 5.61e-04 | Train rho: 0.5236, Val rho: 0.3821 | Train R2: 0.2444, Val R2: 0.1135 | Train RMSE: 0.1526, Val RMSE: 0.1658 | Train Pearson r: 0.5526, Val Pearson r: 0.4288
+  >> No improvement for 2/6 epochs
+
+Epoch 10/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0713, 0.8895], std: 0.1067
+  RMSE : 0.1532, R2: 0.2384, MAE: 0.1247, Spearman rho: 0.5242, Spearman p: 1.1428e-170, Pearson r: 0.5535, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1064, 0.7606], std: 0.1036
+  RMSE : 0.1655, R2: 0.1162, MAE: 0.1350, Spearman rho: 0.3927, Spearman p: 2.0461e-23, Pearson r: 0.4403, Pearson p: 1.1625e-29
+  Epoch [10/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5242, Val rho: 0.3927 | Train R2: 0.2384, Val R2: 0.1162 | Train RMSE: 0.1532, Val RMSE: 0.1655 | Train Pearson r: 0.5535, Val Pearson r: 0.4403
+  >> No improvement for 3/6 epochs
+
+Epoch 11/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0556, 0.8378], std: 0.1055
+  RMSE : 0.1481, R2: 0.2885, MAE: 0.1180, Spearman rho: 0.5253, Spearman p: 1.7290e-171, Pearson r: 0.5550, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0865, 0.7472], std: 0.1020
+  RMSE : 0.1610, R2: 0.1640, MAE: 0.1298, Spearman rho: 0.3959, Spearman p: 8.5049e-24, Pearson r: 0.4431, Pearson p: 4.6387e-30
+  Epoch [11/17] Loss: 0.0113 | LR: 5.61e-04 | Train rho: 0.5253, Val rho: 0.3959 | Train R2: 0.2885, Val R2: 0.1640 | Train RMSE: 0.1481, Val RMSE: 0.1610 | Train Pearson r: 0.5550, Val Pearson r: 0.4431
+  >> No improvement for 4/6 epochs
+
+Epoch 12/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0658, 0.8538], std: 0.1034
+  RMSE : 0.1500, R2: 0.2704, MAE: 0.1211, Spearman rho: 0.5265, Spearman p: 2.1708e-172, Pearson r: 0.5565, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1006, 0.7389], std: 0.0998
+  RMSE : 0.1620, R2: 0.1536, MAE: 0.1320, Spearman rho: 0.3965, Spearman p: 7.1560e-24, Pearson r: 0.4474, Pearson p: 1.1157e-30
+  Epoch [12/17] Loss: 0.0115 | LR: 5.61e-04 | Train rho: 0.5265, Val rho: 0.3965 | Train R2: 0.2704, Val R2: 0.1536 | Train RMSE: 0.1500, Val RMSE: 0.1620 | Train Pearson r: 0.5565, Val Pearson r: 0.4474
+  >> No improvement for 5/6 epochs
+
+Epoch 13/17
+Training on 2416 samples...
+  [Train]  Pred range: [0.0585, 0.8762], std: 0.1056
+  RMSE : 0.1487, R2: 0.2829, MAE: 0.1190, Spearman rho: 0.5254, Spearman p: 1.5064e-171, Pearson r: 0.5563, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0887, 0.7171], std: 0.1008
+  RMSE : 0.1602, R2: 0.1720, MAE: 0.1300, Spearman rho: 0.4026, Spearman p: 1.2394e-24, Pearson r: 0.4531, Pearson p: 1.6221e-31
+  Epoch [13/17] Loss: 0.0115 | LR: 3.74e-04 | Train rho: 0.5254, Val rho: 0.4026 | Train R2: 0.2829, Val R2: 0.1720 | Train RMSE: 0.1487, Val RMSE: 0.1602 | Train Pearson r: 0.5563, Val Pearson r: 0.4531
+  >> No improvement for 6/6 epochs
+
+  Early stopping at epoch 13. Best val RMSE: 0.1598 at epoch 7
+
+  Restored best model from epoch 7 (val RMSE: 0.1598)
+  [Final Val evaluation with best model]
+  Pred range: [0.0833, 0.6915], std: 0.0955
+  RMSE : 0.1598, R2: 0.1764, MAE: 0.1282, Spearman rho: 0.3849, Spearman p: 1.7706e-22, Pearson r: 0.4354, Pearson p: 5.7836e-29
+
+Time taken for Neg model: 2.17 minutes
+Saved: 'Neg_training_curves_seed_46.png'
+Saved: 'Neg_pred_vs_actual_val_seed_46.png'
+  Pred range: [0.0650, 0.7293], std: 0.0913
+  RMSE : 0.1549, R2: 0.1811, MAE: 0.1213, Spearman rho: 0.4560, Spearman p: 1.4386e-53, Pearson r: 0.4383, Pearson p: 0.0000e+00
+
+Final Test - RMSE: 0.1549, R2: 0.1811, Spearman rho: 0.4560
+Saved: 'Neg_pred_vs_actual_test_seed_46.png'
+
+
+================================================================================
+  SUMMARY ACROSS 5 SEEDS
+================================================================================
+
+  Neg Symptom Model:
+  --------------------------------------------------
+  Metric                     Mean      ± Std
+  --------------------------------------------------
+  rmse                     0.1552     0.0026
+  r2                       0.2098     0.0180
+  mae                      0.1204     0.0012
+  spearman_rho             0.4532     0.0140
+  spearman_p               0.0000     0.0000
+  pearson_r                0.4699     0.0182
+  pearson_p                0.0000     0.0000
+  --------------------------------------------------
+
+  Per-seed results:
+  Seed         RMSE       R2   Spearman    Pearson
+  --------------------------------------------------
+  42         0.1518   0.2339     0.4499     0.4874
+  43         0.1597   0.2171     0.4774     0.4869
+  44         0.1554   0.2171     0.4484     0.4738
+  45         0.1540   0.1996     0.4344     0.4629
+  46         0.1549   0.1811     0.4560     0.4383
+
+Summary saved to 'test_results_summary.csv'
+Per-seed results saved to 'Neg_test_results_per_seed.csv'
