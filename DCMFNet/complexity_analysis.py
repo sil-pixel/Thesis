@@ -5,7 +5,7 @@ Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substan
 Date: 29/04/2026
 
 Purpose:
-    Identify which SUD15 × modality interactions are more complex by varying
+    Identify which SUD15 * modality interactions are more complex by varying
     the number of IGF layers per modality independently.
 
 Experiment design:
@@ -47,7 +47,6 @@ from loss import ImbalancedRegressionLoss
 FUSION_LABELS = ["PRS", "SCZ15", "ADHD9", "ASD9", "ACE15", "ACE18", "SUD18", "SES", "SEX"]
 
 SEED = 42
-BASELINE_DEPTH = 3       # default depth for modalities not being varied
 DEPTH_RANGE = range(1, 6)  # test depths 1 through 5
 
 
@@ -126,10 +125,10 @@ def train_single_config(train_df, modality_sizes, model_tag, hyperparams, layer_
     return val_metrics, model
 
 
-def phase1_per_modality_sweep(train_df, modality_sizes, model_tag, hyperparams):
+def phase1_per_modality_sweep(train_df, modality_sizes, model_tag, hyperparams, baseline_depth):
     '''
-    Phase 1: For each fusion modality, vary its depth from 1 to 7 while
-    keeping all others at BASELINE_DEPTH. Records val RMSE and R2.
+    Phase 1: For each fusion modality, vary its depth from 1 to 5 while
+    keeping all others at baseline_depth. Records val RMSE and R2.
     '''
     M = NUM_MODALITIES
     results = []
@@ -137,15 +136,15 @@ def phase1_per_modality_sweep(train_df, modality_sizes, model_tag, hyperparams):
     for mod_idx in range(M):
         mod_name = FUSION_LABELS[mod_idx]
         print(f"\n{'-'*50}")
-        print(f"  Sweeping depth for {mod_name} (SUD15 × {mod_name})")
+        print(f"  Sweeping depth for {mod_name} (SUD15 * {mod_name})")
         print(f"{'-'*50}")
 
         for depth in DEPTH_RANGE:
             # All modalities at baseline except the one being varied
-            layer_config = [BASELINE_DEPTH] * M
+            layer_config = [baseline_depth] * M
             layer_config[mod_idx] = depth
 
-            print(f"  Config: {mod_name}={depth}, others={BASELINE_DEPTH}")
+            print(f"  Config: {mod_name}={depth}, others={baseline_depth}")
             start = time.time()
             val_metrics, _ = train_single_config(
                 train_df, modality_sizes, model_tag, hyperparams, layer_config
@@ -187,19 +186,19 @@ def find_optimal_depths(sweep_df):
     return pd.DataFrame(optimal)
 
 
-def phase2_optimal_config(train_df, test_df, modality_sizes, model_tag, hyperparams, optimal_df):
+def phase2_optimal_config(train_df, test_df, modality_sizes, model_tag, hyperparams, optimal_df, baseline_depth):
     '''
     Phase 2: Train a model using the optimal per-modality depths
     and compare against the uniform baseline.
     '''
     optimal_layers = optimal_df['optimal_depth'].tolist()
-    uniform_layers = [BASELINE_DEPTH] * NUM_MODALITIES
+    uniform_layers = [baseline_depth] * NUM_MODALITIES
 
     print(f"\n{'='*60}")
     print(f"  Phase 2: Optimal vs Uniform Configuration")
     print(f"{'='*60}")
     print(f"  Optimal layers: {dict(zip(FUSION_LABELS, optimal_layers))}")
-    print(f"  Uniform layers: {BASELINE_DEPTH} for all")
+    print(f"  Uniform layers: {baseline_depth} for all")
 
     # Train optimal config
     print(f"\n  Training OPTIMAL config...")
@@ -228,15 +227,17 @@ def phase2_optimal_config(train_df, test_df, modality_sizes, model_tag, hyperpar
             'Test RMSE': test_metrics_opt['rmse'],
             'Test R2': test_metrics_opt['r2'],
             'Test Spearman': test_metrics_opt['spearman_rho'],
+            'Test Pearson': test_metrics_opt['pearson_r']
         },
         {
-            'Config': f'Uniform (L={BASELINE_DEPTH})',
-            'Layers': str(BASELINE_DEPTH),
+            'Config': f'Uniform (L={baseline_depth})',
+            'Layers': str(baseline_depth),
             'Val RMSE': val_metrics_uni['rmse'],
             'Val R2': val_metrics_uni['r2'],
             'Test RMSE': test_metrics_uni['rmse'],
             'Test R2': test_metrics_uni['r2'],
             'Test Spearman': test_metrics_uni['spearman_rho'],
+            'Test Pearson': test_metrics_uni['pearson_r']
         },
     ])
 
@@ -271,7 +272,7 @@ def plot_depth_sweep(sweep_df, model_tag):
     print(f"Saved: '{model_tag}_depth_sweep.png'")
 
 
-def plot_optimal_depths(optimal_df, model_tag):
+def plot_optimal_depths(optimal_df, model_tag, baseline_depth):
     '''
     Bar chart of optimal depth per modality - taller bars = more complex interaction.
     '''
@@ -289,8 +290,8 @@ def plot_optimal_depths(optimal_df, model_tag):
     ax.set_ylabel('Optimal Number of IGF Layers')
     ax.set_title(f'{model_tag} - Interaction Complexity: Optimal Depth per Modality')
     ax.set_ylim(0, max(optimal_df['optimal_depth']) + 1.5)
-    ax.axhline(y=BASELINE_DEPTH, color='gray', linestyle='--', alpha=0.5,
-               label=f'Baseline ({BASELINE_DEPTH})')
+    ax.axhline(y=baseline_depth, color='gray', linestyle='--', alpha=0.5,
+               label=f'Baseline ({baseline_depth})')
     ax.legend()
 
     plt.tight_layout()
@@ -313,15 +314,17 @@ if __name__ == "__main__":
 
     for model_tag in ["Pos", "Neg"]:
         print(f"\n{'='*60}")
-        print(f"  Complexity Analysis — {model_tag} symptom model")
+        print(f"  Complexity Analysis - {model_tag} symptom model")
         print(f"{'='*60}")
 
         hyperparams = hyperparameters_json[model_tag]
+        # Get baseline depth from this model's tuned hyperparameters
+        baseline_depth = hyperparams["num_layers"]
 
         # -- Phase 1: Per-modality depth sweep --
-        print(f"\n  PHASE 1: Per-modality depth sweep (baseline={BASELINE_DEPTH})")
+        print(f"\n  PHASE 1: Per-modality depth sweep (baseline={baseline_depth})")
         sweep_df = phase1_per_modality_sweep(
-            train_df, modality_sizes, model_tag, hyperparams
+            train_df, modality_sizes, model_tag, hyperparams, baseline_depth
         )
         sweep_df.to_csv(f'{model_tag}_depth_sweep_results.csv', index=False)
         print(f"\nSweep results saved to '{model_tag}_depth_sweep_results.csv'")
@@ -336,11 +339,11 @@ if __name__ == "__main__":
         print(optimal_df.to_string(index=False))
 
         # Plot optimal depths
-        plot_optimal_depths(optimal_df, model_tag)
+        plot_optimal_depths(optimal_df, model_tag, baseline_depth)
 
         # -- Phase 2: Compare optimal vs uniform --
         comparison_df = phase2_optimal_config(
-            train_df, test_df, modality_sizes, model_tag, hyperparams, optimal_df
+            train_df, test_df, modality_sizes, model_tag, hyperparams, optimal_df, baseline_depth
         )
         comparison_df.to_csv(f'{model_tag}_complexity_comparison.csv', index=False)
         print(f"\n  Comparison:")
@@ -348,17 +351,17 @@ if __name__ == "__main__":
 
         print(f"\n  Interpretation:")
         optimal_layers = dict(zip(optimal_df['modality'], optimal_df['optimal_depth']))
-        deep = {k: v for k, v in optimal_layers.items() if v > BASELINE_DEPTH}
-        shallow = {k: v for k, v in optimal_layers.items() if v < BASELINE_DEPTH}
-        baseline = {k: v for k, v in optimal_layers.items() if v == BASELINE_DEPTH}
+        deep = {k: v for k, v in optimal_layers.items() if v > baseline_depth}
+        shallow = {k: v for k, v in optimal_layers.items() if v < baseline_depth}
+        baseline = {k: v for k, v in optimal_layers.items() if v == baseline_depth}
 
         if deep:
             print(f"    Complex interactions (need more depth): {deep}")
-            print(f"      → These SUD15 × modality interactions have non-linear patterns")
+            print(f"      - These SUD15 * modality interactions have non-linear patterns")
             print(f"        that require deeper fusion to capture.")
         if shallow:
             print(f"    Simple interactions (need less depth):  {shallow}")
-            print(f"      → These interactions are more linear and don't benefit from")
+            print(f"      - These interactions are more linear and don't benefit from")
             print(f"        deep iterative fusion.")
         if baseline:
             print(f"    Moderate interactions (at baseline):    {baseline}")
