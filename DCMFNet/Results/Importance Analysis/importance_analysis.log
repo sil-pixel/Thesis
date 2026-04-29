@@ -1,0 +1,344 @@
+modality sizes for ['SUD15', 'PRS', 'SCZ15', 'ADHD9', 'ASD9', 'ACE15', 'ACE18', 'SUD18', 'SES', 'SEX', '^batch_.*_x_PC'] : [6, 16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+Train: 3005 rows (2017 IDs),Test: 1028 rows (673 IDs) 
+
+
+============================================================
+  Gate Analysis - Pos symptom model
+============================================================
+  Layers per modality: {'PRS': 5, 'SCZ15': 2, 'ADHD9': 1, 'ASD9': 5, 'ACE15': 4, 'ACE18': 1, 'SUD18': 1, 'SES': 1, 'SEX': 5}
+Train: 2407 rows (1613 IDs),Test: 598 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 13, Focal gamma: 1.3185985073893693, Base loss: huber
+  Bin [0.00, 0.08): count=  828, weight=0.003
+  Bin [0.08, 0.15): count=  710, weight=0.004
+  Bin [0.15, 0.23): count=  477, weight=0.006
+  Bin [0.23, 0.31): count=  288, weight=0.009
+  Bin [0.31, 0.38): count=   63, weight=0.042
+  Bin [0.38, 0.46): count=   23, weight=0.113
+  Bin [0.46, 0.54): count=   10, weight=0.247
+  Bin [0.54, 0.62): count=    7, weight=0.340
+  Bin [0.62, 0.69): count=    0, weight=2.719
+  Bin [0.69, 0.77): count=    1, weight=1.359
+  Bin [0.77, 0.85): count=    0, weight=2.719
+  Bin [0.85, 0.92): count=    0, weight=2.719
+  Bin [0.92, 1.00): count=    0, weight=2.719
+-------------------------------------------
+
+
+Epoch 1/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0338, 0.4552], std: 0.0483
+  RMSE : 0.1016, R2: -0.0089, MAE: 0.0827, Spearman rho: 0.2404, Spearman p: 5.3361e-33, Pearson r: 0.2829, Pearson p: 2.8026e-45
+  [Val]    Pred range: [0.0460, 0.4312], std: 0.0462
+  RMSE : 0.1033, R2: -0.0547, MAE: 0.0836, Spearman rho: 0.2339, Spearman p: 7.1029e-09, Pearson r: 0.2366, Pearson p: 4.7203e-09
+  Epoch [1/23] Loss: 0.0086 | LR: 1.00e-04 | Train rho: 0.2404, Val rho: 0.2339 | Train R2: -0.0089, Val R2: -0.0547 | Train RMSE: 0.1016, Val RMSE: 0.1033 | Train Pearson r: 0.2829, Val Pearson r: 0.2366
+  >> New best val RMSE: 0.1033
+
+Epoch 2/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0428, 0.5209], std: 0.0553
+  RMSE : 0.0970, R2: 0.0807, MAE: 0.0785, Spearman rho: 0.3492, Spearman p: 5.6242e-70, Pearson r: 0.3893, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0600, 0.4790], std: 0.0533
+  RMSE : 0.0994, R2: 0.0240, MAE: 0.0800, Spearman rho: 0.3354, Spearman p: 3.4599e-17, Pearson r: 0.3403, Pearson p: 1.1302e-17
+  Epoch [2/23] Loss: 0.0066 | LR: 1.00e-04 | Train rho: 0.3492, Val rho: 0.3354 | Train R2: 0.0807, Val R2: 0.0240 | Train RMSE: 0.0970, Val RMSE: 0.0994 | Train Pearson r: 0.3893, Val Pearson r: 0.3403
+  >> New best val RMSE: 0.0994
+
+Epoch 3/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0339, 0.4752], std: 0.0529
+  RMSE : 0.0922, R2: 0.1693, MAE: 0.0741, Spearman rho: 0.3898, Spearman p: 3.6050e-88, Pearson r: 0.4307, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0518, 0.4269], std: 0.0513
+  RMSE : 0.0944, R2: 0.1196, MAE: 0.0758, Spearman rho: 0.3784, Spearman p: 8.5852e-22, Pearson r: 0.3841, Pearson p: 1.8521e-22
+  Epoch [3/23] Loss: 0.0064 | LR: 1.00e-04 | Train rho: 0.3898, Val rho: 0.3784 | Train R2: 0.1693, Val R2: 0.1196 | Train RMSE: 0.0922, Val RMSE: 0.0944 | Train Pearson r: 0.4307, Val Pearson r: 0.3841
+  >> New best val RMSE: 0.0944
+
+Epoch 4/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0465, 0.4847], std: 0.0534
+  RMSE : 0.0922, R2: 0.1704, MAE: 0.0743, Spearman rho: 0.4119, Spearman p: 3.1429e-99, Pearson r: 0.4534, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0647, 0.4324], std: 0.0525
+  RMSE : 0.0943, R2: 0.1203, MAE: 0.0759, Spearman rho: 0.4068, Spearman p: 3.0897e-25, Pearson r: 0.4130, Pearson p: 4.9071e-26
+  Epoch [4/23] Loss: 0.0061 | LR: 1.00e-04 | Train rho: 0.4119, Val rho: 0.4068 | Train R2: 0.1704, Val R2: 0.1203 | Train RMSE: 0.0922, Val RMSE: 0.0943 | Train Pearson r: 0.4534, Val Pearson r: 0.4130
+  >> New best val RMSE: 0.0943
+
+Epoch 5/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0474, 0.4981], std: 0.0552
+  RMSE : 0.0911, R2: 0.1897, MAE: 0.0732, Spearman rho: 0.4295, Spearman p: 1.1447e-108, Pearson r: 0.4712, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0608, 0.4265], std: 0.0542
+  RMSE : 0.0934, R2: 0.1373, MAE: 0.0750, Spearman rho: 0.4252, Spearman p: 1.1945e-27, Pearson r: 0.4295, Pearson p: 3.0904e-28
+  Epoch [5/23] Loss: 0.0058 | LR: 1.00e-04 | Train rho: 0.4295, Val rho: 0.4252 | Train R2: 0.1897, Val R2: 0.1373 | Train RMSE: 0.0911, Val RMSE: 0.0934 | Train Pearson r: 0.4712, Val Pearson r: 0.4295
+  >> New best val RMSE: 0.0934
+
+Epoch 6/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0462, 0.5050], std: 0.0556
+  RMSE : 0.0892, R2: 0.2233, MAE: 0.0713, Spearman rho: 0.4428, Spearman p: 3.8303e-116, Pearson r: 0.4855, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0522, 0.4129], std: 0.0545
+  RMSE : 0.0915, R2: 0.1732, MAE: 0.0729, Spearman rho: 0.4401, Spearman p: 1.0054e-29, Pearson r: 0.4428, Pearson p: 4.1473e-30
+  Epoch [6/23] Loss: 0.0059 | LR: 1.00e-04 | Train rho: 0.4428, Val rho: 0.4401 | Train R2: 0.2233, Val R2: 0.1732 | Train RMSE: 0.0892, Val RMSE: 0.0915 | Train Pearson r: 0.4855, Val Pearson r: 0.4428
+  >> New best val RMSE: 0.0915
+
+Epoch 7/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0457, 0.5285], std: 0.0589
+  RMSE : 0.0892, R2: 0.2233, MAE: 0.0712, Spearman rho: 0.4531, Spearman p: 3.5824e-122, Pearson r: 0.4954, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0498, 0.4198], std: 0.0571
+  RMSE : 0.0915, R2: 0.1719, MAE: 0.0731, Spearman rho: 0.4499, Spearman p: 3.9316e-31, Pearson r: 0.4533, Pearson p: 1.2225e-31
+  Epoch [7/23] Loss: 0.0057 | LR: 1.00e-04 | Train rho: 0.4531, Val rho: 0.4499 | Train R2: 0.2233, Val R2: 0.1719 | Train RMSE: 0.0892, Val RMSE: 0.0915 | Train Pearson r: 0.4954, Val Pearson r: 0.4533
+  >> No improvement for 1/5 epochs
+
+Epoch 8/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0517, 0.5346], std: 0.0582
+  RMSE : 0.0903, R2: 0.2029, MAE: 0.0725, Spearman rho: 0.4591, Spearman p: 8.1757e-126, Pearson r: 0.5016, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0587, 0.4282], std: 0.0567
+  RMSE : 0.0931, R2: 0.1431, MAE: 0.0748, Spearman rho: 0.4533, Spearman p: 1.2386e-31, Pearson r: 0.4563, Pearson p: 4.3977e-32
+  Epoch [8/23] Loss: 0.0058 | LR: 1.00e-04 | Train rho: 0.4591, Val rho: 0.4533 | Train R2: 0.2029, Val R2: 0.1431 | Train RMSE: 0.0903, Val RMSE: 0.0931 | Train Pearson r: 0.5016, Val Pearson r: 0.4563
+  >> No improvement for 2/5 epochs
+
+Epoch 9/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0472, 0.5402], std: 0.0590
+  RMSE : 0.0892, R2: 0.2231, MAE: 0.0714, Spearman rho: 0.4648, Spearman p: 2.5493e-129, Pearson r: 0.5074, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0531, 0.4245], std: 0.0575
+  RMSE : 0.0920, R2: 0.1636, MAE: 0.0737, Spearman rho: 0.4569, Spearman p: 3.4755e-32, Pearson r: 0.4610, Pearson p: 8.5125e-33
+  Epoch [9/23] Loss: 0.0057 | LR: 1.00e-04 | Train rho: 0.4648, Val rho: 0.4569 | Train R2: 0.2231, Val R2: 0.1636 | Train RMSE: 0.0892, Val RMSE: 0.0920 | Train Pearson r: 0.5074, Val Pearson r: 0.4610
+  >> No improvement for 3/5 epochs
+
+Epoch 10/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0538, 0.5377], std: 0.0576
+  RMSE : 0.0902, R2: 0.2060, MAE: 0.0725, Spearman rho: 0.4681, Spearman p: 2.2073e-131, Pearson r: 0.5110, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0598, 0.4056], std: 0.0559
+  RMSE : 0.0930, R2: 0.1453, MAE: 0.0750, Spearman rho: 0.4609, Spearman p: 8.6184e-33, Pearson r: 0.4650, Pearson p: 2.0694e-33
+  Epoch [10/23] Loss: 0.0057 | LR: 1.00e-04 | Train rho: 0.4681, Val rho: 0.4609 | Train R2: 0.2060, Val R2: 0.1453 | Train RMSE: 0.0902, Val RMSE: 0.0930 | Train Pearson r: 0.5110, Val Pearson r: 0.4650
+  >> No improvement for 4/5 epochs
+
+Epoch 11/23
+Training on 2407 samples...
+  [Train]  Pred range: [0.0405, 0.5550], std: 0.0603
+  RMSE : 0.0890, R2: 0.2261, MAE: 0.0713, Spearman rho: 0.4729, Spearman p: 2.0882e-134, Pearson r: 0.5161, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0485, 0.4083], std: 0.0581
+  RMSE : 0.0920, R2: 0.1630, MAE: 0.0738, Spearman rho: 0.4628, Spearman p: 4.4836e-33, Pearson r: 0.4662, Pearson p: 1.3278e-33
+  Epoch [11/23] Loss: 0.0057 | LR: 4.33e-05 | Train rho: 0.4729, Val rho: 0.4628 | Train R2: 0.2261, Val R2: 0.1630 | Train RMSE: 0.0890, Val RMSE: 0.0920 | Train Pearson r: 0.5161, Val Pearson r: 0.4662
+  >> No improvement for 5/5 epochs
+
+  Early stopping at epoch 11. Best val RMSE: 0.0915 at epoch 6
+
+  Restored best model from epoch 6 (val RMSE: 0.0915)
+  [Final Val evaluation with best model]
+  Pred range: [0.0522, 0.4129], std: 0.0545
+  RMSE : 0.0915, R2: 0.1732, MAE: 0.0729, Spearman rho: 0.4401, Spearman p: 1.0054e-29, Pearson r: 0.4428, Pearson p: 4.1473e-30
+
+Gate shapes:
+  attn_fused: (1028, 275)
+  attn_independent: (1028, 105)
+  attn_final: (1028, 380)
+
+--- Fused Attention Layer ---
+Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)   Difference      p_value
+   ACE18              0.510461         5.066676e-05             0.510439        4.162580e-05 2.264977e-05 4.733635e-08
+     SES              0.504598         1.950078e-05             0.504588        1.537851e-05 9.715557e-06 2.541156e-09
+   SCZ15              0.503093         1.055522e-05             0.503088        8.532161e-06 5.543232e-06 4.111839e-10
+   ADHD9              0.500718         1.737522e-06             0.500717        1.309786e-06 8.940697e-07 4.774129e-10
+     PRS              0.500745         1.723575e-06             0.500744        1.410036e-06 7.152557e-07 3.124757e-08
+   SUD18              0.503472         2.395280e-06             0.503472        2.099181e-06 5.960464e-07 8.643864e-04
+   ACE15              0.499695         1.354614e-06             0.499694        1.045685e-06 5.364418e-07 5.541711e-09
+    ASD9              0.500700         7.331953e-07             0.500700        6.131656e-07 3.576279e-07 6.471511e-08
+     SEX              0.502683         4.956433e-06             0.502682        4.252024e-06 2.980232e-07 6.669511e-02
+Saved: 'Pos_attn_fused_gate_comparison_seed_42.png'
+
+--- Independent Attention Layer ---
+Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)  Difference      p_value
+     SEX              0.512912             0.039429             0.485606            0.025880    0.027306 2.130554e-17
+   SUD15              0.481561             0.012422             0.473533            0.008051    0.008028 1.994838e-16
+   ACE15              0.493213             0.013459             0.489144            0.008265    0.004068 2.042950e-03
+   ADHD9              0.521828             0.005801             0.519606            0.003955    0.002223 1.465791e-04
+   SUD18              0.568533             0.018506             0.566881            0.010778    0.001653 2.126112e-01
+batch*PC              0.509547             0.001703             0.509131            0.001320    0.000416 2.945711e-02
+   SCZ15              0.489501             0.003071             0.490086            0.002336   -0.000586 6.505916e-02
+     PRS              0.503740             0.003647             0.504934            0.002106   -0.001194 1.256481e-04
+    ASD9              0.484975             0.004876             0.486779            0.003362   -0.001804 8.916770e-06
+     SES              0.389580             0.017318             0.393701            0.011018   -0.004121 6.317497e-02
+   ACE18              0.510414             0.010096             0.516063            0.007796   -0.005649 2.416380e-11
+Saved: 'Pos_attn_independent_gate_comparison_seed_42.png'
+
+--- Final Attention Layer ---
+          Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)  Difference      p_value
+      Fused stream              0.507186             0.001509             0.505728            0.001019    0.001458 2.410505e-32
+Independent stream              0.489232             0.002198             0.489794            0.001268   -0.000562 2.506643e-03
+Saved: 'Pos_attn_final_gate_comparison_seed_42.png'
+Saved: 'Pos_gate_heatmap_seed_42.png'
+
+All gate analysis results saved for Pos model.
+
+============================================================
+  Gate Analysis - Neg symptom model
+============================================================
+  Layers per modality: {'PRS': 4, 'SCZ15': 1, 'ADHD9': 3, 'ASD9': 3, 'ACE15': 3, 'ACE18': 4, 'SUD18': 4, 'SES': 4, 'SEX': 2}
+Train: 2407 rows (1613 IDs),Test: 598 rows (404 IDs) 
+
+n_features_x : 6, n_features_per_modality: [16, 23, 19, 17, 7, 4, 4, 4, 1, 4]
+
+--- ImbalancedRegressionLoss initialized ---
+  Bins: 6, Focal gamma: 2.3580799711413936, Base loss: huber
+  Bin [0.00, 0.17): count=  961, weight=0.041
+  Bin [0.17, 0.33): count=  848, weight=0.047
+  Bin [0.33, 0.50): count=  353, weight=0.112
+  Bin [0.50, 0.67): count=  176, weight=0.224
+  Bin [0.67, 0.83): count=   62, weight=0.628
+  Bin [0.83, 1.00): count=    7, weight=4.948
+-------------------------------------------
+
+
+Epoch 1/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.1149, 0.6780], std: 0.0769
+  RMSE : 0.1573, R2: 0.1947, MAE: 0.1270, Spearman rho: 0.4500, Spearman p: 2.6149e-120, Pearson r: 0.4611, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1247, 0.5951], std: 0.0738
+  RMSE : 0.1580, R2: 0.1663, MAE: 0.1289, Spearman rho: 0.4351, Spearman p: 5.2135e-29, Pearson r: 0.4511, Pearson p: 2.5611e-31
+  Epoch [1/17] Loss: 0.0130 | LR: 5.61e-04 | Train rho: 0.4500, Val rho: 0.4351 | Train R2: 0.1947, Val R2: 0.1663 | Train RMSE: 0.1573, Val RMSE: 0.1580 | Train Pearson r: 0.4611, Val Pearson r: 0.4511
+  >> New best val RMSE: 0.1580
+
+Epoch 2/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.1110, 0.7291], std: 0.0901
+  RMSE : 0.1556, R2: 0.2114, MAE: 0.1256, Spearman rho: 0.4783, Spearman p: 6.8821e-138, Pearson r: 0.4915, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1217, 0.6028], std: 0.0860
+  RMSE : 0.1570, R2: 0.1775, MAE: 0.1285, Spearman rho: 0.4654, Spearman p: 1.7701e-33, Pearson r: 0.4807, Pearson p: 6.5713e-36
+  Epoch [2/17] Loss: 0.0122 | LR: 5.61e-04 | Train rho: 0.4783, Val rho: 0.4654 | Train R2: 0.2114, Val R2: 0.1775 | Train RMSE: 0.1556, Val RMSE: 0.1570 | Train Pearson r: 0.4915, Val Pearson r: 0.4807
+  >> New best val RMSE: 0.1570
+
+Epoch 3/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.1024, 0.7696], std: 0.0950
+  RMSE : 0.1565, R2: 0.2030, MAE: 0.1268, Spearman rho: 0.4899, Spearman p: 1.5319e-145, Pearson r: 0.5050, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.1128, 0.6112], std: 0.0896
+  RMSE : 0.1587, R2: 0.1590, MAE: 0.1309, Spearman rho: 0.4784, Spearman p: 1.5543e-35, Pearson r: 0.4891, Pearson p: 2.7893e-37
+  Epoch [3/17] Loss: 0.0121 | LR: 5.61e-04 | Train rho: 0.4899, Val rho: 0.4784 | Train R2: 0.2030, Val R2: 0.1590 | Train RMSE: 0.1565, Val RMSE: 0.1587 | Train Pearson r: 0.5050, Val Pearson r: 0.4891
+  >> No improvement for 1/6 epochs
+
+Epoch 4/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0837, 0.7364], std: 0.0920
+  RMSE : 0.1512, R2: 0.2557, MAE: 0.1201, Spearman rho: 0.4970, Spearman p: 2.3003e-150, Pearson r: 0.5146, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0962, 0.5694], std: 0.0873
+  RMSE : 0.1522, R2: 0.2270, MAE: 0.1226, Spearman rho: 0.4882, Spearman p: 3.8478e-37, Pearson r: 0.4998, Pearson p: 4.0827e-39
+  Epoch [4/17] Loss: 0.0120 | LR: 5.61e-04 | Train rho: 0.4970, Val rho: 0.4882 | Train R2: 0.2557, Val R2: 0.2270 | Train RMSE: 0.1512, Val RMSE: 0.1522 | Train Pearson r: 0.5146, Val Pearson r: 0.4998
+  >> New best val RMSE: 0.1522
+
+Epoch 5/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0598, 0.6843], std: 0.0905
+  RMSE : 0.1497, R2: 0.2707, MAE: 0.1159, Spearman rho: 0.5016, Spearman p: 1.4137e-153, Pearson r: 0.5218, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0575, 0.5383], std: 0.0863
+  RMSE : 0.1497, R2: 0.2523, MAE: 0.1169, Spearman rho: 0.4899, Spearman p: 2.0262e-37, Pearson r: 0.5026, Pearson p: 1.3648e-39
+  Epoch [5/17] Loss: 0.0119 | LR: 5.61e-04 | Train rho: 0.5016, Val rho: 0.4899 | Train R2: 0.2707, Val R2: 0.2523 | Train RMSE: 0.1497, Val RMSE: 0.1497 | Train Pearson r: 0.5218, Val Pearson r: 0.5026
+  >> New best val RMSE: 0.1497
+
+Epoch 6/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0622, 0.7151], std: 0.0945
+  RMSE : 0.1492, R2: 0.2757, MAE: 0.1167, Spearman rho: 0.5068, Spearman p: 3.0228e-157, Pearson r: 0.5256, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0675, 0.5642], std: 0.0897
+  RMSE : 0.1499, R2: 0.2499, MAE: 0.1184, Spearman rho: 0.4935, Spearman p: 4.9631e-38, Pearson r: 0.5057, Pearson p: 3.7764e-40
+  Epoch [6/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5068, Val rho: 0.4935 | Train R2: 0.2757, Val R2: 0.2499 | Train RMSE: 0.1492, Val RMSE: 0.1499 | Train Pearson r: 0.5256, Val Pearson r: 0.5057
+  >> No improvement for 1/6 epochs
+
+Epoch 7/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0881, 0.7930], std: 0.0996
+  RMSE : 0.1546, R2: 0.2216, MAE: 0.1250, Spearman rho: 0.5072, Spearman p: 1.6515e-157, Pearson r: 0.5254, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0889, 0.6246], std: 0.0944
+  RMSE : 0.1578, R2: 0.1689, MAE: 0.1298, Spearman rho: 0.4928, Spearman p: 6.5441e-38, Pearson r: 0.5035, Pearson p: 9.1834e-40
+  Epoch [7/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5072, Val rho: 0.4928 | Train R2: 0.2216, Val R2: 0.1689 | Train RMSE: 0.1546, Val RMSE: 0.1578 | Train Pearson r: 0.5254, Val Pearson r: 0.5035
+  >> No improvement for 2/6 epochs
+
+Epoch 8/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0834, 0.7745], std: 0.0968
+  RMSE : 0.1539, R2: 0.2290, MAE: 0.1244, Spearman rho: 0.5077, Spearman p: 7.3301e-158, Pearson r: 0.5275, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0994, 0.5920], std: 0.0921
+  RMSE : 0.1569, R2: 0.1782, MAE: 0.1291, Spearman rho: 0.4989, Spearman p: 5.9592e-39, Pearson r: 0.5073, Pearson p: 2.0352e-40
+  Epoch [8/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5077, Val rho: 0.4989 | Train R2: 0.2290, Val R2: 0.1782 | Train RMSE: 0.1539, Val RMSE: 0.1569 | Train Pearson r: 0.5275, Val Pearson r: 0.5073
+  >> No improvement for 3/6 epochs
+
+Epoch 9/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0979, 0.8068], std: 0.0983
+  RMSE : 0.1571, R2: 0.1966, MAE: 0.1280, Spearman rho: 0.5075, Spearman p: 1.0280e-157, Pearson r: 0.5275, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0985, 0.6236], std: 0.0944
+  RMSE : 0.1608, R2: 0.1371, MAE: 0.1334, Spearman rho: 0.4967, Spearman p: 1.4107e-38, Pearson r: 0.5083, Pearson p: 1.3206e-40
+  Epoch [9/17] Loss: 0.0117 | LR: 5.61e-04 | Train rho: 0.5075, Val rho: 0.4967 | Train R2: 0.1966, Val R2: 0.1371 | Train RMSE: 0.1571, Val RMSE: 0.1608 | Train Pearson r: 0.5275, Val Pearson r: 0.5083
+  >> No improvement for 4/6 epochs
+
+Epoch 10/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0726, 0.7501], std: 0.0955
+  RMSE : 0.1499, R2: 0.2682, MAE: 0.1194, Spearman rho: 0.5097, Spearman p: 2.5573e-159, Pearson r: 0.5315, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0749, 0.5960], std: 0.0917
+  RMSE : 0.1523, R2: 0.2255, MAE: 0.1228, Spearman rho: 0.4940, Spearman p: 4.1007e-38, Pearson r: 0.5078, Pearson p: 1.6521e-40
+  Epoch [10/17] Loss: 0.0116 | LR: 5.61e-04 | Train rho: 0.5097, Val rho: 0.4940 | Train R2: 0.2682, Val R2: 0.2255 | Train RMSE: 0.1499, Val RMSE: 0.1523 | Train Pearson r: 0.5315, Val Pearson r: 0.5078
+  >> No improvement for 5/6 epochs
+
+Epoch 11/17
+Training on 2407 samples...
+  [Train]  Pred range: [0.0583, 0.7270], std: 0.0958
+  RMSE : 0.1485, R2: 0.2819, MAE: 0.1169, Spearman rho: 0.5136, Spearman p: 3.9283e-162, Pearson r: 0.5338, Pearson p: 0.0000e+00
+  [Val]    Pred range: [0.0606, 0.5782], std: 0.0915
+  RMSE : 0.1500, R2: 0.2489, MAE: 0.1194, Spearman rho: 0.4987, Spearman p: 6.3951e-39, Pearson r: 0.5112, Pearson p: 3.9875e-41
+  Epoch [11/17] Loss: 0.0115 | LR: 3.74e-04 | Train rho: 0.5136, Val rho: 0.4987 | Train R2: 0.2819, Val R2: 0.2489 | Train RMSE: 0.1485, Val RMSE: 0.1500 | Train Pearson r: 0.5338, Val Pearson r: 0.5112
+  >> No improvement for 6/6 epochs
+
+  Early stopping at epoch 11. Best val RMSE: 0.1497 at epoch 5
+
+  Restored best model from epoch 5 (val RMSE: 0.1497)
+  [Final Val evaluation with best model]
+  Pred range: [0.0575, 0.5383], std: 0.0863
+  RMSE : 0.1497, R2: 0.2523, MAE: 0.1169, Spearman rho: 0.4899, Spearman p: 2.0262e-37, Pearson r: 0.5026, Pearson p: 1.3648e-39
+
+Gate shapes:
+  attn_fused: (1028, 266)
+  attn_independent: (1028, 105)
+  attn_final: (1028, 371)
+
+--- Fused Attention Layer ---
+Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)  Difference  p_value
+     PRS                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+   SCZ15                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+   ADHD9                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+    ASD9                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+   ACE15                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+   ACE18                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+   SUD18                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+     SES                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+     SEX                   0.5                  0.0                  0.5                 0.0         0.0      1.0
+Saved: 'Neg_attn_fused_gate_comparison_seed_42.png'
+
+--- Independent Attention Layer ---
+Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)    Difference  p_value
+     PRS              0.500145         5.960464e-08             0.500145        0.000000e+00  5.960464e-08      1.0
+   ACE15              0.499063         2.980232e-08             0.499063        8.940697e-08  5.960464e-08      1.0
+   ACE18              0.502118         0.000000e+00             0.502118        5.960464e-08  5.960464e-08      1.0
+     SES              0.498663         0.000000e+00             0.498662        5.960464e-08  5.960464e-08      1.0
+   SCZ15              0.500182         0.000000e+00             0.500182        0.000000e+00  0.000000e+00      1.0
+     SEX              0.502422         5.960464e-08             0.502422        5.960464e-08  0.000000e+00      1.0
+   SUD18              0.499657         0.000000e+00             0.499657        0.000000e+00  0.000000e+00      1.0
+   SUD15              0.499672         2.980232e-08             0.499672        0.000000e+00 -2.980232e-08      1.0
+   ADHD9              0.499880         2.980232e-08             0.499880        0.000000e+00 -2.980232e-08      1.0
+    ASD9              0.500125         0.000000e+00             0.500125        5.960464e-08 -5.960464e-08      1.0
+batch*PC              0.500006         0.000000e+00             0.500006        5.960464e-08 -5.960464e-08      1.0
+Saved: 'Neg_attn_independent_gate_comparison_seed_42.png'
+
+--- Final Attention Layer ---
+          Modality  High SCZ gate (mean)  High SCZ gate (std)  Low SCZ gate (mean)  Low SCZ gate (std)  Difference  p_value
+      Fused stream              0.500000                  0.0             0.500000                 0.0         0.0      1.0
+Independent stream              0.500017                  0.0             0.500017                 0.0         0.0      1.0
+Saved: 'Neg_attn_final_gate_comparison_seed_42.png'
+Saved: 'Neg_gate_heatmap_seed_42.png'
+
+All gate analysis results saved for Neg model.
