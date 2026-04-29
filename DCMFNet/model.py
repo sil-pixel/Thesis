@@ -232,8 +232,8 @@ class DeepCrossModalFusionModel(nn.Module):
 
         self.igf_modules = nn.ModuleList([
             IterativeGatedFusionModule(
-                self.layers_per_modality[m], n_features_x, n_features_per_modality[m],
-                se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min
+                self.layers_per_modality[m], n_features_x, n_features_per_modality[m]
+                #se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min
             )
             for m in range(self.M)
         ])

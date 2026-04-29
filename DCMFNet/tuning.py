@@ -52,7 +52,18 @@ def objective(trial, train_df, modality_sizes, model_tag):
     weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-2, log=True)
 
     # Model architecture hyperparameters
-    num_layers = trial.suggest_int('num_layers', 1, 7)
+    # Per-modality IGF depth
+    layers_per_modality = [
+        trial.suggest_int('layers_PRS', 1, 5),
+        trial.suggest_int('layers_SCZ15', 1, 5),
+        trial.suggest_int('layers_ADHD9', 1, 5),
+        trial.suggest_int('layers_ASD9', 1, 5),
+        trial.suggest_int('layers_ACE15', 1, 5),
+        trial.suggest_int('layers_ACE18', 1, 5),
+        trial.suggest_int('layers_SUD18', 1, 5),
+        trial.suggest_int('layers_SES', 1, 5),
+        trial.suggest_int('layers_SEX', 1, 5),
+    ]
     dropout = trial.suggest_float('dropout', 0.1, 0.5)
     se_reduction = trial.suggest_int('se_reduction', 2, 8)
     hidden_dim_min = trial.suggest_int('hidden_dim_min', 2, 16)
@@ -86,7 +97,7 @@ def objective(trial, train_df, modality_sizes, model_tag):
 
     # -- Initialize model --
     model = DCMFNet(
-        NUM_MODALITIES, num_layers, modality_sizes,
+        NUM_MODALITIES, layers_per_modality, modality_sizes,
         se_reduction=se_reduction, dropout=dropout, hidden_dim_min=hidden_dim_min
     )
 
