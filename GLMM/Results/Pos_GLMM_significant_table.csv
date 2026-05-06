@@ -1,0 +1,25 @@
+Variable,Estimate,Std. Error,t value,p_value,significance
+ACE18_emotional_abuse18,-0.0379,0.0042,-9.11,0,***
+SCZ15_Extreme_excitement15,0.0103,0.002,5.256,1.58e-7,***
+SCZ15_Seen_hallucinations15,0.021,0.0045,4.667,3.2e-6,***
+SCZ15_Too_much_energy15,0.0102,0.0025,4.046,5.35e-5,***
+ACE18_witness_crime18,-0.0239,0.0063,-3.784,1.58e-4,***
+SCZ15_headaches15,0.0088,0.0027,3.205,0.00137,**
+SCZ15_Special_messages15,0.0778,0.0245,3.173,0.00153,**
+SCZ15_Talking_fast15,0.0081,0.0026,3.089,0.00203,**
+ACE15_emotional_bullying15,0.04,0.0131,3.056,0.00227,**
+SCZ15_Read_others_minds15,0.0069,0.0025,2.748,0.00603,**
+SUD15_OtherDrugs15:PRS_MGE_interneuron,0.1139,0.0435,2.617,0.00892,**
+SUD15_Alcohol15:ACE15_emotional_bullying15,-0.0087,0.0035,-2.469,0.0136,*
+SUD15_Alcohol15:SCZ15_Special_messages15,-0.0166,0.0067,-2.459,0.014,*
+SUD15_OtherDrugs15:PRS_Eccentric_medium_spiny_neu,0.0973,0.0402,2.42,0.0156,*
+SUD15_Painkillers_opioids15:ACE18_other_abuse18,0.3736,0.1562,2.392,0.0168,*
+SUD15_Snuff15:SCZ15_Extreme_excitement15,-0.0075,0.0032,-2.367,0.018,*
+SCZ15_Rage_attacks15,0.0092,0.004,2.303,0.0214,*
+SCZ15_Spied15,0.0065,0.0028,2.293,0.0219,*
+SUD15_Painkillers_opioids15:SCZ15_Under_control_special_power15,-0.0138,0.0061,-2.265,0.0236,*
+SUD15_Painkillers_opioids15,-0.3427,0.1582,-2.167,0.0303,*
+PRS_CGE_interneuron,-0.1248,0.0577,-2.166,0.0304,*
+SUD15_Alcohol15:PRS_CGE_interneuron,0.0332,0.0156,2.126,0.0336,*
+ASD9_easily_influenced9,0.0078,0.0038,2.025,0.0429,*
+PRS_all,0.0115,0.0058,1.989,0.0468,*
