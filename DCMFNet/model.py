@@ -57,8 +57,11 @@ Input:
     F_curr: tensor of shape (batch_size, n_features_m)
 Equation:
     F_curr = tanh(sum (tanh(W1 @ X) * tanh(W2 @ G_prev))) 
-    TODO: check what the sum operation is in the equation? 
-    TODO: in the paper it was mentioned that the sum is integrating the multi-head output features along the channel dimension
+     # In the paper it was mentioned that the sum is integrating the multi-head output features along the channel dimension. 
+     # We do not have multi-head output features or channel dimension in our case, so we won't be using the sum operation.
+     # Instead, we will be using the element-wise multiplication of the two tensors and then applying the tanh activation function.
+     # F_curr = tanh(tanh(W1 @ X) * tanh(W2 @ G_prev)) 
+     # This is equivalent to the sum operation in the paper, where our channel dimension is 1.
 Output:
     F_curr: tensor of shape (batch_size, n_features_m)
 '''
