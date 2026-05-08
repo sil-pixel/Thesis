@@ -65,6 +65,22 @@ clean_name <- function(var_name) {
   return(name)
 }
 
+
+# ── Color palette for modality categories ──
+category_colors <- c(
+  "Interaction" = "#e74c3c",
+  "SUD15" = "#e67e22",
+  "SCZ15" = "#3498db",
+  "ACE" = "#9b59b6",
+  "PRS" = "#2ecc71",
+  "ADHD9" = "#1abc9c",
+  "ASD9" = "#f39c12",
+  "SES" = "#95a5a6",
+  "SEX" = "#e91e63",
+  "Batch×PC" = "#607d8b",
+  "Other" = "#bdc3c7"
+)
+
 # ── Prepare data for forest plot ──
 prepare_forest_data <- function(coefs_df, model_tag) {
   df <- coefs_df %>%
