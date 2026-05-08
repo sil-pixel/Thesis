@@ -265,7 +265,56 @@ if (nrow(all_interactions) > 0) {
 
 
 # ══════════════════════════════════════════
-# 4. SHARED vs UNIQUE PREDICTORS VENN-STYLE
+# 4. MAIN EFFECTS ONLY (excluding interactions)
+# ══════════════════════════════════════════
+
+make_main_effects_plot <- function(df, title) {
+  main_df <- df %>% filter(Category != "Interaction")
+  
+  if (nrow(main_df) == 0) {
+    cat(sprintf("  No main effects to plot for: %s\n", title))
+    return(NULL)
+  }
+  
+  main_df <- main_df %>% arrange(Estimate)
+  main_df$Display_name <- factor(main_df$Display_name, levels = main_df$Display_name)
+  
+  ggplot(main_df, aes(x = Estimate, y = Display_name, color = Category)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "gray40") +
+    geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper),
+                   height = 0.3, linewidth = 0.6) +
+    geom_point(size = 3) +
+    scale_color_manual(values = category_colors) +
+    labs(
+      title = title,
+      x = "Estimate (95% CI)",
+      y = NULL,
+      color = "Modality"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.y = element_text(size = 9),
+      plot.title = element_text(size = 12, face = "bold"),
+      legend.position = "right"
+    )
+}
+
+p_main_pos <- make_main_effects_plot(pos_forest, "GLMM — Positive SCZ Main Effects")
+p_main_neg <- make_main_effects_plot(neg_forest, "GLMM — Negative SCZ Main Effects")
+
+if (!is.null(p_main_pos) && !is.null(p_main_neg)) {
+  combined_main <- p_main_pos / p_main_neg +
+    plot_layout(guides = "collect") &
+    theme(legend.position = "right")
+  
+  ggsave("GLMM_main_effects_forest.png", combined_main,
+         width = 14, height = 12, dpi = 300)
+  cat("Saved: GLMM_main_effects_forest.png\n")
+}
+
+
+# ══════════════════════════════════════════
+# 5. SHARED vs UNIQUE PREDICTORS VENN-STYLE
 # ══════════════════════════════════════════
 
 pos_vars <- pos_coefs$Variable
