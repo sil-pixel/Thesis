@@ -1,0 +1,13 @@
+Modality,N_Variables,N_Observations,N_Missing_Rows,Pct_Missing_Rows,Type,Mean,SD,Median,Min,Max,Pct_Positive,Note
+"SUD15 (Substance Use, age 15)",6,9261,0,0,Ordinal,0.706,1.388,0,0,5,NA,NA
+PRS (Polygenic Risk Scores),16,9261,2618,28.3,Continuous,-0.085,0.276,-0.044,-2.648,0.668,NA,NA
+"SCZ15 (Psychotic Experiences, age 15)",23,9261,2535,27.4,Ordinal,0.448,0.733,0,0,3,NA,NA
+"ADHD9 (ADHD Symptoms, age 9)",19,9261,1376,14.9,Ordinal,0.16,0.443,0,0,2,NA,NA
+"ASD9 (ASD Traits, age 9)",17,9261,1477,15.9,Ordinal,0.071,0.303,0,0,2,NA,NA
+"ACE15 (Adverse Experiences, age 15)",7,9261,430,4.6,Ordinal,1.219,0.693,1,1,6,NA,NA
+"ACE18 (Adverse Experiences, age 18)",4,9261,1026,11.1,Binary,88.7,0.165,NA,0,1,88.7,NA
+"SUD18 (Substance Use, age 18)",4,9261,24,0.3,Ordinal,0.925,1.479,0,0,7,NA,NA
+SES (Socioeconomic Status),4,9261,1664,18,Ordinal,2.55,1.097,2,0,5,NA,NA
+SEX,1,9261,1357,14.7,Categorical,NA,NA,NA,1,2,NA,"Male: 3221 (34.8%), Female: 4683 (50.6%), Missing: 1357 (14.7%)"
+SCZ18 Positive (Outcome),1,9261,0,0,Continuous,0.139,0.106,0.13,0,0.87,NA,NA
+SCZ18 Negative (Outcome),1,9261,0,0,Continuous,0.256,0.181,0.212,0,1,NA,NA
