@@ -124,10 +124,8 @@ extract_gamm_coefs <- function(model, model_tag) {
   return(list(full = full_table, significant = sig_table, smooth = smooth_coefs))
 }
 
-
-plot_predictions <- function(y_true, y_pred, model_tag, model_name, seed) {
+plot_predictions <- function(y_true, y_pred, model_tag, seed) {
   df <- data.frame(actual = y_true, predicted = y_pred)
-  df$residuals <- df$actual - df$predicted
   
   r2 <- cor(df$actual, df$predicted)^2
   rmse <- sqrt(mean((df$actual - df$predicted)^2))
@@ -140,40 +138,52 @@ plot_predictions <- function(y_true, y_pred, model_tag, model_name, seed) {
     r2, rmse, mae, spearman_r, pearson_r
   )
   
-  p1 <- ggplot(df, aes(x = actual, y = predicted)) +
-    geom_point(alpha = 0.4, color = "#2C7FB8", size = 1.5) +
-    geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red", linewidth = 0.8) +
+  # Calibration plot only
+  p <- ggplot(df, aes(x = actual, y = predicted)) +
+    geom_point(alpha = 0.3, color = "#2C7FB8", size = 1.5) +
+    geom_abline(intercept = 0, slope = 1, linetype = "dashed",
+                color = "red", linewidth = 0.8) +
     geom_smooth(method = "lm", se = FALSE, color = "blue", linewidth = 0.8) +
-    annotate("text",
-             x = quantile(df$actual, 0.95),
-             y = quantile(df$predicted, 0.05),
+    annotate("label",
+             x = max(df$actual) * 0.98,
+             y = min(df$predicted) + (max(df$predicted) - min(df$predicted)) * 0.02,
              label = metrics_text,
-             hjust = 1, vjust = 0, size = 3.5, fontface = "italic") +
+             hjust = 1, vjust = 0,
+             size = 4, fontface = "bold",
+             fill = "white", alpha = 0.85,
+             label.size = 0.5, label.r = unit(0.3, "lines")) +
     labs(
-      title = sprintf("%s %s — Predicted vs Actual (seed %d)", model_tag, model_name, seed),
-      x = "Actual Values", y = "Predicted Values"
+      title = sprintf("%s GAMM — Predicted vs Actual (seed %d)", model_tag, seed),
+      x = "Actual Values",
+      y = "Predicted Values"
     ) +
-    theme_minimal()
+    theme_minimal(base_size = 13)
   
-  p2 <- ggplot(df, aes(x = predicted, y = residuals)) +
-    geom_point(alpha = 0.4, color = "#74A9CF", size = 1.5) +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "red", linewidth = 0.8) +
-    geom_smooth(method = "loess", se = TRUE, color = "#e74c3c", alpha = 0.2, linewidth = 0.6) +
-    labs(
-      title = sprintf("%s %s — Residual Plot (seed %d)", model_tag, model_name, seed),
-      x = "Predicted Values", y = "Residuals (Actual − Predicted)"
-    ) +
-    theme_minimal()
-  
-  combined <- p1 + p2 + plot_layout(ncol = 2)
-  filename <- sprintf("%s_%s_pred_vs_actual_seed_%d.png", model_tag, model_name, seed)
-  ggsave(filename, combined, width = 14, height = 6, dpi = 150)
+  filename <- sprintf("%s_GAMM_calibration_seed_%d.png", model_tag, seed)
+  ggsave(filename, p, width = 8, height = 7, dpi = 200)
   cat(sprintf("  Saved: %s\n", filename))
+  
+  # Residual plot saved separately
+  df$residuals <- df$actual - df$predicted
+  p_resid <- ggplot(df, aes(x = predicted, y = residuals)) +
+    geom_point(alpha = 0.3, color = "#74A9CF", size = 1.5) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red", linewidth = 0.8) +
+    geom_smooth(method = "loess", se = TRUE, color = "#e74c3c",
+                alpha = 0.2, linewidth = 0.6) +
+    labs(
+      title = sprintf("%s GAMM — Residual Plot (seed %d)", model_tag, seed),
+      x = "Predicted Values",
+      y = "Residuals (Actual − Predicted)"
+    ) +
+    theme_minimal(base_size = 13)
+  
+  resid_filename <- sprintf("%s_GAMM_residual_seed_%d.png", model_tag, seed)
+  ggsave(resid_filename, p_resid, width = 8, height = 7, dpi = 200)
+  cat(sprintf("  Saved: %s\n", resid_filename))
   
   return(list(r2 = r2, rmse = rmse, mae = mae,
               spearman_rho = spearman_r, pearson_r = pearson_r))
 }
-
 
 plot_gamm_random_effect <- function(model, model_tag, seed) {
   # Find which smooth term is the random effect
