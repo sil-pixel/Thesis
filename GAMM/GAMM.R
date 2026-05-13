@@ -265,7 +265,7 @@ for (i in seq_along(seeds)) {
   }
   
   pos_pred <- predict(pos_model, newdata = test_df, type = "response")
-  pos_metrics <- plot_predictions(test_df$SCZ18_Pos_Norm, pos_pred, "Pos", "GAMM", seeds[i])
+  pos_metrics <- plot_predictions(test_df$SCZ18_Pos_Norm, pos_pred, "Pos", seeds[i])
   pos_metrics$seed <- seeds[i]
   pos_results[[i]] <- as.data.frame(pos_metrics)
   
@@ -284,7 +284,7 @@ for (i in seq_along(seeds)) {
   }
   
   neg_pred <- predict(neg_model, newdata = test_df, type = "response")
-  neg_metrics <- plot_predictions(test_df$SCZ18_Neg_Norm, neg_pred, "Neg", "GAMM", seeds[i])
+  neg_metrics <- plot_predictions(test_df$SCZ18_Neg_Norm, neg_pred, "Neg", seeds[i])
   neg_metrics$seed <- seeds[i]
   neg_results[[i]] <- as.data.frame(neg_metrics)
   
