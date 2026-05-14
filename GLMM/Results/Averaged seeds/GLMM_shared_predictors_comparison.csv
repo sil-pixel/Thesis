@@ -1,0 +1,5 @@
+Variable,Pos_Estimate,Neg_Estimate,Pos_Seeds_Sig,Neg_Seeds_Sig,Same_Direction
+ACE18_emotional_abuse18,-0.0398,-0.0777,5,5,Same
+SCZ15_headaches15,0.0105,0.0293,5,5,Same
+SCZ15_Extreme_excitement15,0.0078,-0.0118,5,5,OPPOSITE
+PRS_all,0.016,0.0267,5,5,Same
