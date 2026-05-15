@@ -242,11 +242,11 @@ def plot_gate_comparison(results_df, model_tag, layer_name, seed):
 Heatmap of average gate values per modality, sorted by target value.
 Shows how the model's attention shifts across the SCZ severity spectrum.
 '''
-def plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality, model_tag, seed):
+def plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality, model_tag, layer_name, seed):
     # Use the independent layer since it has all modalities
-    ind_gates = gate_storage['attn_independent']
+    gates = gate_storage[layer_name]
     modality_gates = map_gates_to_modalities(
-        ind_gates, modality_sizes, 'attn_independent', layers_per_modality
+        gates, modality_sizes, layer_name, layers_per_modality
     )
     
     # Sort samples by target value
@@ -275,9 +275,9 @@ def plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality
     axes[1].set_xlim(0, len(targets))
     
     plt.tight_layout()
-    plt.savefig(f'{model_tag}_gate_heatmap_seed_{seed}.png', dpi=150)
+    plt.savefig(f'{model_tag}_{layer_name}_gate_heatmap_seed_{seed}.png', dpi=150)
     plt.close()
-    print(f"Saved: '{model_tag}_gate_heatmap_seed_{seed}.png'")
+    print(f"Saved: '{model_tag}_{layer_name}_gate_heatmap_seed_{seed}.png'")
 
 
 if __name__ == "__main__":
@@ -351,6 +351,9 @@ if __name__ == "__main__":
         plot_gate_comparison(final_results, model_tag, 'attn_final', seed)
         
         # 4. Heatmap across severity spectrum
-        plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality, model_tag, seed)
+        print(f"\n--- Independent Attention Layer Heatmap ---")
+        plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality, model_tag, 'attn_independent', seed)
+        print(f"\n--- Fused Attention Layer Heatmap ---")
+        plot_gate_heatmap(gate_storage, targets, modality_sizes, layers_per_modality, model_tag, 'attn_fused', seed)
         
         print(f"\nAll gate analysis results saved for {model_tag} model.")
