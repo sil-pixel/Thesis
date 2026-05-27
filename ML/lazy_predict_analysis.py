@@ -247,9 +247,9 @@ def plot_family_comparison(best_df, model_tag):
     plt.suptitle(f'{model_tag} SCZ - Best Model per Family (mean ± std, 5 seeds)',
                  fontsize=14, fontweight='bold')
     plt.tight_layout(rect=[0, 0.03, 1, 0.96])
-    plt.savefig(f'{model_tag}_benchmark_by_family.png', dpi=200, bbox_inches='tight')
+    plt.savefig(f'{model_tag}_benchmark_by_family.pdf', dpi=200, bbox_inches='tight')
     plt.close()
-    print(f"Saved: {model_tag}_benchmark_by_family.png")
+    print(f"Saved: {model_tag}_benchmark_by_family.pdf")
  
  
 def plot_compact_bar(best_df, model_tag):
