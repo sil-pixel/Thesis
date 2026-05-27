@@ -244,6 +244,14 @@ def plot_family_comparison(best_df, model_tag):
     fig.legend(handles=legend_elements, loc='lower center', ncol=2,
                fontsize=11, bbox_to_anchor=(0.5, -0.02))
  
+    plt.rcParams.update({
+        "font.size": 16,
+        "axes.titlesize": 18,
+        "axes.labelsize": 16,
+        "xtick.labelsize": 14,
+        "ytick.labelsize": 14,
+        "legend.fontsize": 14
+    })
     plt.suptitle(f'{model_tag} SCZ - Best Model per Family (mean ± std, 5 seeds)',
                  fontsize=14, fontweight='bold')
     plt.tight_layout(rect=[0, 0.03, 1, 0.96])
