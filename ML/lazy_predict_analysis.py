@@ -100,7 +100,7 @@ EXTRA_MODELS = {
         "GAMM": {"family": "Mixed Effects", "rmse_mean": 0.094, "rmse_std": 0.002, "r2_mean": 0.1805, "r2_std": 0.019, "spearman_rho_mean": 0.4205, "spearman_rho_std": 0.021}
     },
     "Neg" : {
-        "DCMFNet": {"family": "Deep Learning (Ours)", "rmse_mean": 0.157, "rmse_std": 0.002, "r2_mean": 0.192, "r2_std": 0.021, "spearman_rho_mean": 0.447, "spearman_rho_std": 0.017},
+        "DCMFNet": {"family": "Deep Learning (Ours)", "rmse_mean": 0.156, "rmse_std": 0.002, "r2_mean": 0.198, "r2_std": 0.021, "spearman_rho_mean": 0.451, "spearman_rho_std": 0.013},
         "GLMM": {"family": "Mixed Effects", "rmse_mean": 0.161, "rmse_std": 0.005, "r2_mean": 0.179, "r2_std": 0.021, "spearman_rho_mean": 0.435, "spearman_rho_std": 0.012},
         "GAMM": {"family": "Mixed Effects", "rmse_mean": 0.1615, "rmse_std": 0.005, "r2_mean": 0.178, "r2_std": 0.021, "spearman_rho_mean": 0.434, "spearman_rho_std": 0.01}
     }
