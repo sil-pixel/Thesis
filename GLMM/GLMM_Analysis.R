@@ -240,8 +240,8 @@ prepare_interaction_data <- function(coefs_df, model_tag) {
   return(df)
 }
 
-pos_interactions <- prepare_interaction_data(pos_coefs, "Positive (Psychotic)")
-neg_interactions <- prepare_interaction_data(neg_coefs, "Negative (Depressive)")
+pos_interactions <- prepare_interaction_data(pos_coefs, "Positive SCZ")
+neg_interactions <- prepare_interaction_data(neg_coefs, "Negative SCZ")
 all_interactions <- bind_rows(pos_interactions, neg_interactions)
 
 if (nrow(all_interactions) > 0) {
@@ -249,6 +249,10 @@ if (nrow(all_interactions) > 0) {
   all_interactions$Interacting_short <- sapply(all_interactions$Interacting_with, function(x) {
     if (nchar(x) > 30) substr(x, 1, 30) else x
   })
+  all_interactions$Model <- factor(
+    all_interactions$Model,
+    levels = unique(c("Positive SCZ", "Negative SCZ"))
+  )
   
   p_interactions <- ggplot(all_interactions,
                            aes(x = reorder(Interacting_short, Estimate),
