@@ -1,0 +1,3 @@
+Modality,Mean gate,Across-seed std,N seeds
+Fused stream,0.5049766,0.0011594746,5
+Independent stream,0.49142176,0.0010295225,5
