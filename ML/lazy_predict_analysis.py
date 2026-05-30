@@ -278,8 +278,8 @@ def plot_compact_bar(best_df, model_tag):
     for i, (_, row) in enumerate(best_df.iterrows()):
         if is_highlighted(row['Model']):
             colors.append('#00897B')
-        elif i >= n - 3 and not any(is_highlighted(best_df.iloc[j]['Model']) for j in range(max(0, n-3), n)):
-            colors.append('#2ecc71')
+        #elif i >= n - 3 and not any(is_highlighted(best_df.iloc[j]['Model']) for j in range(max(0, n-3), n)):
+        #    colors.append('#2ecc71') 
         else:
             colors.append('#3498db')
  
@@ -333,6 +333,80 @@ def plot_compact_bar(best_df, model_tag):
     plt.close()
     print(f"Saved: {model_tag}_benchmark_compact.png")
  
+def plot_spearman_compact_bar(best_df, model_tag):
+
+    '''
+    Horizontal bar chart of spearman rho with highlighted models.
+    '''
+    best_df = best_df.sort_values('spearman_rho_mean', ascending=True)
+    n = len(best_df)
+ 
+    fig, ax = plt.subplots(figsize=(11, max(5, n * 0.4)))
+ 
+    labels = [f"{row['Family']} ({row['Model']})" for _, row in best_df.iterrows()]
+    highlight_mask = [is_highlighted(row['Model']) for _, row in best_df.iterrows()]
+    y_pos = np.arange(n)
+ 
+    # Colors: red for highlighted, green for top ML, blue for rest
+    colors = []
+    for i, (_, row) in enumerate(best_df.iterrows()):
+        if is_highlighted(row['Model']):
+            colors.append('#00897B')
+        #elif i >= n - 3 and not any(is_highlighted(best_df.iloc[j]['Model']) for j in range(max(0, n-3), n)):
+        #    colors.append('#2ecc71') 
+        else:
+            colors.append('#3498db')
+ 
+    # Edge colors: thick red border for highlighted
+    edgecolors = ['#004D40' if highlight_mask[i] else 'white' for i in range(n)]
+    linewidths = [2.0 if highlight_mask[i] else 0.5 for i in range(n)]
+ 
+    bars = ax.barh(y_pos, best_df['spearman_rho_mean'].values, xerr=best_df['spearman_rho_std'].values,
+                   color=colors, alpha=0.85, capsize=3,
+                   edgecolor=edgecolors, linewidth=linewidths)
+ 
+    # Annotate with RMSE
+    for j, (_, row) in enumerate(best_df.iterrows()):
+        weight = 'bold' if is_highlighted(row['Model']) else 'normal'
+        color = '#00695C' if is_highlighted(row['Model']) else 'gray'
+        rmse_text = f"RMSE={row['rmse_mean']:.4f}"
+        ax.annotate(rmse_text, (row['spearman_rho_mean'] + row['spearman_rho_std'] + 0.005, j),
+                    fontsize=7, color=color, va='center', fontweight=weight)
+ 
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(labels, fontsize=9)
+ 
+    # Bold highlighted labels
+    for j, tick_label in enumerate(ax.get_yticklabels()):
+        if highlight_mask[j]:
+            tick_label.set_fontweight('bold')
+            tick_label.set_color('#00695C')
+            tick_label.set_fontsize(10)
+ 
+    # Red background bands
+    for j in range(n):
+        if highlight_mask[j]:
+            ax.axhspan(y_pos[j] - 0.4, y_pos[j] + 0.4,
+                       color='#00897B', alpha=0.08, zorder=0)
+ 
+    ax.set_xlabel('Spearman ρ (mean ± std, 5 seeds)', fontsize=11)
+    ax.set_title(f'{model_tag} SCZ - Model Family Comparison', fontsize=13, fontweight='bold')
+    ax.grid(axis='x', alpha=0.3)
+    ax.set_xlim(0, best_df['spearman_rho_mean'].max() + best_df['spearman_rho_std'].max() + 0.06)
+ 
+    # Legend
+    from matplotlib.patches import Patch
+    legend_elements = [
+        Patch(facecolor='#00897B', edgecolor='#004D40', linewidth=2, label='Our Models'),
+        Patch(facecolor='#3498db', edgecolor='white', label='ML Baselines'),
+    ]
+    ax.legend(handles=legend_elements, loc='lower right', fontsize=10)
+ 
+    plt.tight_layout()
+    plt.savefig(f'{model_tag}_spearman_benchmark_compact.png', dpi=200, bbox_inches='tight')
+    plt.close()
+    print(f"Saved: {model_tag}_spearman_benchmark_compact.png")
+ 
 
 def save_family_table(best_df, model_tag):
     out = best_df[['Family', 'Model', 'rmse_mean', 'rmse_std',
@@ -369,4 +443,5 @@ if __name__ == "__main__":
 
         plot_family_comparison(best_df, model_tag)
         plot_compact_bar(best_df, model_tag)
+        plot_spearman_compact_bar(best_df, model_tag)
         save_family_table(best_df, model_tag)
