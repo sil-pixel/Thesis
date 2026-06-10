@@ -1,5 +1,11 @@
-Master Thesis Project: Modeling Psychotic Risk from Substance Use: Who Is Most Vulnerable and How?
+Modeling Schizophrenia Symptom Severity: A Deep Learning and Statistical Approach to Substance Use Interactions in Adolescence
 
-Scientific aim - How does adolescent substance use interact with genetic risk, proxied by PRS, to affect psychotic symptoms at early adulthood? We will consider potential confounders including adverse childhood experience (ACE), baseline mood symptoms, SES, sex, and early Autism and ADHD symptoms. 
+Background: Schizophrenia is a multifactorial disorder shaped by genetic, environmental, and behavioral influences, yet how these factors interact during development remains unclear. Adolescent substance use is a key exposure, but its role as an independent risk factor versus an interaction-driven modifier remains debated.  
 
-Methodological innovation -  Can a Deep Cross-Modal Fusion Network model the complex, non-linear, and holistic interactions? We will compare it to a generalized additive baseline model.
+Aim: To investigate how adolescent substance use interacts with genetic liability, adverse childhood experiences, and developmental factors to influence schizophrenia symptom severity, and to assess whether a deep learning framework improves modeling of these interactions.
+
+Methods: Using data from the Swedish Twin Registry (CATSS), we applied Generalized Linear Mixed Models (GLMM), Generalized Additive Mixed Models (GAMM), and a Deep Cross-Modal Fusion Network (DCMFNet). The DCMFNet explicitly models interactions between substance use and multiple modalities. Models were evaluated using error-based and rank-based metrics, with interpretability assessed through feature and interaction importance.
+
+Results: Risk was not driven by single factors but by interacting vulnerabilities. Adverse childhood experiences, prior symptoms, and genetic liability formed a consistent baseline, while substance use modified risk selectively. Positive symptoms showed stronger interaction effects, particularly with ACE and cell-type PRS, whereas negative symptoms were dominated by main effects with weaker interactions. DCMFNet provided modest but consistent improvements, especially in capturing rank-based structure.
+
+Conclusion: Schizophrenia symptom severity is best understood through interacting risk factors. Substance use acts as a context-dependent amplifier rather than an independent driver. DCMFNet offers a flexible framework for modeling such interactions, complementing traditional statistical approaches
