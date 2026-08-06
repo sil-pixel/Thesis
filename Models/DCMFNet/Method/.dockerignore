@@ -1,0 +1,7 @@
+__pycache__
+*.py[cod]
+*.csv
+*.pt
+*.audit.json
+tests
+artifacts

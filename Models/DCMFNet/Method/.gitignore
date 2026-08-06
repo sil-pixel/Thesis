@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+dist/
+*.egg-info/
+
+# Never commit confidential inputs or generated deployment artifacts.
+*.csv
+*.pt
+*.audit.json

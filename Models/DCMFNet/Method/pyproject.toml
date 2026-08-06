@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dcmfnet-clinical-runtime"
+version = "0.1.0"
+description = "Training, export, and inference runtime for the DCMFNet research model"
+readme = "DEPLOYMENT.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26",
+  "torch>=2.2",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.115", "uvicorn[standard]>=0.30"]
+train = ["pandas>=2.1", "scikit-learn>=1.4"]
+dev = ["build>=1.2", "ruff>=0.9"]
+research = [
+  "matplotlib>=3.8",
+  "optuna>=4",
+  "plotly>=5",
+  "scipy>=1.12",
+]
+
+[project.scripts]
+dcmfnet-train = "dcmfnet.training.cli:main"
+dcmfnet-api = "dcmfnet.api:main"
+
+[tool.setuptools.packages.find]
+include = ["dcmfnet*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
