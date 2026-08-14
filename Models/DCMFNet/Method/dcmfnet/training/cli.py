@@ -1,4 +1,4 @@
-"""Command-line entry point for confidential, offline DCMFNet training."""
+"""Command-line entry point for local DCMFNet training."""
 
 from __future__ import annotations
 
@@ -31,9 +31,9 @@ DEFAULT_HYPERPARAMETERS = Path(__file__).resolve().parents[3] / "hyperparameters
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data", required=True, type=Path, help="Confidential CATSS CSV")
-    parser.add_argument("--target", required=True, choices=sorted(TARGET_COLUMNS))
-    parser.add_argument("--output", required=True, type=Path, help="Deployable .pt file")
+    parser.add_argument("--data", required=False, type=Path, help="Local DCMFNet-compatible CSV")
+    parser.add_argument("--target", required=False, choices=sorted(TARGET_COLUMNS), default="Pos")
+    parser.add_argument("--output", required=False, type=Path, help="Deployable .pt file")
     parser.add_argument("--hyperparameters", type=Path, default=DEFAULT_HYPERPARAMETERS)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--test-size", type=float, default=0.25)
