@@ -10,7 +10,7 @@ python train.py
 python export_model.py
 ```
 
-Training writes `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`, each with its local audit JSON. Export defaults to `exports/dcmfnet_pos.pt` plus `exports/dcmfnet_pos.metadata.json`. Export the negative model with `python export_model.py --checkpoint artifacts/dcmfnet_neg.pt --output exports/dcmfnet_neg.pt`.
+Training writes `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`, each with its local audit JSON. Export writes `exports/dcmfnet_pos.pt` and `exports/dcmfnet_neg.pt`, each with its corresponding `.metadata.json` file. Use `--target Pos` or `--target Neg` only when a single export is needed.
 
 The training command uses grouped `cmpair` splits, fits preprocessing on training rows only, evaluates the held-out test split, and embeds the feature schema in the artifact. The audit JSON is for local evaluation and is not needed by serving.
 
@@ -19,6 +19,8 @@ Copy only the exported artifact and metadata to the Clinical Risk AI Agent repos
 ```bash
 cp exports/dcmfnet_pos.pt ../Clinical-Risk-AI-Agent/model_artifacts/
 cp exports/dcmfnet_pos.metadata.json ../Clinical-Risk-AI-Agent/model_artifacts/
+cp exports/dcmfnet_neg.pt ../Clinical-Risk-AI-Agent/model_artifacts/
+cp exports/dcmfnet_neg.metadata.json ../Clinical-Risk-AI-Agent/model_artifacts/
 cd ../Clinical-Risk-AI-Agent
 python -m pip install '.[api]'
 dcmfnet-api --artifact model_artifacts/dcmfnet_pos.pt --host 127.0.0.1 --port 8000

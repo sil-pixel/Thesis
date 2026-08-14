@@ -18,4 +18,4 @@ python train.py
 python export_model.py
 ```
 
-Training outputs both `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`. Export defaults to the positive model at `exports/dcmfnet_pos.pt` with `exports/dcmfnet_pos.metadata.json`; pass matching `--checkpoint` and `--output` paths to export the negative model. Copy exported inference files to the Clinical Risk AI Agent repository and serve the `.pt` artifact with its local FastAPI runtime. See `Models/DCMFNet/Method/DEPLOYMENT.md` and `SYNTHETIC_DATA.md`.
+Training outputs both `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`. Export writes both models to `exports/`, each with its corresponding `.metadata.json` file. Copy the exported inference files to the Clinical Risk AI Agent repository and serve the required `.pt` artifacts with its local FastAPI runtime. See `Models/DCMFNet/Method/DEPLOYMENT.md` and `SYNTHETIC_DATA.md`.
