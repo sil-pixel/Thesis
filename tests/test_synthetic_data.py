@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "Models/DCMFNet/Method"))
 
-from generate_synthetic_data import expected_columns, generate_synthetic_data, validate_dataset
+from synthetic_data import expected_columns, generate_synthetic_data, validate_dataset
 from dcmfnet.artifact import build_model
 from dcmfnet.training.data import create_loader, fit_schema
 

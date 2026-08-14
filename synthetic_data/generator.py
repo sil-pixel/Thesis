@@ -17,7 +17,7 @@ DISCLAIMER = (
     "interpreted as clinically representative data."
 )
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parents[1]
 DCMFNET_METHOD = REPO_ROOT / "Models" / "DCMFNet" / "Method"
 if str(DCMFNET_METHOD) not in sys.path:
     sys.path.insert(0, str(DCMFNET_METHOD))
@@ -52,10 +52,7 @@ MISSINGNESS = {"PRS": 0.283, "SCZ15": 0.274, "ADHD9": 0.149, "ASD9": 0.159, "ACE
 
 
 def expected_columns() -> list[str]:
-    names = [
-        (name if prefix in {"batch", "SEX"} else f"{prefix}_{name}")
-        for prefix in MODALITY_ORDER for name in FEATURES[prefix]
-    ]
+    names = [(name if prefix in {"batch", "SEX"} else f"{prefix}_{name}") for prefix in MODALITY_ORDER for name in FEATURES[prefix]]
     return [GROUP_COLUMN, *names, *TARGET_COLUMNS]
 
 
