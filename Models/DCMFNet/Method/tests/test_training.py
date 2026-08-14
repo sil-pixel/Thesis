@@ -1,4 +1,7 @@
+import argparse
+from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -7,7 +10,8 @@ import torch
 from dcmfnet.artifact import build_model
 from dcmfnet.training.config import TrainingConfig
 from dcmfnet.training.data import create_loader, fit_schema, grouped_split
-from dcmfnet.training.engine import train_model
+from dcmfnet.training.engine import regression_metrics, train_model
+from dcmfnet.training.cli import run_targets
 
 
 PREFIXES = [
@@ -17,6 +21,25 @@ PREFIXES = [
 
 
 class TrainingTests(unittest.TestCase):
+    def test_spearman_metric_handles_ties_without_scipy(self) -> None:
+        metrics = regression_metrics(
+            np.array([1.0, 1.0, 2.0, 3.0]),
+            np.array([10.0, 10.0, 20.0, 30.0]),
+        )
+        self.assertAlmostEqual(metrics["rho"], 1.0)
+
+    def test_both_targets_use_distinct_artifact_paths(self) -> None:
+        args = argparse.Namespace(
+            target="Both",
+            output=Path("artifacts/dcmfnet.pt"),
+            torchscript=None,
+        )
+        with patch("dcmfnet.training.cli.run", side_effect=lambda item: item.output):
+            outputs = run_targets(args)
+        self.assertEqual(outputs["Pos"], Path("artifacts/dcmfnet_pos.pt"))
+        self.assertEqual(outputs["Neg"], Path("artifacts/dcmfnet_neg.pt"))
+        self.assertNotEqual(outputs["Pos"], outputs["Neg"])
+
     def test_grouped_split_has_no_group_leakage(self) -> None:
         frame = pd.DataFrame({"cmpair": np.repeat(np.arange(10), 2)})
         development, holdout = grouped_split(frame, 0.2, seed=42)

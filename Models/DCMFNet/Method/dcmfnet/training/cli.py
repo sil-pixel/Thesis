@@ -32,8 +32,17 @@ DEFAULT_HYPERPARAMETERS = Path(__file__).resolve().parents[3] / "hyperparameters
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", required=False, type=Path, help="Local DCMFNet-compatible CSV")
-    parser.add_argument("--target", required=False, choices=sorted(TARGET_COLUMNS), default="Pos")
-    parser.add_argument("--output", required=False, type=Path, help="Deployable .pt file")
+    parser.add_argument(
+        "--target",
+        choices=["Both", *sorted(TARGET_COLUMNS)],
+        default="Both",
+        help="Train both targets by default, or select one target",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Output .pt path; Both appends _pos and _neg to the filename",
+    )
     parser.add_argument("--hyperparameters", type=Path, default=DEFAULT_HYPERPARAMETERS)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--test-size", type=float, default=0.25)
@@ -70,6 +79,10 @@ def load_config(path: Path, target: str) -> TrainingConfig:
 
 
 def run(args: argparse.Namespace) -> Path:
+    if args.target not in TARGET_COLUMNS:
+        raise ValueError("run() requires one concrete target: Pos or Neg")
+    if args.output is None:
+        raise ValueError("An output path is required")
     seed_everything(args.seed)
     device = choose_device(args.device)
     config = load_config(args.hyperparameters, args.target)
@@ -140,8 +153,37 @@ def run(args: argparse.Namespace) -> Path:
     return output
 
 
+def target_output_path(output: Path, target: str, *, multiple: bool) -> Path:
+    """Return a target-specific artifact path without reusing another target's file."""
+    if not multiple:
+        return output
+    suffix = output.suffix or ".pt"
+    return output.with_name(f"{output.stem}_{target.lower()}{suffix}")
+
+
+def run_targets(args: argparse.Namespace) -> dict[str, Path]:
+    """Train the selected target(s), isolating mutable arguments for every run."""
+    targets = list(TARGET_COLUMNS) if args.target == "Both" else [args.target]
+    if args.output is None:
+        raise ValueError("An output path is required")
+    outputs: dict[str, Path] = {}
+    for target in targets:
+        target_args = argparse.Namespace(**vars(args))
+        target_args.target = target
+        target_args.output = target_output_path(
+            args.output, target, multiple=len(targets) > 1
+        )
+        if args.torchscript is not None:
+            target_args.torchscript = target_output_path(
+                args.torchscript, target, multiple=len(targets) > 1
+            )
+        outputs[target] = run(target_args)
+        print(f"{target}: training complete; artifact={outputs[target]}")
+    return outputs
+
+
 def main() -> None:
-    run(build_parser().parse_args())
+    run_targets(build_parser().parse_args())
 
 
 if __name__ == "__main__":

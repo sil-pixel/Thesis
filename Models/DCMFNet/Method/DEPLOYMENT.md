@@ -10,7 +10,7 @@ python train.py
 python export_model.py
 ```
 
-Outputs are `data/synthetic_dcmfnet.csv`, `artifacts/dcmfnet_pos.pt` plus its local audit JSON, and `exports/dcmfnet_pos.pt` plus `exports/dcmfnet_pos.metadata.json`. Train the negative target with `python train.py --target Neg --output artifacts/dcmfnet_neg.pt` and export it with matching `--checkpoint` and `--output` arguments.
+Training writes `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`, each with its local audit JSON. Export defaults to `exports/dcmfnet_pos.pt` plus `exports/dcmfnet_pos.metadata.json`. Export the negative model with `python export_model.py --checkpoint artifacts/dcmfnet_neg.pt --output exports/dcmfnet_neg.pt`.
 
 The training command uses grouped `cmpair` splits, fits preprocessing on training rows only, evaluates the held-out test split, and embeds the feature schema in the artifact. The audit JSON is for local evaluation and is not needed by serving.
 

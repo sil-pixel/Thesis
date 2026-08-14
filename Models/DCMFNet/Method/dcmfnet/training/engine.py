@@ -26,12 +26,35 @@ class TrainingResult:
 def regression_metrics(
     targets: np.ndarray, predictions: np.ndarray
 ) -> dict[str, float]:
+    rho = 0.0
+    if len(targets) > 1:
+        target_ranks = _average_ranks(targets)
+        prediction_ranks = _average_ranks(predictions)
+        if np.std(target_ranks) > 0 and np.std(prediction_ranks) > 0:
+            rho = float(np.corrcoef(target_ranks, prediction_ranks)[0, 1])
     metrics = {
         "mae": float(mean_absolute_error(targets, predictions)),
         "rmse": float(np.sqrt(mean_squared_error(targets, predictions))),
         "r2": float(r2_score(targets, predictions)) if len(targets) > 1 else 0.0,
+        "rho": rho,
     }
     return {name: value if np.isfinite(value) else 0.0 for name, value in metrics.items()}
+
+
+def _average_ranks(values: np.ndarray) -> np.ndarray:
+    """Rank values using average ranks for ties, matching Spearman correlation."""
+    values = np.asarray(values).reshape(-1)
+    order = np.argsort(values, kind="mergesort")
+    sorted_values = values[order]
+    ranks = np.empty(len(values), dtype=float)
+    start = 0
+    while start < len(values):
+        stop = start + 1
+        while stop < len(values) and sorted_values[stop] == sorted_values[start]:
+            stop += 1
+        ranks[order[start:stop]] = (start + stop - 1) / 2.0
+        start = stop
+    return ranks
 
 
 def evaluate(
