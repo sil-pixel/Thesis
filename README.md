@@ -19,3 +19,23 @@ python export_model.py
 ```
 
 Training outputs both `artifacts/dcmfnet_pos.pt` and `artifacts/dcmfnet_neg.pt`. Export writes both models to `exports/`, each with its corresponding `.metadata.json` file. Copy the exported inference files to the Clinical Risk AI Agent repository and serve the required `.pt` artifacts with its local FastAPI runtime. See `Models/DCMFNet/Method/DEPLOYMENT.md` and `SYNTHETIC_DATA.md`.
+
+## Held-out test metrics
+
+### Positive-symptom model
+
+Artifact: `artifacts/dcmfnet_pos.pt`
+
+- MAE: `0.027113692834973335`
+- R²: `0.79314124584198`
+- Spearman's ρ: `0.8695505930338211`
+- RMSE: `0.03393961518415752`
+
+### Negative-symptom model
+
+Artifact: `artifacts/dcmfnet_neg.pt`
+
+- MAE: `0.05322835221886635`
+- R²: `0.3738275170326233`
+- Spearman's ρ: `0.6088225454028997`
+- RMSE: `0.06683719920868696`
