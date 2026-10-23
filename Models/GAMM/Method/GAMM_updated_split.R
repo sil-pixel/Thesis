@@ -55,6 +55,8 @@ build_model_spec <- function(column_names) {
     SUD15 = SUD15_vars, SCZ15 = SCZ15_vars, ADHD9 = ADHD9_vars, ASD9 = ASD9_vars,
     ACE15 = ACE15_vars, ACE18 = ACE18_vars, SUD18 = SUD18_vars, SES = SES_vars
   )
+  # Drop groups without columns (e.g. ACE18 and SUD18 in the age-15-only models), so no empty score is built
+  score_blocks <- score_blocks[lengths(score_blocks) > 0]
   
   main_effect_vars <- c(SUD15_vars, PRS_vars, SCZ15_vars, ADHD9_vars, ASD9_vars, ACE15_vars,
                         ACE18_vars, SUD18_vars, SES_vars, Sex_var, BatchPC_vars)
