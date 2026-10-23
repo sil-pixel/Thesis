@@ -1,0 +1,23 @@
+Variable,Estimate,Std. Error,t value,p_value,significance
+ACE18_emotional_abuse18,-0.0355,0.0039,-9.187,8.18e-20,***
+SCZ15_Too_much_energy15,0.0109,0.0024,4.516,6.58e-6,***
+SCZ15_Seen_hallucinations15,0.0156,0.004,3.891,1.02e-4,***
+SUD18_alcohol_often18,0.0093,0.0024,3.886,1.04e-4,***
+SCZ15_Talking_fast15,0.0091,0.0025,3.612,3.1e-4,***
+ACE18_witness_crime18,-0.0215,0.006,-3.573,3.6e-4,***
+SCZ15_Read_others_minds15,0.0083,0.0024,3.414,6.5e-4,***
+SUD18_drugs_often18,0.0163,0.0048,3.369,7.65e-4,***
+SCZ15_Extreme_excitement15,0.0058,0.0019,3.096,0.00198,**
+SUD18_cigarettes18,0.0037,0.0012,3.063,0.00221,**
+SCZ15_Hear_voices15,0.0202,0.0066,3.036,0.00242,**
+SCZ15_headaches15,0.0079,0.0027,2.911,0.00363,**
+SCZ15_Special_messages15,0.0185,0.0064,2.894,0.00384,**
+ASD9_difficulty_converse9,-0.0323,0.0124,-2.601,0.00936,**
+SUD15_score:PRS_Medium_spiny_neuron_z,0.0061,0.0026,2.361,0.0183,*
+ASD9_absorbed_details9,0.0134,0.0059,2.26,0.0239,*
+ASD9_easily_influenced9,0.0085,0.0038,2.256,0.0242,*
+ASD9_difficulty_socialize9,0.0212,0.0099,2.138,0.0326,*
+SUD15_OtherDrugs15,0.0175,0.0082,2.129,0.0333,*
+SUD15_score:PRS_MGE_interneuron_z,0.0053,0.0025,2.12,0.0341,*
+SUD15_score:PRS_Upper_layer_intratelenceph_z,-0.0052,0.0025,-2.078,0.0378,*
+SCZ15_Spied15,0.0052,0.0026,1.967,0.0493,*

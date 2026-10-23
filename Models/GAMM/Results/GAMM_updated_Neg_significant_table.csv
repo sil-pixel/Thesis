@@ -1,0 +1,18 @@
+Variable,Estimate,Std. Error,t value,p_value,significance
+ACE18_emotional_abuse18,-0.0754,0.0066,-11.405,2.2100000000000002e-29,***
+SCZ15_unhappy15,0.0415,0.0061,6.826,1.1e-11,***
+SCZ15_headaches15,0.0283,0.0046,6.154,8.82e-10,***
+SEX,0.0416,0.0068,6.079,1.4e-9,***
+SUD18_cigarettes18,0.0107,0.0021,5.21,2.05e-7,***
+SCZ15_worry15,0.0219,0.0047,4.69,2.88e-6,***
+SCZ15_Extreme_excitement15,-0.0114,0.0032,-3.574,3.58e-4,***
+SCZ15_Irritable15,0.0145,0.0045,3.197,0.00141,**
+ACE18_hate_crime18,-0.0542,0.0175,-3.09,0.00203,**
+SES_birth_country_father,-0.0186,0.0071,-2.639,0.00837,**
+SUD18_drugs_often18,0.0216,0.0083,2.612,0.00907,**
+SCZ15_lose_confidence15,0.0113,0.0044,2.586,0.00977,**
+SCZ15_Too_much_energy15,0.0103,0.0041,2.503,0.0124,*
+SUD15_score:SCZ15_score,-0.0063,0.0027,-2.363,0.0182,*
+ADHD9_often_blurt_out9,-0.0182,0.0077,-2.353,0.0187,*
+ASD9_difficulty_converse9,-0.0485,0.0212,-2.288,0.0222,*
+SUD15_Cigarettes15,-0.0151,0.0073,-2.066,0.0389,*
