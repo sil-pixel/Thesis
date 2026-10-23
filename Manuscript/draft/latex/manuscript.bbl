@@ -1,0 +1,180 @@
+\begin{thebibliography}{10}
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\bibcommenthead
+
+\bibitem[\protect\citeauthoryear{Di~Forti et~al.}{2019}]{R-DIFORTI}
+Di~Forti M, Quattrone D, Freeman TP, Tripoli G, Gayer-Anderson C, Quigley H,
+  et~al.
+\newblock The contribution of cannabis use to variation in the incidence of
+  psychotic disorder across {Europe} ({EU-GEI}).
+\newblock Lancet Psychiatry. 2019;6:427--436.
+\newblock \doi{10.1016/S2215-0366(19)30048-3}.
+
+\bibitem[\protect\citeauthoryear{Hall and Degenhardt}{2008}]{R-HALL}
+Hall W, Degenhardt L.
+\newblock Cannabis use and the risk of developing a psychotic disorder.
+\newblock World Psychiatry. 2008;7:68--71.
+\newblock \doi{10.1002/j.2051-5545.2008.tb00158.x}.
+
+\bibitem[\protect\citeauthoryear{Varese et~al.}{2012}]{R-VARESE}
+Varese F, Smeets F, Drukker M, Lieverse R, Lataster T, Viechtbauer W, et~al.
+\newblock Childhood adversities increase the risk of psychosis: a meta-analysis
+  of patient-control, prospective- and cross-sectional cohort studies.
+\newblock Schizophrenia Bulletin. 2012;38:661--671.
+\newblock \doi{10.1093/schbul/sbs050}.
+
+\bibitem[\protect\citeauthoryear{Agerbo et~al.}{2015}]{R-AGERBO}
+Agerbo E, Sullivan PF, Vilhj{\'a}lmsson BJ, Pedersen CB, Mors O, B{\o}rglum AD,
+  et~al.
+\newblock Polygenic risk score, parental socioeconomic status, family history
+  of psychiatric disorders, and the risk for schizophrenia: a {Danish}
+  population-based study and meta-analysis.
+\newblock JAMA Psychiatry. 2015;72:635--641.
+\newblock \doi{10.1001/jamapsychiatry.2015.0346}.
+
+\bibitem[\protect\citeauthoryear{Trubetskoy et~al.}{2022}]{R-PGC3}
+Trubetskoy V, Pardi{\~n}as AF, Qi T, Panagiotaropoulou G, Awasthi S, Bigdeli
+  TB, et~al.
+\newblock Mapping genomic loci implicates genes and synaptic biology in
+  schizophrenia.
+\newblock Nature. 2022;604:502--508.
+\newblock \doi{10.1038/s41586-022-04434-5}.
+
+\bibitem[\protect\citeauthoryear{Yao et~al.}{2025}]{R-YAO2025}
+Yao S, Harder A, Darki F, Chang Y, Li A, Nikouei K, et~al.
+\newblock Connecting genomic results for psychiatric disorders to human brain
+  cell types and regions reveals convergence with functional connectivity.
+\newblock Nature Communications. 2025;16:395.
+\newblock \doi{10.1038/s41467-024-55611-1}.
+
+\bibitem[\protect\citeauthoryear{Robinson and Bergen}{2021}]{R-ROBINSON}
+Robinson N, Bergen SE.
+\newblock Environmental risk factors for schizophrenia and bipolar disorder and
+  their relationship to genetic risk: current knowledge and future directions.
+\newblock Frontiers in Genetics. 2021;12:686666.
+\newblock \doi{10.3389/fgene.2021.686666}.
+
+\bibitem[\protect\citeauthoryear{Borsos et~al.}{2024}]{R-BORSOS}
+Borsos B, Allaart CG, van Halteren A.
+\newblock Predicting stroke outcome: a case for multimodal deep learning
+  methods with tabular and {CT} perfusion data.
+\newblock Artificial Intelligence in Medicine. 2024;147:102719.
+\newblock \doi{10.1016/j.artmed.2023.102719}.
+
+\bibitem[\protect\citeauthoryear{Huang et~al.}{2024}]{R-DCMF}
+Huang Z, Xue M, Liu Y, Xu K, Li J, Yu C.
+\newblock {DCMFNet}: Deep cross-modal fusion network for different modalities
+  with iterative gated fusion.
+\newblock In: Proceedings of Graphics Interface 2024; 2024. p. 1--12.
+
+\bibitem[\protect\citeauthoryear{Christodoulou et~al.}{2019}]{R-CHRIST}
+Christodoulou E, Ma J, Collins GS, Steyerberg EW, Verbakel JY, Van~Calster B.
+\newblock A systematic review shows no performance benefit of machine learning
+  over logistic regression for clinical prediction models.
+\newblock Journal of Clinical Epidemiology. 2019;110:12--22.
+\newblock \doi{10.1016/j.jclinepi.2019.02.004}.
+
+\bibitem[\protect\citeauthoryear{Grinsztajn et~al.}{2022}]{R-GRIN}
+Grinsztajn L, Oyallon E, Varoquaux G.
+\newblock Why do tree-based models still outperform deep learning on typical
+  tabular data?
+\newblock In: Advances in Neural Information Processing Systems 35 (Datasets
+  and Benchmarks Track); 2022. ArXiv:2207.08815.
+
+\bibitem[\protect\citeauthoryear{Tate et~al.}{2020}]{R-TATE}
+Tate AE, McCabe RC, Larsson H, Lundstr{\"o}m S, Lichtenstein P, Kuja-Halkola R.
+\newblock Predicting mental health problems in adolescence using machine
+  learning techniques.
+\newblock PLoS One. 2020;15:e0230389.
+\newblock \doi{10.1371/journal.pone.0230389}.
+
+\bibitem[\protect\citeauthoryear{Kapoor and Narayanan}{2023}]{R-KAPOOR}
+Kapoor S, Narayanan A.
+\newblock Leakage and the reproducibility crisis in machine-learning-based
+  science.
+\newblock Patterns. 2023;4:100804.
+\newblock \doi{10.1016/j.patter.2023.100804}.
+
+\bibitem[\protect\citeauthoryear{Jain and Wallace}{2019}]{R-JAIN}
+Jain S, Wallace BC.
+\newblock Attention is not explanation.
+\newblock In: Proceedings of NAACL-HLT 2019; 2019. p. 3543--3556.
+
+\bibitem[\protect\citeauthoryear{Anckars{\"a}ter et~al.}{2011}]{R-CATSS}
+Anckars{\"a}ter H, Lundstr{\"o}m S, Kollberg L, Kerekes N, Palm C,
+  Carlstr{\"o}m E, et~al.
+\newblock The {Child and Adolescent Twin Study in Sweden (CATSS)}.
+\newblock Twin Research and Human Genetics. 2011;14:495--508.
+\newblock \doi{10.1375/twin.14.6.495}.
+
+\bibitem[\protect\citeauthoryear{Siletti et~al.}{2023}]{R-SILETTI}
+Siletti K, Hodge R, Mossi~Albiach A, Lee K, Ding S, Hu L, et~al.
+\newblock Transcriptomic diversity of cell types across the adult human brain.
+\newblock Science. 2023;382:eadd7046.
+\newblock \doi{10.1126/science.add7046}.
+
+\bibitem[\protect\citeauthoryear{Ge et~al.}{2019}]{R-PRSCS}
+Ge T, Chen CY, Ni Y, Feng YCA, Smoller JW.
+\newblock Polygenic prediction via {Bayesian} regression and continuous
+  shrinkage priors.
+\newblock Nature Communications. 2019;10:1776.
+\newblock \doi{10.1038/s41467-019-09718-5}.
+
+\bibitem[\protect\citeauthoryear{Ke et~al.}{2017}]{R-LGBM}
+Ke G, Meng Q, Finley T, Wang T, Chen W, Ma W, et~al.
+\newblock {LightGBM}: a highly efficient gradient boosting decision tree.
+\newblock In: Advances in Neural Information Processing Systems 30; 2017. p.
+  3146--3154.
+\newblock [VERIFY: URL and pages].
+
+\bibitem[\protect\citeauthoryear{Lundberg and Lee}{2017}]{R-SHAP}
+Lundberg SM, Lee SI.
+\newblock A unified approach to interpreting model predictions.
+\newblock In: Advances in Neural Information Processing Systems 30; 2017. p.
+  4765--4774.
+\newblock [VERIFY: URL and pages].
+
+\bibitem[\protect\citeauthoryear{Hu et~al.}{2018}]{R-SE}
+Hu J, Shen L, Sun G.
+\newblock Squeeze-and-excitation networks.
+\newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR); 2018. p. 7132--7141.
+
+\bibitem[\protect\citeauthoryear{Akiba et~al.}{2019}]{R-OPTUNA}
+Akiba T, Sano S, Yanase T, Ohta T, Koyama M.
+\newblock Optuna: a next-generation hyperparameter optimization framework.
+\newblock In: Proceedings of the 25th ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining; 2019. p. 2623--2631.
+
+\bibitem[\protect\citeauthoryear{Pandala}{2026}]{R-LAZY}
+Pandala SR.: {LazyPredict}.
+\newblock Software. [VERIFY: version used and release date].
+\newblock \url{https://github.com/shankarpandala/lazypredict}.
+
+\bibitem[\protect\citeauthoryear{Nadeau and Bengio}{2003}]{R-NADEAU}
+Nadeau C, Bengio Y.
+\newblock Inference for the generalization error.
+\newblock Machine Learning. 2003;52:239--281.
+\newblock \doi{10.1023/A:1024068626366}.
+
+\bibitem[\protect\citeauthoryear{Van~Calster et~al.}{2019}]{R-VANCAL}
+Van~Calster B, McLernon DJ, van Smeden M, Wynants L, Steyerberg EW.
+\newblock Calibration: the {Achilles} heel of predictive analytics.
+\newblock BMC Medicine. 2019;17:230.
+\newblock \doi{10.1186/s12916-019-1466-7}.
+
+\bibitem[\protect\citeauthoryear{Collins et~al.}{2024}]{R-TRIPODAI}
+Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van~Calster B, et~al.
+\newblock {TRIPOD+AI} statement: updated guidance for reporting clinical
+  prediction models that use regression or machine learning methods.
+\newblock BMJ. 2024;385:e078378.
+\newblock \doi{10.1136/bmj-2023-078378}.
+
+\bibitem[\protect\citeauthoryear{Riley et~al.}{2020}]{R-RILEY}
+Riley RD, Ensor J, Snell KIE, Harrell FE, Martin GP, Reitsma JB, et~al.
+\newblock Calculating the sample size required for developing a clinical
+  prediction model.
+\newblock BMJ. 2020;368:m441.
+\newblock \doi{10.1136/bmj.m441}.
+
+\end{thebibliography}
