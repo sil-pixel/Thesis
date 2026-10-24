@@ -127,12 +127,12 @@ The comparison was repeated with participant-level test predictions from DCMFNet
 
 ## Attribution analyses
 
-We asked whether DCMFNet's gate values reflect what the network relies on for its predictions, and whether DCMFNet and the LMM rely on the same predictor groups. For each split, the following quantities were computed for the 11 predictor groups on the test set, from the same retrained models: <!-- src: Models/DCMFNet/Analysis/shap_analysis.py; Models/GLMM/Analysis/GLMM_shap_updated.R; Models/Model Comparison/attribution_agreement.py -->
+We asked whether DCMFNet's gate values reflect what the network relies on for its predictions, and whether DCMFNet and the mixed-effects models rely on the same predictor groups. For each split, the following quantities were computed for the 11 predictor groups on the test set, from the same retrained models: <!-- src: Models/DCMFNet/Analysis/shap_analysis.py; Models/GLMM/Analysis/GLMM_shap_updated.R; Models/GAMM/Analysis/GAMM_shap_updated.R; Models/Model Comparison/attribution_agreement.py -->
 
 1. **Gate values:** the mean gate value per group in DCMFNet's fused and independent streams, as reported in the thesis. <!-- src: Models/DCMFNet/Analysis/importance_analysis_avg.py:43-114 -->
 2. **SHAP values for DCMFNet** [@R-SHAP]: expected-gradients SHAP values (100 training rows as background, 200 samples per explained row), summed within each group; group importance was the mean absolute group SHAP value.
-3. **Exact SHAP values for the LMM:** for the population-level prediction, with the training data as reference. Main effects contribute $\beta_j(x_j - \bar{x}_j)$. Each product term $\gamma S P$ was split between SUD15 and its partner according to its two-player Shapley values, $\tfrac{\gamma}{2}(S-\bar{S})(P+\bar{P})$ and $\tfrac{\gamma}{2}(P-\bar{P})(S+\bar{S})$.
-4. **Grouped permutation importance** for both models: the drop in test $R^2$ when all variables of a group are permuted jointly, averaged over 10 permutations.
+3. **Exact SHAP values for the LMM and GAMM:** for the population-level prediction, with the training data as reference. Main effects contribute $\beta_j(x_j - \bar{x}_j)$. Each product term $\gamma S P$ was split between SUD15 and its partner according to its two-player Shapley values, $\tfrac{\gamma}{2}(S-\bar{S})(P+\bar{P})$ and $\tfrac{\gamma}{2}(P-\bar{P})(S+\bar{S})$. In the GAMM, each smooth PRS term contributes $f_k(x_k) - \bar{f}_k$, where $\bar{f}_k$ is its mean over the training data.
+4. **Grouped permutation importance** for all three models: the drop in test $R^2$ when all variables of a group are permuted jointly, averaged over 10 permutations.
 
 Agreement between sources was summarised by Spearman's rank correlation across groups and the overlap of the three highest-ranked groups, and stability by the correlation between splits. All attributions describe associations used by the fitted models, not causal effects.
 

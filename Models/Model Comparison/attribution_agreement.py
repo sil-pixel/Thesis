@@ -1,8 +1,8 @@
 '''
-Agreement between attribution methods for DCMFNet and the updated GLMM, at the modality level.
+Agreement between attribution methods for DCMFNet and the updated GLMM and GAMM, at the modality level.
 Questions answered:
     1. Do DCMFNet's attention gates rank the modalities like SHAP and permutation importance on the same model?
-    2. Do DCMFNet and the GLMM rely on the same modalities?
+    2. Do DCMFNet and the GLMM (and GAMM) rely on the same modalities?
     3. How stable is each attribution across the 5 seeds?
 Date: 23/10/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
@@ -10,6 +10,7 @@ Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substan
 Usage: run from a folder containing
     DCMFNet_attribution_per_seed.csv (from Models/DCMFNet/Analysis/shap_analysis.py)
     GLMM_attribution_per_seed.csv    (from Models/GLMM/Analysis/GLMM_shap_updated.R)
+    GAMM_attribution_per_seed.csv    (optional, from Models/GAMM/Analysis/GAMM_shap_updated.R)
     python attribution_agreement.py
 
 Output:
@@ -22,6 +23,7 @@ Output:
 With 9 to 11 modalities, rank correlations are coarse; read them together with the modality shares.
 '''
 
+import os
 from itertools import combinations
 
 import numpy as np
@@ -32,7 +34,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 SOURCES = ["DCMFNet_gate_independent", "DCMFNet_gate_fused", "DCMFNet_SHAP", "DCMFNet_permutation",
-           "GLMM_SHAP", "GLMM_permutation"]
+           "GLMM_SHAP", "GLMM_permutation", "GAMM_SHAP", "GAMM_permutation"]
 TOP_K = 3
 
 
@@ -123,13 +125,19 @@ def plot_agreement(summary, model_tag):
 if __name__ == "__main__":
     dcmfnet = pd.read_csv("DCMFNet_attribution_per_seed.csv")
     glmm = pd.read_csv("GLMM_attribution_per_seed.csv")
-    df = pd.concat([dcmfnet, glmm], ignore_index=True)
+    frames = [dcmfnet, glmm]
+    if os.path.exists("GAMM_attribution_per_seed.csv"):
+        frames.append(pd.read_csv("GAMM_attribution_per_seed.csv"))
+    else:
+        print("GAMM_attribution_per_seed.csv not found: GAMM sources are left out")
+    df = pd.concat(frames, ignore_index=True)
 
     unknown = set(df['source']) - set(SOURCES)
     if unknown:
         raise ValueError(f"Unexpected sources: {unknown}")
     for model_tag in ["Pos", "Neg"]:
-        seeds = {s: set(df[(df['model_tag'] == model_tag) & (df['source'] == s)]['seed']) for s in SOURCES}
+        seeds = {s: set(df[(df['model_tag'] == model_tag) & (df['source'] == s)]['seed'])
+                 for s in SOURCES if s in set(df['source'])}
         if len({frozenset(v) for v in seeds.values()}) != 1:
             print(f"WARNING: {model_tag} sources do not cover the same seeds: {seeds}")
 

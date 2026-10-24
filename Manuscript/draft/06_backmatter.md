@@ -51,4 +51,4 @@ Not applicable. `[VERIFY: JOURNAL REQUIREMENT]`
 
 **Fig. 3** Calibration curves for each model and outcome, by decile of predicted score, pooled over the five test sets. `[TODO: calibration_curves_full.pdf from prediction_evaluation.py]`
 
-**Fig. 4** Predictor-group importance by source: DCMFNet gate values, DCMFNet SHAP, DCMFNet permutation importance, LMM SHAP and LMM permutation importance. `[TODO: from attribution_agreement.py]`
+**Fig. 4** Predictor-group importance by source: DCMFNet gate values, DCMFNet SHAP, DCMFNet permutation importance, LMM and GAMM SHAP, and LMM and GAMM permutation importance. `[TODO: from attribution_agreement.py]`

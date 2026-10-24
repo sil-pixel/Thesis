@@ -85,7 +85,7 @@ With depth set per block rather than uniformly, test RMSE was 0.0898 ± 0.0015 v
 -->
 
 ## Attribution: gates, SHAP and permutation importance
-`[TODO: E-06 — from shap_analysis.py, GLMM_shap_updated.R and attribution_agreement.py]`
+`[TODO: E-06 — from shap_analysis.py, GLMM_shap_updated.R, GAMM_shap_updated.R and attribution_agreement.py]`
 
 ## Calibration, subgroup and sensitivity analyses
 `[TODO: E-09 calibration, A-04 sex-stratified, E-10 top-decile, E-05 age-15-only predictors — from prediction_evaluation.py]`
