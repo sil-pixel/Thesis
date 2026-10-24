@@ -34,7 +34,7 @@ METHOD_DIR = Path(__file__).resolve().parent.parent / "Method"
 if METHOD_DIR.is_dir() and str(METHOD_DIR) not in sys.path:
     sys.path.insert(0, str(METHOD_DIR))
 
-from train import random_split, prepare_data, calculate_modality_sizes, train
+from train import random_split, prepare_data, calculate_modality_sizes, create_dataloader, evaluate, train
 
 SEEDS = [42, 43, 44, 45, 46]
 PREDICTOR_SETS = ["full", "age15"]
@@ -56,6 +56,25 @@ def neutralise_age18(train_df, test_df):
     return train_df, test_df, age18_cols
 
 
+'''
+Train the Pos and Neg models of one seed in the same order as the final run (legacy/train.py __main__):
+the seed is set once, the Pos model is trained and evaluated on a shuffled test loader, then the Neg model is trained.
+The Neg model therefore starts from the random state left by the Pos model. Reseeding before the Neg model gives a
+different initialisation (and test R² 0.190 instead of 0.198 for the final configuration; D-23).
+'''
+def train_seed_models(train_df, test_df, seed, modality_sizes, hyperparameters_json):
+    torch.manual_seed(seed)
+    models = {}
+    for model_tag in ["Pos", "Neg"]:
+        hyperparams = hyperparameters_json[model_tag]
+        (model, *_) = train(train_df, seed, modality_sizes, model_tag, hyperparams)
+        # Same random-number use as evaluate_final_test() in the final run (shuffled test loader), without its plot
+        X_test, Y_test = prepare_data(test_df, model_tag)
+        evaluate(model, create_dataloader(X_test, Y_test, hyperparams["batch_size"]))
+        models[model_tag] = model
+    return models
+
+
 def predict(model, X):
     model.eval()
     with torch.no_grad():
@@ -74,22 +93,20 @@ if __name__ == "__main__":
 
     results = []
     for predictor_set in PREDICTOR_SETS:
-        for model_tag, outcome in [("Pos", "SCZ18_Pos_Norm"), ("Neg", "SCZ18_Neg_Norm")]:
-            hyperparams = hyperparameters_json[model_tag]
-            for seed in SEEDS:
-                print(f"\n{'='*60}\n  DCMFNet {model_tag}, {predictor_set} predictors, seed {seed}\n{'='*60}")
-                torch.manual_seed(seed)
-                train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
-                if predictor_set == "age15":
-                    train_df, test_df, age18_cols = neutralise_age18(train_df, test_df)
-                    print(f"  Age-18 inputs set to the training mean: {age18_cols}")
+        for seed in SEEDS:
+            print(f"\n{'='*60}\n  DCMFNet Pos and Neg, {predictor_set} predictors, seed {seed}\n{'='*60}")
+            train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
+            if predictor_set == "age15":
+                train_df, test_df, age18_cols = neutralise_age18(train_df, test_df)
+                print(f"  Age-18 inputs set to the training mean: {age18_cols}")
 
-                (model, *_) = train(train_df, seed, modality_sizes, model_tag, hyperparams)
+            models = train_seed_models(train_df, test_df, seed, modality_sizes, hyperparameters_json)
 
+            for model_tag, outcome in [("Pos", "SCZ18_Pos_Norm"), ("Neg", "SCZ18_Neg_Norm")]:
                 X_test, Y_test = prepare_data(test_df, model_tag)
-                y_pred = predict(model, X_test)
+                y_pred = predict(models[model_tag], X_test)
                 r2 = 1 - np.sum((Y_test - y_pred) ** 2) / np.sum((Y_test - Y_test.mean()) ** 2)
-                print(f"  Test R²: {r2:.4f}")
+                print(f"  {model_tag} test R²: {r2:.4f}")
 
                 results.append(pd.DataFrame({
                     'model': 'DCMFNet', 'predictor_set': predictor_set, 'outcome': model_tag, 'seed': seed,

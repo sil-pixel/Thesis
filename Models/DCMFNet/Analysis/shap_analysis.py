@@ -44,6 +44,7 @@ for folder in [METHOD_DIR, ANALYSIS_DIR]:
 from train import (
     random_split, prepare_data, calculate_modality_sizes, create_dataloader, NUM_MODALITIES, train
 )
+from dcmfnet_test_predictions import train_seed_models
 from importance_analysis_avg import (
     MODALITY_LABELS, SEEDS, normalize_layers, extract_gates, map_gates_to_modalities
 )
@@ -171,22 +172,22 @@ if __name__ == "__main__":
 
     attribution_rows = []
     metric_rows = []
+    feature_shap_per_seed = {"Pos": [], "Neg": []}
 
-    for model_tag in ["Pos", "Neg"]:
+    for seed in SEEDS:
         print(f"\n{'='*60}")
-        print(f"  SHAP / permutation / gate analysis - {model_tag} symptom model (5 seeds)")
+        print(f"  SHAP / permutation / gate analysis - seed {seed}")
         print(f"{'='*60}")
+        train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
+        # Both models are trained before any attribution, in the order of the final run, so the attribution
+        # steps (which use random numbers) do not change the Neg model
+        models = train_seed_models(train_df, test_df, seed, modality_sizes, hyperparameters_json)
 
-        hyperparams = hyperparameters_json[model_tag]
-        layers_per_modality = normalize_layers(hyperparams["num_layers"], NUM_MODALITIES)
-        feature_shap_per_seed = []
-
-        for seed in SEEDS:
-            print(f"\n  --- Seed {seed} ---")
-            torch.manual_seed(seed)
-            train_df, test_df = random_split(df, test_size=0.25, random_state=seed)
-
-            (model, *_) = train(train_df, seed, modality_sizes, model_tag, hyperparams)
+        for model_tag in ["Pos", "Neg"]:
+            print(f"\n  --- {model_tag} model, seed {seed} ---")
+            hyperparams = hyperparameters_json[model_tag]
+            layers_per_modality = normalize_layers(hyperparams["num_layers"], NUM_MODALITIES)
+            model = models[model_tag]
             model.eval()
 
             X_train, _ = prepare_data(train_df, model_tag)
@@ -209,7 +210,7 @@ if __name__ == "__main__":
             for modality, value in shap_modality_importance(shap_per_modality).items():
                 attribution_rows.append({'model_tag': model_tag, 'seed': seed, 'source': 'DCMFNet_SHAP',
                                          'modality': modality, 'importance': value})
-            feature_shap_per_seed.append(pd.Series(
+            feature_shap_per_seed[model_tag].append(pd.Series(
                 np.concatenate([np.abs(v).mean(axis=0) for v in shap_per_modality]),
                 index=[name for names in names_per_modality for name in names]
             ))
@@ -222,8 +223,9 @@ if __name__ == "__main__":
             metric_rows.append({'model_tag': model_tag, 'seed': seed, 'test_r2': baseline_r2})
             print(f"    Retrained model test R²: {baseline_r2:.4f}")
 
-        # Feature-level mean |SHAP|, summarised across seeds
-        feature_df = pd.concat(feature_shap_per_seed, axis=1)
+    # Feature-level mean |SHAP|, summarised across seeds
+    for model_tag in ["Pos", "Neg"]:
+        feature_df = pd.concat(feature_shap_per_seed[model_tag], axis=1)
         feature_summary = pd.DataFrame({
             'feature': feature_df.index,
             'modality': [label for label, names in zip(MODALITY_LABELS, names_per_modality) for _ in names],
@@ -240,8 +242,8 @@ if __name__ == "__main__":
     metrics_df = pd.DataFrame(metric_rows)
     metrics_df.to_csv("DCMFNet_retrained_test_metrics.csv", index=False)
     print("Saved: 'DCMFNet_retrained_test_metrics.csv'")
-    print("Compare these R² values with Final Best Model/test_results_summary.csv: retraining is not "
-          "bit-for-bit deterministic, so small differences are expected.")
+    print("Compare these R² values with Final Best Model/{Pos,Neg}_test_results_per_seed.csv: on the same machine and "
+          "software they should be identical.")
 
     for model_tag in ["Pos", "Neg"]:
         plot_modality_importance(attribution_df, model_tag)
