@@ -1,0 +1,15 @@
+Step,Rows,Twin_pairs,Excluded_at_step
+All rows in catss_final_data.csv,9261,5756,
+Both outcomes observed (SCZ18),9261,5756,0
+PRS available (genotyped),6643,4150,2618
+Batch x PC available,6643,4150,0
+SEX available,6299,3913,344
+SUD15 complete,6299,3913,0
+SCZ15 complete,5392,3576,907
+ADHD9 complete,5391,3575,<5
+ASD9 complete,5390,3574,<5
+ACE15 complete,5196,3485,194
+ACE18 complete,4570,3092,626
+SUD18 complete,4559,3086,11
+SES complete,4033,2690,526
+Complete cases (analysis sample),4033,2690,0
