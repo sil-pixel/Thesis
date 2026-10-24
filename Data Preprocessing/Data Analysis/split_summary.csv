@@ -1,0 +1,6 @@
+seed,train_ids,test_ids,train_rows,test_rows,expected_test_rows,matches_dcmfnet_log
+42,2017,673,3005,1028,1028,True
+43,2017,673,3023,1010,1010,True
+44,2017,673,3035,998,998,True
+45,2017,673,3018,1015,1015,True
+46,2017,673,3012,1021,1021,True
