@@ -1,0 +1,42 @@
+
+══ Seed 42 ══
+  Fitting Pos GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.72e-17 (should be ~0)
+    Test R²: 0.2534
+  Fitting Neg GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 8.50e-17 (should be ~0)
+    Test R²: 0.2275
+
+══ Seed 43 ══
+  Fitting Pos GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.41e-17 (should be ~0)
+    Test R²: 0.2250
+  Fitting Neg GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 8.76e-17 (should be ~0)
+    Test R²: 0.2231
+
+══ Seed 44 ══
+  Fitting Pos GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.37e-17 (should be ~0)
+    Test R²: 0.2257
+  Fitting Neg GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 9.38e-17 (should be ~0)
+    Test R²: 0.1879
+
+══ Seed 45 ══
+  Fitting Pos GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.55e-17 (should be ~0)
+    Test R²: 0.2056
+  Fitting Neg GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 9.57e-17 (should be ~0)
+    Test R²: 0.1656
+
+══ Seed 46 ══
+  Fitting Pos GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 4.68e-17 (should be ~0)
+    Test R²: 0.2273
+  Fitting Neg GAMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 8.51e-17 (should be ~0)
+    Test R²: 0.1946
+
+Saved: GAMM_attribution_per_seed.csv

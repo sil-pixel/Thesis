@@ -32,9 +32,9 @@ library(dplyr)
 # ── Reuse the model specification and helpers from GAMM_updated_split.R (main() is not run when sourced) ──
 script_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 script_dir <- if (length(script_arg) > 0) dirname(sub("^--file=", "", script_arg[1])) else "."
-candidates <- c("GAMM_updated_split.R", file.path(script_dir, "..", "Method", "GAMM_updated_split.R"))
+candidates <- c("GAMM_updated_split.R", file.path(script_dir, "GAMM_updated_split.R"))
 model_script <- candidates[file.exists(candidates)][1]
-if (is.na(model_script)) stop("GAMM_updated_split.R not found in the working folder or in ../Method")
+if (is.na(model_script)) stop("GAMM_updated_split.R not found in the working folder or in script dir")
 source(model_script)
 
 SEEDS <- c(42, 43, 44, 45, 46)

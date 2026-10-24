@@ -35,9 +35,9 @@ script_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 script_dir <- if (length(script_arg) > 0) dirname(sub("^--file=", "", script_arg[1])) else "."
 
 load_model_script <- function(file_name, repo_folder) {
-  candidates <- c(file_name, file.path(script_dir, "..", repo_folder, "Method", file_name))
+  candidates <- c(file_name, file.path(script_dir, "..", repo_folder, file_name))
   path <- candidates[file.exists(candidates)][1]
-  if (is.na(path)) stop(sprintf("%s not found in the working folder or in ../%s/Method", file_name, repo_folder))
+  if (is.na(path)) stop(sprintf("%s not found in the working folder or in ../%s/", file_name, repo_folder))
   env <- new.env()
   sys.source(path, envir = env)
   env

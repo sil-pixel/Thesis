@@ -1,0 +1,42 @@
+
+══ Seed 42 ══
+  Fitting Pos GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 4.38e-17 (should be ~0)
+    Test R²: 0.2549
+  Fitting Neg GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 4.66e-17 (should be ~0)
+    Test R²: 0.2260
+
+══ Seed 43 ══
+  Fitting Pos GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 3.64e-17 (should be ~0)
+    Test R²: 0.2258
+  Fitting Neg GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 4.60e-17 (should be ~0)
+    Test R²: 0.2278
+
+══ Seed 44 ══
+  Fitting Pos GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 3.90e-17 (should be ~0)
+    Test R²: 0.2252
+  Fitting Neg GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.42e-17 (should be ~0)
+    Test R²: 0.1921
+
+══ Seed 45 ══
+  Fitting Pos GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 3.98e-17 (should be ~0)
+    Test R²: 0.2061
+  Fitting Neg GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 5.61e-17 (should be ~0)
+    Test R²: 0.1697
+
+══ Seed 46 ══
+  Fitting Pos GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 2.81e-17 (should be ~0)
+    Test R²: 0.2275
+  Fitting Neg GLMM...
+    SHAP additivity check: SD of f(x) - sum(SHAP) = 4.20e-17 (should be ~0)
+    Test R²: 0.1966
+
+Saved: GLMM_attribution_per_seed.csv
