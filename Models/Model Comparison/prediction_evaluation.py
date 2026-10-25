@@ -7,11 +7,15 @@ Prediction-level evaluation of DCMFNet, GLMM and GAMM on the shared test sets, w
     4. Top-decile metrics: the 10% of test participants with the highest observed scores.
     5. Paired comparisons across the 5 seeds (corrected resampled t-test, Holm-adjusted):
        DCMFNet vs GLMM vs GAMM, and full vs age-15-only predictors for each model.
+       If the ML comparator predictions are present (ml_comparators_test_predictions.py), DCMFNet is also compared
+       with each comparator, and each comparator with itself (full vs age 15). These comparisons form a second
+       Holm family ('baselines'), so the main comparisons keep the same correction as before.
 Date: 23/10/2026
 Project: Deep Cross Modal Fusion Model for predicting schizophrenia from Substance use in adolescents.
 
 Usage: run from a folder containing the prediction files written by dcmfnet_test_predictions.py and
-glmm_gamm_test_predictions.R (SERVER_ONLY_predictions_DCMFNet.csv, _GLMM.csv, _GAMM.csv; missing files are skipped).
+glmm_gamm_test_predictions.R (SERVER_ONLY_predictions_DCMFNet.csv, _GLMM.csv, _GAMM.csv; missing files are skipped),
+and optionally ml_comparators_test_predictions.py (SERVER_ONLY_predictions_ML.csv).
     python prediction_evaluation.py
 
 Output (aggregated only; these files can be exported):
@@ -32,7 +36,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-MODELS = ["GLMM", "GAMM", "DCMFNet"]
+MAIN_MODELS = ["GLMM", "GAMM", "DCMFNet"]
+BASELINE_MODELS = ["LinearRegression", "ElasticNet", "GradientBoosting"]
+MODELS = MAIN_MODELS + BASELINE_MODELS
 SEX_LABELS = {1: "Male", 2: "Female"}       # coding as in descriptive_statistics.R
 TOP_FRACTION = 0.10
 N_CALIBRATION_BINS = 10
@@ -122,15 +128,20 @@ def paired_comparisons(per_seed):
     table = per_seed.set_index(keys + ['seed'])
     pairs = []
     for predictor_set in per_seed['predictor_set'].unique():
-        present = [m for m in MODELS if m in set(per_seed[per_seed['predictor_set'] == predictor_set]['model'])]
-        for a, b in combinations(present, 2):
-            pairs.append(((a, predictor_set), (b, predictor_set)))
-    for model in per_seed['model'].unique():
+        present = set(per_seed[per_seed['predictor_set'] == predictor_set]['model'])
+        main = [m for m in MAIN_MODELS if m in present]
+        for a, b in combinations(main, 2):
+            pairs.append(((a, predictor_set), (b, predictor_set), 'main'))
+        if 'DCMFNet' in present:
+            for baseline in [m for m in BASELINE_MODELS if m in present]:
+                pairs.append((('DCMFNet', predictor_set), (baseline, predictor_set), 'baselines'))
+    for model in [m for m in MODELS if m in set(per_seed['model'])]:
         if {'full', 'age15'} <= set(per_seed[per_seed['model'] == model]['predictor_set']):
-            pairs.append(((model, 'full'), (model, 'age15')))
+            family = 'main' if model in MAIN_MODELS else 'baselines'
+            pairs.append(((model, 'full'), (model, 'age15'), family))
 
     rows = []
-    for (model_a, set_a), (model_b, set_b) in pairs:
+    for (model_a, set_a), (model_b, set_b), family in pairs:
         for outcome in sorted(per_seed['outcome'].unique()):
             for metric in PAIRED_METRICS:
                 try:
@@ -141,7 +152,7 @@ def paired_comparisons(per_seed):
                 common = a.index.intersection(b.index)
                 differences = (a.loc[common] - b.loc[common]).values
                 mean_d, t, p = corrected_t_test(differences)
-                rows.append({'outcome': outcome, 'metric': metric,
+                rows.append({'family': family, 'outcome': outcome, 'metric': metric,
                              'setting_a': f"{model_a} ({set_a})", 'setting_b': f"{model_b} ({set_b})",
                              'n_seeds': len(common), 'mean_difference_a_minus_b': mean_d,
                              'sd_difference': np.std(differences, ddof=1) if len(common) > 1 else np.nan,
@@ -149,9 +160,9 @@ def paired_comparisons(per_seed):
                              else int(np.sum(differences > 0)),
                              't_corrected': t, 'p_value': p})
     result = pd.DataFrame(rows)
-    # Holm correction within each metric, across all comparisons and outcomes
+    # Holm correction within each family and metric, across all comparisons and outcomes
     result['p_holm'] = np.nan
-    for metric, idx in result.groupby('metric').groups.items():
+    for _, idx in result.groupby(['family', 'metric']).groups.items():
         result.loc[idx, 'p_holm'] = holm(result.loc[idx, 'p_value'].values)
     return result
 
@@ -170,14 +181,16 @@ def calibration_bins(predictions):
 def plot_calibration(bins_df, predictor_set):
     df = bins_df[bins_df['predictor_set'] == predictor_set]
     averaged = df.groupby(['model', 'outcome', 'bin'])[['mean_predicted', 'mean_observed']].mean().reset_index()
-    colors = {"GLMM": "#F0B8C0", "GAMM": "#E07080", "DCMFNet": "#6B0F1A"}
+    colors = {"GLMM": "#F0B8C0", "GAMM": "#E07080", "DCMFNet": "#6B0F1A",
+              "LinearRegression": "#9EC5E8", "ElasticNet": "#4A86C5", "GradientBoosting": "#1F3F6E"}
     fig, axes = plt.subplots(1, 2, figsize=(11, 5))
     for ax, outcome in zip(axes, ["Pos", "Neg"]):
         sub = averaged[averaged['outcome'] == outcome]
         for model in MODELS:
             m = sub[sub['model'] == model]
             if len(m):
-                ax.plot(m['mean_predicted'], m['mean_observed'], marker='o', color=colors[model], label=model)
+                ax.plot(m['mean_predicted'], m['mean_observed'], marker='o', color=colors[model], label=model,
+                        linestyle='-' if model in MAIN_MODELS else ':')
         lims = [min(sub['mean_predicted'].min(), sub['mean_observed'].min()),
                 max(sub['mean_predicted'].max(), sub['mean_observed'].max())]
         ax.plot(lims, lims, linestyle='--', color='gray', linewidth=0.8, label='Ideal')
@@ -238,7 +251,7 @@ if __name__ == "__main__":
     paired = paired_comparisons(per_seed)
     paired.to_csv("paired_comparisons.csv", index=False)
     print("Saved: paired_comparisons.csv")
-    print(paired[paired['metric'] == 'r2'][['outcome', 'setting_a', 'setting_b', 'mean_difference_a_minus_b',
+    print(paired[paired['metric'] == 'r2'][['family', 'outcome', 'setting_a', 'setting_b', 'mean_difference_a_minus_b',
                                             'seeds_a_better', 'p_value', 'p_holm']].to_string(index=False))
 
     bins_df = calibration_bins(predictions)
