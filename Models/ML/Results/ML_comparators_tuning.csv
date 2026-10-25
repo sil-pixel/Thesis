@@ -1,0 +1,61 @@
+model,predictor_set,outcome,seed,inner_cv_mse,test_r2,selected_hyperparameters
+LinearRegression,full,Pos,42,,0.2772505556939867,{}
+ElasticNet,full,Pos,42,0.007783215001419164,0.2925119823337956,"{""alpha"": 0.0392933643067041, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Pos,42,0.007903980026371552,0.2766320104947081,"{""l2_regularization"": 0.0013558227959926895, ""learning_rate"": 0.03233791944457942, ""max_depth"": 2, ""max_iter"": 225, ""max_leaf_nodes"": 5, ""min_samples_leaf"": 72}"
+LinearRegression,full,Neg,42,,0.2460635006052122,{}
+ElasticNet,full,Neg,42,0.02273904173516119,0.25791918174757666,"{""alpha"": 0.00864608229819122, ""l1_ratio"": 0.3}"
+GradientBoosting,full,Neg,42,0.02314361432901791,0.25423447262858057,"{""l2_regularization"": 0.0013558227959926895, ""learning_rate"": 0.03233791944457942, ""max_depth"": 2, ""max_iter"": 225, ""max_leaf_nodes"": 5, ""min_samples_leaf"": 72}"
+LinearRegression,full,Pos,43,,0.24097790441971945,{}
+ElasticNet,full,Pos,43,0.0074678760856465715,0.24999381118445307,"{""alpha"": 0.03985620694615638, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Pos,43,0.007586713932568473,0.2267335077776248,"{""l2_regularization"": 0.0011311273585222232, ""learning_rate"": 0.02612945315273932, ""max_depth"": 2, ""max_iter"": 352, ""max_leaf_nodes"": 10, ""min_samples_leaf"": 115}"
+LinearRegression,full,Neg,43,,0.24109863204121873,{}
+ElasticNet,full,Neg,43,0.021885304807639415,0.25130529666484025,"{""alpha"": 0.002525159904056603, ""l1_ratio"": 1.0}"
+GradientBoosting,full,Neg,43,0.0222725131981489,0.23854302066570277,"{""l2_regularization"": 0.015793089743169827, ""learning_rate"": 0.016346022170072392, ""max_depth"": 3, ""max_iter"": 312, ""max_leaf_nodes"": 25, ""min_samples_leaf"": 44}"
+LinearRegression,full,Pos,44,,0.23288776274053025,{}
+ElasticNet,full,Pos,44,0.007489793518463542,0.25725201145256815,"{""alpha"": 0.03810121519062577, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Pos,44,0.007714944520167763,0.25406468074143307,"{""l2_regularization"": 2.1845832259915205, ""learning_rate"": 0.01428224744719576, ""max_depth"": 6, ""max_iter"": 487, ""max_leaf_nodes"": 4, ""min_samples_leaf"": 104}"
+LinearRegression,full,Neg,44,,0.20408850955963154,{}
+ElasticNet,full,Neg,44,0.022491497474350773,0.23031281485963118,"{""alpha"": 0.027472888093766384, ""l1_ratio"": 0.1}"
+GradientBoosting,full,Neg,44,0.022866242305873804,0.224849875025379,"{""l2_regularization"": 2.1845832259915205, ""learning_rate"": 0.01428224744719576, ""max_depth"": 6, ""max_iter"": 487, ""max_leaf_nodes"": 4, ""min_samples_leaf"": 104}"
+LinearRegression,full,Pos,45,,0.21244928790553552,{}
+ElasticNet,full,Pos,45,0.0075526776957220345,0.2439324446834783,"{""alpha"": 0.031884653923485134, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Pos,45,0.007668366523801308,0.23176455844736044,"{""l2_regularization"": 0.18837011188576436, ""learning_rate"": 0.03970873148396588, ""max_depth"": 2, ""max_iter"": 348, ""max_leaf_nodes"": 20, ""min_samples_leaf"": 79}"
+LinearRegression,full,Neg,45,,0.17849108778898226,{}
+ElasticNet,full,Neg,45,0.022417135535246206,0.22079583897274624,"{""alpha"": 0.04400366790567449, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Neg,45,0.02278868507705959,0.20665302197738167,"{""l2_regularization"": 0.2570152278395429, ""learning_rate"": 0.05088848800735745, ""max_depth"": 2, ""max_iter"": 292, ""max_leaf_nodes"": 12, ""min_samples_leaf"": 109}"
+LinearRegression,full,Pos,46,,0.2330981934565134,{}
+ElasticNet,full,Pos,46,0.007662876385094967,0.2580199696386273,"{""alpha"": 0.039869223481394926, ""l1_ratio"": 0.05}"
+GradientBoosting,full,Pos,46,0.007794173147072843,0.23125161867071742,"{""l2_regularization"": 0.45554799247286587, ""learning_rate"": 0.031389790516069195, ""max_depth"": 4, ""max_iter"": 256, ""max_leaf_nodes"": 6, ""min_samples_leaf"": 62}"
+LinearRegression,full,Neg,46,,0.20536634263929054,{}
+ElasticNet,full,Neg,46,0.02262665905734724,0.22616593791159623,"{""alpha"": 0.003874953321618624, ""l1_ratio"": 1.0}"
+GradientBoosting,full,Neg,46,0.023066202714043214,0.21943599893808952,"{""l2_regularization"": 0.45554799247286587, ""learning_rate"": 0.031389790516069195, ""max_depth"": 4, ""max_iter"": 256, ""max_leaf_nodes"": 6, ""min_samples_leaf"": 62}"
+LinearRegression,age15,Pos,42,,0.19141227248021397,{}
+ElasticNet,age15,Pos,42,0.008285972607389306,0.21395101747512035,"{""alpha"": 0.035418230302801654, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Pos,42,0.008379057403816953,0.2052031174757606,"{""l2_regularization"": 0.12561043700013558, ""learning_rate"": 0.04345454109729477, ""max_depth"": 2, ""max_iter"": 158, ""max_leaf_nodes"": 13, ""min_samples_leaf"": 34}"
+LinearRegression,age15,Neg,42,,0.16579222623812717,{}
+ElasticNet,age15,Neg,42,0.024235180927547336,0.18219526388588625,"{""alpha"": 0.048380191732325384, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Neg,42,0.024684274777085447,0.16926904497845685,"{""l2_regularization"": 0.1537592023548176, ""learning_rate"": 0.01875220945578641, ""max_depth"": 3, ""max_iter"": 317, ""max_leaf_nodes"": 15, ""min_samples_leaf"": 181}"
+LinearRegression,age15,Pos,43,,0.17987510217213643,{}
+ElasticNet,age15,Pos,43,0.008020759664706034,0.18358719714344007,"{""alpha"": 0.0418686584906627, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Pos,43,0.00817468529007447,0.16386163460960212,"{""l2_regularization"": 0.0015094461003314766, ""learning_rate"": 0.0288610122048074, ""max_depth"": 2, ""max_iter"": 288, ""max_leaf_nodes"": 30, ""min_samples_leaf"": 132}"
+LinearRegression,age15,Neg,43,,0.17021688029259952,{}
+ElasticNet,age15,Neg,43,0.02351142166847455,0.1796618418971908,"{""alpha"": 0.054152923909092564, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Neg,43,0.02358058508736941,0.16141598428199455,"{""l2_regularization"": 0.015793089743169827, ""learning_rate"": 0.016346022170072392, ""max_depth"": 3, ""max_iter"": 312, ""max_leaf_nodes"": 25, ""min_samples_leaf"": 44}"
+LinearRegression,age15,Pos,44,,0.18664909366728477,{}
+ElasticNet,age15,Pos,44,0.008099237281506074,0.2042333473708028,"{""alpha"": 0.03985070579729233, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Pos,44,0.008269169000576563,0.1893232642061775,"{""l2_regularization"": 2.1845832259915205, ""learning_rate"": 0.01428224744719576, ""max_depth"": 6, ""max_iter"": 487, ""max_leaf_nodes"": 4, ""min_samples_leaf"": 104}"
+LinearRegression,age15,Neg,44,,0.15394940358294762,{}
+ElasticNet,age15,Neg,44,0.024326741183692747,0.17901552113598462,"{""alpha"": 0.011289953503152216, ""l1_ratio"": 0.3}"
+GradientBoosting,age15,Neg,44,0.024585331845443845,0.17299107952595905,"{""l2_regularization"": 2.1845832259915205, ""learning_rate"": 0.01428224744719576, ""max_depth"": 6, ""max_iter"": 487, ""max_leaf_nodes"": 4, ""min_samples_leaf"": 104}"
+LinearRegression,age15,Pos,45,,0.16823773288522859,{}
+ElasticNet,age15,Pos,45,0.008187174129271203,0.19247977138811256,"{""alpha"": 0.029958301448104855, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Pos,45,0.008344398875877831,0.18181145560913003,"{""l2_regularization"": 0.5481390623544626, ""learning_rate"": 0.014303579470124221, ""max_depth"": 3, ""max_iter"": 203, ""max_leaf_nodes"": 24, ""min_samples_leaf"": 36}"
+LinearRegression,age15,Neg,45,,0.13051146978819006,{}
+ElasticNet,age15,Neg,45,0.024310717436204825,0.17452453922234534,"{""alpha"": 0.05817025928794506, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Neg,45,0.024635236449237468,0.1556084847392758,"{""l2_regularization"": 0.2570152278395429, ""learning_rate"": 0.05088848800735745, ""max_depth"": 2, ""max_iter"": 292, ""max_leaf_nodes"": 12, ""min_samples_leaf"": 109}"
+LinearRegression,age15,Pos,46,,0.1713255116722603,{}
+ElasticNet,age15,Pos,46,0.008240234550648992,0.19687967038574716,"{""alpha"": 0.03671404522724011, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Pos,46,0.008324489826855498,0.17569174041394586,"{""l2_regularization"": 0.127324500444929, ""learning_rate"": 0.01312195891254242, ""max_depth"": 2, ""max_iter"": 449, ""max_leaf_nodes"": 19, ""min_samples_leaf"": 143}"
+LinearRegression,age15,Neg,46,,0.1407280055610436,{}
+ElasticNet,age15,Neg,46,0.024286298602009405,0.15661946472486477,"{""alpha"": 0.058625201675809716, ""l1_ratio"": 0.05}"
+GradientBoosting,age15,Neg,46,0.024688137273452447,0.16957329994168835,"{""l2_regularization"": 0.127324500444929, ""learning_rate"": 0.01312195891254242, ""max_depth"": 2, ""max_iter"": 449, ""max_leaf_nodes"": 19, ""min_samples_leaf"": 143}"

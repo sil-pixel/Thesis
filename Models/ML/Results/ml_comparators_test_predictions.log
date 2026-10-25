@@ -1,0 +1,107 @@
+Data shape after dropping na: (4033, 125)
+
+full predictors: 105 input columns
+
+============================================================
+  full predictors, seed 42: train 3005 rows, test 1028 rows
+============================================================
+  Pos LinearRegression  test R²: 0.2773  {}
+  Pos ElasticNet        test R²: 0.2925  {"alpha": 0.0392933643067041, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2766  {"l2_regularization": 0.0013558227959926895, "learning_rate": 0.03233791944457942, "max_depth": 2, "max_iter": 225, "max_leaf_nodes": 5, "min_samples_leaf": 72}
+  Neg LinearRegression  test R²: 0.2461  {}
+  Neg ElasticNet        test R²: 0.2579  {"alpha": 0.00864608229819122, "l1_ratio": 0.3}
+  Neg GradientBoosting  test R²: 0.2542  {"l2_regularization": 0.0013558227959926895, "learning_rate": 0.03233791944457942, "max_depth": 2, "max_iter": 225, "max_leaf_nodes": 5, "min_samples_leaf": 72}
+
+============================================================
+  full predictors, seed 43: train 3023 rows, test 1010 rows
+============================================================
+  Pos LinearRegression  test R²: 0.2410  {}
+  Pos ElasticNet        test R²: 0.2500  {"alpha": 0.03985620694615638, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2267  {"l2_regularization": 0.0011311273585222232, "learning_rate": 0.02612945315273932, "max_depth": 2, "max_iter": 352, "max_leaf_nodes": 10, "min_samples_leaf": 115}
+  Neg LinearRegression  test R²: 0.2411  {}
+  Neg ElasticNet        test R²: 0.2513  {"alpha": 0.002525159904056603, "l1_ratio": 1.0}
+  Neg GradientBoosting  test R²: 0.2385  {"l2_regularization": 0.015793089743169827, "learning_rate": 0.016346022170072392, "max_depth": 3, "max_iter": 312, "max_leaf_nodes": 25, "min_samples_leaf": 44}
+
+============================================================
+  full predictors, seed 44: train 3035 rows, test 998 rows
+============================================================
+  Pos LinearRegression  test R²: 0.2329  {}
+  Pos ElasticNet        test R²: 0.2573  {"alpha": 0.03810121519062577, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2541  {"l2_regularization": 2.1845832259915205, "learning_rate": 0.01428224744719576, "max_depth": 6, "max_iter": 487, "max_leaf_nodes": 4, "min_samples_leaf": 104}
+  Neg LinearRegression  test R²: 0.2041  {}
+  Neg ElasticNet        test R²: 0.2303  {"alpha": 0.027472888093766384, "l1_ratio": 0.1}
+  Neg GradientBoosting  test R²: 0.2248  {"l2_regularization": 2.1845832259915205, "learning_rate": 0.01428224744719576, "max_depth": 6, "max_iter": 487, "max_leaf_nodes": 4, "min_samples_leaf": 104}
+
+============================================================
+  full predictors, seed 45: train 3018 rows, test 1015 rows
+============================================================
+  Pos LinearRegression  test R²: 0.2124  {}
+  Pos ElasticNet        test R²: 0.2439  {"alpha": 0.031884653923485134, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2318  {"l2_regularization": 0.18837011188576436, "learning_rate": 0.03970873148396588, "max_depth": 2, "max_iter": 348, "max_leaf_nodes": 20, "min_samples_leaf": 79}
+  Neg LinearRegression  test R²: 0.1785  {}
+  Neg ElasticNet        test R²: 0.2208  {"alpha": 0.04400366790567449, "l1_ratio": 0.05}
+  Neg GradientBoosting  test R²: 0.2067  {"l2_regularization": 0.2570152278395429, "learning_rate": 0.05088848800735745, "max_depth": 2, "max_iter": 292, "max_leaf_nodes": 12, "min_samples_leaf": 109}
+
+============================================================
+  full predictors, seed 46: train 3012 rows, test 1021 rows
+============================================================
+  Pos LinearRegression  test R²: 0.2331  {}
+  Pos ElasticNet        test R²: 0.2580  {"alpha": 0.039869223481394926, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2313  {"l2_regularization": 0.45554799247286587, "learning_rate": 0.031389790516069195, "max_depth": 4, "max_iter": 256, "max_leaf_nodes": 6, "min_samples_leaf": 62}
+  Neg LinearRegression  test R²: 0.2054  {}
+  Neg ElasticNet        test R²: 0.2262  {"alpha": 0.003874953321618624, "l1_ratio": 1.0}
+  Neg GradientBoosting  test R²: 0.2194  {"l2_regularization": 0.45554799247286587, "learning_rate": 0.031389790516069195, "max_depth": 4, "max_iter": 256, "max_leaf_nodes": 6, "min_samples_leaf": 62}
+
+age15 predictors: 97 input columns
+
+============================================================
+  age15 predictors, seed 42: train 3005 rows, test 1028 rows
+============================================================
+  Pos LinearRegression  test R²: 0.1914  {}
+  Pos ElasticNet        test R²: 0.2140  {"alpha": 0.035418230302801654, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.2052  {"l2_regularization": 0.12561043700013558, "learning_rate": 0.04345454109729477, "max_depth": 2, "max_iter": 158, "max_leaf_nodes": 13, "min_samples_leaf": 34}
+  Neg LinearRegression  test R²: 0.1658  {}
+  Neg ElasticNet        test R²: 0.1822  {"alpha": 0.048380191732325384, "l1_ratio": 0.05}
+  Neg GradientBoosting  test R²: 0.1693  {"l2_regularization": 0.1537592023548176, "learning_rate": 0.01875220945578641, "max_depth": 3, "max_iter": 317, "max_leaf_nodes": 15, "min_samples_leaf": 181}
+
+============================================================
+  age15 predictors, seed 43: train 3023 rows, test 1010 rows
+============================================================
+  Pos LinearRegression  test R²: 0.1799  {}
+  Pos ElasticNet        test R²: 0.1836  {"alpha": 0.0418686584906627, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.1639  {"l2_regularization": 0.0015094461003314766, "learning_rate": 0.0288610122048074, "max_depth": 2, "max_iter": 288, "max_leaf_nodes": 30, "min_samples_leaf": 132}
+  Neg LinearRegression  test R²: 0.1702  {}
+  Neg ElasticNet        test R²: 0.1797  {"alpha": 0.054152923909092564, "l1_ratio": 0.05}
+  Neg GradientBoosting  test R²: 0.1614  {"l2_regularization": 0.015793089743169827, "learning_rate": 0.016346022170072392, "max_depth": 3, "max_iter": 312, "max_leaf_nodes": 25, "min_samples_leaf": 44}
+
+============================================================
+  age15 predictors, seed 44: train 3035 rows, test 998 rows
+============================================================
+  Pos LinearRegression  test R²: 0.1866  {}
+  Pos ElasticNet        test R²: 0.2042  {"alpha": 0.03985070579729233, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.1893  {"l2_regularization": 2.1845832259915205, "learning_rate": 0.01428224744719576, "max_depth": 6, "max_iter": 487, "max_leaf_nodes": 4, "min_samples_leaf": 104}
+  Neg LinearRegression  test R²: 0.1539  {}
+  Neg ElasticNet        test R²: 0.1790  {"alpha": 0.011289953503152216, "l1_ratio": 0.3}
+  Neg GradientBoosting  test R²: 0.1730  {"l2_regularization": 2.1845832259915205, "learning_rate": 0.01428224744719576, "max_depth": 6, "max_iter": 487, "max_leaf_nodes": 4, "min_samples_leaf": 104}
+
+============================================================
+  age15 predictors, seed 45: train 3018 rows, test 1015 rows
+============================================================
+  Pos LinearRegression  test R²: 0.1682  {}
+  Pos ElasticNet        test R²: 0.1925  {"alpha": 0.029958301448104855, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.1818  {"l2_regularization": 0.5481390623544626, "learning_rate": 0.014303579470124221, "max_depth": 3, "max_iter": 203, "max_leaf_nodes": 24, "min_samples_leaf": 36}
+  Neg LinearRegression  test R²: 0.1305  {}
+  Neg ElasticNet        test R²: 0.1745  {"alpha": 0.05817025928794506, "l1_ratio": 0.05}
+  Neg GradientBoosting  test R²: 0.1556  {"l2_regularization": 0.2570152278395429, "learning_rate": 0.05088848800735745, "max_depth": 2, "max_iter": 292, "max_leaf_nodes": 12, "min_samples_leaf": 109}
+
+============================================================
+  age15 predictors, seed 46: train 3012 rows, test 1021 rows
+============================================================
+  Pos LinearRegression  test R²: 0.1713  {}
+  Pos ElasticNet        test R²: 0.1969  {"alpha": 0.03671404522724011, "l1_ratio": 0.05}
+  Pos GradientBoosting  test R²: 0.1757  {"l2_regularization": 0.127324500444929, "learning_rate": 0.01312195891254242, "max_depth": 2, "max_iter": 449, "max_leaf_nodes": 19, "min_samples_leaf": 143}
+  Neg LinearRegression  test R²: 0.1407  {}
+  Neg ElasticNet        test R²: 0.1566  {"alpha": 0.058625201675809716, "l1_ratio": 0.05}
+  Neg GradientBoosting  test R²: 0.1696  {"l2_regularization": 0.127324500444929, "learning_rate": 0.01312195891254242, "max_depth": 2, "max_iter": 449, "max_leaf_nodes": 19, "min_samples_leaf": 143}
+
+Saved: SERVER_ONLY_predictions_ML.csv (keep on the secure server) and ML_comparators_tuning.csv

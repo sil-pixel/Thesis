@@ -1,0 +1,70 @@
+Loaded SERVER_ONLY_predictions_DCMFNet.csv, SERVER_ONLY_predictions_GAMM.csv, SERVER_ONLY_predictions_GLMM.csv, SERVER_ONLY_predictions_ML.csv
+model             predictor_set  outcome
+DCMFNet           age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+ElasticNet        age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+GAMM              age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+GLMM              age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+GradientBoosting  age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+LinearRegression  age15          Neg        5
+                                 Pos        5
+                  full           Neg        5
+                                 Pos        5
+Check passed: all models share the same test rows and observed values per outcome and seed.
+Saved: prediction_metrics_per_seed.csv, prediction_metrics_summary.csv
+Saved: prediction_metrics_by_sex_per_seed.csv, prediction_metrics_by_sex_summary.csv
+Saved: paired_comparisons.csv
+   family outcome               setting_a                setting_b  mean_difference_a_minus_b  seeds_a_better  p_value   p_holm
+     main     Neg            GLMM (age15)             GAMM (age15)                   0.001899               4 0.215468 1.000000
+     main     Pos            GLMM (age15)             GAMM (age15)                   0.001359               5 0.048952 0.587427
+     main     Neg            GLMM (age15)          DCMFNet (age15)                   0.016244               5 0.207339 1.000000
+     main     Pos            GLMM (age15)          DCMFNet (age15)                   0.010951               4 0.237386 1.000000
+     main     Neg            GAMM (age15)          DCMFNet (age15)                   0.014345               5 0.281777 1.000000
+     main     Pos            GAMM (age15)          DCMFNet (age15)                   0.009592               4 0.278764 1.000000
+baselines     Neg         DCMFNet (age15) LinearRegression (age15)                  -0.025791               0 0.092065 0.342032
+baselines     Pos         DCMFNet (age15) LinearRegression (age15)                  -0.022796               0 0.025644 0.205153
+baselines     Neg         DCMFNet (age15)       ElasticNet (age15)                  -0.047955               0 0.012232 0.110267
+baselines     Pos         DCMFNet (age15)       ElasticNet (age15)                  -0.041523               0 0.011027 0.110267
+baselines     Neg         DCMFNet (age15) GradientBoosting (age15)                  -0.039323               0 0.072796 0.342032
+baselines     Pos         DCMFNet (age15) GradientBoosting (age15)                  -0.026475               0 0.058699 0.342032
+     main     Neg             GLMM (full)              GAMM (full)                   0.002707               4 0.216394 1.000000
+     main     Pos             GLMM (full)              GAMM (full)                   0.000509               4 0.398430 1.000000
+     main     Neg             GLMM (full)           DCMFNet (full)                   0.004039               3 0.837546 1.000000
+     main     Pos             GLMM (full)           DCMFNet (full)                   0.022104               4 0.085454 0.911782
+     main     Neg             GAMM (full)           DCMFNet (full)                   0.001331               3 0.949428 1.000000
+     main     Pos             GAMM (full)           DCMFNet (full)                   0.021595               4 0.082889 0.911782
+baselines     Neg          DCMFNet (full)  LinearRegression (full)                  -0.016601               2 0.447588 0.447588
+baselines     Pos          DCMFNet (full)  LinearRegression (full)                  -0.033516               0 0.047582 0.333071
+baselines     Neg          DCMFNet (full)        ElasticNet (full)                  -0.038879               0 0.057005 0.342032
+baselines     Pos          DCMFNet (full)        ElasticNet (full)                  -0.054525               0 0.006069 0.084972
+baselines     Neg          DCMFNet (full)  GradientBoosting (full)                  -0.030323               0 0.128356 0.342032
+baselines     Pos          DCMFNet (full)  GradientBoosting (full)                  -0.038273               0 0.007800 0.093603
+     main     Neg             GLMM (full)             GLMM (age15)                   0.059766               5 0.004742 0.066392
+     main     Pos             GLMM (full)             GLMM (age15)                   0.060266               5 0.002711 0.040661
+     main     Neg             GAMM (full)             GAMM (age15)                   0.058958               5 0.005798 0.075378
+     main     Pos             GAMM (full)             GAMM (age15)                   0.061116               5 0.002265 0.036246
+     main     Neg          DCMFNet (full)          DCMFNet (age15)                   0.071972               5 0.000337 0.005737
+     main     Pos          DCMFNet (full)          DCMFNet (age15)                   0.049113               5 0.000107 0.001931
+baselines     Neg LinearRegression (full) LinearRegression (age15)                   0.062782               5 0.003318 0.049766
+baselines     Pos LinearRegression (full) LinearRegression (age15)                   0.059833               5 0.007946 0.093603
+baselines     Neg       ElasticNet (full)       ElasticNet (age15)                   0.062896               5 0.002844 0.045506
+baselines     Pos       ElasticNet (full)       ElasticNet (age15)                   0.062116               5 0.001520 0.025838
+baselines     Neg GradientBoosting (full) GradientBoosting (age15)                   0.062972               5 0.006748 0.087728
+baselines     Pos GradientBoosting (full) GradientBoosting (age15)                   0.060911               5 0.000560 0.010087
+Saved: calibration_bins.csv
+Saved: calibration_curves_age15.png/.pdf
+Saved: calibration_curves_full.png/.pdf
