@@ -1,5 +1,5 @@
 <!--
-STATUS 2026-10-23: Background for BMC Psychiatry (replaces 02_introduction.md, written for AIIM).
+STATUS 2026-10-25: Background for BMC Psychiatry (replaces 02_introduction.md, written for AIIM). Gap statement rewritten with the L-02 studies (reference_registry.md §G).
 - BMC research articles open with "Background"; the template asks for no subheadings in this section.
 - Framing: neutral benchmark (DCMFNet vs matched mixed models) plus a check of attention-based explanations.
   The planted-interaction simulation, learning curves and stream ablation (E-16, E-14, E-06 ablation part) were
@@ -15,8 +15,30 @@ Psychotic-like experiences, hypomanic symptoms and depressive symptoms are commo
 
 A long-standing hypothesis holds that these domains act jointly rather than additively, for example that genetic liability or early adversity changes the effect of substance use [@R-ROBINSON] `[VERIFY: content]`. If such interactions are strong, models that represent them should predict symptoms better than additive models. Deep multimodal fusion networks are one way to do this: they combine groups of inputs ("modalities") through learned non-linear interactions, and they are increasingly applied to heterogeneous health data [@R-BORSOS]. A fusion architecture in which one exposure domain conditions the representation of every other domain, such as the iterative gated fusion of the Deep Cross-Modal Fusion Network (DCMFNet) [@R-DCMF], matches the interaction hypothesis directly. Such networks also contain attention-like gates, which are often read as indicators of which inputs matter.
 
-Matching the hypothesis does not guarantee better predictions. In clinical prediction, a systematic review found no performance benefit of machine learning over logistic regression in comparisons at low risk of bias, and calibration was rarely assessed [@R-CHRIST]. On medium-sized tabular data, tree ensembles usually outperform deep networks [@R-GRIN]. Earlier machine-learning work in the cohort used here found performance comparable to regression for adolescent mental-health problems [@R-TATE] `[VERIFY: read abstract/full text before citing this finding]`. Comparisons between model classes are also prone to artefacts that favour the more flexible model, including model selection on test data, feature screening outside the training data [@R-KAPOOR] `[VERIFY: content]`, related individuals on both sides of a split `[CITATION NEEDED: family/twin dependence and grouped cross-validation]`, unequal tuning effort, and comparators that do not contain the interactions the flexible model is credited with. Finally, attention weights are not necessarily faithful explanations of a model's predictions [@R-JAIN], so gate values need to be checked against attribution methods that measure what the model relies on.
+Matching the hypothesis does not guarantee better predictions. In clinical prediction, a systematic review found no performance benefit of machine learning over logistic regression in comparisons at low risk of bias, and calibration was rarely assessed [@R-CHRIST]. On medium-sized tabular data, tree ensembles usually outperform deep networks [@R-GRIN]. Studies of adolescent mental health point the same way:
+- **In the cohort used here,** random forests, support vector machines, gradient boosting and a neural network predicted mental-health problems at age 15 no better than logistic regression [@R-TATE].
+- **In a US cohort,** gradient boosting improved the prediction of depressive symptoms over logistic regression only slightly, and polygenic scores added nothing to environmental predictors [@R-GEURGAS].
+- **For psychotic experiences in adolescents,** polygenic and polyenvironmental risk scores did not predict the outcome [@R-NAVARRO].
+- **In a large child cohort,** earlier symptoms were the strongest predictors of later mental-health problems, and neuroimaging added little [@R-HOU].
 
-We therefore compared DCMFNet, adapted so that substance use at age 15 is fused with each other risk domain, against linear and generalised additive mixed models given the same predictors, a twin-pair random intercept and interaction terms that mirror the network's fusion design. All models were evaluated on identical twin-pair-grouped splits in the Child and Adolescent Twin Study in Sweden [@R-CATSS], with outcomes at age 18. We asked (1) whether the fusion network predicted better than the mixed models, including calibration, performance by sex and models restricted to predictors measured by age 15; (2) whether the mixed models showed evidence of the substance-use interactions that motivate the fusion design; and (3) whether the network's attention gates agreed with SHAP values and permutation importance computed on the same models, and with exact SHAP values from the linear mixed model.
+Where multimodal prediction of psychosis has worked well, in patients at clinical high risk, separate clinical, polygenic and imaging models were combined step by step rather than fused within one network [@R-KOUTS].
+
+To our knowledge, no study has tested whether a deep fusion network built around substance-use interactions, using polygenic and environmental predictors in a population cohort, predicts better than regression models given the same inputs and interactions. `[VERIFY: based on a non-systematic search, 2026-10-25; confirm with PubMed/Scopus]` Such a test also has to avoid artefacts that favour the more flexible model:
+- model selection on test data;
+- feature screening outside the training data [@R-KAPOOR] `[VERIFY: content]`;
+- related individuals on both sides of a split `[CITATION NEEDED: family/twin dependence and grouped cross-validation]`;
+- unequal tuning effort;
+- comparators that lack the interactions the flexible model is credited with.
+
+Finally, attention weights are not necessarily faithful explanations of a model's predictions [@R-JAIN]. Gate values therefore need to be checked against attribution methods that measure what the model relies on.
+
+We therefore compared DCMFNet, adapted so that substance use at age 15 is fused with each other risk domain, against two kinds of comparator:
+- linear and generalised additive mixed models given the same predictors, a twin-pair random intercept and interaction terms that mirror the network's fusion design;
+- three standard machine-learning models (linear regression, an elastic net and gradient boosting) tuned within the training data.
+
+All models were evaluated on identical twin-pair-grouped splits in the Child and Adolescent Twin Study in Sweden [@R-CATSS], with outcomes at age 18. We asked:
+1. whether the fusion network predicted better than these comparators, including calibration, performance by sex and models restricted to predictors measured by age 15;
+2. whether the mixed models showed evidence of the substance-use interactions that motivate the fusion design;
+3. whether the network's attention gates agreed with SHAP values and permutation importance computed on the same models, and with exact SHAP values from the mixed models.
 
 <!-- Do NOT add: superiority claims; "interpretable" claims based on gate values (D-12); causal or "amplifier" language. -->

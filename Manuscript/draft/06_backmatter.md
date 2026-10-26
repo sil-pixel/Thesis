@@ -14,7 +14,7 @@ ACE: adverse childhood experiences; ADHD: attention-deficit/hyperactivity disord
 
 # Supplementary information
 
-- **Additional file 1** (PDF): Table S1, Optuna search space; Table S2, all 40 machine-learning baselines; Table S3, full LMM and GAMM coefficients; Table S4, variable list by predictor group; Table S5, depth-configuration results (5 seeds); tuning history (D-21). `[TODO]`
+- **Additional file 1** (PDF): Table S1, Optuna search space; Table S2, default-settings screening of 40 machine-learning algorithms (R² and Spearman ρ, mean and SD over five splits; algorithms that fail at default settings marked); Table S2b, hyperparameters selected for the tuned comparators per split (from ML_comparators_tuning.csv); Table S3, full LMM and GAMM coefficients; Table S4, variable list by predictor group; Table S5, depth-configuration results (5 seeds); tuning history (D-21). `[TODO]`
 - **Additional file 2** (PDF): TRIPOD+AI checklist. `[TODO: C-06]`
 
 # Declarations
@@ -45,10 +45,10 @@ Not applicable. `[VERIFY: JOURNAL REQUIREMENT]`
 
 # Figure legends
 
-**Fig. 1** Participant flow from the CATSS cohort to the complete-case analysis sample. `[TODO: from analysis_sample_flow.csv — W-02]`
+**Fig. 1** Participant flow from eligible individuals to the complete-case analysis sample. Each individual is counted at the first missing predictor group. `[TODO: draw from analysis_sample_flow.csv; add the steps before eligibility — W-02]`
 
 **Fig. 2** Architecture of the deep cross-modal fusion network. Substance use at age 15 (anchor) is fused with each of nine predictor groups in iterative gated fusion blocks (fused stream); an independent stream receives all inputs. `[TODO: diagram regenerated from code — C-04]`
 
-**Fig. 3** Calibration curves for each model and outcome, by decile of predicted score, pooled over the five test sets. `[TODO: calibration_curves_full.pdf from prediction_evaluation.py]`
+**Fig. 3** Calibration curves for each model and outcome, by decile of predicted score: mean predicted against mean observed score per decile, averaged over the five test sets. The dashed line shows perfect calibration. <!-- src: Models/Model Comparison/calibration_curves_full.pdf -->
 
-**Fig. 4** Predictor-group importance by source: DCMFNet gate values, DCMFNet SHAP, DCMFNet permutation importance, LMM and GAMM SHAP, and LMM and GAMM permutation importance. `[TODO: from attribution_agreement.py]`
+**Fig. 4** Importance of each predictor group, by model and attribution method, for psychotic-like and hypomanic experiences (left) and depressive symptoms (right). Each cell gives the group's share of the total importance for that method, as a percentage averaged over the five test sets. The two left-hand columns of each panel show DCMFNet's mean gate values, also expressed as shares. The fused stream has no gate for substance use at age 15 (the anchor group) or for the batch × PC terms, so these cells are empty. Negative permutation importances were set to zero. Groups are ordered by their mean LMM SHAP share across the two outcomes. Importance describes what each fitted model uses for prediction, not causal effects. <!-- src: Models/Model Comparison/attribution_importance_by_group.pdf (attribution_importance_plot.py, from attribution_modality_summary.csv). Figure labels say "GLMM"; relabel if the model is called LMM in the final text. -->

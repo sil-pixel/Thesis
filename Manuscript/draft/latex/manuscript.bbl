@@ -88,6 +88,34 @@ Tate AE, McCabe RC, Larsson H, Lundstr{\"o}m S, Lichtenstein P, Kuja-Halkola R.
 \newblock PLoS One. 2020;15:e0230389.
 \newblock \doi{10.1371/journal.pone.0230389}.
 
+\bibitem[\protect\citeauthoryear{Geurgas et~al.}{2025}]{R-GEURGAS}
+Geurgas R, Newman SJ, Akimova ET, Thompson KN, Wedow R.
+\newblock What machine learning teaches us about depression prediction across
+  the life course: an exploratory comparison of predictive models.
+\newblock SSM - Population Health. 2025;32:101886.
+\newblock \doi{10.1016/j.ssmph.2025.101886}.
+
+\bibitem[\protect\citeauthoryear{Navarro et~al.}{2021}]{R-NAVARRO}
+Navarro GOSV, Fonseca L, Talarico F, Sp{\'i}ndola L, Santoro ML, Ota VK, et~al.
+\newblock Polyenvironmental and polygenic risk scores and the emergence of
+  psychotic experiences in adolescents.
+\newblock Journal of Psychiatric Research. 2021;142:384--388.
+\newblock \doi{10.1016/j.jpsychires.2021.07.057}.
+
+\bibitem[\protect\citeauthoryear{Hou et~al.}{2025}]{R-HOU}
+Hou J, Mortel L, Popma A, Smit D, van Wingen G.
+\newblock Predicting the onset of mental health problems in adolescents.
+\newblock Psychological Medicine. 2025;55:e128.
+\newblock \doi{10.1017/S003329172500087X}.
+
+\bibitem[\protect\citeauthoryear{Koutsouleris et~al.}{2021}]{R-KOUTS}
+Koutsouleris N, Dwyer DB, Degenhardt F, Maj C, Urquijo-Castro MF, Sanfelici R,
+  et~al.
+\newblock Multimodal machine learning workflows for prediction of psychosis in
+  patients with clinical high-risk syndromes and recent-onset depression.
+\newblock JAMA Psychiatry. 2021;78:195--209.
+\newblock \doi{10.1001/jamapsychiatry.2020.3604}.
+
 \bibitem[\protect\citeauthoryear{Kapoor and Narayanan}{2023}]{R-KAPOOR}
 Kapoor S, Narayanan A.
 \newblock Leakage and the reproducibility crisis in machine-learning-based

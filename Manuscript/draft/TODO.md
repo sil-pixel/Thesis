@@ -1,129 +1,97 @@
-# Manuscript Backlog (central TODO)
+# Manuscript backlog
 
-Created 2026-10-14. Cross-references: `discrepancies.md` (D-xx), `research/experiment_recommendations.md` (E-xx), `research/contribution_matrix.md` (C-x).
-Fields: ID · Category · Priority · Issue · Scientific justification · Proposed action · Expected outcome · Relevant files · Status · Author approval
+Updated 2026-10-26. Target journal: BMC Psychiatry (fallback by transfer: Diagnostic and Prognostic Research). Data access ends 2026-10-28.
+Cross-references: `discrepancies.md` (D-xx), `research/experiment_recommendations.md` (E-xx), `literature/reference_registry.md` (R-xx).
+Q-xx are decisions for the author or supervisors (not to be confused with D-xx discrepancies). IDs are kept from the earlier backlog so that references in the draft and in `discrepancies.md` still resolve. The full history is in git.
 
-## Critical
+# To do
 
-| ID | Cat. | Issue | Justification | Proposed action | Expected outcome | Files | Status | Approval |
-|---|---|---|---|---|---|---|---|---|
-| X-00 | Writing | **Choose contribution framing** (A: method; B: rigorous benchmark — recommended; C: epidemiology) | The central claim (DCMFNet superiority) is contradicted by saved results (D-11). The framing determines which experiments matter. | Author reads `research/contribution_matrix.md` §4 and decides | Unblocks Intro/Results/Discussion drafting | contribution_matrix.md | **Completed 2026-10-19: Option B chosen by author, target AIIM** | Given |
-| E-01 | Experiment | GLMM/GAMM interactions built by R recycling (97 of 546 terms) | Interaction findings and GLMM/GAMM metrics are artifacts of column order | Re-specify interactions (all-pairs penalized and/or pre-specified subset); re-fit | Valid statistical baselines and interaction evidence | Models/GLMM/Method/GLMM.R:42-54; GAMM.R | **Completed 2026-10-23** (author ran updated scripts; results in 04_results.md §3.2–3.4) | **Required** |
-| E-02 | Experiment | R and Python models use different test partitions | No valid paired comparison DCMFNet vs GLMM/GAMM; thesis claims "same split" | Export Python cmpair partitions; re-run R models on them | Paired comparison possible | GLMM.R:203-213; legacy/train.py:61 | **Completed 2026-10-23** (author ran updated scripts; results in 04_results.md §3.2–3.4) | **Required** |
-| E-03 | Experiment | Test-informed configuration selection; tuning data overlaps other seeds' test sets | Optimistic bias in DCMFNet metrics; TRIPOD+AI violation | Nested selection protocol; equal tuning budget for strong baselines | Unbiased final estimates | complexity_analysis.py:204-250; tuning.py | Not Started | **Required** |
-| M-01 | Methodology | Outcomes mislabelled: "negative symptoms" = depressive items; "positive" = psychotic-like + hypomanic | Construct validity; psychiatric reviewers will reject | Author confirms instruments, item scales, normalization constants (46, 33); rename outcomes throughout | Correct, defensible outcome definitions | rename_catss_with_mapping.py:73-92 | Not Started | **Required** (input) |
-| A-01 | Analysis | No paired uncertainty or significance for model comparisons | "Consistent improvement" claims need paired inference; AIIM asks for statistical significance where applicable | Corrected resampled t-test / pair bootstrap; Holm correction (E-08). Cheapest first step: paired 5-split analysis from saved per-seed CSVs | Defensible comparison statements | Models/*/Results/*per_seed.csv | **In progress 2026-10-23:** 5-split corrected t-tests from saved per-seed CSVs in §3.3; final version from prediction_evaluation.py | **Required** |
-| C-02 | Compliance | Ethics approval number(s), date(s), consent/assent (minors), data governance | Mandatory ethics statement (Guide p.4, p.10) | Author supplies Swedish Ethical Review Authority / regional board details for CATSS and genotype linkage | Compliant ethics statement | 07_declarations.md | Not Started | **Required** (input) |
-| C-03 | Compliance | Author list, affiliations, corresponding author, CRediT, funding, competing interests | Mandatory title page and declarations | Author supplies | Compliant front matter | 01_title_abstract.md; 07_declarations.md | Not Started | **Required** (input) |
-| W-01 | Writing | Thesis central claims cannot be carried over (superiority, interaction "amplifier", "consistent with GLMM") | Unsupported (D-01, D-11, D-12) | Do not use them in the manuscript; draft to evidence | Avoids reviewer rejection for overclaiming | thesis Ch. 5–7 | In Progress (enforced in draft) | Not Required |
+## 1. Before data access ends (2026-10-28)
 
-## High
+| ID | Task | Who | Notes |
+|---|---|---|---|
+| V-01 | Save `versions_R.txt` (`sessionInfo()`) and `versions_python.txt` (`pip freeze`) on the server and export them | Author | Needed for the software versions in Methods (Python, PyTorch, scikit-learn, Optuna, SHAP, R, lme4, mgcv) and the GAMM basis check (V-04) |
+| S-01 | Send the supervisor email (`supervisor_request.md`) with the dates filled in, and ask for any extra data analysis before the deadline | Author | Placeholders: names, draft date, request deadline |
+| S-02 | Fill in the placeholders in `server_handover_README.md` (name, date, repo URL, final commit, contact after 28 Oct) and leave it on the server | Author | |
+| G-01 | Commit the current work (draft files, new scripts, `attribution_importance_plot.py` and Fig. 4 files, `additional_file_1.md`) | Author | Nothing has been committed by the agent |
 
-| ID | Cat. | Issue | Justification | Proposed action | Expected outcome | Files | Status | Approval |
-|---|---|---|---|---|---|---|---|---|
-| R-02 | Methodology | Tuning outputs in repo are from a later per-modality campaign; used hyperparameters come from git commit c49eec1; ≥5 campaigns (D-21) | Reproducibility; undisclosed selection | Restore c49eec1 tuning outputs into a clearly named results folder; document campaign history in Supplement | Traceable hyperparameter provenance | Results/Tuning; git c49eec1 | Not Started | Required (repo change) |
-| E-04 | Experiment | Outcome-informed SHAP feature screening on a split overlapping test sets | Selection leakage | Show screening was outcome-independent, or move into folds; sensitivity analysis | Removes leakage concern | feature_importance.py:31-45 | Not Started | Required |
-| E-05 | Experiment | Age-18 predictors (ACE18, SUD18) concurrent with outcome | Not prospective prediction; reverse causation | Re-run with ≤ age-15 predictors as primary/sensitivity | Clear prediction horizon | legacy/train.py:74-87 | Not Started | Required |
-| E-06 | Experiment | No ablation showing fused stream adds value; gate "importance" not validated | C3 untested; attention ≠ explanation | Stream ablations + permuted-anchor + grouped permutation importance | Evidence for/against the interaction contribution | importance_analysis_avg.py; shap_analysis.py; GLMM_shap_updated.R; GAMM_shap_updated.R; attribution_agreement.py | **Partly code-ready 2026-10-23** (gate vs SHAP vs grouped permutation, DCMFNet vs GLMM); stream ablations not yet written | Required |
-| E-07 | Experiment | DCMFNet inputs unscaled | Gate comparability; optimization | Fold-wise standardization | Fair comparison | legacy/train.py:74 | Not Started | Required |
-| E-09 | Analysis | No calibration metrics (only seed-42 scatter plots) | TRIPOD+AI; Van Calster 2019 | Calibration slope/intercept + smoothed plots | Calibration reported | — | Not Started | Required |
-| A-02 | Analysis | Descriptives are for ~9,261, not the analysis sample (n = 4,033); no included vs excluded comparison | Selection bias under CCA (56% excluded) | Table 1 on analysis sample + comparison with excluded | TRIPOD+AI participant table | descriptive_statistics.R | Not Started | Required (needs data access) |
-| M-02 | Methodology | Pos IGF depth: three conflicting specifications (Table B.1 "3"; json list; 5-seed list) | Reproducibility; interpretation mismatch | Author confirms which configuration is primary; document both | Consistent reporting | hyperparameters.json; Avg complexity results/hyperparameters.json | Not Started | Required (input) |
-| M-03 | Methodology | SE-attention equations and claims do not match code | Methods accuracy | Rewrite as input-conditioned feature gating (done in draft §2.4) | Correct Methods | dcmfnet/model.py:50-77 | Completed (draft) | Not Required |
-| M-04 | Methodology | Loss description differs from code (clip 20, no-grad focal, renormalization) | Methods accuracy | Rewrite from code (done in draft §2.5) | Correct Methods | dcmfnet/losses.py | Completed (draft) | Not Required |
-| L-01 | Literature | AIIM paper analysis is abstract/metadata-level for 7 of 12 papers | Agent spec §4.2 requires full extraction | Author/institutional access to download PDFs into `Manuscript/draft/literature/pdfs/` for analysis | Complete comparative table | aiim_paper_analysis.md | Blocked (access) | Not Required |
-| L-02 | Literature | Direct competitors (ML/DL with PRS + environment for psychosis/depressive outcomes) not yet identified | Novelty must be positioned against closest work | Targeted search (PubMed/Scopus via institution) | Accurate gap statement | reference_registry.md §F | Not Started | Not Required |
-| E-16 | Experiment | Option B needs a methodological core beyond a negative benchmark (AIIM scope, Guide p.3) | A planted-interaction simulation separates "model cannot learn interactions at this n" from "data contain little interaction signal" | Semi-synthetic outcomes on the real predictor matrix with planted cross-group interactions of graded strength; DCMFNet vs additive models; see experiment_recommendations.md E-16 | Interaction-detectability threshold; central methods result | — | **Not pursued 2026-10-23** (BMC Psychiatry framing; not promised in the text) | Not Required |
-| W-09 | Writing | Introduction (Option B) | Framing decided | Background rewritten 2026-10-23 in 02_background.md (BMC); AIIM version archived; contributions conditional on experiments; gap statement awaits L-02 | Intro draft | 02_background.md | In Progress | Not Required |
-| C-04 | Compliance | Figures are 150-dpi PNGs; need vector/≥300 dpi, separate files, colour-blind-safe | Guide p.14–15 | Regenerate from saved CSVs as PDF/EPS | Compliant figures | legacy/train.py (dpi=150) | Not Started | Not Required (plots only from saved results) |
-| C-06 | Compliance | TRIPOD+AI checklist not completed (thesis claims adherence) | Credibility; reviewer expectation | Complete checklist as Supplement after experiments | Transparent reporting | — | Not Started (Additional file 2; mandatory if transferred to DPR) | Not Required |
+## 2. Author or supervisor input (placeholders in the draft)
 
-## Medium
+| ID | Task | Where in the draft |
+|---|---|---|
+| M-01 | Outcome instruments, item response scales, the constants 46 and 33, and final outcome labels (PLE-HM, DEP are working labels) | Methods; Discussion limitation; Table 1 |
+| M-06 | Age-9 instruments and informants (A-TAC?), cohort/birth years, data extraction date; sex from register or self-report | Methods |
+| W-02 | Participant flow before the 9,261 eligible (thesis: 13,146 at start; 9,160 genotyped vs 6,643 with PRS) | Methods; Fig. 1 |
+| W-03 | PRS pipeline: GWAS summary statistics and their ancestry, LD reference, PRS-CS settings, genotyping platforms, imputation, QC | Methods; Discussion (generalisability) |
+| C-02 | Ethics approvals (committee, reference numbers, dates) and consent procedure | Methods; Declarations |
+| C-03 | Authors, affiliations, corresponding author, CRediT contributions, funding, competing interests, acknowledgements, APC coverage | Title page; Declarations |
+| C-07 | Data access procedure/URL for CATSS | Declarations (availability of data) |
+| C-08 | Statement on the use of large language models, if the journal requires it | Methods `[VERIFY: JOURNAL REQUIREMENT]` |
+| Q-01 | Decide "LMM" or "GLMM" in the paper; then relabel tables and figures (Fig. 4 labels say GLMM) | Methods, Results, Fig. 3–4 |
+| Q-02 | Decide whether the tuned ML comparators stay in the main tables (current draft) or move to the supplement | Results Tables 3–5 |
+| Q-03 | Choose title and keywords | Title page |
+| Q-04 | Confirm the wording of the configuration-selection disclosure (E-03) | Methods; Discussion limitations |
+| Q-05 | Coding direction of SES and ACE18 items, and that higher SCZ15 values mean more symptoms | Results (Table 1 text) |
+| Q-06 | Item response scale per predictor group for the Table 1 footnote, or move group rows to Additional file 1 | Table 1 footnote |
 
-| ID | Cat. | Issue | Justification | Proposed action | Expected outcome | Files | Status | Approval |
-|---|---|---|---|---|---|---|---|---|
-| A-03 | Analysis | `other_bullying15`/`other_abuse18` encode missing as −1 (kept by dropna) | Data integrity | Check frequency of −1 in analysis sample; recode or justify | Correct missing-data handling | feature_selection.py:116-130 | Not Started | Required |
-| A-04 | Analysis | Sex-stratified performance (SAGER) | Guide p.8–9 | E-13 | Sex/gender dimension addressed | — | Not Started | Required |
-| A-05 | Analysis | Verify LazyPredict preprocessing (scaling/imputation) vs DCMFNet raw inputs | Comparability (D-13) | Inspect lazypredict 0.3.0 source/version used | Documented preprocessing | lazy_predict.py | Not Started | Not Required |
-| E-10 | Experiment | Tail-prediction claim untested; loss ablation absent | C5 | Pre-specified top-decile metrics + loss ablation | Evidence for/against C5 | — | Not Started | Required |
-| E-12 | Experiment | Complete-case only | Selection bias | MI sensitivity analysis | Robustness | — | Not Started | Required |
-| E-14 | Experiment | "Data-limited" explanation untested | Thesis Discussion claim | Learning curves | Supports/refutes ceiling claim | — | **Not pursued 2026-10-23** (BMC Psychiatry framing; discussed as an untested explanation) | Not Required |
-| R-01 | Methodology | Script that creates `catss_final_data.csv` (merge of PRS/PCs, final columns) not in repo; PRS pipeline external | Reproducibility | Add script or document steps; describe PRS pipeline in Supplement | Reproducible pipeline | rename_catss_with_mapping.py | Not Started | Required (repo change) |
-| M-05 | Methodology | Variables in GLMM differ from DCMFNet/ML (PC1/PC2 × batch factor vs batch_x_PC columns; ACE15 vs ACE grouping) | Input comparability | Tabulate exact inputs per model | Fairness documented | GLMM.R:22-36; lazy_predict.py:42-43 | Not Started | Not Required |
-| W-02 | Writing | Twin-pair counts, exact n per split, number of features (105) need a participant flow diagram | TRIPOD+AI | Flow diagram from logs + author data | Figure 1 | best_model_training.log | Not Started | Not Required |
-| W-03 | Writing | Methods §2.3 (PRS pipeline) depends on an unpublished master's thesis (Wang 2025) | AIIM discourages unpublished refs | Describe pipeline fully (QC, GWAS source, gene sets, PRS-CS params) | Self-contained Methods | — | Not Started | Required (input) |
-| C-05 | Compliance | Code availability: tagged release + DOI; separate thesis-analysis code from synthetic/deployment code | Research data policy (Option B) | Create release after experiments | Citable code | repo | Not Started | Required |
+## 3. Writing and references (agent can do; no data needed)
 
-## Low
+| ID | Task | Notes |
+|---|---|---|
+| L-02 | Confirm the "no direct competitor" statement with a PubMed/Scopus search | `[VERIFY]` in Background and Discussion; current evidence in reference_registry.md §G (non-systematic search 2026-10-25) |
+| L-03 | Missing citations: Kingma & Ba 2015 (Adam); Zou & Hastie 2005 (elastic net); Pedregosa et al. 2011 (scikit-learn); twin/family dependence and grouped cross-validation; adolescent psychotic-like experiences and later psychopathology (candidate Kelleher/Cederlöf 2017) | Each needs Crossref metadata and a content check before use |
+| L-04 | Content checks for references cited with `[VERIFY: content]`: R-DIFORTI, R-AGERBO, R-PGC3, R-YAO2025, R-ROBINSON, R-KAPOOR, R-RILEY | Read abstract or full text; keep or replace |
+| A-06 | Additional file 1: Table S1 (Optuna search space), Table S3 (full LMM and GAMM coefficients), Table S4 (variables by predictor group), Table S5 (depth-configuration results), tuning history (D-21) | S2 and S2b done; all from exported files |
+| R-02 | Tuning provenance: the used hyperparameters come from git commit c49eec1, and there were several tuning campaigns (D-21) | Describe in Additional file 1; restoring the c49eec1 outputs into the repo needs author approval |
+| C-04 | Figures: Fig. 1 flow diagram (from `analysis_sample_flow.csv` once W-02 is known); Fig. 2 architecture diagram from code; check that Fig. 3–4 are vector and colour-blind safe | Fig. 3 (`calibration_curves_full.pdf`) and Fig. 4 (`attribution_importance_by_group.pdf`) exist |
+| C-06 | TRIPOD+AI checklist (Additional file 2) | Mandatory if transferred to Diagnostic and Prognostic Research |
+| C-01 | Check the BMC Psychiatry submission guidelines by hand and resolve every `[VERIFY: JOURNAL REQUIREMENT]` (abstract limit, declarations, clinical trial number) | `00_requirements_checklist.md` |
+| V-04 | Fill in software versions and the GAMM basis dimension from V-01 | Methods |
+| C-05 | Tagged code release with DOI; separate the analysis code from synthetic-data and deployment code | Methods; Declarations |
+| R-01 | Script or documented steps that create `catss_final_data.csv` (merge of PRS and PCs) | Needs author approval for repo changes |
+| W-08 | README shows synthetic-data metrics as "held-out test metrics"; label them as synthetic | Needs author approval (repo change) |
+| W-10 | Final read-through: consistency of numbers between abstract, Results, Discussion and tables; abstract stays ≤ 350 words (now 348) | Before sending to supervisors |
 
-| ID | Cat. | Issue | Proposed action | Status | Approval |
-|---|---|---|---|---|---|
-| W-04 | Writing | Thesis Table 5.2 Pos MAE SD shown as 0.000 (actual 0.0004) | Report 4 decimals | Completed (draft) | Not Required |
-| W-05 | Writing | Thesis Table 5.3 labels L=2 as "Default" | Call it "tuned uniform depth" | Completed (draft) | Not Required |
-| W-06 | Literature | Thesis reference metadata errors (Sullivan author order; DCMFNet venue; LightGBM/SE primary sources) | Use registry versions | Completed (registry) | Not Required |
-| W-07 | Writing | Remove weak sources (Cureus review, meeting abstract) | Replace if claims needed | Not Started | Not Required |
-| W-08 | Writing | README shows synthetic-data metrics as "Held-out test metrics" | Label as synthetic to avoid confusion with study results | Not Started | Required (repo change) |
-| C-01 | Compliance | Check the BMC Psychiatry "Preparing your manuscript" page manually (not reachable by the agent); confirm every [VERIFY: JOURNAL REQUIREMENT] in 00_requirements_checklist.md | Manual check | Not Started | Not Required |
-| J-01 | Compliance | Fallback-journal plan if AIIM rejects | Recorded in submission_readiness.md §Target journals (scope checked 2026-10-19; fees to re-check at transfer) | Completed | Not Required |
-| E-15 | Experiment | External validation unavailable | State as limitation; name candidate cohorts | Not Started | Required (input) |
+## 4. Not pursued (disclosed as limitations; can be revisited if reviewers ask)
 
-## Author decision 2026-10-22
-The author has declined re-running models: "I don't see any need to re run any models. All the explanations are clearly mentioned in the master thesis report."
-- Consequences: E-01–E-07, E-10–E-16 are set to **Declined (author)**. The related discrepancies stay open and must be disclosed in the manuscript (rule: discrepancies are never hidden).
-- Still open for author approval: analyses of **saved results only** that refit no model (A-01/E-08 paired comparison from per-seed CSVs; E-09 calibration from saved predictions, if any exist).
-- Pending author choice: how GLMM/GAMM results are handled without a refit (D-01, D-02). Options: drop them from the comparison, or report them as conducted with explicit disclosure.
+| ID | Analysis | Status in the draft |
+|---|---|---|
+| E-03 | Nested, test-free selection of the DCMFNet configuration | Selection on test data disclosed in Methods and limitations; the ML comparators were tuned without test data |
+| E-04 | Moving the feature screening inside the training folds | Disclosed as a limitation |
+| E-06 | Stream ablations (fused vs independent stream) and permuted-anchor test | Attribution analysis done instead; ablations not run |
+| E-07 | Standardised inputs for DCMFNet | Methods states that inputs were not standardised |
+| E-10 | Ablation of the tail-weighted loss | Top-decile metrics reported; ablation not run |
+| E-12 | Multiple imputation sensitivity analysis | Complete-case limitation with Table 1 comparison |
+| E-14 | Learning curves | Discussed as an untested explanation |
+| E-15 | External validation | Stated as a limitation (single cohort) |
+| E-16 | Planted-interaction simulation | Not promised in the text |
 
-## Summary (2026-10-19)
-- Open Critical: **8** (E-01, E-02, E-03, M-01, A-01, C-02, C-03; W-01 in progress). X-00 completed (Option B).
-- Open High: **14** (new: E-16, W-09 in progress; plus 2 completed in draft: M-03, M-04)
-- Open Medium: **11** · Low: **4 open, 4 completed** (new: J-01)
-- Requiring author approval/input: E-01–E-07, E-09, E-10, E-12, E-14, E-15, **E-16**, M-01, M-02, A-01–A-04, C-02, C-03, C-05, R-01, R-02, W-03, W-08
-- **Option B minimum experiment package** (see experiment_recommendations.md §Option B): E-08 on saved CSVs → E-02 → E-01 → E-03/E-04 → E-06 → E-14 → E-16 → E-05/E-09/E-10.
+# Done
 
-## Author decision 2026-10-22 (GLMM/GAMM interactions)
-The author decided that GLMM/GAMM interactions mirror the DCMFNet modality design (SUD15 anchor × each fused modality), not all 546 item-level products. They also asked whether to re-run the GLMM.
-- The agent recommends keeping R, using the Python split IDs, and fitting one interaction per DCMFNet fusion block. The exact operationalisation awaits author choice: block summary scores, and how PRS is handled.
-- Also align main effects with DCMFNet: add SUD18; split ACE into ACE15 and ACE18; use the same batch×PC columns (M-05).
-- Code edits to GLMM.R / GAMM.R / the split export need explicit author authorisation. They must be run by someone with CATSS data access.
-
-## Code created at author request 2026-10-22 (approved: "create a new GLMM_updated_split.R, GAMM_updated_split.R, split_data.py files")
-- `Models/split_data.py`: exports the DCMFNet/ML twin-pair splits (seeds 42–46) to the working directory; all three scripts read and write in the folder they are run from. It checks the test-row counts against the final DCMFNet log.
-- `Models/GLMM/Method/GLMM_updated_split.R` and `Models/GAMM/Method/GAMM_updated_split.R`:
-  - use the shared splits;
-  - DCMFNet-aligned main effects;
-  - 24 interactions (SUD15 score × 7 modality scores, × SEX, × 16 cell-type PRS);
-  - scores standardised with training-set statistics only;
-  - R² as 1 − SSE/SST (D-22).
-- Originals left unchanged. Smoke-tested on synthetic data only (scratchpad copy). Synthetic results are not study results.
-- Open decisions, implemented as the agent's recommended defaults and changeable:
-  - modality score = mean of standardised items;
-  - PRS interactions kept per cell type.
-- **Status:** E-01, E-02 → *Code ready; awaiting run on CATSS data by the author.*
-- Follow-up scripts (approved 2026-10-22: "yes"), syntax-checked only, not run:
-  - `Models/GLMM/Analysis/GLMM_Analysis_updated.R` and `Models/GAMM/Analysis/GAMM_Analysis_updated.R` read the `_updated` coefficient tables and group interactions by partner modality. The GAMM version adds a PRS smooth-term summary.
-  - `Models/Model Comparison/models_comparison_plot_generation_updated.py` reads `GLMM_updated_summary.csv`, `GAMM_updated_summary.csv` and the DCMFNet `test_results_summary.csv` instead of hard-coded values.
-  - Run order: split_data.py → GLMM/GAMM_updated_split.R → *_Analysis_updated.R → comparison plot.
-- Attribution scripts (approved 2026-10-23: "yes, include the GLMM comparison too"), not run on study data:
-  - `Models/DCMFNet/Analysis/shap_analysis.py`: retrains the 5 seeds (as importance_analysis_avg.py) and computes gates, SHAP (GradientExplainer, 100-row training background) and grouped permutation importance per modality.
-  - `Models/GLMM/Analysis/GLMM_shap_updated.R`: exact interventional modality-level SHAP for the updated GLMM (interaction terms split by the two-player Shapley formula) and grouped permutation importance.
-  - `Models/GAMM/Analysis/GAMM_shap_updated.R` (added 2026-10-24 on request): same as the GLMM script for the updated GAMM; smooth PRS terms contribute f(x) − mean_train f. Writes `GAMM_attribution_per_seed.csv`. Parse-checked only (author asked not to test on synthetic data).
-  - `Models/Model Comparison/attribution_agreement.py`: Spearman/top-3 agreement between sources, seed stability, and modality shares.
-  - Checks: syntax; Shapley formula matches brute force on random numbers; the SHAP code path runs on an untrained DCMFNet with random inputs (shap 0.54.1 in a scratch folder).
-  - Only aggregated values are saved; no row-level SHAP. Wording in the manuscript: model reliance, not causal effects.
-- Data-access window (author, 2026-10-23): access ends in 5 days, so all data-dependent work runs now and the writing follows. Stream ablations deferred unless reviewers request them. Author has run split_data.py, GLMM_updated_split.R and GAMM_updated_split.R.
-- Pre-expiry scripts (approved 2026-10-23: "go ahead with 1-3"), not run on study data:
-  - `Data Preprocessing/Data Visualisation/analysis_sample_descriptives.R` → A-02, W-02, A-03 (flow, Table 1 included vs excluded with SMD, −1 code check; counts 1–4 shown as "<5").
-  - `Models/DCMFNet/Analysis/dcmfnet_test_predictions.py` and `Models/Model Comparison/glmm_gamm_test_predictions.R` → test predictions for full and age-15-only predictor sets (E-05). Output files `SERVER_ONLY_predictions_*.csv` are participant-level and stay on the server.
-  - `Models/Model Comparison/prediction_evaluation.py` → E-09 calibration, A-04 sex-stratified, E-10 top-decile metrics (metrics only; the loss ablation is not run), A-01 paired corrected resampled t-tests with Holm correction. Aggregated outputs only.
-  - `build_model_spec` in both *_updated_split.R now drops empty modality blocks (needed for age15); no effect on the full model; 12 alignment tests pass.
-  - Age-15 DCMFNet keeps the architecture and sets ACE18/SUD18 inputs to the training mean; GLMM/GAMM drop the columns (97 main effects, 22 interactions).
-- Journal decision 2026-10-23: AIIM confirmed by the author, then **superseded the same day: BMC Psychiatry** (author added the Springer Nature/BMC LaTeX template and removed the AIIM guide; fallback by transfer: Diagnostic and Prognostic Research). JCE dropped: its exclusions cover prognostic research without a methods focus and single-country studies (author-supplied JCE guidance).
-
-## Restructure for BMC Psychiatry (2026-10-23)
-- Sections follow the BMC research-article format: Background, Methods, Results, Discussion (with Strengths and limitations), Conclusions, Abbreviations, Declarations. Checklist in `00_requirements_checklist.md`.
-- New files: `02_background.md`, `03_methods.md`, `06_backmatter.md`. AIIM drafts moved to `archive/aiim/`.
-- Methods rewritten to describe the analysis as now run: shared splits, updated LMM/GAMM, prediction evaluation, age-15 analysis, attribution analyses. Configuration selection is disclosed (D-04, D-09, D-21).
-- Discussion and Conclusions drafted as prose. TODO paragraphs remain for attribution and for calibration/sensitivity results.
-- LaTeX: `latex/build.py` turns the Markdown into `latex/manuscript.tex` (sn-jnl, sn-vancouver-num) and compiles the PDF. On 2026-10-23 it compiled with no errors or undefined citations (17 pages). `latex/references.bib` holds the 26 cited registry entries.
-- Correction: the abstract had the lasso DEP R² as 0.235. That is LarsCV's value; LassoCV is 0.234 (Neg_benchmark_summary.csv). Fixed.
-- New author decision needed: whether the comparator is called "LMM" or "GLMM" in the paper (it is Gaussian; the code says GLMM).
+| ID | Item | Date |
+|---|---|---|
+| X-00 | Framing chosen: rigorous benchmark (Option B); journal BMC Psychiatry, fallback Diagnostic and Prognostic Research (J-01) | 2026-10-19 / 2026-10-23 |
+| E-01 | LMM and GAMM refitted with 24 interactions that mirror the DCMFNet fusion blocks | 2026-10-23 |
+| E-02 | All models on the same five twin-pair-grouped splits (`split_data.py`; all seeds match the DCMFNet log) | 2026-10-23 |
+| M-05 | LMM/GAMM main effects aligned with the DCMFNet inputs (SUD18, ACE15/ACE18, batch × PC columns) | 2026-10-23 |
+| A-01 | Paired corrected resampled t-tests with Holm correction (main family and comparator family) | 2026-10-24 / 2026-10-25 |
+| A-02 | Analysis-sample flow and Table 1, included vs excluded with SMD | 2026-10-24 |
+| A-03 | No −1 or other negative codes in the analysis sample | 2026-10-24 |
+| A-04 | Sex-stratified performance | 2026-10-24 |
+| E-05 | Age-15-only predictor set for all models | 2026-10-24 |
+| E-09 | Calibration-in-the-large, slope, decile curves (Fig. 3) | 2026-10-24 |
+| E-10a | Top-decile precision, AUROC and bias | 2026-10-24 |
+| E-06a | Gates vs SHAP vs permutation importance for DCMFNet, LMM and GAMM; agreement and stability; Fig. 4 | 2026-10-24 / 2026-10-25 |
+| D-23 | Retrained DCMFNet reproduces the final run (seeding order fixed with `train_seed_models()`) | 2026-10-24 |
+| E-17 | Tuned ML comparators (linear regression, elastic net, gradient boosting) with twin-grouped inner CV, scored with the same code | 2026-10-25 |
+| A-05 | LazyPredict screening: estimators called directly, inputs unscaled (stated in Methods) | 2026-10-25 |
+| A-06a | Additional file 1: Tables S2 and S2b | 2026-10-25 |
+| M-02 | Table 2 matches the final configuration in `hyperparameters.json` (author confirmed); parameter counts recomputed from the code (105,501 / 71,623) | 2026-10-26 |
+| E-04a | Variable screening described from `feature_selection.py` and the LightGBM/SHAP step; treated as outcome-informed (limitation kept) | 2026-10-26 |
+| M-03, M-04 | Gating and loss described from the code | 2026-10-19 |
+| W-01 | Thesis claims not carried over; the paper does not mention the thesis | 2026-10-25 |
+| W-09 | Background, including the gap statement with the L-02 studies | 2026-10-25 |
+| W-11 | Results, Discussion (incl. strengths and limitations), Conclusions and abstract drafted from the verified results | 2026-10-25 |
+| W-04–W-07 | Thesis table and reference errors corrected; weak sources not cited | 2026-10-19 |
+| S-03 | Supervisor email and server handover note drafted | 2026-10-24 / 2026-10-25 |
+| L-01 | AIIM paper analysis: no longer needed after the journal change | dropped 2026-10-23 |

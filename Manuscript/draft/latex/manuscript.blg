@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: manuscript.aux
+The style file: sn-vancouver-num.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: references.bib
+sn-vancouver-num.bst [2024/07/19 v1.1 Vancouver bibliography style]
+Warning--empty pages in R-GRIN
+Warning--empty author and editor in R-LAZY
+Warning--missing publisher in R-LAZY
+You've used 30 entries,
+            3508 wiz_defined-function locations,
+            943 strings with 12274 characters,
+and the built_in function-call counts, 59575 in all, are:
+= -- 7363
+> -- 626
+< -- 6
++ -- 480
+- -- 149
+* -- 4876
+:= -- 6405
+add.period$ -- 137
+call.type$ -- 30
+change.case$ -- 18
+chr.to.int$ -- 0
+cite$ -- 33
+duplicate$ -- 4993
+empty$ -- 5635
+format.name$ -- 220
+if$ -- 13912
+int.to.chr$ -- 0
+int.to.str$ -- 30
+missing$ -- 389
+newline$ -- 179
+num.names$ -- 60
+pop$ -- 659
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 666
+stack$ -- 0
+substring$ -- 10968
+swap$ -- 864
+text.length$ -- 6
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 0
+warning$ -- 3
+while$ -- 333
+width$ -- 32
+write$ -- 501
+(There were 3 warnings)
