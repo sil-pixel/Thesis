@@ -109,35 +109,41 @@ Comparisons of DCMFNet with the three machine-learning comparators formed a seco
 
 **Table 4.** Paired differences in test R² with all predictors (first model minus second), five splits.
 
-| Outcome | Comparison | Mean ΔR² (SD) | Splits where first model was better | p | p (Holm) |
-|---|---|---|---|---|---|
-| PLE-HM | DCMFNet − GLMM | −0.0221 (0.0133) | 1 of 5 | 0.085 | 0.91 |
-| PLE-HM | DCMFNet − GAMM | −0.0216 (0.0129) | 1 of 5 | 0.083 | 0.91 |
-| PLE-HM | GLMM − GAMM | 0.0005 (0.0007) | 4 of 5 | 0.40 | 1.00 |
-| DEP | DCMFNet − GLMM | −0.0040 (0.0253) | 2 of 5 | 0.84 | 1.00 |
-| DEP | DCMFNet − GAMM | −0.0013 (0.0270) | 2 of 5 | 0.95 | 1.00 |
-| DEP | GLMM − GAMM | 0.0027 (0.0025) | 4 of 5 | 0.22 | 1.00 |
+| Comparison | Mean ΔR² (SD) | 95% CI | Splits where first model was better | p | p (Holm) |
+|----------------------|----------------|-------------------|----------|------|---------|
+| *PLE-HM* | | | | | |
+| DCMFNet − GLMM | −0.0221 (0.0133) | −0.0491 to 0.0049 | 1 of 5 | 0.085 | 0.91 |
+| DCMFNet − GAMM | −0.0216 (0.0129) | −0.0477 to 0.0045 | 1 of 5 | 0.083 | 0.91 |
+| GLMM − GAMM | 0.0005 (0.0007) | −0.0010 to 0.0020 | 4 of 5 | 0.40 | 1.00 |
+| *DEP* | | | | | |
+| DCMFNet − GLMM | −0.0040 (0.0253) | −0.0553 to 0.0472 | 2 of 5 | 0.84 | 1.00 |
+| DCMFNet − GAMM | −0.0013 (0.0270) | −0.0561 to 0.0534 | 2 of 5 | 0.95 | 1.00 |
+| GLMM − GAMM | 0.0027 (0.0025) | −0.0024 to 0.0078 | 4 of 5 | 0.22 | 1.00 |
+| ***Comparators (separate Holm family)*** | | | | | |
+| *PLE-HM* | | | | | |
+| DCMFNet − linear regression | −0.0335 (0.0162) | −0.0665 to −0.0006 | 0 of 5 | 0.048 | 0.33 |
+| DCMFNet − elastic net | −0.0545 (0.0141) | −0.0831 to −0.0260 | 0 of 5 | 0.006 | 0.085 |
+| DCMFNet − gradient boosting | −0.0383 (0.0106) | −0.0598 to −0.0168 | 0 of 5 | 0.008 | 0.094 |
+| *DEP* | | | | | |
+| DCMFNet − linear regression | −0.0166 (0.0270) | −0.0714 to 0.0382 | 2 of 5 | 0.45 | 0.45 |
+| DCMFNet − elastic net | −0.0389 (0.0201) | −0.0796 to 0.0019 | 0 of 5 | 0.057 | 0.34 |
+| DCMFNet − gradient boosting | −0.0303 (0.0217) | −0.0743 to 0.0137 | 0 of 5 | 0.13 | 0.34 |
 
-| *Comparators (separate Holm family)* | | | | | |
-| PLE-HM | DCMFNet − linear regression | −0.0335 (0.0162) | 0 of 5 | 0.048 | 0.33 |
-| PLE-HM | DCMFNet − elastic net | −0.0545 (0.0141) | 0 of 5 | 0.006 | 0.085 |
-| PLE-HM | DCMFNet − gradient boosting | −0.0383 (0.0106) | 0 of 5 | 0.008 | 0.094 |
-| DEP | DCMFNet − linear regression | −0.0166 (0.0270) | 2 of 5 | 0.45 | 0.45 |
-| DEP | DCMFNet − elastic net | −0.0389 (0.0201) | 0 of 5 | 0.057 | 0.34 |
-| DEP | DCMFNet − gradient boosting | −0.0303 (0.0217) | 0 of 5 | 0.13 | 0.34 |
+*Footnote to Table 4:* 95% CI, confidence interval for the mean difference from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; an interval excludes 0 exactly when the unadjusted p is below 0.05.
 
 <!-- src: paired_comparisons.csv, family = baselines, metric = r2, setting "(full)"; DCMFNet is setting_a, so signs and seeds_a_better are as in the file. -->
+<!-- CI computed 2026-10-27 from paired_comparisons.csv: mean ± t(0.975, 4) × sd_difference × sqrt(1/5 + 1/3) (= mean / t_corrected, checked to 1e-15); signs reversed with the comparison for the main family. -->
 <!-- src: paired_comparisons.csv, metric = r2, setting "(full)". The file reports GLMM/GAMM minus DCMFNet; signs reversed here and "splits better" = 5 − seeds_a_better (no ties). -->
 
 **DCMFNet and the mixed models.** None of the differences was statistically significant, before or after correction. RMSE, MAE and Spearman's ρ gave the same pattern (all Holm-adjusted p ≥ 0.90).
 
 **DCMFNet and the comparators.** DCMFNet had lower R² than each comparator on every split, except against linear regression for DEP (better on 2 of 5 splits). The differences were −0.034 to −0.055 for PLE-HM (unadjusted p 0.006–0.048) and −0.017 to −0.039 for DEP (p 0.057–0.45). None remained significant after Holm correction; the smallest adjusted p was 0.085. <!-- src: paired_comparisons.csv, family = baselines, metric = r2 (full) -->
 
-**Interpretation.** With five splits these tests have little power, so the results show no detectable advantage for DCMFNet. They do not show that the models are equivalent. <!-- src: paired_comparisons.csv, metrics rmse, mae, spearman_rho, setting (full) -->
+**Interpretation.** With five splits these tests have little power, so the results show no detectable advantage for DCMFNet. They do not show that the models are equivalent: for DEP, the confidence intervals for DCMFNet against the mixed models included differences of about 0.05 in R² in either direction, and for PLE-HM they ranged from about 0.05 lower to 0.005 higher for DCMFNet. <!-- src: paired_comparisons.csv, metrics rmse, mae, spearman_rho, setting (full) -->
 
 ## Interaction and smooth terms in the mixed models
 
-Coefficients come from the fits on the first split (seed 42). The GLMM and GAMM each included 24 SUD15 interaction terms:
+Coefficients come from the fits on the first split (seed 42); all terms are given in Additional file 1: Table S3. The GLMM and GAMM each included 24 SUD15 interaction terms:
 - SUD15 score × each fused modality score (7);
 - SUD15 score × sex;
 - SUD15 score × each of the 16 cell-type PRS.
@@ -156,7 +162,6 @@ In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (eff
 - **DEP:** the all-cell PRS only.
 
 <!-- src: Models/GAMM/Results/GAMM_updated_{Pos,Neg}_smooth_terms.csv -->
-`[TODO: full coefficient table as Additional file (all terms, not only p < 0.05)]`
 
 <!-- MOVED to Additional file (not a main result for BMC Psychiatry):
 ## 3.5. Depth configuration (as conducted; 5 seeds)

@@ -1,6 +1,6 @@
 <!--
-STATUS 2026-10-25: Full prose draft for BMC Psychiatry (Discussion with strengths and limitations, then Conclusions), written
-from the verified results in 04_results.md. Remaining: L-02 (comparison with direct competitors, needs a literature search)
+STATUS 2026-10-27: Full prose draft for BMC Psychiatry (Discussion with strengths and limitations, then Conclusions), written
+from the verified results in 04_results.md. Numbers re-checked against the CSVs 2026-10-27 (W-10). Remaining: the L-02 PubMed/Scopus confirmation
 and the [VERIFY] markers. No causal language; "no detectable gain", not "equivalent"; no clinical-utility claims.
 src for the numbers: prediction_metrics_summary.csv, prediction_metrics_by_sex_summary.csv, paired_comparisons.csv,
 attribution_modality_summary.csv, attribution_agreement_summary.csv, attribution_stability.csv, ML_comparators_tuning.csv.
@@ -20,7 +20,7 @@ Few studies have compared flexible models with regression for these outcomes in 
 
 Our attribution results fit this pattern. Symptoms measured earlier carried most of the predictive information, and polygenic scores contributed little.
 
-Several explanations are possible. The training sets contained about 3,000 individuals, while the networks had 72,000 to 106,000 trainable parameters (Table 2). At this sample size, flexible models are likely to fit noise rather than signal [@R-RILEY] `[VERIFY: content]`. The predictors and outcomes are questionnaire sum scores and PRS, which explain a limited share of variance, and this limits the attainable R² for any model. Finally, if interactions between substance use and other domains are weak at the population level, a model designed to capture them has little to gain. Some observations fit this last explanation:
+Several explanations are possible. The training sets contained about 3,000 individuals, while the networks had 72,000 to 106,000 trainable parameters (Table 2). Flexible models need far more data than regression to reach stable performance [@R-PLOEG], so at this sample size they are likely to fit noise rather than signal. The predictors and outcomes are questionnaire sum scores and PRS, which explain a limited share of variance, and this limits the attainable R² for any model. Finally, if interactions between substance use and other domains are weak at the population level, a model designed to capture them has little to gain. Some observations fit this last explanation:
 - gradient boosting, which could learn interactions freely, selected shallow trees in most splits;
 - the elastic net selected strong, ridge-like shrinkage;
 - linear regression without interaction terms did slightly better than the mixed models that included them.
@@ -44,7 +44,7 @@ The secondary analyses did not change the main conclusion.
 - **Calibration.** All models predicted the mean outcome well, although the network slightly over-predicted depressive symptoms. The network, the mixed models and linear regression produced predictions that were spread somewhat too widely (calibration slopes 0.82–0.89). The tuned elastic net and gradient boosting had slopes close to 1.
 - **The highest scores.** Every model under-predicted the scores of the 10% of participants with the highest scores. The network's weighted loss, designed to give more weight to the upper tail, produced the smallest under-prediction. It did not, however, identify this group better (AUROC 0.76, against 0.76–0.78 for the other models).
 - **Predictors measured by age 15.** Without the age-18 predictors, R² fell by 0.05–0.07 in every model, and the ranking of the models did not change. A substantial part of the performance in the main analysis therefore came from measures taken at the same time as the outcomes. With predictors available by age 15, R² was 0.13–0.20.
-- **Sex.** All models explained less variance in depressive symptoms in males than in females. With age-15 predictors only, the network explained almost none of the variance in males (R² 0.01), whereas the elastic net reached 0.11. In the network the age-18 inputs were held at their training mean, not removed, which may contribute to this difference. These sex differences were not formally tested.
+- **Sex.** All models explained less variance in depressive symptoms in males than in females. With age-15 predictors only, the network explained almost none of the variance in males (R² 0.01), whereas the elastic net reached 0.10. In the network the age-18 inputs were held at their training mean, not removed, which may contribute to this difference. These sex differences were not formally tested.
 
 ## Strengths and limitations
 
@@ -63,4 +63,4 @@ The study also has limitations.
 
 # Conclusions
 
-In this Swedish twin cohort, a deep fusion network designed around interactions between adolescent substance use and other risk domains did not predict symptoms at age 18 better than mixed-effects models with matched inputs and interactions, and an elastic net and gradient boosting tuned on training data alone did better than all three models. The data gave little evidence of the interactions that motivated the network. The network's gate values did not reflect what it relied on for prediction and should not be interpreted as predictor importance. Deep models for psychiatric risk prediction in cohort data should be compared with well-specified regression models on identical, family-aware splits, with model selection kept away from the test data, before their added complexity or their attention-based explanations are relied on.
+In this Swedish twin cohort, a deep fusion network designed around interactions between adolescent substance use and other risk domains did not predict symptoms at age 18 better than mixed-effects models with matched inputs and interactions, and an elastic net and gradient boosting tuned on training data alone did better than all three models. The data gave little evidence of the interactions that motivated the network. The network's gate values did not reflect what it relied on for prediction and should not be interpreted as predictor importance. The models were developed to compare modelling approaches, not for clinical use. Deep models for psychiatric risk prediction in cohort data should be compared with well-specified regression models on identical, family-aware splits, with model selection kept away from the test data, before their added complexity or their attention-based explanations are relied on.

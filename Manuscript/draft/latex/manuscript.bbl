@@ -2,6 +2,14 @@
 \providecommand{\doi}[1]{\url{https://doi.org/#1}}
 \bibcommenthead
 
+\bibitem[\protect\citeauthoryear{Cederl{\"o}f et~al.}{2017}]{R-CEDERLOF}
+Cederl{\"o}f M, Kuja-Halkola R, Larsson H, Sj{\"o}lander A, {\"O}stberg P,
+  Lundstr{\"o}m S, et~al.
+\newblock A longitudinal study of adolescent psychotic experiences and later
+  development of substance use disorder and suicidal behavior.
+\newblock Schizophrenia Research. 2017;181:13--16.
+\newblock \doi{10.1016/j.schres.2016.08.029}.
+
 \bibitem[\protect\citeauthoryear{Di~Forti et~al.}{2019}]{R-DIFORTI}
 Di~Forti M, Quattrone D, Freeman TP, Tripoli G, Gayer-Anderson C, Quigley H,
   et~al.
@@ -123,6 +131,13 @@ Kapoor S, Narayanan A.
 \newblock Patterns. 2023;4:100804.
 \newblock \doi{10.1016/j.patter.2023.100804}.
 
+\bibitem[\protect\citeauthoryear{Roberts et~al.}{2017}]{R-ROBERTS}
+Roberts DR, Bahn V, Ciuti S, Boyce MS, Elith J, Guillera-Arroita G, et~al.
+\newblock Cross-validation strategies for data with temporal, spatial,
+  hierarchical, or phylogenetic structure.
+\newblock Ecography. 2017;40(8):913--929.
+\newblock \doi{10.1111/ecog.02881}.
+
 \bibitem[\protect\citeauthoryear{Jain and Wallace}{2019}]{R-JAIN}
 Jain S, Wallace BC.
 \newblock Attention is not explanation.
@@ -168,6 +183,12 @@ Hu J, Shen L, Sun G.
 \newblock In: Proceedings of the IEEE/CVF Conference on Computer Vision and
   Pattern Recognition (CVPR); 2018. p. 7132--7141.
 
+\bibitem[\protect\citeauthoryear{Kingma and Ba}{2015}]{R-ADAM}
+Kingma DP, Ba J.
+\newblock Adam: A method for stochastic optimization.
+\newblock In: 3rd International Conference on Learning Representations (ICLR).
+  San Diego; 2015. ArXiv:1412.6980.
+
 \bibitem[\protect\citeauthoryear{Akiba et~al.}{2019}]{R-OPTUNA}
 Akiba T, Sano S, Yanase T, Ohta T, Koyama M.
 \newblock Optuna: a next-generation hyperparameter optimization framework.
@@ -178,6 +199,13 @@ Akiba T, Sano S, Yanase T, Ohta T, Koyama M.
 Pandala SR.: {LazyPredict}.
 \newblock Software. [VERIFY: version used and release date].
 \newblock \url{https://github.com/shankarpandala/lazypredict}.
+
+\bibitem[\protect\citeauthoryear{Zou and Hastie}{2005}]{R-ZOU}
+Zou H, Hastie T.
+\newblock Regularization and variable selection via the elastic net.
+\newblock Journal of the Royal Statistical Society Series B: Statistical
+  Methodology. 2005;67(2):301--320.
+\newblock \doi{10.1111/j.1467-9868.2005.00503.x}.
 
 \bibitem[\protect\citeauthoryear{Nadeau and Bengio}{2003}]{R-NADEAU}
 Nadeau C, Bengio Y.
@@ -191,6 +219,11 @@ Van~Calster B, McLernon DJ, van Smeden M, Wynants L, Steyerberg EW.
 \newblock BMC Medicine. 2019;17:230.
 \newblock \doi{10.1186/s12916-019-1466-7}.
 
+\bibitem[\protect\citeauthoryear{Pedregosa et~al.}{2011}]{R-SKLEARN}
+Pedregosa F, Varoquaux G, Gramfort A, Michel V, Thirion B, Grisel O, et~al.
+\newblock Scikit-learn: Machine learning in {Python}.
+\newblock Journal of Machine Learning Research. 2011;12:2825--2830.
+
 \bibitem[\protect\citeauthoryear{Collins et~al.}{2024}]{R-TRIPODAI}
 Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van~Calster B, et~al.
 \newblock {TRIPOD+AI} statement: updated guidance for reporting clinical
@@ -198,11 +231,11 @@ Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van~Calster B, et~al.
 \newblock BMJ. 2024;385:e078378.
 \newblock \doi{10.1136/bmj-2023-078378}.
 
-\bibitem[\protect\citeauthoryear{Riley et~al.}{2020}]{R-RILEY}
-Riley RD, Ensor J, Snell KIE, Harrell FE, Martin GP, Reitsma JB, et~al.
-\newblock Calculating the sample size required for developing a clinical
-  prediction model.
-\newblock BMJ. 2020;368:m441.
-\newblock \doi{10.1136/bmj.m441}.
+\bibitem[\protect\citeauthoryear{van~der Ploeg et~al.}{2014}]{R-PLOEG}
+van~der Ploeg T, Austin PC, Steyerberg EW.
+\newblock Modern modelling techniques are data hungry: a simulation study for
+  predicting dichotomous endpoints.
+\newblock BMC Medical Research Methodology. 2014;14:137.
+\newblock \doi{10.1186/1471-2288-14-137}.
 
 \end{thebibliography}

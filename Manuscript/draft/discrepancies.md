@@ -209,3 +209,9 @@ Line numbers refer to the files as of commit `7ede66b` (HEAD at audit time).
   - **PLE-HM:** unchanged, equal to `Final Best Model` to 7 digits.
   - **DEP:** 0.20234, 0.21968, 0.21897, 0.18632, 0.16479 (mean 0.1984), against 0.20226, 0.21968, 0.21897, 0.18632, 0.16479 (mean 0.1984). Seeds 43–46 agree to 7 digits; seed 42 differs by 8.5 × 10⁻⁵ (cause not traced, possibly a non-deterministic GPU/CPU operation; it does not change any reported value at 3 decimals). <!-- src: Models/DCMFNet/Results/Retrained Results/DCMFNet_retrained_test_metrics.csv; Models/DCMFNet/Results/Final Best Model/Neg_test_results_per_seed.csv -->
   - The prediction and SHAP retrains give the same R² per seed, so all DCMFNet outputs in `Models/Model Comparison/` now describe the published models. **Draft follows:** the reproduced values; the seed-42 difference is noted here only.
+
+## D-24 (found 2026-10-26): an age-9 item in the age-15 symptom group · **Resolved 2026-10-27**
+- The SCZ15 group (23 inputs) contains `SCZ15_PROD_seen_hallucinations9`, which by its name was measured at age 9. All other SCZ15 items end in 15. <!-- src: Models/GLMM/Results/Pos_GLMM_updated_all_coefs.csv; Additional file 1 Table S4 -->
+- **Consequence:** small. It is a predictor measured before age 18 in every model, so the age-15 sensitivity analysis is unaffected, but the group label "symptoms at age 15" is slightly inaccurate and the item adds to the SCZ15 fusion block.
+- **Resolution (author, 2026-10-27):** no psychotic symptoms were measured at age 9; the item is the age-15 PROD hallucination item and the suffix 9 is a naming error. The grouping and all results are correct.
+- **Draft follows:** Table S4 keeps the data name (for traceability) with a note that the item was measured at age 15. The variable name in the data/code is unchanged (renaming needs author approval).

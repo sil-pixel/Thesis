@@ -9,8 +9,8 @@ I'm turning my thesis on DCMFNet into a paper for BMC Psychiatry, with Diagnosti
 | | PLE-HM | Depressive symptoms |
 |---|---|---|
 | DCMFNet | 0.206 | 0.198 |
-| Linear mixed model | 0.228 | 0.202 |
-| Additive mixed model | 0.227 | 0.200 |
+| GLMM (linear mixed model) | 0.228 | 0.202 |
+| GAMM (additive mixed model) | 0.227 | 0.200 |
 
 No paired difference was significant.
 
@@ -44,7 +44,6 @@ DCMFNet was behind the elastic net and boosting on every split, although with fi
 5. **Ethics.** The ethical approval(s) for CATSS and the genotype linkage, with committee name, reference number and date, and how consent/assent was obtained.
 6. **Authorship and declarations.** Author order and affiliations, the corresponding author, who did what (CRediT), funding and grant numbers, and competing interests. Also whether an institutional agreement covers the article processing charge.
 7. **Decisions:**
-   - "LMM" or "GLMM" for the mixed model (outcomes are continuous, so it is a linear mixed model);
    - whether the tuned comparators (linear regression, elastic net, gradient boosting) stay in the main tables, as in the draft, or move to the supplement;
    - the title and keywords, once you see the draft.
 8. **Disclosure of model selection.** DCMFNet's depth configuration was partly chosen using test-set results, and its tuning data overlapped later test sets. The paper discloses this. Since the bias favours DCMFNet, the main conclusion is conservative. Please check that you are comfortable with how this is worded.

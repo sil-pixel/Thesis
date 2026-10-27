@@ -9,47 +9,48 @@ Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: references.bib
 sn-vancouver-num.bst [2024/07/19 v1.1 Vancouver bibliography style]
 Warning--empty pages in R-GRIN
+Warning--empty pages in R-ADAM
 Warning--empty author and editor in R-LAZY
 Warning--missing publisher in R-LAZY
-You've used 30 entries,
+You've used 35 entries,
             3508 wiz_defined-function locations,
-            943 strings with 12274 characters,
-and the built_in function-call counts, 59575 in all, are:
-= -- 7363
-> -- 626
+            983 strings with 13461 characters,
+and the built_in function-call counts, 70035 in all, are:
+= -- 8723
+> -- 715
 < -- 6
-+ -- 480
-- -- 149
-* -- 4876
-:= -- 6405
-add.period$ -- 137
-call.type$ -- 30
-change.case$ -- 18
++ -- 540
+- -- 170
+* -- 5736
+:= -- 7495
+add.period$ -- 160
+call.type$ -- 35
+change.case$ -- 21
 chr.to.int$ -- 0
-cite$ -- 33
-duplicate$ -- 4993
-empty$ -- 5635
-format.name$ -- 220
-if$ -- 13912
+cite$ -- 39
+duplicate$ -- 6009
+empty$ -- 6611
+format.name$ -- 255
+if$ -- 16370
 int.to.chr$ -- 0
-int.to.str$ -- 30
-missing$ -- 389
-newline$ -- 179
-num.names$ -- 60
-pop$ -- 659
+int.to.str$ -- 35
+missing$ -- 452
+newline$ -- 207
+num.names$ -- 70
+pop$ -- 761
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 666
+skip$ -- 760
 stack$ -- 0
-substring$ -- 10968
-swap$ -- 864
+substring$ -- 12849
+swap$ -- 999
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 1
 type$ -- 0
-warning$ -- 3
-while$ -- 333
-width$ -- 32
-write$ -- 501
-(There were 3 warnings)
+warning$ -- 4
+while$ -- 385
+width$ -- 37
+write$ -- 583
+(There were 4 warnings)
