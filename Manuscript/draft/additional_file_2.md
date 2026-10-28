@@ -20,12 +20,12 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | | 3c | D;E | Known health inequalities | – | Not reported: sex differences are analysed (Results), but known inequalities are not discussed in the Background |
 | Objectives | 4 | D;E | Objectives; development and/or validation | Background (final paragraph) | Reported |
 | Data | 5a | D;E | Data sources, rationale, representativeness | Methods: Study population; Results: Table 1 | Reported (included vs excluded comparison) |
-| | 5b | D;E | Dates of data collection and follow-up | Methods: Study population | Author input (M-06: birth cohorts, data extraction date) |
+| | 5b | D;E | Dates of data collection and follow-up | Methods: Study population | Partly: access period reported; collection years and birth cohorts are author input (M-06) |
 | Participants | 6a | D;E | Setting, centres | Methods: Study population | Reported (population-based national twin cohort) |
-| | 6b | D;E | Eligibility criteria | Methods: Study population; Fig. 1 | Reported (steps before eligibility: author input, W-02) |
+| | 6b | D;E | Eligibility criteria | Methods: Study population; Fig. 1 | Reported |
 | | 6c | D;E | Treatments | – | Not applicable: treatment data were not available in the analysis data and not used |
 | Data preparation | 7 | D;E | Pre-processing and quality checks | Methods: Predictors (variable screening, missing codes) | Reported; similarity across sociodemographic groups not assessed |
-| Outcome | 8a | D;E | Outcome definition, timing, rationale | Methods: Outcomes | Partly: instruments and scoring constants are author input (M-01) |
+| Outcome | 8a | D;E | Outcome definition, timing, rationale | Methods: Outcomes | Reported (instruments, response scales and scoring) |
 | | 8b | D;E | Qualifications of outcome assessors | – | Not applicable: self-reported questionnaires |
 | | 8c | D;E | Blinding of outcome assessment | – | Not applicable: self-report |
 | Predictors | 9a | D | Choice and pre-selection of predictors | Methods: Predictors (variable screening); Additional file 1: Table S4 | Reported (outcome-informed screening disclosed as a limitation) |
@@ -52,7 +52,7 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | Data sharing | 18e | D;E | Data availability | Declarations: Availability of data and materials | Partly: access procedure is author input (C-07) |
 | Code sharing | 18f | D;E | Code availability | Methods: Software and reporting; Declarations | Partly: release with DOI pending (C-05) |
 | Patient and public involvement | 19 | D;E | Patient and public involvement | Methods: Software and reporting | Reported: no involvement |
-| Participants | 20a | D;E | Participant flow | Results: Analysis sample; Fig. 1 | Reported (steps before eligibility: author input, W-02) |
+| Participants | 20a | D;E | Participant flow | Results: Analysis sample; Fig. 1 | Reported |
 | | 20b | D;E | Characteristics and missing data | Results: Table 1 | Reported |
 | | 20c | E | Comparison with development data | – | Not applicable: internal evaluation on random splits of the same cohort |
 | Model development | 21 | D;E | Numbers in each analysis | Methods: Data partitioning; Fig. 1 | Reported (training, validation and test sizes) |

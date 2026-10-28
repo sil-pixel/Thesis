@@ -99,6 +99,18 @@ def section_text(markdown, heading):
     return match.group(1).strip()
 
 
+def authors_tex(text):
+    """Authors from the '- given | family | email' lines of the title-page section; affiliations stay a placeholder."""
+    red = "\\textcolor{red}{%s}"
+    lines = [l[2:] for l in section_text(text, "Authors and affiliations").splitlines() if l.startswith("- ")]
+    out = []
+    for given, family, email in ([c.strip() for c in l.split("|")] for l in lines):
+        email = red % "[AUTHOR INPUT: email]" if email.startswith("`") else email
+        out.append("\\author[1]{\\fnm{%s} \\sur{%s}}\\email{%s}\n" % (given, family, email))
+    out.append("\\affil[1]{\\orgname{%s}}\n\n" % (red % "[AUTHOR INPUT: affiliations and corresponding author]"))
+    return "".join(out)
+
+
 def front_matter(clean):
     text = (DRAFT_DIR / TITLE_FILE).read_text(encoding="utf-8")
     no_comments = re.sub(r"<!--.*?-->", "", text, flags=re.S)
@@ -112,9 +124,7 @@ def front_matter(clean):
 
     return (
         f"\\title[Deep fusion vs mixed models for adolescent psychopathology]{{{title}}}\n\n"
-        f"% Authors: replace with \\author[1]{{\\fnm{{First}} \\sur{{Last}}}}\\email{{...}} and \\affil[1]{{...}}\n"
-        f"\\author*[1]{{\\fnm{{\\textcolor{{red}}{{[AUTHOR INPUT: authors and affiliations]}}}}}}\\email{{[AUTHOR INPUT]}}\n"
-        f"\\affil*[1]{{\\orgname{{\\textcolor{{red}}{{[AUTHOR INPUT: affiliation]}}}}}}\n\n"
+        + authors_tex(text) +
         f"\\abstract{{{abstract_tex}}}\n\n"
         f"\\keywords{{{keywords_tex}}}\n\n"
         "\\maketitle\n"

@@ -34,6 +34,13 @@ A reference may support a claim in the manuscript **only** if its content access
 
 | ID | Reference | DOI | Type | Verif. | Content | Supports | Section |
 |---|---|---|---|---|---|---|---|
+| R-APSS | Kelleher I, Harley M, Murtagh A, Cannon M. Are screening instruments valid for psychotic-like experiences? A validation study of screening questions for psychotic-like experiences using in-depth clinical interview. Schizophr Bull 2011;37:362–369 (online 2009). | 10.1093/schbul/sbp057 | Journal | ✅ | metadata (Crossref, 2026-10-28) | APSS; source of the 7 psychotic-like items (author confirmed) | Methods: Outcomes |
+| R-LAURENS | Laurens KR, Hodgins S, Maughan B, Murray RM, Rutter ML, Taylor EA. Community screening for psychotic-like experiences and other putative antecedents of schizophrenia in children aged 9–12 years. Schizophr Res 2007;90:130–146. | 10.1016/j.schres.2006.11.006 | Journal | ✅ | metadata (Crossref, 2026-10-28) | Origin of the psychotic-like screening items (author confirmed) | Methods: Outcomes |
+| R-CESD | Radloff LS. The CES-D Scale: a self-report depression scale for research in the general population. Appl Psychol Meas 1977;1:385–401. | 10.1177/014662167700100306 | Journal | ✅ | metadata (Crossref, 2026-10-28) | CES-D instrument (DEP outcome) | Methods: Outcomes |
+| R-CESD11 | Kohout FJ, Berkman LF, Evans DA, Cornoni-Huntley J. Two shorter forms of the CES-D depression symptoms index. J Aging Health 1993;5:179–193. | 10.1177/089826439300500202 | Journal | ✅ | metadata (Crossref, 2026-10-28) | 11-item short form; item match from the analysis report | Methods: Outcomes |
+| R-MDQ | Hirschfeld RMA, Williams JBW, Spitzer RL, Calabrese JR, et al. Development and validation of a screening instrument for bipolar spectrum disorder: the Mood Disorder Questionnaire. Am J Psychiatry 2000;157:1873–1875. | 10.1176/appi.ajp.157.11.1873 | Journal | ✅ | metadata (Crossref, 2026-10-28) | 13 MDQ items in PLE-HM | Methods: Outcomes |
+| R-CMRS | Pavuluri MN, Henry DB, Devineni B, Carbray JA, et al. Child Mania Rating Scale: development, reliability, and validity. J Am Acad Child Adolesc Psychiatry 2006;45:550–560. | 10.1097/01.chi.0000205700.40700.50 | Journal | ✅ | metadata (Crossref, 2026-10-28) | 4 CMRS items in PLE-HM | Methods: Outcomes |
+| R-ATAC | Larson T, Anckarsäter H, Gillberg C, Ståhlberg O, Carlström E, Kadesjö B, et al. The Autism–Tics, AD/HD and other Comorbidities inventory (A-TAC): further validation of a telephone interview for epidemiological research. BMC Psychiatry 2010;10:1. | 10.1186/1471-244X-10-1 | Journal | ✅ | abstract + full text (PMC2823676), 2026-10-28 | A-TAC is a parent telephone interview; instrument for ADHD9 and ASD9 (author confirmed) | Methods: Predictors |
 | R-CATSS | Anckarsäter H, Lundström S, Kollberg L, Kerekes N, Palm C, Carlström E, et al. The Child and Adolescent Twin Study in Sweden (CATSS). Twin Res Hum Genet 2011;14:495–508. | 10.1375/twin.14.6.495 | Journal | ✅ | metadata | Cohort description | Methods §2.1 |
 | R-TATE | Tate AE, McCabe RC, Larsson H, Lundström S, Lichtenstein P, Kuja-Halkola R. Predicting mental health problems in adolescence using machine learning techniques. PLoS One 2020;15:e0230389. | 10.1371/journal.pone.0230389 | Journal | ✅ | full text (PMC7135284, read 2026-10-25): 7,638 CATSS twins, 85 predictors at age 9/12, parent SDQ at 15; test AUC RF 0.739, SVM 0.736, NN 0.705, LR 0.700, XGBoost 0.692; no significant difference; twin pairs kept together in splits | Closest prior ML work on CATSS | Intro, Discussion |
 | R-SULLIVAN | Sullivan PF, Kendler KS, Neale MC. Schizophrenia as a complex trait: evidence from a meta-analysis of twin studies. Arch Gen Psychiatry 2003;60:1187–92. | 10.1001/archpsyc.60.12.1187 | Journal | ✅ (author order corrected vs thesis) | thesis-cited | Heritability ~81% `[VERIFY exact estimate before citing]` | Intro |
@@ -72,10 +79,12 @@ A reference may support a claim in the manuscript **only** if its content access
 - `[CITATION NEEDED: imbalanced regression reweighting — e.g., Yang Y et al., Delving into deep imbalanced regression, ICML 2021]`
 - `[CITATION NEEDED: FT-Transformer / Gorishniy et al., Revisiting deep learning models for tabular data, NeurIPS 2021]` (Crossref search failed; verify via proceedings)
 - ~~psychotic-like experiences in adolescence and later psychopathology~~ → R-CEDERLOF (§H)
-- ~~prior ML/DL prediction using PRS + environment for psychosis/depression outcomes (direct competitors)~~ → see §G (non-systematic search 2026-10-25; a PubMed/Scopus search is still advisable)
+- ~~prior ML/DL prediction using PRS + environment for psychosis/depression outcomes (direct competitors)~~ → see §G (non-systematic search 2026-10-25; PubMed block search 2026-10-28, no conflict)
 - ~~twin/family dependence and grouped cross-validation~~ → R-ROBERTS (§H)
 
 ## G. Direct competitors (L-02), search 2026-10-25
+
+**PubMed check 2026-10-28.** Title/abstract blocks: deep/fusion models × psychotic/hypomanic/depressive outcomes × PRS/substance use/cannabis × adolescent/youth/cohort/twin gave 9 hits; with a regression/mixed-model block, 2. The author read PMIDs 41399528, 36411277 and 34899225: none tests a deep fusion model against regression with the same inputs and interactions. The "to our knowledge" statements in Background and Discussion stand.
 
 Search: web search plus Europe PMC queries (ML/DL × polygenic × psychotic experiences/depression × adolescents/cohort). Not systematic. Metadata verified via Crossref; content access as stated.
 

@@ -12,45 +12,45 @@ Warning--empty pages in R-GRIN
 Warning--empty pages in R-ADAM
 Warning--empty author and editor in R-LAZY
 Warning--missing publisher in R-LAZY
-You've used 35 entries,
+You've used 42 entries,
             3508 wiz_defined-function locations,
-            983 strings with 13461 characters,
-and the built_in function-call counts, 70035 in all, are:
-= -- 8723
-> -- 715
+            1039 strings with 15306 characters,
+and the built_in function-call counts, 85621 in all, are:
+= -- 10731
+> -- 850
 < -- 6
-+ -- 540
-- -- 170
-* -- 5736
-:= -- 7495
-add.period$ -- 160
-call.type$ -- 35
++ -- 650
+- -- 202
+* -- 7025
+:= -- 9128
+add.period$ -- 195
+call.type$ -- 42
 change.case$ -- 21
 chr.to.int$ -- 0
-cite$ -- 39
-duplicate$ -- 6009
-empty$ -- 6611
-format.name$ -- 255
-if$ -- 16370
+cite$ -- 46
+duplicate$ -- 7457
+empty$ -- 8074
+format.name$ -- 300
+if$ -- 20020
 int.to.chr$ -- 0
-int.to.str$ -- 35
-missing$ -- 452
-newline$ -- 207
-num.names$ -- 70
-pop$ -- 761
+int.to.str$ -- 42
+missing$ -- 547
+newline$ -- 249
+num.names$ -- 84
+pop$ -- 919
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 760
+skip$ -- 882
 stack$ -- 0
-substring$ -- 12849
-swap$ -- 999
+substring$ -- 15739
+swap$ -- 1189
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 1
 type$ -- 0
 warning$ -- 4
-while$ -- 385
-width$ -- 37
-write$ -- 583
+while$ -- 465
+width$ -- 44
+write$ -- 702
 (There were 4 warnings)

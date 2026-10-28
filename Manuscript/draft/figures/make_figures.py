@@ -97,15 +97,21 @@ def fig1():
     fig, ax = plt.subplots(figsize=(7.2, 6.2))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
     cx, w = 0.23, 0.43
-    box(ax, cx, 0.93, w, 0.09, "CATSS participants\n[AUTHOR INPUT: steps before eligibility]",
-        face="#F2F2F2", edge=GREY, style="--", fontsize=8)
+    # Starting count and the step to eligibility: thesis Figs 3.1 and 3.3 (author confirmed 2026-10-28, W-02);
+    # 13,146 - 3,885 = 9,261, the rows of catss_final_data.csv.
+    start, missing_main = 13146, 3885
+    assert start - missing_main == info["eligible"]
+    box(ax, cx, 0.95, w, 0.07, f"CATSS twins in the study data\nn = {start:,}", fontsize=8.5)
+    box(ax, 0.745, 0.855, 0.49, 0.06, f"Excluded, n = {missing_main:,}\nSubstance use at age 15 or an outcome\nat age 18 missing",
+        fontsize=7.4)
+    arrow(ax, cx, 0.855, 0.745 - 0.49 / 2, 0.855)
     box(ax, cx, 0.75, w, 0.10, f"Eligible: substance use at age 15 and\nboth outcomes at age 18\n"
                                f"n = {info['eligible']:,} ({info['eligible_pairs']:,} twin pairs)", fontsize=8.5)
     box(ax, cx, 0.36, w, 0.10, f"Analysis sample (complete cases)\n"
                                f"n = {info['final']:,} ({info['final_pairs']:,} twin pairs)", weight="bold", fontsize=8.5)
     box(ax, cx, 0.12, w, 0.13, "Five random splits by twin pair\n(seeds 42–46), each 75% training\n"
                                "and 25% test (998–1,028 per test set);\nsame splits for all models", fontsize=8)
-    arrow(ax, cx, 0.885, cx, 0.80)
+    arrow(ax, cx, 0.915, cx, 0.80)
     arrow(ax, cx, 0.70, cx, 0.41)
     arrow(ax, cx, 0.31, cx, 0.185)
     # Exclusion box

@@ -150,6 +150,48 @@ Anckars{\"a}ter H, Lundstr{\"o}m S, Kollberg L, Kerekes N, Palm C,
 \newblock Twin Research and Human Genetics. 2011;14:495--508.
 \newblock \doi{10.1375/twin.14.6.495}.
 
+\bibitem[\protect\citeauthoryear{Laurens et~al.}{2007}]{R-LAURENS}
+Laurens KR, Hodgins S, Maughan B, Murray RM, Rutter ML, Taylor EA.
+\newblock Community screening for psychotic-like experiences and other putative
+  antecedents of schizophrenia in children aged 9--12 years.
+\newblock Schizophrenia Research. 2007;90:130--146.
+\newblock \doi{10.1016/j.schres.2006.11.006}.
+
+\bibitem[\protect\citeauthoryear{Kelleher et~al.}{2011}]{R-APSS}
+Kelleher I, Harley M, Murtagh A, Cannon M.
+\newblock Are screening instruments valid for psychotic-like experiences? {A}
+  validation study of screening questions for psychotic-like experiences using
+  in-depth clinical interview.
+\newblock Schizophrenia Bulletin. 2011;37:362--369.
+\newblock \doi{10.1093/schbul/sbp057}.
+
+\bibitem[\protect\citeauthoryear{Hirschfeld et~al.}{2000}]{R-MDQ}
+Hirschfeld RMA, Williams JBW, Spitzer RL, Calabrese JR, et~al.
+\newblock Development and validation of a screening instrument for bipolar
+  spectrum disorder: the {Mood Disorder Questionnaire}.
+\newblock American Journal of Psychiatry. 2000;157:1873--1875.
+\newblock \doi{10.1176/appi.ajp.157.11.1873}.
+
+\bibitem[\protect\citeauthoryear{Pavuluri et~al.}{2006}]{R-CMRS}
+Pavuluri MN, Henry DB, Devineni B, Carbray JA, et~al.
+\newblock {Child Mania Rating Scale}: development, reliability, and validity.
+\newblock Journal of the American Academy of Child and Adolescent Psychiatry.
+  2006;45:550--560.
+\newblock \doi{10.1097/01.chi.0000205700.40700.50}.
+
+\bibitem[\protect\citeauthoryear{Radloff}{1977}]{R-CESD}
+Radloff LS.
+\newblock The {CES-D} Scale: a self-report depression scale for research in the
+  general population.
+\newblock Applied Psychological Measurement. 1977;1:385--401.
+\newblock \doi{10.1177/014662167700100306}.
+
+\bibitem[\protect\citeauthoryear{Kohout et~al.}{1993}]{R-CESD11}
+Kohout FJ, Berkman LF, Evans DA, Cornoni-Huntley J.
+\newblock Two shorter forms of the {CES-D} depression symptoms index.
+\newblock Journal of Aging and Health. 1993;5:179--193.
+\newblock \doi{10.1177/089826439300500202}.
+
 \bibitem[\protect\citeauthoryear{Siletti et~al.}{2023}]{R-SILETTI}
 Siletti K, Hodge R, Mossi~Albiach A, Lee K, Ding S, Hu L, et~al.
 \newblock Transcriptomic diversity of cell types across the adult human brain.
@@ -162,6 +204,15 @@ Ge T, Chen CY, Ni Y, Feng YCA, Smoller JW.
   shrinkage priors.
 \newblock Nature Communications. 2019;10:1776.
 \newblock \doi{10.1038/s41467-019-09718-5}.
+
+\bibitem[\protect\citeauthoryear{Larson et~al.}{2010}]{R-ATAC}
+Larson T, Anckars{\"a}ter H, Gillberg C, St{\aa}hlberg O, Carlstr{\"o}m E,
+  Kadesj{\"o} B, et~al.
+\newblock The {Autism--Tics, AD/HD and other Comorbidities} inventory
+  ({A-TAC}): further validation of a telephone interview for epidemiological
+  research.
+\newblock BMC Psychiatry. 2010;10:1.
+\newblock \doi{10.1186/1471-244X-10-1}.
 
 \bibitem[\protect\citeauthoryear{Ke et~al.}{2017}]{R-LGBM}
 Ke G, Meng Q, Finley T, Wang T, Chen W, Ma W, et~al.

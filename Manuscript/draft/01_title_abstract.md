@@ -9,8 +9,15 @@ Does deep cross-modal fusion improve prediction of late-adolescent psychopatholo
 <!-- Alternative: "Deep multimodal fusion versus mixed-effects models for predicting psychotic-like, hypomanic and depressive symptoms at age 18: a twin cohort study". Avoid "DCMFNet" in the title (not an established abbreviation). [AUTHOR INPUT: choose] -->
 
 ## Authors and affiliations
-`[AUTHOR INPUT: full names in submission order; affiliations (department, organisation, city, postcode, country); corresponding author and email]`
-<!-- Thesis lists: student author; supervisor; co-supervisor; examiner (examiners are normally not authors). Every author must meet the authorship criteria in the Springer Nature editorial policies. -->
+<!-- Author list and order given by the author, 2026-10-28; to be confirmed with the supervisors (supervisor_request.md, item 4). Format per line: given name(s) | family name | email. The build reads this list. -->
+- Silpa Soni | Nallacheruvu | `[AUTHOR INPUT: email for the paper]`
+- Shuyang | Yao | shuyang.yao@ki.se
+- Sam | Andersson | sam.andersson@ki.se
+- Tong | Gong | tong.gong@ki.se
+- Lu | Yi | lu.yi@ki.se
+
+`[AUTHOR INPUT: affiliations for each author (department, organisation, city, postcode, country); corresponding author; confirm the given/family-name split above]`
+<!-- Every author must meet the authorship criteria in the Springer Nature editorial policies; contributions go in Declarations (CRediT). -->
 
 ## Abstract
 <!-- src: 04_results.md (prediction_metrics_summary.csv, paired_comparisons.csv, ML_comparators_tuning.csv). Word count without headings: 348 (2026-10-25). -->

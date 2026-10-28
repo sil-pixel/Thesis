@@ -1,6 +1,6 @@
 Subject: DCMFNet paper: draft coming, and a few inputs I need from you
 
-Hi [supervisor names],
+Hi Shuyang and Sam,
 
 I'm turning my thesis on DCMFNet into a paper for BMC Psychiatry, with Diagnostic and Prognostic Research as the fallback if it is transferred. My access to the CATSS data ends on 28 October. All analyses that need the data have now been run, and the retrained DCMFNet reproduces the thesis results. I plan to send you a full draft by [date] so you can review it and suggest edits. **If you would like any further analysis that needs the data, please tell me by [date before 28 October]**, since I can't run anything after that.
 
@@ -33,23 +33,29 @@ DCMFNet was behind the elastic net and boosting on every split, although with fi
 
 **What I need from you.** The draft keeps a marked placeholder for each of these, so you can fill them in directly in the draft if that's easier.
 
-1. **Outcome instruments.** Which questionnaires the age-18 outcomes come from:
-   - the 24 psychotic-like and hypomanic items (score divided by 46);
-   - the 11 depressive items (divided by 33).
+1. **Data collection dates.** The paper should give the birth years of the twins and the years in which the age-15 and age-18 questionnaires were collected. Our analysis data has no birth-year column. Is it enough to give these for the CATSS cohort as a whole (for example, from the cohort documentation), or do we need them for the twins in our final sample? If the latter, could someone with access look them up after 28 October?
+2. **PRS pipeline.** The GWAS summary statistics, LD reference, PRS-CS settings, genotyping platforms, imputation and QC. Should this cite Wang (2025), or another published description?
+3. **Ethics.** The ethical approval(s) for CATSS and the genotype linkage, with committee name, reference number and date, and how consent/assent was obtained.
+4. **Authorship.** The draft currently lists the authors in this order:
+   1. Silpa Soni Nallacheruvu
+   2. Shuyang Yao
+   3. Sam Andersson
+   4. Tong Gong
+   5. Lu Yi
 
-   Also what the constants 46 and 33 are. Reviewers will check this closely.
-2. **Age-9 and age-15 measures.** The instruments and informants for the ADHD and autism items at age 9 (A-TAC, parent-reported?), and whether sex comes from the register or from self-report.
-3. **Participant flow before the analysis file.** How we get from the full CATSS cohort to the 9,261 individuals with both outcomes and substance use at 15. My thesis gives 13,146 at the start and 9,160 genotyped, but only 6,643 of the 9,261 have PRS. I need the correct numbers for the flow figure.
-4. **PRS pipeline.** The GWAS summary statistics, LD reference, PRS-CS settings, genotyping platforms, imputation and QC. Should this cite Wang (2025), or another published description?
-5. **Ethics.** The ethical approval(s) for CATSS and the genotype linkage, with committee name, reference number and date, and how consent/assent was obtained.
-6. **Authorship and declarations.** Author order and affiliations, the corresponding author, who did what (CRediT), funding and grant numbers, and competing interests. Also whether an institutional agreement covers the article processing charge.
-7. **Decisions:**
+   Is this list and order fine, or should we change it? In particular:
+   - should anyone else be included, for example someone responsible for the CATSS data or the genotyping and PRS;
+   - who should be the corresponding author;
+   - each author's affiliation as it should appear on the paper (department, organisation, city, country);
+   - should I check with Tong and Lu directly, or will you?
+5. **Declarations.** Who did what (CRediT), funding and grant numbers, and competing interests. Also whether an institutional agreement covers the article processing charge.
+6. **Decisions:**
    - whether the tuned comparators (linear regression, elastic net, gradient boosting) stay in the main tables, as in the draft, or move to the supplement;
    - the title and keywords, once you see the draft.
-8. **Disclosure of model selection.** DCMFNet's depth configuration was partly chosen using test-set results, and its tuning data overlapped later test sets. The paper discloses this. Since the bias favours DCMFNet, the main conclusion is conservative. Please check that you are comfortable with how this is worded.
-9. **Revisions after 28 October.** I won't be able to run anything once my access ends. If reviewers ask for new analyses, could one of you run them on the server? I'm leaving a note there with the folder layout, the run order and the exact scripts used, all of which are in the GitHub repository.
+7. **Disclosure of model selection.** DCMFNet's depth configuration was partly chosen using test-set results, and its tuning data overlapped later test sets. The paper discloses this. Since the bias favours DCMFNet, the main conclusion is conservative. Please check that you are comfortable with how this is worded.
+8. **Revisions after 28 October.** I won't be able to run anything once my access ends. If reviewers ask for new analyses, could one of you run them on the server? I'm leaving a note there with the folder layout, the run order and the exact scripts used, all of which are in the GitHub repository.
 
 Thank you, and I'll send the full draft by [date].
 
 Best,
-[your name]
+Silpa

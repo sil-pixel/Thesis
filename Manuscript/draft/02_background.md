@@ -23,7 +23,7 @@ Matching the hypothesis does not guarantee better predictions. In clinical predi
 
 Where multimodal prediction of psychosis has worked well, in patients at clinical high risk, separate clinical, polygenic and imaging models were combined step by step rather than fused within one network [@R-KOUTS].
 
-To our knowledge, no study has tested whether a deep fusion network built around substance-use interactions, using polygenic and environmental predictors in a population cohort, predicts better than regression models given the same inputs and interactions. `[VERIFY: based on a non-systematic search, 2026-10-25; confirm with PubMed/Scopus]` Such a test also has to avoid artefacts that favour the more flexible model:
+To our knowledge, no study has tested whether a deep fusion network built around substance-use interactions, using polygenic and environmental predictors in a population cohort, predicts better than regression models given the same inputs and interactions. <!-- VERIFIED 2026-10-28 (L-02): PubMed search, title/abstract blocks for deep/fusion models (deep learning, neural network*, multimodal/multi-modal fusion, multimodal deep, cross-modal, attention mechanism*) × psychotic/hypomanic/depressive outcomes × PRS/substance use/cannabis × adolescent/youth/cohort/twin: 9 hits; adding a regression/mixed-model block gave 2 (both among the 9). Closest records read in full by the author (PMIDs 41399528, 36411277, 34899225): none tested this comparison. Non-systematic search. --> Such a test also has to avoid artefacts that favour the more flexible model:
 - model selection on test data;
 - feature screening outside the training data [@R-KAPOOR];
 - related individuals on both sides of a split [@R-ROBERTS];

@@ -10,7 +10,6 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 
 | ID | Task | Who | Notes |
 |---|---|---|---|
-| V-01 | Save `versions_R.txt` (`sessionInfo()`) and `versions_python.txt` (`pip freeze`) on the server and export them | Author | Needed for the software versions in Methods (Python, PyTorch, scikit-learn, Optuna, SHAP, R, lme4, mgcv) and the GAMM basis check (V-04) |
 | S-01 | Send the supervisor email (`supervisor_request.md`) with the dates filled in, and ask for any extra data analysis before the deadline | Author | Placeholders: names, draft date, request deadline |
 | S-02 | Fill in the placeholders in `server_handover_README.md` (name, date, repo URL, final commit, contact after 28 Oct) and leave it on the server | Author | |
 | G-01 | Commit the current work (draft files, `additional_file_1.md`, `additional_file_2.md`, `figures/`, `latex/build_additional.sh`, `attribution_importance_plot.py` and Fig. 4 files) | Author | Nothing has been committed by the agent |
@@ -20,9 +19,8 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 
 | ID | Task | Where in the draft |
 |---|---|---|
-| M-01 | Outcome instruments, item response scales, the constants 46 and 33, and final outcome labels (PLE-HM, DEP are working labels) | Methods; Discussion limitation; Table 1 |
-| M-06 | Age-9 instruments and informants (A-TAC?), cohort/birth years, data extraction date; sex from register or self-report | Methods |
-| W-02 | Participant flow before the 9,261 eligible (thesis: 13,146 at start; 9,160 genotyped vs 6,643 with PRS) | Methods; Fig. 1 |
+| M-01 | Final outcome labels (PLE-HM, DEP are working labels); instruments, scales, reverse coding and the divisors 46 and 33 resolved 2026-10-28 | Methods; Discussion limitation; Table 1 |
+| M-06 | Birth years and questionnaire collection years: whole cohort or final sample? (asked in the supervisor email, item 1). A-TAC, informant, sex source and data dates resolved 2026-10-28 | Methods |
 | W-03 | PRS pipeline: GWAS summary statistics and their ancestry, LD reference, PRS-CS settings, genotyping platforms, imputation, QC | Methods; Discussion (generalisability) |
 | C-02 | Ethics approvals (committee, reference numbers, dates) and consent procedure | Methods; Declarations |
 | C-03 | Authors, affiliations, corresponding author, CRediT contributions, funding, competing interests, acknowledgements, APC coverage | Title page; Declarations |
@@ -39,9 +37,7 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | ID | Task | Notes |
 |---|---|---|
 | C-10 | Optional: one sentence on known health inequalities (TRIPOD+AI 3c), e.g. sex differences in these symptoms, with a verified citation | Background |
-| L-02 | Confirm the "no direct competitor" statement with a PubMed/Scopus search | `[VERIFY]` in Background and Discussion; current evidence in reference_registry.md §G (non-systematic search 2026-10-25) |
 | C-01 | Check the BMC Psychiatry submission guidelines by hand and resolve every `[VERIFY: JOURNAL REQUIREMENT]` (abstract limit, declarations, clinical trial number) | `00_requirements_checklist.md` |
-| V-04 | Fill in software versions and the GAMM basis dimension from V-01 | Methods |
 | R-02 | Restore the outputs of the used tuning run (git c49eec1) into the repo, next to the later run | Needs author approval (repo change); described in Additional file 1: Table S1 |
 | C-05 | Tagged code release with DOI; separate the analysis code from synthetic-data and deployment code | Methods; Declarations |
 | R-01 | Script or documented steps that create `catss_final_data.csv` (merge of PRS and PCs) | Needs author approval for repo changes |
@@ -88,6 +84,9 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | C-06 | TRIPOD+AI checklist (Additional file 2), mapped item by item; gaps listed as C-09, C-10, Q-08 | 2026-10-27 |
 | W-10 | Read-through: abstract, Results, Discussion and email checked against the CSVs; one rounding error fixed (DEP males, elastic net 0.10 not 0.11); sample-size and not-for-clinical-use sentences added | 2026-10-27 |
 | Q-07 / D-24 | `SCZ15_PROD_seen_hallucinations9` is an age-15 item with a naming error (author); noted in Table S4 | 2026-10-27 |
+| V-01 / V-04 | Version files exported (`versions_python.txt`, `versions_R.txt`); software versions and the GAMM basis (thin-plate, k = 10, mgcv default) filled in Methods. Author to confirm these are the environments the analyses ran in | 2026-10-28 |
+| L-02 | "No direct competitor" statement checked by a PubMed block search (9 hits; PMIDs 41399528, 36411277, 34899225 read by the author, no conflict); VERIFY markers in Background and Discussion replaced by a search note | 2026-10-28 |
+| W-02 | Participant flow starts at 13,146 CATSS twins (thesis Figs 3.1, 3.3; author confirmed); 3,885 excluded for missing exposure or outcome; Fig. 1 and Methods updated. 9,160 genotyped (of 13,146) vs 6,643 with PRS (of 9,261): different denominators | 2026-10-28 |
 | Q-01 | "GLMM" used throughout (author decision); Methods notes that with a Gaussian outcome it is a linear mixed model | 2026-10-27 |
 | Q-08 | TRIPOD+AI 18c, 18d, 19: no published protocol, not registered, no patient and public involvement (author); stated in Methods | 2026-10-27 |
 | C-09 | 95% CIs for the paired R² differences added to Table 4 (corrected resampled t, from paired_comparisons.csv); Methods, Results and checklist item 23a updated | 2026-10-27 |
