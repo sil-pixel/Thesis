@@ -1,0 +1,82 @@
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Loading required package: Matrix
+Loading required package: nlme
+
+Attaching package: ‘nlme’
+
+The following object is masked from ‘package:lme4’:
+
+    lmList
+
+The following object is masked from ‘package:dplyr’:
+
+    collapse
+
+This is mgcv 1.9-4. For overview type '?mgcv'.
+Complete cases: 4033
+
+GLMM: 105 main effects, 24 interactions
+  Seed 42, Pos: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2549, without 0.2756 (difference -0.0206); Wald p = 0.218, LRT p = 0.182
+  Seed 42, Neg: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2260, without 0.2471 (difference -0.0211); Wald p = 0.0528, LRT p = 0.0388
+  Seed 43, Pos: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2258, without 0.2425 (difference -0.0167); Wald p = 0.125, LRT p = 0.0979
+  Seed 43, Neg: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2278, without 0.2379 (difference -0.0101); Wald p = 0.164, LRT p = 0.132
+  Seed 44, Pos: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2252, without 0.2336 (difference -0.0083); Wald p = 0.321, LRT p = 0.273
+  Seed 44, Neg: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.1921, without 0.2058 (difference -0.0137); Wald p = 0.306, LRT p = 0.263
+  Seed 45, Pos: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2061, without 0.2126 (difference -0.0065); Wald p = 0.653, LRT p = 0.607
+  Seed 45, Neg: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.1697, without 0.1796 (difference -0.0099); Wald p = 0.201, LRT p = 0.166
+  Seed 46, Pos: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.2275, without 0.2328 (difference -0.0053); Wald p = 0.848, LRT p = 0.816
+  Seed 46, Neg: fitting GLMM with and without interactions...
+refitting model(s) with ML (instead of REML)
+    Test R² with 0.1966, without 0.2049 (difference -0.0083); Wald p = 0.208, LRT p = 0.17
+
+GAMM: 105 main effects, 24 interactions
+  Seed 42, Pos: fitting GAMM with and without interactions...
+    Test R² with 0.2534, without 0.2732 (difference -0.0198); Wald p = 0.215
+  Seed 42, Neg: fitting GAMM with and without interactions...
+    Test R² with 0.2275, without 0.2485 (difference -0.0211); Wald p = 0.0552
+  Seed 43, Pos: fitting GAMM with and without interactions...
+    Test R² with 0.2250, without 0.2417 (difference -0.0167); Wald p = 0.112
+  Seed 43, Neg: fitting GAMM with and without interactions...
+    Test R² with 0.2231, without 0.2343 (difference -0.0111); Wald p = 0.143
+  Seed 44, Pos: fitting GAMM with and without interactions...
+    Test R² with 0.2257, without 0.2340 (difference -0.0083); Wald p = 0.307
+  Seed 44, Neg: fitting GAMM with and without interactions...
+    Test R² with 0.1879, without 0.2012 (difference -0.0133); Wald p = 0.307
+  Seed 45, Pos: fitting GAMM with and without interactions...
+    Test R² with 0.2056, without 0.2124 (difference -0.0068); Wald p = 0.597
+  Seed 45, Neg: fitting GAMM with and without interactions...
+    Test R² with 0.1656, without 0.1762 (difference -0.0106); Wald p = 0.184
+  Seed 46, Pos: fitting GAMM with and without interactions...
+    Test R² with 0.2273, without 0.2325 (difference -0.0052); Wald p = 0.843
+  Seed 46, Neg: fitting GAMM with and without interactions...
+    Test R² with 0.1946, without 0.2017 (difference -0.0070); Wald p = 0.239
+
+Saved: interaction_ablation_mixed_per_seed.csv (aggregated; can be exported)

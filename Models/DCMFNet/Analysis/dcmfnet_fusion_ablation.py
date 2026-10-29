@@ -40,8 +40,8 @@ from scipy import stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import dcmfnet_test_predictions as base          # sets up the import path of the training code
-import legacy.train as legacy_train
-from dcmfnet.model import SEAttention
+import train as legacy_train
+from model import SEAttention
 
 SEEDS = base.SEEDS
 FULL_PREDICTIONS = "SERVER_ONLY_predictions_DCMFNet.csv"
