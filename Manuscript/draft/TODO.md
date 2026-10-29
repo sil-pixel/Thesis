@@ -39,7 +39,6 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | C-10 | Optional: one sentence on known health inequalities (TRIPOD+AI 3c), e.g. sex differences in these symptoms, with a verified citation | Background |
 | C-01 | Check the BMC Psychiatry submission guidelines by hand and resolve every `[VERIFY: JOURNAL REQUIREMENT]` (abstract limit, declarations, clinical trial number) | `00_requirements_checklist.md` |
 | R-02 | Restore the outputs of the used tuning run (git c49eec1) into the repo, next to the later run | Needs author approval (repo change); described in Additional file 1: Table S1 |
-| C-05 | Tagged GitHub release archived on Zenodo for a DOI (author: link Zenodo, publish release, send DOI); README manuscript section with run order added 2026-10-29 | Methods; Declarations |
 | R-01 | Script or documented steps that create `catss_final_data.csv` (merge of PRS and PCs) | Needs author approval for repo changes |
 
 ## 4. Not pursued (disclosed as limitations; can be revisited if reviewers ask)
@@ -87,6 +86,7 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | L-02 | "No direct competitor" statement checked by a PubMed block search (9 hits; PMIDs 41399528, 36411277, 34899225 read by the author, no conflict); VERIFY markers in Background and Discussion replaced by a search note | 2026-10-28 |
 | W-02 | Participant flow starts at 13,146 CATSS twins (thesis Figs 3.1, 3.3; author confirmed); 3,885 excluded for missing exposure or outcome; Fig. 1 and Methods updated. 9,160 genotyped (of 13,146) vs 6,643 with PRS (of 9,261): different denominators | 2026-10-28 |
 | W-08 | README restructured: manuscript section (summary, folders, run order), thesis abstract with a note on the re-analysis, and Bodhica synthetic-data section with metrics labelled as synthetic | 2026-10-29 |
+| C-05 | Code archived on Zenodo (concept DOI 10.5281/zenodo.23755819; v1.0-manuscript); DOI in Methods and Availability statement. v1.1-manuscript tag (README) not yet archived on Zenodo | 2026-10-29 |
 | Q-01 | "GLMM" used throughout (author decision); Methods notes that with a Gaussian outcome it is a linear mixed model | 2026-10-27 |
 | Q-08 | TRIPOD+AI 18c, 18d, 19: no published protocol, not registered, no patient and public involvement (author); stated in Methods | 2026-10-27 |
 | C-09 | 95% CIs for the paired R² differences added to Table 4 (corrected resampled t, from paired_comparisons.csv); Methods, Results and checklist item 23a updated | 2026-10-27 |

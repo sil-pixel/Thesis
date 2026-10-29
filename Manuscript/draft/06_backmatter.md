@@ -26,7 +26,7 @@ ACE: adverse childhood experiences; ADHD: attention-deficit/hyperactivity disord
 Not applicable. <!-- No individual-level data, images or case details are reported. -->
 
 ## Availability of data and materials
-Draft: "The CATSS data contain sensitive personal information and cannot be shared publicly under Swedish data-protection law. Researchers can apply for access through the Swedish Twin Registry, Karolinska Institutet `[AUTHOR INPUT: exact procedure/URL]`. The analysis code is available at `[TODO: repository release + DOI — C-05]`."
+Draft: "The CATSS data contain sensitive personal information and cannot be shared publicly under Swedish data-protection law. Researchers can apply for access through the Swedish Twin Registry, Karolinska Institutet `[AUTHOR INPUT: exact procedure/URL]`. The analysis code is available at https://doi.org/10.5281/zenodo.23755819."
 
 ## Competing interests
 `[AUTHOR INPUT]` or: "The authors declare that they have no competing interests."
