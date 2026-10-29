@@ -9,15 +9,16 @@ Does deep cross-modal fusion improve prediction of late-adolescent psychopatholo
 <!-- Alternative: "Deep multimodal fusion versus mixed-effects models for predicting psychotic-like, hypomanic and depressive symptoms at age 18: a twin cohort study". Avoid "DCMFNet" in the title (not an established abbreviation). [AUTHOR INPUT: choose] -->
 
 ## Authors and affiliations
-<!-- Author list and order given by the author, 2026-10-28; to be confirmed with the supervisors (supervisor_request.md, item 4). Format per line: given name(s) | family name | email. The build reads this list. -->
-- Silpa Soni | Nallacheruvu | silpa.soni.nallacheruvu@stud.ki.se
-- Shuyang | Yao | shuyang.yao@ki.se
-- Sam | Andersson | sam.andersson@ki.se
-- Tong | Gong | tong.gong@ki.se
-- Lu | Yi | lu.yi@ki.se
+<!-- Author list and order given by the author, 2026-10-28; to be confirmed with the supervisors (supervisor_request.md, item 4). Format per line: given name(s) | family name | email | affiliation number(s), comma-separated. The build reads this list and the numbered "Affiliation N:" lines. -->
+- Silpa Soni | Nallacheruvu | silpa.soni.nallacheruvu@stud.ki.se | 1
+- Shuyang | Yao | shuyang.yao@ki.se | 1
+- Sam | Andersson | sam.andersson@ki.se | 2
+- Tong | Gong | tong.gong@ki.se | 1
+- Lu | Yi | lu.yi@ki.se | 1
 
-Affiliation: Department of Medical Epidemiology and Biostatistics, Karolinska Institutet, Stockholm, Sweden
-<!-- author, 2026-10-28; to be confirmed with the supervisors for every author (supervisor_request.md, item 4) -->
+Affiliation 1: Department of Medical Epidemiology and Biostatistics, Karolinska Institutet, Stockholm, Sweden
+Affiliation 2: Department of Clinical Neuroscience, Karolinska Institutet, Stockholm, Sweden
+<!-- author, 2026-10-28 (affiliation 1, for the author; others to confirm) and 2026-10-29 (Sam Andersson: affiliation 2); supervisor_request.md, item 4 -->
 
 `[AUTHOR INPUT: confirm the affiliation for each author, postcode, corresponding author, and the given/family-name split above]`
 <!-- Every author must meet the authorship criteria in the Springer Nature editorial policies; contributions go in Declarations (CRediT). -->

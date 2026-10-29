@@ -56,36 +56,38 @@ Included and excluded participants were broadly similar (Table 1).
 
 All models were evaluated on the same five twin-pair-grouped train/test splits, and all predictions were scored with the same code. R² is 1 − SSE/SST throughout, and SDs are across the five splits (population SD). <!-- src: Data Preprocessing/split_summary.csv (matches_dcmfnet_log = True for all seeds); Models/Model Comparison/prediction_evaluation.py core_metrics(), summarise() -->
 
-**Table 3.** Test-set performance, mean ± SD over five splits.
+**Table 3.** Test-set R² and RMSE, mean ± SD over five splits, with all predictors. MAE and Spearman's ρ are given in Additional file 1: Table S6. <!-- R² rounded to 3 decimals directly from prediction_metrics_summary.csv r2_mean/r2_std (GLMM DEP 0.202459 → 0.202) -->
 
-| Model | R² | RMSE | MAE | Spearman ρ |
-|----------------|----------------|----------------|----------------|----------------|
-| *PLE-HM* | | | | |
-| DCMFNet | 0.2058 ± 0.0189 | 0.0903 ± 0.0013 | 0.0712 ± 0.0004 | 0.4497 ± 0.0193 |
-| GLMM | 0.2279 ± 0.0156 | 0.0890 ± 0.0014 | 0.0700 ± 0.0012 | 0.4641 ± 0.0183 |
-| GAMM | 0.2274 ± 0.0153 | 0.0891 ± 0.0014 | 0.0699 ± 0.0011 | 0.4633 ± 0.0180 |
-| Linear regression | 0.2393 ± 0.0212 | 0.0884 ± 0.0017 | 0.0695 ± 0.0012 | 0.4728 ± 0.0215 |
-| Elastic net | 0.2603 ± 0.0169 | 0.0871 ± 0.0016 | 0.0691 ± 0.0010 | 0.4915 ± 0.0182 |
-| Gradient boosting | 0.2441 ± 0.0188 | 0.0881 ± 0.0016 | 0.0700 ± 0.0008 | 0.4792 ± 0.0194 |
-| *DEP* | | | | |
-| DCMFNet | 0.1984 ± 0.0208 | 0.1562 ± 0.0017 | 0.1242 ± 0.0019 | 0.4509 ± 0.0135 |
-| GLMM | 0.2025 ± 0.0220 | 0.1559 ± 0.0024 | 0.1226 ± 0.0016 | 0.4460 ± 0.0154 |
-| GAMM | 0.1998 ± 0.0230 | 0.1561 ± 0.0026 | 0.1228 ± 0.0017 | 0.4421 ± 0.0163 |
-| Linear regression | 0.2150 ± 0.0253 | 0.1546 ± 0.0026 | 0.1216 ± 0.0017 | 0.4531 ± 0.0203 |
-| Elastic net | 0.2373 ± 0.0146 | 0.1524 ± 0.0024 | 0.1197 ± 0.0012 | 0.4733 ± 0.0193 |
-| Gradient boosting | 0.2287 ± 0.0163 | 0.1533 ± 0.0027 | 0.1203 ± 0.0017 | 0.4645 ± 0.0194 |
+| Model | R² | RMSE |
+|--------------------|------------------|------------------|
+| *PLE-HM* | | |
+| DCMFNet | 0.206 ± 0.019 | 0.0903 ± 0.0013 |
+| GLMM | 0.228 ± 0.016 | 0.0890 ± 0.0014 |
+| GAMM | 0.227 ± 0.015 | 0.0891 ± 0.0014 |
+| Linear regression | 0.239 ± 0.021 | 0.0884 ± 0.0017 |
+| Elastic net | 0.260 ± 0.017 | 0.0871 ± 0.0016 |
+| Gradient boosting | 0.244 ± 0.019 | 0.0881 ± 0.0016 |
+| *DEP* | | |
+| DCMFNet | 0.198 ± 0.021 | 0.1562 ± 0.0017 |
+| GLMM | 0.202 ± 0.022 | 0.1559 ± 0.0024 |
+| GAMM | 0.200 ± 0.023 | 0.1561 ± 0.0026 |
+| Linear regression | 0.215 ± 0.025 | 0.1546 ± 0.0026 |
+| Elastic net | 0.237 ± 0.015 | 0.1524 ± 0.0024 |
+| Gradient boosting | 0.229 ± 0.016 | 0.1533 ± 0.0027 |
 
 <!-- src: Models/Model Comparison/prediction_metrics_summary.csv (predictor_set = full). DCMFNet rows are from the retrained models, which reproduce Models/DCMFNet/Results/Final Best Model/test_results_summary.csv (D-23, resolved 2026-10-24); GLMM/GAMM rows equal GLMM_updated_summary.csv / GAMM_updated_summary.csv. Linear regression, elastic net and gradient boosting: ml_comparators_test_predictions.py; linear regression equals the lazy_predict.py screening per split to 4 decimals (Models/ML/Results/{Pos,Neg}_benchmark_per_seed.csv). -->
 <!-- note: DCMFNet configuration was selected partly on test data (D-04, D-09, D-21; TODO E-03), so its row may be optimistic. GLMM/GAMM were not tuned. The ML comparators were tuned inside the training splits only. -->
 
-Mean R² was higher for the GLMM and GAMM than for DCMFNet on both outcomes. The difference was 0.022 for PLE-HM and 0.004 for DEP (GLMM minus DCMFNet). GLMM and GAMM performed almost identically. For DEP, DCMFNet had a higher Spearman correlation than the mixed models (0.451 vs 0.446 and 0.442). <!-- src: same file -->
+Mean R² was higher for the GLMM and GAMM than for DCMFNet on both outcomes. The difference was 0.022 for PLE-HM and 0.004 for DEP (GLMM minus DCMFNet). GLMM and GAMM performed almost identically. For DEP, DCMFNet had a higher Spearman correlation than the mixed models (0.451 vs 0.446 and 0.442; Additional file 1: Table S6). <!-- src: same file -->
 
 All three machine-learning comparators had higher mean R² than DCMFNet and the mixed models for both outcomes:
 - **elastic net:** 0.260 (PLE-HM) and 0.237 (DEP), the best of all models;
 - **gradient boosting:** 0.244 and 0.229;
 - **linear regression without penalty:** 0.239 and 0.215.
 
-The comparators also had the highest Spearman correlations (0.47–0.49 for PLE-HM, 0.45–0.47 for DEP). <!-- src: prediction_metrics_summary.csv (full) -->
+Fig. 3 shows the results of every model on each split.
+
+The comparators also had the highest Spearman correlations (0.47–0.49 for PLE-HM, 0.45–0.47 for DEP; Additional file 1: Table S6). <!-- src: prediction_metrics_summary.csv (full) -->
 
 The tuning favoured strong shrinkage and simple structure:
 - **Elastic net:** the selected L1 ratio was 0.05, close to ridge regression, in 15 of 20 fits.
@@ -185,7 +187,7 @@ With depth set per block rather than uniformly, test RMSE was 0.0898 ± 0.0015 v
 
 In contrast, DCMFNet's SHAP rankings were stable across splits (mean ρ 0.79 and 0.85), as were its permutation rankings (0.73 and 0.82). <!-- src: attribution_agreement_summary.csv (DCMFNet_gate_fused vs DCMFNet_SHAP 0.040 / 0.360; DCMFNet_gate_independent vs DCMFNet_SHAP −0.022 / 0.215; top3_overlap 0.27–0.53); attribution_stability.csv (DCMFNet_SHAP 0.793 / 0.852; DCMFNet_permutation 0.735 / 0.818) -->
 
-**Which groups the models relied on.** SHAP values and permutation importance gave a similar picture for all three models (Fig. 4).
+**Which groups the models relied on.** SHAP values and permutation importance gave a similar picture for all three models (Fig. 5).
 - **Symptoms at age 15 (SCZ15)** had the largest share of SHAP importance:
   - DCMFNet: 34% (PLE-HM) and 33% (DEP);
   - GLMM: 30% and 28%.
@@ -237,7 +239,7 @@ With 11 groups these correlations are coarse. These attributions describe what t
   - DCMFNet's slope was lower than the elastic net's for PLE-HM (difference −0.26; Holm-adjusted p = 0.028), and this also held with age-15 predictors only (p = 0.002);
   - no other difference in slope was significant after correction (smallest Holm-adjusted p 0.085);
   - for the main models, split-specific slopes ranged from 0.74 to 0.96.
-- **Deciles of predicted score**, averaged over the five splits (Fig. 3):
+- **Deciles of predicted score**, averaged over the five splits (Fig. 4):
   - DCMFNet and the mixed models overestimated the observed mean in the highest decile, for DEP (predicted 0.448 in the GLMM and 0.455 in DCMFNet; observed 0.404 and 0.406) and for PLE-HM (0.252 and 0.261; observed 0.234 and 0.226);
   - the mixed models underestimated the lowest decile for DEP (0.108 vs 0.135), whereas DCMFNet did not (0.134 vs 0.135).
 - **GLMM vs GAMM:** the two calibration curves were almost identical.

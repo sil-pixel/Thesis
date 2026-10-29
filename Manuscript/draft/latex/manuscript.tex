@@ -33,6 +33,7 @@
 \DeclareUnicodeCharacter{2074}{\textsuperscript{4}}
 \DeclareUnicodeCharacter{2075}{\textsuperscript{5}}
 \DeclareUnicodeCharacter{207B}{\textsuperscript{--}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\rightarrow}}
 \DeclareUnicodeCharacter{2212}{\ensuremath{-}}
 \DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
 \DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
@@ -44,10 +45,11 @@
 
 \author[1]{\fnm{Silpa Soni} \sur{Nallacheruvu}}\email{silpa.soni.nallacheruvu@stud.ki.se}
 \author[1]{\fnm{Shuyang} \sur{Yao}}\email{shuyang.yao@ki.se}
-\author[1]{\fnm{Sam} \sur{Andersson}}\email{sam.andersson@ki.se}
+\author[2]{\fnm{Sam} \sur{Andersson}}\email{sam.andersson@ki.se}
 \author[1]{\fnm{Tong} \sur{Gong}}\email{tong.gong@ki.se}
 \author[1]{\fnm{Lu} \sur{Yi}}\email{lu.yi@ki.se}
 \affil[1]{\orgdiv{Department of Medical Epidemiology and Biostatistics}, \orgname{Karolinska Institutet}, \orgaddress{\city{Stockholm}, \country{Sweden}}}
+\affil[2]{\orgdiv{Department of Clinical Neuroscience}, \orgname{Karolinska Institutet}, \orgaddress{\city{Stockholm}, \country{Sweden}}}
 
 \abstract{% src: 04_results.md (prediction_metrics_summary.csv, paired_comparisons.csv, ML_comparators_tuning.csv). Word count without headings: 348 (2026-10-25). 
 
@@ -124,7 +126,7 @@ All models were evaluated on identical twin-pair-grouped splits in the Child and
 
 We used data from the Child and Adolescent Twin Study in Sweden (CATSS), an ongoing population-based cohort of all twins born in Sweden since July 1992, identified through the Swedish Twin Registry. Parents are interviewed by telephone about their children's health around the twins' 9th or 12th birthday, and twins and parents complete questionnaires at ages 15 and 18 \citep{R-CATSS}. % src: Thesis Report §3.1 p.7; Anckarsäter et al. 2011 abstract (PMID 22506305, read 2026-10-28): all twins born in Sweden since 1 July 1992; parental interviews at the 9th or 12th birthday since 2004; questionnaires to twins and parents at 15 and 18. Response rates not stated here (80% for the age-9/12 interviews up to 2010 only). 
 We used the neurodevelopmental measures from the age-9 parent interview, self-reports at ages 15 and 18, and genotype data available for a subset of participants. % informant verified 2026-10-28 from Anckarsäter et al. 2011 (parental telephone interview at 9/12) 
-The analysis data were prepared by the research team (files last updated in November 2023) and analysed on a secure server at Karolinska Institutet between November 2025 and October 2026. % author, 2026-10-28: original data files last modified 2023-11-23; access started by 2025-11-06 at the latest; access ends about 2026-10-28 
+The analysis data were prepared by the research team (files last updated in November 2023) and analysed on a secure server at Karolinska Institutet between November 2025 and October 2026. % author, 2026-10-28: original data files last modified 2023-11-23; access started by 2025-11-06 at the latest; access ends 2026-10-31 
 \textcolor{red}{{[}AUTHOR INPUT: years in which the age-15 and age-18 questionnaires used here were collected, and birth years covered (M-06); from the research team or CATSS documentation{]}}
 
 Individuals were eligible if they had substance-use data at age 15 and outcome data at age 18. The analysis sample comprised all eligible individuals with complete data on every predictor and both outcomes: 4,033 individuals from 2,690 twin pairs. The sample size was set by the available data; no formal sample size calculation was made. % src: Models/DCMFNet/Results/Final Best Model/best_model_training.log:1-3 (shape (4033, 125); 2,017 + 673 = 2,690 cmpair IDs) 
@@ -441,71 +443,49 @@ SES (4), item mean (SD) & 2.594 (0.460) & 2.501 (0.513) & 0.19 \\
 
 All models were evaluated on the same five twin-pair-grouped train/test splits, and all predictions were scored with the same code. R² is 1 − SSE/SST throughout, and SDs are across the five splits (population SD). % src: Data Preprocessing/split_summary.csv (matches_dcmfnet_log = True for all seeds); Models/Model Comparison/prediction_evaluation.py core_metrics(), summarise() 
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
-\caption{Test-set performance, mean ± SD over five splits.}\tabularnewline
+\begin{longtable}[]{@{}lll@{}}
+\caption{Test-set R² and RMSE, mean ± SD over five splits, with all predictors. MAE and Spearman's ρ are given in Additional file 1: Table S6. % R² rounded to 3 decimals directly from prediction_metrics_summary.csv r2_mean/r2_std (GLMM DEP 0.202459 → 0.202) 
+}\tabularnewline
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Model
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-R²
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-RMSE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-MAE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Spearman ρ
-\end{minipage} \\
+Model & R² & RMSE \\
 \midrule\noalign{}
 \endfirsthead
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Model
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-R²
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-RMSE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-MAE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Spearman ρ
-\end{minipage} \\
+Model & R² & RMSE \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\emph{PLE-HM} & & & & \\
-DCMFNet & 0.2058 ± 0.0189 & 0.0903 ± 0.0013 & 0.0712 ± 0.0004 & 0.4497 ± 0.0193 \\
-GLMM & 0.2279 ± 0.0156 & 0.0890 ± 0.0014 & 0.0700 ± 0.0012 & 0.4641 ± 0.0183 \\
-GAMM & 0.2274 ± 0.0153 & 0.0891 ± 0.0014 & 0.0699 ± 0.0011 & 0.4633 ± 0.0180 \\
-Linear regression & 0.2393 ± 0.0212 & 0.0884 ± 0.0017 & 0.0695 ± 0.0012 & 0.4728 ± 0.0215 \\
-Elastic net & 0.2603 ± 0.0169 & 0.0871 ± 0.0016 & 0.0691 ± 0.0010 & 0.4915 ± 0.0182 \\
-Gradient boosting & 0.2441 ± 0.0188 & 0.0881 ± 0.0016 & 0.0700 ± 0.0008 & 0.4792 ± 0.0194 \\
-\emph{DEP} & & & & \\
-DCMFNet & 0.1984 ± 0.0208 & 0.1562 ± 0.0017 & 0.1242 ± 0.0019 & 0.4509 ± 0.0135 \\
-GLMM & 0.2025 ± 0.0220 & 0.1559 ± 0.0024 & 0.1226 ± 0.0016 & 0.4460 ± 0.0154 \\
-GAMM & 0.1998 ± 0.0230 & 0.1561 ± 0.0026 & 0.1228 ± 0.0017 & 0.4421 ± 0.0163 \\
-Linear regression & 0.2150 ± 0.0253 & 0.1546 ± 0.0026 & 0.1216 ± 0.0017 & 0.4531 ± 0.0203 \\
-Elastic net & 0.2373 ± 0.0146 & 0.1524 ± 0.0024 & 0.1197 ± 0.0012 & 0.4733 ± 0.0193 \\
-Gradient boosting & 0.2287 ± 0.0163 & 0.1533 ± 0.0027 & 0.1203 ± 0.0017 & 0.4645 ± 0.0194 \\
+\emph{PLE-HM} & & \\
+DCMFNet & 0.206 ± 0.019 & 0.0903 ± 0.0013 \\
+GLMM & 0.228 ± 0.016 & 0.0890 ± 0.0014 \\
+GAMM & 0.227 ± 0.015 & 0.0891 ± 0.0014 \\
+Linear regression & 0.239 ± 0.021 & 0.0884 ± 0.0017 \\
+Elastic net & 0.260 ± 0.017 & 0.0871 ± 0.0016 \\
+Gradient boosting & 0.244 ± 0.019 & 0.0881 ± 0.0016 \\
+\emph{DEP} & & \\
+DCMFNet & 0.198 ± 0.021 & 0.1562 ± 0.0017 \\
+GLMM & 0.202 ± 0.022 & 0.1559 ± 0.0024 \\
+GAMM & 0.200 ± 0.023 & 0.1561 ± 0.0026 \\
+Linear regression & 0.215 ± 0.025 & 0.1546 ± 0.0026 \\
+Elastic net & 0.237 ± 0.015 & 0.1524 ± 0.0024 \\
+Gradient boosting & 0.229 ± 0.016 & 0.1533 ± 0.0027 \\
 \end{longtable}
 
 % src: Models/Model Comparison/prediction_metrics_summary.csv (predictor_set = full). DCMFNet rows are from the retrained models, which reproduce Models/DCMFNet/Results/Final Best Model/test_results_summary.csv (D-23, resolved 2026-10-24); GLMM/GAMM rows equal GLMM_updated_summary.csv / GAMM_updated_summary.csv. Linear regression, elastic net and gradient boosting: ml_comparators_test_predictions.py; linear regression equals the lazy_predict.py screening per split to 4 decimals (Models/ML/Results/{Pos,Neg}_benchmark_per_seed.csv). 
 
 % note: DCMFNet configuration was selected partly on test data (D-04, D-09, D-21; TODO E-03), so its row may be optimistic. GLMM/GAMM were not tuned. The ML comparators were tuned inside the training splits only. 
 
-Mean R² was higher for the GLMM and GAMM than for DCMFNet on both outcomes. The difference was 0.022 for PLE-HM and 0.004 for DEP (GLMM minus DCMFNet). GLMM and GAMM performed almost identically. For DEP, DCMFNet had a higher Spearman correlation than the mixed models (0.451 vs 0.446 and 0.442). % src: same file 
+Mean R² was higher for the GLMM and GAMM than for DCMFNet on both outcomes. The difference was 0.022 for PLE-HM and 0.004 for DEP (GLMM minus DCMFNet). GLMM and GAMM performed almost identically. For DEP, DCMFNet had a higher Spearman correlation than the mixed models (0.451 vs 0.446 and 0.442; Additional file 1: Table S6). % src: same file 
 
 All three machine-learning comparators had higher mean R² than DCMFNet and the mixed models for both outcomes:
 - \textbf{elastic net:} 0.260 (PLE-HM) and 0.237 (DEP), the best of all models;
 - \textbf{gradient boosting:} 0.244 and 0.229;
 - \textbf{linear regression without penalty:} 0.239 and 0.215.
 
-The comparators also had the highest Spearman correlations (0.47--0.49 for PLE-HM, 0.45--0.47 for DEP). % src: prediction_metrics_summary.csv (full) 
+Fig. 3 shows the results of every model on each split.
+
+The comparators also had the highest Spearman correlations (0.47--0.49 for PLE-HM, 0.45--0.47 for DEP; Additional file 1: Table S6). % src: prediction_metrics_summary.csv (full) 
 
 The tuning favoured strong shrinkage and simple structure:
 - \textbf{Elastic net:} the selected L1 ratio was 0.05, close to ridge regression, in 15 of 20 fits.
@@ -651,7 +631,7 @@ In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (eff
 
 In contrast, DCMFNet's SHAP rankings were stable across splits (mean ρ 0.79 and 0.85), as were its permutation rankings (0.73 and 0.82). % src: attribution_agreement_summary.csv (DCMFNet_gate_fused vs DCMFNet_SHAP 0.040 / 0.360; DCMFNet_gate_independent vs DCMFNet_SHAP −0.022 / 0.215; top3_overlap 0.27–0.53); attribution_stability.csv (DCMFNet_SHAP 0.793 / 0.852; DCMFNet_permutation 0.735 / 0.818) 
 
-\textbf{Which groups the models relied on.} SHAP values and permutation importance gave a similar picture for all three models (Fig. 4).
+\textbf{Which groups the models relied on.} SHAP values and permutation importance gave a similar picture for all three models (Fig. 5).
 - \textbf{Symptoms at age 15 (SCZ15)} had the largest share of SHAP importance:
 - DCMFNet: 34\% (PLE-HM) and 33\% (DEP);
 - GLMM: 30\% and 28\%.
@@ -752,7 +732,7 @@ Gradient boosting & −0.003 (0.006) & 1.00 (0.09) & 0.35 (0.04) & 0.78 (0.01) &
 - DCMFNet's slope was lower than the elastic net's for PLE-HM (difference −0.26; Holm-adjusted p = 0.028), and this also held with age-15 predictors only (p = 0.002);
 - no other difference in slope was significant after correction (smallest Holm-adjusted p 0.085);
 - for the main models, split-specific slopes ranged from 0.74 to 0.96.
-- \textbf{Deciles of predicted score}, averaged over the five splits (Fig. 3):
+- \textbf{Deciles of predicted score}, averaged over the five splits (Fig. 4):
 - DCMFNet and the mixed models overestimated the observed mean in the highest decile, for DEP (predicted 0.448 in the GLMM and 0.455 in DCMFNet; observed 0.404 and 0.406) and for PLE-HM (0.252 and 0.261; observed 0.234 and 0.226);
 - the mixed models underestimated the lowest decile for DEP (0.108 vs 0.135), whereas DCMFNet did not (0.134 vs 0.135).
 - \textbf{GLMM vs GAMM:} the two calibration curves were almost identical.
@@ -934,9 +914,11 @@ Not applicable. \textcolor{red}{{[}VERIFY: JOURNAL REQUIREMENT{]}}
 
 \textbf{Fig. 2} Architecture of the deep cross-modal fusion network (DCMFNet). Left: substance use at age 15 (SUD15, the anchor) is fused with each of nine predictor groups in an iterative gated fusion (IGF) block of depth \emph{L} (fused stream); each block output passes through a feature gate \(\phi\), and the gated outputs are concatenated and gated again (\(\phi_F\)). The independent stream gates all 105 inputs, including the genotyping batch × principal component terms (\(\phi_I\)). Both streams are concatenated, gated (\(\phi_{\mathrm{out}}\)) and passed to a linear output. Numbers of inputs per group in parentheses. Right: one layer of an IGF block (Eqs 1--3 in Methods). % src: figures/make_figures.py; Models/DCMFNet/Method/dcmfnet/model.py; hyperparameters.json 
 
-\textbf{Fig. 3} Calibration curves for each model and outcome, by decile of predicted score: mean predicted against mean observed score per decile, averaged over the five test sets. The dashed line shows perfect calibration. % src: figures/fig3_calibration.pdf, redrawn by figures/make_figures.py from Models/Model Comparison/calibration_bins.csv (same data as calibration_curves_full.pdf) 
+\textbf{Fig. 3} Test-set R² of each model on each of the five splits, with all predictors. Each symbol is one split; grey lines join the results of the same split, so that within-split differences between models can be seen. Black bars and the numbers above each panel give the mean over the five splits. The dashed line separates the fusion network and the mixed models from the comparators tuned within the training data. % src: figures/make_figures.py fig3() from Models/Model Comparison/prediction_metrics_per_seed.csv (predictor_set = full) 
 
-\textbf{Fig. 4} Importance of each predictor group, by model and attribution method, for psychotic-like and hypomanic experiences (left) and depressive symptoms (right). Each cell gives the group's share of the total importance for that method, as a percentage averaged over the five test sets. The two left-hand columns of each panel show DCMFNet's mean gate values, also expressed as shares. The fused stream has no gate for substance use at age 15 (the anchor group) or for the batch × PC terms, so these cells are empty. Negative permutation importances were set to zero. Groups are ordered by their mean GLMM SHAP share across the two outcomes. Importance describes what each fitted model uses for prediction, not causal effects. % src: Models/Model Comparison/attribution_importance_by_group.pdf (attribution_importance_plot.py, from attribution_modality_summary.csv). Figure labels say "GLMM"; relabel if the model is called LMM in the final text. 
+\textbf{Fig. 4} Calibration of each model, by decile of predicted score: mean predicted against mean observed score per decile, averaged over the five test sets, with all predictors. Each panel highlights one model; the other models are shown in light grey for comparison. The dashed line shows perfect calibration. % src: figures/make_figures.py fig4() from Models/Model Comparison/calibration_bins.csv (same data as calibration_curves_full.pdf) 
+
+\textbf{Fig. 5} Importance of each predictor group, by model and attribution method, for psychotic-like and hypomanic experiences (left) and depressive symptoms (right). Each cell gives the group's share of the total importance for that method, as a percentage averaged over the five test sets. The two left-hand columns of each panel show DCMFNet's mean gate values, also expressed as shares. The fused stream has no gate for substance use at age 15 (the anchor group) or for the batch × PC terms, so these cells are empty. Negative permutation importances were set to zero. Groups are ordered by their mean GLMM SHAP share across the two outcomes. Importance describes what each fitted model uses for prediction, not causal effects. % src: Models/Model Comparison/attribution_importance_by_group.pdf (attribution_importance_plot.py, from attribution_modality_summary.csv). Figure labels say "GLMM"; relabel if the model is called LMM in the final text. 
 
 \bibliography{references}
 
@@ -949,9 +931,12 @@ Not applicable. \textcolor{red}{{[}VERIFY: JOURNAL REQUIREMENT{]}}
 \noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig2_architecture.pdf}
 \clearpage
 \noindent\textbf{Fig. 3}\par\medskip
-\noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig3_calibration.pdf}
+\noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig3_performance.pdf}
 \clearpage
 \noindent\textbf{Fig. 4}\par\medskip
-\noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig4_attribution.pdf}
+\noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig4_calibration.pdf}
+\clearpage
+\noindent\textbf{Fig. 5}\par\medskip
+\noindent\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../figures/fig5_attribution.pdf}
 
 \end{document}

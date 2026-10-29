@@ -21,6 +21,7 @@ Contents:
 - Table S3. Fixed effects and smooth terms of the mixed models
 - Table S4. Predictors by group
 - Table S5. Selection of the fusion depths
+- Table S6. Test-set performance on all metrics
 
 ## Table S1. DCMFNet hyperparameter search
 
@@ -534,3 +535,26 @@ After the hyperparameter search (Table S1), the depth of each fusion block was v
 |---|---|---|---|---|---|
 | Per-block | [1, 4, 2, 1, 1, 2, 2, 2, 3] | 0.1536 | 0.213 | 0.1551 | 0.201 |
 | Uniform | 2 | 0.1504 | 0.245 | 0.1531 | 0.221 |
+
+## Table S6. Test-set performance on all metrics
+
+Mean ± SD over the five test sets, with all predictors. R², coefficient of determination (1 − SSE/SST); RMSE, root-mean-squared error; MAE, mean absolute error; Spearman ρ, rank correlation between predicted and observed scores. R² and RMSE are also given in Table 3 of the main text.
+
+<!-- src: Models/Model Comparison/prediction_metrics_summary.csv (predictor_set = full); moved from main-text Table 3 on 2026-10-29 -->
+
+| Model | R² | RMSE | MAE | Spearman ρ |
+|---|---|---|---|---|
+| *PLE-HM* | | | | |
+| DCMFNet | 0.2058 ± 0.0189 | 0.0903 ± 0.0013 | 0.0712 ± 0.0004 | 0.4497 ± 0.0193 |
+| GLMM | 0.2279 ± 0.0156 | 0.0890 ± 0.0014 | 0.0700 ± 0.0012 | 0.4641 ± 0.0183 |
+| GAMM | 0.2274 ± 0.0153 | 0.0891 ± 0.0014 | 0.0699 ± 0.0011 | 0.4633 ± 0.0180 |
+| Linear regression | 0.2393 ± 0.0212 | 0.0884 ± 0.0017 | 0.0695 ± 0.0012 | 0.4728 ± 0.0215 |
+| Elastic net | 0.2603 ± 0.0169 | 0.0871 ± 0.0016 | 0.0691 ± 0.0010 | 0.4915 ± 0.0182 |
+| Gradient boosting | 0.2441 ± 0.0188 | 0.0881 ± 0.0016 | 0.0700 ± 0.0008 | 0.4792 ± 0.0194 |
+| *DEP* | | | | |
+| DCMFNet | 0.1984 ± 0.0208 | 0.1562 ± 0.0017 | 0.1242 ± 0.0019 | 0.4509 ± 0.0135 |
+| GLMM | 0.2025 ± 0.0220 | 0.1559 ± 0.0024 | 0.1226 ± 0.0016 | 0.4460 ± 0.0154 |
+| GAMM | 0.1998 ± 0.0230 | 0.1561 ± 0.0026 | 0.1228 ± 0.0017 | 0.4421 ± 0.0163 |
+| Linear regression | 0.2150 ± 0.0253 | 0.1546 ± 0.0026 | 0.1216 ± 0.0017 | 0.4531 ± 0.0203 |
+| Elastic net | 0.2373 ± 0.0146 | 0.1524 ± 0.0024 | 0.1197 ± 0.0012 | 0.4733 ± 0.0193 |
+| Gradient boosting | 0.2287 ± 0.0163 | 0.1533 ± 0.0027 | 0.1203 ± 0.0017 | 0.4645 ± 0.0194 |

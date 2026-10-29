@@ -1,19 +1,19 @@
 # Manuscript backlog
 
-Updated 2026-10-27. Target journal: BMC Psychiatry (fallback by transfer: Diagnostic and Prognostic Research). Data access ends 2026-10-28.
+Updated 2026-10-29. Target journal: BMC Psychiatry (fallback by transfer: Diagnostic and Prognostic Research). Data access ends 2026-10-31.
 Cross-references: `discrepancies.md` (D-xx), `research/experiment_recommendations.md` (E-xx), `literature/reference_registry.md` (R-xx).
 Q-xx are decisions for the author or supervisors (not to be confused with D-xx discrepancies). IDs are kept from the earlier backlog so that references in the draft and in `discrepancies.md` still resolve. The full history is in git.
 
 # To do
 
-## 1. Before data access ends (2026-10-28)
+## 1. Before data access ends (2026-10-31)
 
 | ID | Task | Who | Notes |
 |---|---|---|---|
-| S-01 | Send the supervisor email (`supervisor_request.md`) with the dates filled in, and ask for any extra data analysis before the deadline | Author | Placeholders: names, draft date, request deadline |
-| S-02 | Fill in the placeholders in `server_handover_README.md` (name, date, repo URL, final commit, contact after 28 Oct) and leave it on the server | Author | |
-| G-01 | Commit the current work (draft files, `additional_file_1.md`, `additional_file_2.md`, `figures/`, `latex/build_additional.sh`, `attribution_importance_plot.py` and Fig. 4 files) | Author | Nothing has been committed by the agent |
-| S-04 | Send the draft to the supervisors: `latex/manuscript.pdf` (figures on the last pages) and `latex/additional/additional_file_{1,2}.pdf` | Author | Rebuild first: `python3 latex/build.py` and `bash latex/build_additional.sh` |
+| S-01 | Send the supervisor email (`supervisor_request.md`) with the draft attached; it asks which analyses to keep, move or drop, and for any extra analysis before 31 Oct | Author | Two placeholders left: `[date before 31 October]` for analysis requests and `[date]` for comments |
+| S-02 | Fill in the placeholders in `server_handover_README.md` (name, date, repo URL, final commit, contact after 31 Oct) and leave it on the server | Author | |
+| G-01 | Commit and push the 2026-10-29 changes (Figs 3–5 redrawn and renumbered, Table 3 slimmed and Table S6, affiliations, email, TODO); optionally publish a new release so Zenodo archives them | Author | Last pushed commit: 01f7a2d. Nothing has been committed by the agent |
+| S-04 | Attach to the email: `latex/manuscript.pdf` (Figs 1–5 on the last pages) and `latex/additional/additional_file_{1,2}.pdf` | Author | Rebuilt 2026-10-29; rebuild after any edit: `python3 latex/build.py` and `bash latex/build_additional.sh` |
 
 ## 2. Author or supervisor input (placeholders in the draft)
 
@@ -23,10 +23,9 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | M-06 | Birth years and questionnaire collection years: whole cohort or final sample? (asked in the supervisor email, item 1). A-TAC, informant, sex source and data dates resolved 2026-10-28 | Methods |
 | W-03 | Genotype and PRS paragraph drafted in Methods 2026-10-28; supervisor to confirm and fill 7 VERIFY points (arrays, QC, imputation, GWAS, PRS-CS settings, SNP-to-gene mapping, ancestry exclusion), or give a citable description (email item 2) | Methods: Genotype data and polygenic scores |
 | C-02 | Ethics approvals (committee, reference numbers, dates) and consent procedure | Methods; Declarations |
-| C-03 | Authors, affiliations, corresponding author, CRediT contributions, funding, competing interests, acknowledgements, APC coverage | Title page; Declarations |
+| C-03 | Corresponding author, confirmation of author list, order and affiliations (email item 4), CRediT contributions, funding, competing interests, acknowledgements, APC coverage. Authors, emails and two affiliations entered 2026-10-28/29 | Title page; Declarations |
 | C-07 | Data access procedure/URL for CATSS | Declarations (availability of data) |
-| C-08 | AI-use statement written in Methods (author's wording, extended to cover drafting and scripts); author to confirm before submission | Methods: Use of AI tools |
-| Q-02 | Decide whether the tuned ML comparators stay in the main tables (current draft) or move to the supplement | Results Tables 3–5 |
+| Q-02 | Supervisors' decision on which analyses to keep in the main text, move to the supplement or drop, and whether anything is missing (email table "What should be in the paper") | Results; Additional file 1 |
 | Q-03 | Choose title and keywords | Title page |
 | Q-04 | Confirm the wording of the configuration-selection disclosure (E-03) | Methods; Discussion limitations |
 | Q-05 | Coding direction of SES and ACE18 items, and that higher SCZ15 values mean more symptoms | Results (Table 1 text) |
@@ -68,9 +67,9 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | A-03 | No −1 or other negative codes in the analysis sample | 2026-10-24 |
 | A-04 | Sex-stratified performance | 2026-10-24 |
 | E-05 | Age-15-only predictor set for all models | 2026-10-24 |
-| E-09 | Calibration-in-the-large, slope, decile curves (Fig. 3) | 2026-10-24 |
+| E-09 | Calibration-in-the-large, slope, decile curves (now Fig. 4) | 2026-10-24 |
 | E-10a | Top-decile precision, AUROC and bias | 2026-10-24 |
-| E-06a | Gates vs SHAP vs permutation importance for DCMFNet, LMM and GAMM; agreement and stability; Fig. 4 | 2026-10-24 / 2026-10-25 |
+| E-06a | Gates vs SHAP vs permutation importance for DCMFNet, LMM and GAMM; agreement and stability; now Fig. 5 | 2026-10-24 / 2026-10-25 |
 | D-23 | Retrained DCMFNet reproduces the final run (seeding order fixed with `train_seed_models()`) | 2026-10-24 |
 | E-17 | Tuned ML comparators (linear regression, elastic net, gradient boosting) with twin-grouped inner CV, scored with the same code | 2026-10-25 |
 | A-05 | LazyPredict screening: estimators called directly, inputs unscaled (stated in Methods) | 2026-10-25 |
@@ -85,8 +84,15 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | V-01 / V-04 | Version files exported (`versions_python.txt`, `versions_R.txt`); software versions and the GAMM basis (thin-plate, k = 10, mgcv default) filled in Methods. Author to confirm these are the environments the analyses ran in | 2026-10-28 |
 | L-02 | "No direct competitor" statement checked by a PubMed block search (9 hits; PMIDs 41399528, 36411277, 34899225 read by the author, no conflict); VERIFY markers in Background and Discussion replaced by a search note | 2026-10-28 |
 | W-02 | Participant flow starts at 13,146 CATSS twins (thesis Figs 3.1, 3.3; author confirmed); 3,885 excluded for missing exposure or outcome; Fig. 1 and Methods updated. 9,160 genotyped (of 13,146) vs 6,643 with PRS (of 9,261): different denominators | 2026-10-28 |
+| C-08 | AI-use statement in Methods: short version approved by the author (Claude Code for drafting and scripts; ChatGPT to check the author's original write-up) | 2026-10-29 |
+| C-04b | Figures redrawn: new Fig. 3 (test R² per model and split, paired lines), Fig. 4 calibration as one panel per model, attribution heatmap renumbered to Fig. 5; legends, Results references, build list and email updated | 2026-10-29 |
+| W-12 | Table 3 slimmed to R² (3 decimals, from the CSV) and RMSE; all four metrics moved to Additional file 1: Table S6; Results Spearman sentences point to S6 | 2026-10-29 |
+| S-05 | Supervisor email rewritten for sending the first draft: 31 Oct deadline, shared-split explanation (R vs Python splits, rerun on saved IDs, R² definition, aligned interactions; GLMM 0.181/0.179 → 0.228/0.202), table of analyses to keep/move/drop | 2026-10-29 |
+| C-03a | Author list, emails and affiliations on the title page (MEB for all except Sam Andersson, Clinical Neuroscience); build supports numbered affiliations | 2026-10-28 / 2026-10-29 |
+| M-01a | Outcome instruments and scoring: APSS (7 items, 0–3), MDQ (13, yes/no), CMRS (4, 0–3) → max 46; CES-D 11-item (0–3, two items reverse-coded) → max 33; references verified | 2026-10-28 |
+| M-06a | A-TAC (ADHD and autism modules, parent interview), sex from the parents' age-9/12 interview, data files last updated Nov 2023, analysed Nov 2025–Oct 2026 | 2026-10-28 |
 | W-08 | README restructured: manuscript section (summary, folders, run order), thesis abstract with a note on the re-analysis, and Bodhica synthetic-data section with metrics labelled as synthetic | 2026-10-29 |
-| C-05 | Code archived on Zenodo (concept DOI 10.5281/zenodo.23755819; v1.0-manuscript); DOI in Methods and Availability statement. v1.1-manuscript tag (README) not yet archived on Zenodo | 2026-10-29 |
+| C-05 | Code archived on Zenodo (concept DOI 10.5281/zenodo.23755819, resolves to the latest version; v1.2-manuscript = 10.5281/zenodo.23756082 includes the README); DOI in Methods and Availability statement | 2026-10-29 |
 | Q-01 | "GLMM" used throughout (author decision); Methods notes that with a Gaussian outcome it is a linear mixed model | 2026-10-27 |
 | Q-08 | TRIPOD+AI 18c, 18d, 19: no published protocol, not registered, no patient and public involvement (author); stated in Methods | 2026-10-27 |
 | C-09 | 95% CIs for the paired R² differences added to Table 4 (corrected resampled t, from paired_comparisons.csv); Methods, Results and checklist item 23a updated | 2026-10-27 |

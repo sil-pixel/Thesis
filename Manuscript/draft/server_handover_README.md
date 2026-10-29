@@ -1,6 +1,6 @@
 # DCMFNet paper: handover note for the analysis server
 
-**Written by:** [your name], [date]. My data access ends on 28 October 2026.
+**Written by:** [your name], [date]. My data access ends on 31 October 2026.
 **For:** [supervisor names], for any analyses requested during peer review (journal: BMC Psychiatry).
 **Code:** GitHub repository `[repo URL]`, commit `[hash of the final run]`. Each script's header explains its inputs and outputs in more detail.
 
@@ -32,7 +32,7 @@ Everything runs from one working folder, which holds both the data and the scrip
 
 The file with the same name in `Results/Complexity Analysis/Avg complexity results/` belongs to an earlier depth search. Using it changes the DCMFNet results. This happened once (D-23, 24 Oct 2026).
 
-**Software:** versions are saved in `versions_R.txt` (`sessionInfo()`) and `versions_python.txt` (`pip freeze`) in this folder. `[make sure these files exist before 28 Oct]`
+**Software:** versions are saved in `versions_R.txt` (`sessionInfo()`) and `versions_python.txt` (`pip freeze`) in this folder. ``
 
 ## 3. Run order
 
@@ -72,7 +72,7 @@ The R models reproduce exactly. DCMFNet retraining was reproducible to 7 digits 
 
 - **Another predictor subset** (for example, without genetic data): add a set to `PREDICTOR_SETS` in `glmm_gamm_test_predictions.R` and `dcmfnet_test_predictions.py`, following the `age15` example. Then rerun steps 6–8.
 - **More splits:** add seeds to `SEEDS` in `split_data.py` and all scripts. This requires rerunning everything from step 1, and the new splits will not match the published ones.
-- **Different tuning of DCMFNet** (for example, nested selection without the test set): not scripted. It would need a new tuning run (`tuning.py`) inside each training split. Please discuss with me first. `[your contact after the 28th]`
+- **Different tuning of DCMFNet** (for example, nested selection without the test set): not scripted. It would need a new tuning run (`tuning.py`) inside each training split. Please discuss with me first. `[your contact after 31 October]`
 - **Other metrics or subgroups:** add them to `prediction_evaluation.py`. It reads the existing `SERVER_ONLY_*` prediction files, so no model needs refitting.
 
 Please export new results to the repository under the same folder names (`Models/.../Results/`, `Models/Model Comparison/`). That keeps the manuscript sources (`Manuscript/draft/`) traceable.

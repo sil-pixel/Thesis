@@ -1,17 +1,18 @@
 # Fdb version 4
-["bibtex manuscript"] 1793255298.51116 "manuscript.aux" "manuscript.bbl" "manuscript" 1793255299.97935 0
+["bibtex manuscript"] 1793258868.66513 "manuscript.aux" "manuscript.bbl" "manuscript" 1793258870.09835 0
   "./references.bib" 1793255137.47176 16211 65c862a09711aa90f39977a19cfdcbd1 ""
-  "./sn-vancouver-num.bst" 1793255296.96628 40758 8a9cd576d1f71ead931ff18537b2596f ""
-  "manuscript.aux" 1793255299.57109 9251 dd37a7fe7b1f248e1e9ebc2eb1ea6fb9 "pdflatex"
+  "./sn-vancouver-num.bst" 1793258867.18185 40758 8a9cd576d1f71ead931ff18537b2596f ""
+  "manuscript.aux" 1793258869.68969 9294 e38f021d434d62266e7f88209f7f39c2 "pdflatex"
   (generated)
   "manuscript.bbl"
   "manuscript.blg"
   (rewritten before read)
-["pdflatex"] 1793255298.65783 "manuscript.tex" "manuscript.pdf" "manuscript" 1793255299.97957 0
+["pdflatex"] 1793258868.81741 "manuscript.tex" "manuscript.pdf" "manuscript" 1793258870.09854 0
   "../figures/fig1_flow.pdf" 1793255137.45219 28532 5689a13e79c8e7e907ef294277c9ba99 ""
   "../figures/fig2_architecture.pdf" 1793255137.4547 46414 2962bd031b149757cda992da845c372c ""
-  "../figures/fig3_calibration.pdf" 1793255137.45876 24425 b156230db700909f5f70d7f487ae7ee2 ""
-  "../figures/fig4_attribution.pdf" 1793255137.46239 31393 2ac064f579aae647eb4f7d92a27ec7fd ""
+  "../figures/fig3_performance.pdf" 1793258668.05374 25923 9b4d9f4c54dd16718365a061cb04c964 ""
+  "../figures/fig4_calibration.pdf" 1793258649.95442 33326 fd8e00ffb14dba10430335badf3764a6 ""
+  "../figures/fig5_attribution.pdf" 1793258650.3009 31393 2ac064f579aae647eb4f7d92a27ec7fd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -159,11 +160,11 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743410559 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743410520 3345739 33833b38082c53bcb82918042089d1b1 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "manuscript.aux" 1793255299.57109 9251 dd37a7fe7b1f248e1e9ebc2eb1ea6fb9 "pdflatex"
-  "manuscript.bbl" 1793255298.65353 13663 cedc591181ff5541e008b842f3c236a0 "bibtex manuscript"
-  "manuscript.out" 1793255299.57229 5668 01224cba58f65ab8ac8868203a324378 "pdflatex"
-  "manuscript.tex" 1793255296.96472 97659 f82ad9cd5de19134ca52a68b4cfb785e ""
-  "sn-jnl.cls" 1793255296.96567 55857 c14ef9d34b3d95356940eaf177aff85f ""
+  "manuscript.aux" 1793258869.68969 9294 e38f021d434d62266e7f88209f7f39c2 "pdflatex"
+  "manuscript.bbl" 1793258868.81354 13663 cedc591181ff5541e008b842f3c236a0 "bibtex manuscript"
+  "manuscript.out" 1793258869.69079 5668 01224cba58f65ab8ac8868203a324378 "pdflatex"
+  "manuscript.tex" 1793258867.18039 97433 bbcc7958c039fad4f751a35d62d4323f ""
+  "sn-jnl.cls" 1793258867.18103 55857 c14ef9d34b3d95356940eaf177aff85f ""
   (generated)
   "manuscript.aux"
   "manuscript.log"

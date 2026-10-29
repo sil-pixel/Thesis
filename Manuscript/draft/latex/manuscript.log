@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.31)  29 OCT 2026 11:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.31)  29 OCT 2026 12:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -549,6 +549,7 @@ LaTeX Info: Redefining \addtolength on input line 81.
    defining Unicode char U+2074 (decimal 8308)
    defining Unicode char U+2075 (decimal 8309)
    defining Unicode char U+207B (decimal 8315)
+   defining Unicode char U+2192 (decimal 8594)
    defining Unicode char U+2212 (decimal 8722)
    defining Unicode char U+2264 (decimal 8804)
    defining Unicode char U+2265 (decimal 8805)
@@ -561,24 +562,24 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 (./manuscript.aux)
 \openout1 = `manuscript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -637,32 +638,32 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \S on input line 42.
-LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 42.
+LaTeX Info: Redefining \S on input line 43.
+LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 43.
 LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
-(Font)                  U/msa/m/n --> U/msa/m/n on input line 42.
+(Font)                  U/msa/m/n --> U/msa/m/n on input line 43.
 LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
-(Font)                  U/msa/m/n --> U/msa/m/n on input line 42.
-Package hyperref Info: Link coloring ON on input line 42.
+(Font)                  U/msa/m/n --> U/msa/m/n on input line 43.
+Package hyperref Info: Link coloring ON on input line 43.
 
 (./manuscript.out) (./manuscript.out)
 \@outlinefile=\write3
 \openout3 = `manuscript.out'.
 
-LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 74.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 74.
+LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 76.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 76.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 74.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 76.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 74
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 76
 .
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
@@ -670,19 +671,19 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 74.
+(Font)              size <8> substituted on input line 76.
 
-LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 74
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 76
 .
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 74.
+(Font)              size <6> substituted on input line 76.
 
-LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 74.
+LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 76.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 74.
+(Font)              size <5> substituted on input line 76.
 
 
 
@@ -692,7 +693,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [1
 
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 74
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 76
 .
 
 
@@ -734,25 +735,25 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-Underfull \hbox (badness 4792) in paragraph at lines 348--351
+Underfull \hbox (badness 4792) in paragraph at lines 350--353
 \OT1/cmr/m/n/10 Analyses used Python 3.11.5 with PyTorch 2.11.0, scikit-learn 1
 .8.0 [[]],
  []
 
 
-Underfull \hbox (badness 1681) in paragraph at lines 348--351
+Underfull \hbox (badness 1681) in paragraph at lines 350--353
 \OT1/cmr/m/n/10 Light-GBM 4.6.0, Optuna 4.8.0, SHAP 0.50.0 and LazyPre-dict 0.3
 .0, and R
  []
 
 
-Underfull \hbox (badness 3029) in paragraph at lines 348--351
+Underfull \hbox (badness 3029) in paragraph at lines 350--353
 \OT1/cmr/m/n/10 4.6.1 with lme4 2.0-6 and mgcv 1.9-4. The anal-y-sis code is ar
 chived on
  []
 
 
-Underfull \hbox (badness 3039) in paragraph at lines 348--351
+Underfull \hbox (badness 3039) in paragraph at lines 350--353
 \OT1/cmr/m/n/10 Zen-odo (https://doi.org/10.5281/zenodo.23755819) and main-tain
 ed on GitHub
  []
@@ -764,21 +765,23 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
 LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 3
-75.
+77.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.03749> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 375.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 377.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11]
-Underfull \hbox (badness 1558) in paragraph at lines 438--439
+Underfull \hbox (badness 1558) in paragraph at lines 440--441
 []\OT1/cmr/m/it/10.03749 Footnote to Table 1: \OT1/cmr/m/n/10 SMD, stan-dard-is
 ed mean dif-fer-ence (included minus
  []
+
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -792,14 +795,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
-LaTeX Font Info:    Trying to load font information for OML+cmr on input line 6
-17.
+LaTeX Font Info:    Trying to load font information for OML+cmr on input line 5
+97.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.03749> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 617.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 597.
 
 
 
@@ -838,27 +841,27 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [21]
 
 Package hyperref Warning: Difference (4) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 884.
+(hyperref)                than one, level fixed on input line 864.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 884--886
+Underfull \hbox (badness 10000) in paragraph at lines 864--866
  []\OT1/cmr/bx/n/10.03749 Abbreviations.[][] \OT1/cmr/m/n/10 ACE: adverse child
 -hood expe-ri-ences; ADHD: attention-
  []
 
 
-Underfull \hbox (badness 1308) in paragraph at lines 884--886
+Underfull \hbox (badness 1308) in paragraph at lines 864--866
 \OT1/cmr/m/n/10 work; DEP: depres-sive symp-toms; GAMM: gen-er-alised addi-tive
  mixed model;
  []
 
 
 Package hyperref Warning: Difference (3) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 890.
+(hyperref)                than one, level fixed on input line 870.
 
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 901.
+(hyperref)                than one, level fixed on input line 881.
 
 
 
@@ -866,7 +869,7 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22]
-Underfull \hbox (badness 1502) in paragraph at lines 921--922
+Underfull \hbox (badness 1502) in paragraph at lines 901--902
  []\OT1/cmr/bx/n/10.03749 Authors' con-tri-bu-tions.[][] []\OT1/cmr/m/n/10 [AUT
 HOR INPUT][] Exam-ple struc-ture only: ``XX
  []
@@ -906,7 +909,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <../figures/fig1_flow.pdf, id=449, 417.7206pt x 359.47098pt>
 File: ../figures/fig1_flow.pdf Graphic file (type pdf)
 <use ../figures/fig1_flow.pdf>
-Package pdftex.def Info: ../figures/fig1_flow.pdf  used on input line 946.
+Package pdftex.def Info: ../figures/fig1_flow.pdf  used on input line 928.
 (pdftex.def)             Requested size: 371.99962pt x 320.12563pt.
 
 
@@ -920,7 +923,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: ../figures/fig2_architecture.pdf Graphic file (type pdf)
 <use ../figures/fig2_architecture.pdf>
 Package pdftex.def Info: ../figures/fig2_architecture.pdf  used on input line 9
-49.
+31.
 (pdftex.def)             Requested size: 372.00168pt x 243.0902pt.
 
 
@@ -930,12 +933,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [30
 
  <../figures/fig2_architecture.pdf>]
-<../figures/fig3_calibration.pdf, id=669, 716.89958pt x 325.8141pt>
-File: ../figures/fig3_calibration.pdf Graphic file (type pdf)
-<use ../figures/fig3_calibration.pdf>
-Package pdftex.def Info: ../figures/fig3_calibration.pdf  used on input line 95
-2.
-(pdftex.def)             Requested size: 372.00232pt x 169.06635pt.
+<../figures/fig3_performance.pdf, id=669, 716.98994pt x 299.36142pt>
+File: ../figures/fig3_performance.pdf Graphic file (type pdf)
+<use ../figures/fig3_performance.pdf>
+Package pdftex.def Info: ../figures/fig3_performance.pdf  used on input line 93
+4.
+(pdftex.def)             Requested size: 372.00545pt x 155.32167pt.
 
 
 
@@ -943,13 +946,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31
 
- <../figures/fig3_calibration.pdf>]
-<../figures/fig4_attribution.pdf, id=739, 933.99802pt x 480.01213pt>
-File: ../figures/fig4_attribution.pdf Graphic file (type pdf)
-<use ../figures/fig4_attribution.pdf>
-Package pdftex.def Info: ../figures/fig4_attribution.pdf  used on input line 95
-5.
-(pdftex.def)             Requested size: 372.01065pt x 191.18843pt.
+ <../figures/fig3_performance.pdf>]
+<../figures/fig4_calibration.pdf, id=749, 867.82709pt x 327.58623pt>
+File: ../figures/fig4_calibration.pdf Graphic file (type pdf)
+<use ../figures/fig4_calibration.pdf>
+Package pdftex.def Info: ../figures/fig4_calibration.pdf  used on input line 93
+7.
+(pdftex.def)             Requested size: 371.99307pt x 140.41945pt.
 
 
 
@@ -957,7 +960,21 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [32
 
- <../figures/fig4_attribution.pdf>] (./manuscript.aux)
+ <../figures/fig4_calibration.pdf>]
+<../figures/fig5_attribution.pdf, id=829, 933.99802pt x 480.01213pt>
+File: ../figures/fig5_attribution.pdf Graphic file (type pdf)
+<use ../figures/fig5_attribution.pdf>
+Package pdftex.def Info: ../figures/fig5_attribution.pdf  used on input line 94
+0.
+(pdftex.def)             Requested size: 372.01065pt x 191.18843pt.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33
+
+ <../figures/fig5_attribution.pdf>] (./manuscript.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -971,13 +988,13 @@ Package rerunfilecheck Info: File `manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: 01224CBA58F65AB8AC8868203A324378;5668.
  ) 
 Here is how much of TeX's memory you used:
- 13083 strings out of 473190
- 201301 string characters out of 5715800
- 633094 words of memory out of 5000000
- 35974 multiletter control sequences out of 15000+600000
+ 13092 strings out of 473190
+ 201600 string characters out of 5715800
+ 633068 words of memory out of 5000000
+ 35982 multiletter control sequences out of 15000+600000
  583511 words of font info for 131 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 90i,11n,93p,1360b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,93p,1360b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -998,10 +1015,10 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2025/texmf-
 dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on manuscript.pdf (32 pages, 452676 bytes).
+Output written on manuscript.pdf (33 pages, 482450 bytes).
 PDF statistics:
- 934 PDF objects out of 1000 (max. 8388607)
- 545 compressed objects within 6 object streams
- 136 named destinations out of 1000 (max. 500000)
- 285 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1023 PDF objects out of 1200 (max. 8388607)
+ 557 compressed objects within 6 object streams
+ 137 named destinations out of 1000 (max. 500000)
+ 290 words of extra memory for PDF output out of 10000 (max. 10000000)
 

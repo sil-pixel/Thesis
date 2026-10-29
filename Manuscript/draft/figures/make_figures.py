@@ -28,8 +28,9 @@ REPO = FIG_DIR.parents[2]
 FLOW_CSV = REPO / "Data Preprocessing" / "Data Analysis" / "Sample Analysis" / "analysis_sample_flow.csv"
 HYPERPARAMS = REPO / "Models" / "DCMFNet" / "hyperparameters.json"
 CALIBRATION_BINS = REPO / "Models" / "Model Comparison" / "calibration_bins.csv"
+METRICS_PER_SEED = REPO / "Models" / "Model Comparison" / "prediction_metrics_per_seed.csv"
 COPIES = {
-    "fig4_attribution.pdf": REPO / "Models" / "Model Comparison" / "attribution_importance_by_group.pdf",
+    "fig5_attribution.pdf": REPO / "Models" / "Model Comparison" / "attribution_importance_by_group.pdf",
 }
 
 # Colour-blind safe palette (Okabe-Ito)
@@ -211,28 +212,84 @@ MODEL_STYLE = {"GLMM": (ORANGE, "-", "o"), "GAMM": ("#D55E00", "-", "s"), "DCMFN
                "GradientBoosting": (GREEN, ":", "P")}
 
 
+ORDER = ["DCMFNet", "GLMM", "GAMM", "LinearRegression", "ElasticNet", "GradientBoosting"]
+OUTCOMES = [("Pos", "PLE-HM"), ("Neg", "DEP")]
+
+
+'''
+Fig. 3. Test R² of every model on each of the five splits (all predictors). Lines join the results of the same
+split, so the within-split (paired) differences are visible; the bar marks the mean over splits.
+'''
 def fig3():
+    d = pd.read_csv(METRICS_PER_SEED)
+    d = d[d["predictor_set"] == "full"]
+    seeds = sorted(d["seed"].unique())
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.2), sharey=True)
+    x = range(len(ORDER))
+    for ax, (tag, title) in zip(axes, OUTCOMES):
+        sub = d[d["outcome"] == tag].pivot(index="seed", columns="model", values="r2")[ORDER]
+        for seed in seeds:
+            ax.plot(x, sub.loc[seed].values, color="#CCCCCC", lw=0.8, zorder=1)
+        for k, model in enumerate(ORDER):
+            color, _, marker = MODEL_STYLE[model]
+            ax.scatter([k] * len(seeds), sub[model], color=color, marker=marker, s=22, zorder=2,
+                       edgecolor="white", linewidth=0.4)
+            mean = sub[model].mean()
+            ax.plot([k - 0.28, k + 0.28], [mean, mean], color="black", lw=2, zorder=3)
+            ax.text(k, 1.01, f"{mean:.3f}", transform=ax.get_xaxis_transform(), ha="center", va="bottom",
+                    fontsize=8, weight="bold")
+        ax.axvspan(-0.5, 0.5, color="#F2F2F2", zorder=0)
+        ax.axvline(2.5, color=GREY, lw=0.8, ls="--")
+        ax.set_xticks(list(x))
+        ax.set_xticklabels([MODEL_LABELS[m].replace(" ", "\n", 1) if m in ("LinearRegression", "ElasticNet",
+                            "GradientBoosting") else MODEL_LABELS[m] for m in ORDER], fontsize=8)
+        ax.set_xlim(-0.5, len(ORDER) - 0.5)
+        ax.set_title(title, weight="bold", pad=22)
+        ax.text(-0.5, 1.01, "mean:", transform=ax.get_xaxis_transform(), ha="right", va="bottom", fontsize=7.5)
+        ax.grid(axis="y", color="#EEEEEE", lw=0.6)
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("Test R²")
+    fig.tight_layout()
+    for ext in ("pdf", "png"):
+        fig.savefig(FIG_DIR / f"fig3_performance.{ext}", dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
+'''
+Fig. 4. Calibration, one panel per model so the curves do not overlap; the other models are shown in light grey
+for reference. Deciles of predicted score, averaged over the five splits (all predictors).
+'''
+def fig4():
     bins = pd.read_csv(CALIBRATION_BINS)
     bins = bins[bins["predictor_set"] == "full"]
     curves = bins.groupby(["model", "outcome", "bin"])[["mean_predicted", "mean_observed"]].mean().reset_index()
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4.6))
-    for ax, (tag, title) in zip(axes, [("Pos", "PLE-HM"), ("Neg", "DEP")]):
+    fig, axes = plt.subplots(2, len(ORDER), figsize=(12, 4.6), sharex="row", sharey="row")
+    for row, (tag, title) in enumerate(OUTCOMES):
         sub = curves[curves["outcome"] == tag]
-        low = min(sub["mean_predicted"].min(), sub["mean_observed"].min())
-        high = max(sub["mean_predicted"].max(), sub["mean_observed"].max())
-        ax.plot([low, high], [low, high], color=GREY, ls="--", lw=1, label="Perfect calibration")
-        for model, label in MODEL_LABELS.items():
+        low = min(sub["mean_predicted"].min(), sub["mean_observed"].min()) * 0.95
+        high = max(sub["mean_predicted"].max(), sub["mean_observed"].max()) * 1.03
+        for col, model in enumerate(ORDER):
+            ax = axes[row, col]
+            ax.plot([low, high], [low, high], color=GREY, ls="--", lw=0.9)
+            for other in ORDER:
+                if other != model:
+                    o = sub[sub["model"] == other].sort_values("bin")
+                    ax.plot(o["mean_predicted"], o["mean_observed"], color="#DDDDDD", lw=0.8)
             m = sub[sub["model"] == model].sort_values("bin")
-            color, ls, marker = MODEL_STYLE[model]
-            ax.plot(m["mean_predicted"], m["mean_observed"], color=color, ls=ls, marker=marker, ms=4, lw=1.3,
-                    label=label)
-        ax.set_title(title, weight="bold")
-        ax.set_xlabel("Mean predicted score (decile of prediction)")
-        ax.set_ylabel("Mean observed score")
-    axes[0].legend(fontsize=7.5, frameon=False)
-    fig.tight_layout()
+            color, _, marker = MODEL_STYLE[model]
+            ax.plot(m["mean_predicted"], m["mean_observed"], color=color, marker=marker, ms=3.5, lw=1.5)
+            ax.set_xlim(low, high); ax.set_ylim(low, high)
+            ax.set_aspect("equal", adjustable="box")
+            ax.tick_params(labelsize=7)
+            if row == 0:
+                ax.set_title(MODEL_LABELS[model], fontsize=9, weight="bold")
+            if col == 0:
+                ax.set_ylabel(f"{title}\nmean observed", fontsize=8)
+            if row == 1:
+                ax.set_xlabel("mean predicted", fontsize=8)
+    fig.tight_layout(w_pad=0.6, h_pad=0.8)
     for ext in ("pdf", "png"):
-        fig.savefig(FIG_DIR / f"fig3_calibration.{ext}", dpi=300, bbox_inches="tight")
+        fig.savefig(FIG_DIR / f"fig4_calibration.{ext}", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -240,6 +297,7 @@ if __name__ == "__main__":
     fig1()
     fig2()
     fig3()
+    fig4()
     for name, source in COPIES.items():
         shutil.copy(source, FIG_DIR / name)
-    print("Saved: fig1_flow, fig2_architecture, fig3_calibration, fig4_attribution in", FIG_DIR)
+    print("Saved: fig1_flow, fig2_architecture, fig3_performance, fig4_calibration, fig5_attribution in", FIG_DIR)
