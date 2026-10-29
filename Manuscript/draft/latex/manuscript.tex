@@ -372,8 +372,8 @@ Of the 9,261 eligible individuals (5,756 twin pairs), 4,033 (43.5\%) had complet
 
 Included and excluded participants were broadly similar (Table 1).
 - \textbf{Outcomes:} the analysis sample had slightly lower mean outcome scores (PLE-HM 0.132 vs 0.145; DEP 0.243 vs 0.266; SMD −0.13 for both).
-- \textbf{Symptoms at age 15:} the largest difference was in the SCZ15 item mean (0.414 vs 0.476; SMD −0.22). \textcolor{red}{{[}VERIFY: higher SCZ15 item values = more symptoms{]}}
-- \textbf{Other groups:} the item means for parental socioeconomic indicators (SMD 0.19) and adverse experiences at age 18 (SMD 0.18) also differed. \textcolor{red}{{[}VERIFY: coding direction of SES and ACE18 items before interpreting the sign{]}}
+- \textbf{Symptoms at age 15:} the largest difference was in the SCZ15 item mean (0.414 vs 0.476; SMD −0.22). Higher item values mean more frequent or more certain symptoms, so included participants reported fewer symptoms at age 15. % coding from catss_analysis_final.html (prod 0–2 No never/Maybe/Yes definitely; cmr 0–3 Never-rarely to Very often; sdq 0–2 Not true to Certainly true), confirmed by the author 2026-10-29 (Q-05) 
+- \textbf{Other groups:} included participants reported more adverse experiences at age 18 (SMD 0.18; these items are coded 1 for yes and 0 for no), and the item means for parental socioeconomic indicators also differed (SMD 0.19). The socioeconomic items combine parental country of birth with education categories that include an unordered ``other'' category, so the sign of that difference has no simple interpretation. % ACE18 coding from the author (2026-10-29): raw CATSS-18 items 1 = No, 2 = Yes, recoded to 0 = No, 1 = Yes. D-25 closed by the author. SES: birth country 0 Sweden / 1 other, education 0–4 ordered plus 5 = Other education. 
 - \textbf{Substance use at age 15:} all six items differed little (\textbar SMD\textbar{} ≤ 0.10).
 - \textbf{Sex:} missing for 26.0\% of excluded participants. Among those with known sex, 58.0\% of included and 60.6\% of excluded participants were female.
 
@@ -631,13 +631,19 @@ In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (eff
 
 In contrast, DCMFNet's SHAP rankings were stable across splits (mean ρ 0.79 and 0.85), as were its permutation rankings (0.73 and 0.82). % src: attribution_agreement_summary.csv (DCMFNet_gate_fused vs DCMFNet_SHAP 0.040 / 0.360; DCMFNet_gate_independent vs DCMFNet_SHAP −0.022 / 0.215; top3_overlap 0.27–0.53); attribution_stability.csv (DCMFNet_SHAP 0.793 / 0.852; DCMFNet_permutation 0.735 / 0.818) 
 
-\textbf{Which groups the models relied on.} SHAP values and permutation importance gave a similar picture for all three models (Fig. 5).
+\textbf{Which groups the models relied on.} SHAP values and permutation importance gave a similar picture for all three models (Fig. 5). The five most important single predictors are listed in Additional file 1: Table S7.
 - \textbf{Symptoms at age 15 (SCZ15)} had the largest share of SHAP importance:
 - DCMFNet: 34\% (PLE-HM) and 33\% (DEP);
 - GLMM: 30\% and 28\%.
 - \textbf{Age-18 groups:} the adverse experiences and substance use measured at age 18 came next. They accounted for 31\% (PLE-HM) and 30\% (DEP) of DCMFNet's SHAP importance and 34\% and 29\% of the GLMM's.
 - \textbf{Substance use at age 15} (the anchor group of DCMFNet) accounted for 4.7--6.1\% of SHAP importance in every model.
-- \textbf{Permutation importance:} permuting the SCZ15 items reduced test R² by 0.24 (PLE-HM) and 0.22 (DEP) for DCMFNet, and by 0.22 and 0.20 for the GLMM. The reduction was at most 0.008 for substance use at age 15 in all models.
+- \textbf{Polygenic scores:} the all-cell PRS was associated with both outcomes in the GAMM (unadjusted p \textless{} 0.05), but the 16 PRS together contributed little to prediction: at most 8\% of SHAP importance in any model (DCMFNet 3.6\% for both outcomes; GLMM 7.1\% and 6.9\%; GAMM 8.0\% and 7.4\%), and permuting them reduced test R² by at most 0.007. % src: attribution_modality_summary.csv, modality PRS: share_mean DCMFNet_SHAP 0.0363 / 0.0362, GLMM_SHAP 0.0707 / 0.0686, GAMM_SHAP 0.0797 / 0.0739; importance_mean permutation (Pos / Neg) DCMFNet −0.0005 / 0.0010, GLMM −0.0014 / 0.0070, GAMM −0.0004 / 0.0065. GAMM smooths: GAMM_updated_{Pos,Neg}_smooth_terms.csv (seed 42) 
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Permutation importance:} permuting the SCZ15 items reduced test R² by 0.24 (PLE-HM) and 0.22 (DEP) for DCMFNet, and by 0.22 and 0.20 for the GLMM. The reduction was at most 0.008 for substance use at age 15 in all models.
+\end{itemize}
 
 % src: attribution_modality_summary.csv share_mean: DCMFNet_SHAP SCZ15 0.340 / 0.327, ACE18+SUD18 0.137+0.178 = 0.314 (Pos), 0.192+0.107 = 0.299 (Neg), SUD15 0.052 / 0.061; GLMM_SHAP SCZ15 0.296 / 0.278, ACE18+SUD18 0.201+0.134 = 0.335 (Pos), 0.193+0.096 = 0.289 (Neg), SUD15 0.057 / 0.047; GAMM_SHAP SUD15 0.056 / 0.047. importance_mean permutation: DCMFNet SCZ15 0.241 / 0.217, GLMM 0.225 / 0.198; SUD15 DCMFNet 0.0076 / 0.0044, GLMM 0.0059 / 0.0016, GAMM 0.0058 / 0.0016. Permuting SCZ15 reduces R² by more than the model's R², i.e. test R² becomes negative. 
 

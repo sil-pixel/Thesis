@@ -22,6 +22,7 @@ Contents:
 - Table S4. Predictors by group
 - Table S5. Selection of the fusion depths
 - Table S6. Test-set performance on all metrics
+- Table S7. Five most important predictors in DCMFNet and the GLMM
 
 ## Table S1. DCMFNet hyperparameter search
 
@@ -558,3 +559,24 @@ Mean ± SD over the five test sets, with all predictors. R², coefficient of det
 | Linear regression | 0.2150 ± 0.0253 | 0.1546 ± 0.0026 | 0.1216 ± 0.0017 | 0.4531 ± 0.0203 |
 | Elastic net | 0.2373 ± 0.0146 | 0.1524 ± 0.0024 | 0.1197 ± 0.0012 | 0.4733 ± 0.0193 |
 | Gradient boosting | 0.2287 ± 0.0163 | 0.1533 ± 0.0027 | 0.1203 ± 0.0017 | 0.4645 ± 0.0194 |
+
+## Table S7. Five most important predictors in DCMFNet and the GLMM
+
+DCMFNet: mean absolute SHAP value over the five test sets (SD across splits), and its share of the summed mean absolute SHAP values of all 105 predictors. GLMM: predictors ranked by the absolute t value of their main effect in the model fitted on the first split (seed 42; interaction terms not ranked); the full coefficients are in Table S3. Per-predictor SHAP values were not computed for the GLMM. Both columns describe what the fitted models use for prediction, not causal effects. Variable names as in Table S4.
+
+<!-- src: Models/DCMFNet/Results/SHAP Analysis/{Pos,Neg}_shap_feature_importance_5seeds.csv (mean_abs_shap, across_seed_std); Models/GLMM/Results/{Pos,Neg}_GLMM_updated_all_coefs.csv (t value; intercept, SUD15 interactions and batch x PC terms excluded). Added 2026-10-29. -->
+
+| Rank | DCMFNet predictor | Mean \|SHAP\| (SD) | Share | GLMM predictor | t |
+|---|---|---|---|---|---|
+| *PLE-HM* | | | | | |
+| 1 | `ACE18_emotional_abuse18` | 0.0119 (0.0044) | 7.2% | `ACE18_emotional_abuse18` | −9.13 |
+| 2 | `SUD18_cigarettes18` | 0.0082 (0.0021) | 5.0% | `SCZ15_Too_much_energy15` | 4.49 |
+| 3 | `SCZ15_Talking_fast15` | 0.0072 (0.0010) | 4.4% | `SUD18_alcohol_often18` | 3.92 |
+| 4 | `SCZ15_Too_much_energy15` | 0.0070 (0.0012) | 4.3% | `SCZ15_Seen_hallucinations15` | 3.87 |
+| 5 | `SUD18_alcohol_often18` | 0.0061 (0.0008) | 3.7% | `SCZ15_Talking_fast15` | 3.64 |
+| *DEP* | | | | | |
+| 1 | `ACE18_emotional_abuse18` | 0.0296 (0.0036) | 11.0% | `ACE18_emotional_abuse18` | −11.37 |
+| 2 | `SCZ15_unhappy15` | 0.0174 (0.0018) | 6.5% | `SCZ15_unhappy15` | 6.86 |
+| 3 | `SCZ15_headaches15` | 0.0170 (0.0008) | 6.4% | `SCZ15_headaches15` | 6.21 |
+| 4 | `SCZ15_worry15` | 0.0140 (0.0020) | 5.2% | `SEX` | 6.09 |
+| 5 | `SEX` | 0.0133 (0.0020) | 5.0% | `SUD18_cigarettes18` | 5.19 |

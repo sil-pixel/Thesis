@@ -215,3 +215,9 @@ Line numbers refer to the files as of commit `7ede66b` (HEAD at audit time).
 - **Consequence:** small. It is a predictor measured before age 18 in every model, so the age-15 sensitivity analysis is unaffected, but the group label "symptoms at age 15" is slightly inaccurate and the item adds to the SCZ15 fusion block.
 - **Resolution (author, 2026-10-27):** no psychotic symptoms were measured at age 9; the item is the age-15 PROD hallucination item and the suffix 9 is a naming error. The grouping and all results are correct.
 - **Draft follows:** Table S4 keeps the data name (for traceability) with a note that the item was measured at age 15. The variable name in the data/code is unchanged (renaming needs author approval).
+
+## D-25 (2026-10-29): coding direction of the age-18 abuse items · **Closed by the author 2026-10-29: no discrepancy**
+- **Query:** from the value counts in `Data Preprocessing/Data Analysis/ace_columns.txt` (1 is the majority on every ACE18 item; `other_abuse18`, the `max()` of five abuse items in `feature_selection.py:120-129`, is 0 for 14 of 9,038 participants), the researcher agent inferred that the stored coding might be 1 = no.
+- **Resolution (author, 2026-10-29):** the raw CATSS-18 items were coded 1 = No, 2 = Yes and were recoded by the author to 0 = No, 1 = Yes, so stored 1 = yes and `max()` is the correct combination. The `*_often18` follow-ups use a separate 0–3 scale.
+- **Checked against the raw file (author, 2026-10-29):** raw `emotional_abuse18` = 2 (Yes) for about 6,200 participants, matching stored 1 = 6,203. The stored coding is 1 = yes; the agent's inference was wrong.
+- **Draft follows:** Table 1 text reads ACE18 as higher = more (included participants reported more experiences). No disclosure in Methods; nothing in the supervisor email.
