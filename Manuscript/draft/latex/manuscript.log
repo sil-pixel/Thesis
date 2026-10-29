@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.31)  28 OCT 2026 20:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.31)  29 OCT 2026 11:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -721,8 +721,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [6]
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
@@ -736,24 +734,24 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 3
-68.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.03749> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 368.
-
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 3
+74.
+
+(/usr/local/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.03749> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 374.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11]
-Underfull \hbox (badness 1558) in paragraph at lines 431--432
+Underfull \hbox (badness 1558) in paragraph at lines 437--438
 []\OT1/cmr/m/it/10.03749 Footnote to Table 1: \OT1/cmr/m/n/10 SMD, stan-dard-is
 ed mean dif-fer-ence (included minus
  []
@@ -762,28 +760,30 @@ ed mean dif-fer-ence (included minus
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [13]
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
 LaTeX Font Info:    Trying to load font information for OML+cmr on input line 6
-10.
+16.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.03749> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 610.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 616.
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [16]
@@ -808,31 +808,41 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [20]
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [21]
+
 Package hyperref Warning: Difference (4) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 877.
+(hyperref)                than one, level fixed on input line 883.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 877--879
+Underfull \hbox (badness 10000) in paragraph at lines 883--885
  []\OT1/cmr/bx/n/10.03749 Abbreviations.[][] \OT1/cmr/m/n/10 ACE: adverse child
 -hood expe-ri-ences; ADHD: attention-
  []
+
+
+Underfull \hbox (badness 1308) in paragraph at lines 883--885
+\OT1/cmr/m/n/10 work; DEP: depres-sive symp-toms; GAMM: gen-er-alised addi-tive
+ mixed model;
+ []
+
+
+Package hyperref Warning: Difference (3) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 889.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 900.
 
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21]
-
-Package hyperref Warning: Difference (3) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 883.
-
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 894.
-
-
-Underfull \hbox (badness 1502) in paragraph at lines 914--915
+ [22]
+Underfull \hbox (badness 1502) in paragraph at lines 920--921
  []\OT1/cmr/bx/n/10.03749 Authors' con-tri-bu-tions.[][] []\OT1/cmr/m/n/10 [AUT
 HOR INPUT][] Exam-ple struc-ture only: ``XX
  []
@@ -842,13 +852,8 @@ HOR INPUT][] Exam-ple struc-ture only: ``XX
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22]
-(./manuscript.bbl
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [23]
+(./manuscript.bbl
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -863,31 +868,22 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26])
+ [26]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27]
-<../figures/fig1_flow.pdf, id=444, 417.7206pt x 359.47098pt>
+ [27])
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [28]
+<../figures/fig1_flow.pdf, id=449, 417.7206pt x 359.47098pt>
 File: ../figures/fig1_flow.pdf Graphic file (type pdf)
 <use ../figures/fig1_flow.pdf>
-Package pdftex.def Info: ../figures/fig1_flow.pdf  used on input line 939.
+Package pdftex.def Info: ../figures/fig1_flow.pdf  used on input line 945.
 (pdftex.def)             Requested size: 371.99962pt x 320.12563pt.
-
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [28
-
- <../figures/fig1_flow.pdf>]
-<../figures/fig2_architecture.pdf, id=534, 729.92702pt x 476.98201pt>
-File: ../figures/fig2_architecture.pdf Graphic file (type pdf)
-<use ../figures/fig2_architecture.pdf>
-Package pdftex.def Info: ../figures/fig2_architecture.pdf  used on input line 9
-42.
-(pdftex.def)             Requested size: 372.00168pt x 243.0902pt.
 
 
 
@@ -895,13 +891,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [29
 
- <../figures/fig2_architecture.pdf>]
-<../figures/fig3_calibration.pdf, id=664, 716.89958pt x 325.8141pt>
-File: ../figures/fig3_calibration.pdf Graphic file (type pdf)
-<use ../figures/fig3_calibration.pdf>
-Package pdftex.def Info: ../figures/fig3_calibration.pdf  used on input line 94
-5.
-(pdftex.def)             Requested size: 372.00232pt x 169.06635pt.
+ <../figures/fig1_flow.pdf>]
+<../figures/fig2_architecture.pdf, id=539, 729.92702pt x 476.98201pt>
+File: ../figures/fig2_architecture.pdf Graphic file (type pdf)
+<use ../figures/fig2_architecture.pdf>
+Package pdftex.def Info: ../figures/fig2_architecture.pdf  used on input line 9
+48.
+(pdftex.def)             Requested size: 372.00168pt x 243.0902pt.
 
 
 
@@ -909,19 +905,33 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [30
 
- <../figures/fig3_calibration.pdf>]
-<../figures/fig4_attribution.pdf, id=733, 933.99802pt x 480.01213pt>
-File: ../figures/fig4_attribution.pdf Graphic file (type pdf)
-<use ../figures/fig4_attribution.pdf>
-Package pdftex.def Info: ../figures/fig4_attribution.pdf  used on input line 94
-8.
-(pdftex.def)             Requested size: 372.01065pt x 191.18843pt.
+ <../figures/fig2_architecture.pdf>]
+<../figures/fig3_calibration.pdf, id=669, 716.89958pt x 325.8141pt>
+File: ../figures/fig3_calibration.pdf Graphic file (type pdf)
+<use ../figures/fig3_calibration.pdf>
+Package pdftex.def Info: ../figures/fig3_calibration.pdf  used on input line 95
+1.
+(pdftex.def)             Requested size: 372.00232pt x 169.06635pt.
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31
+
+ <../figures/fig3_calibration.pdf>]
+<../figures/fig4_attribution.pdf, id=739, 933.99802pt x 480.01213pt>
+File: ../figures/fig4_attribution.pdf Graphic file (type pdf)
+<use ../figures/fig4_attribution.pdf>
+Package pdftex.def Info: ../figures/fig4_attribution.pdf  used on input line 95
+4.
+(pdftex.def)             Requested size: 372.01065pt x 191.18843pt.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32
 
  <../figures/fig4_attribution.pdf>] (./manuscript.aux)
  ***********
@@ -937,13 +947,13 @@ Package rerunfilecheck Info: File `manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: 01224CBA58F65AB8AC8868203A324378;5668.
  ) 
 Here is how much of TeX's memory you used:
- 13082 strings out of 473190
- 201294 string characters out of 5715800
- 630094 words of memory out of 5000000
+ 13083 strings out of 473190
+ 201301 string characters out of 5715800
+ 633094 words of memory out of 5000000
  35974 multiletter control sequences out of 15000+600000
  583511 words of font info for 131 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 90i,11n,93p,1360b,658s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,93p,1360b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -964,10 +974,10 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2025/texmf-
 dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on manuscript.pdf (31 pages, 449885 bytes).
+Output written on manuscript.pdf (32 pages, 452683 bytes).
 PDF statistics:
- 929 PDF objects out of 1000 (max. 8388607)
- 541 compressed objects within 6 object streams
- 135 named destinations out of 1000 (max. 500000)
+ 934 PDF objects out of 1000 (max. 8388607)
+ 545 compressed objects within 6 object streams
+ 136 named destinations out of 1000 (max. 500000)
  285 words of extra memory for PDF output out of 10000 (max. 10000000)
 

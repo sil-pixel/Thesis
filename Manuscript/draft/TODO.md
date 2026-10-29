@@ -21,11 +21,11 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 |---|---|---|
 | M-01 | Final outcome labels (PLE-HM, DEP are working labels); instruments, scales, reverse coding and the divisors 46 and 33 resolved 2026-10-28 | Methods; Discussion limitation; Table 1 |
 | M-06 | Birth years and questionnaire collection years: whole cohort or final sample? (asked in the supervisor email, item 1). A-TAC, informant, sex source and data dates resolved 2026-10-28 | Methods |
-| W-03 | PRS pipeline: GWAS summary statistics and their ancestry, LD reference, PRS-CS settings, genotyping platforms, imputation, QC | Methods; Discussion (generalisability) |
+| W-03 | Genotype and PRS paragraph drafted in Methods 2026-10-28; supervisor to confirm and fill 7 VERIFY points (arrays, QC, imputation, GWAS, PRS-CS settings, SNP-to-gene mapping, ancestry exclusion), or give a citable description (email item 2) | Methods: Genotype data and polygenic scores |
 | C-02 | Ethics approvals (committee, reference numbers, dates) and consent procedure | Methods; Declarations |
 | C-03 | Authors, affiliations, corresponding author, CRediT contributions, funding, competing interests, acknowledgements, APC coverage | Title page; Declarations |
 | C-07 | Data access procedure/URL for CATSS | Declarations (availability of data) |
-| C-08 | Statement on the use of large language models, if the journal requires it | Methods `[VERIFY: JOURNAL REQUIREMENT]` |
+| C-08 | AI-use statement written in Methods (author's wording, extended to cover drafting and scripts); author to confirm before submission | Methods: Use of AI tools |
 | Q-02 | Decide whether the tuned ML comparators stay in the main tables (current draft) or move to the supplement | Results Tables 3–5 |
 | Q-03 | Choose title and keywords | Title page |
 | Q-04 | Confirm the wording of the configuration-selection disclosure (E-03) | Methods; Discussion limitations |
@@ -39,9 +39,8 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | C-10 | Optional: one sentence on known health inequalities (TRIPOD+AI 3c), e.g. sex differences in these symptoms, with a verified citation | Background |
 | C-01 | Check the BMC Psychiatry submission guidelines by hand and resolve every `[VERIFY: JOURNAL REQUIREMENT]` (abstract limit, declarations, clinical trial number) | `00_requirements_checklist.md` |
 | R-02 | Restore the outputs of the used tuning run (git c49eec1) into the repo, next to the later run | Needs author approval (repo change); described in Additional file 1: Table S1 |
-| C-05 | Tagged code release with DOI; separate the analysis code from synthetic-data and deployment code | Methods; Declarations |
+| C-05 | Tagged GitHub release archived on Zenodo for a DOI (author: link Zenodo, publish release, send DOI); README manuscript section with run order added 2026-10-29 | Methods; Declarations |
 | R-01 | Script or documented steps that create `catss_final_data.csv` (merge of PRS and PCs) | Needs author approval for repo changes |
-| W-08 | README shows synthetic-data metrics as "held-out test metrics"; label them as synthetic | Needs author approval (repo change) |
 
 ## 4. Not pursued (disclosed as limitations; can be revisited if reviewers ask)
 
@@ -87,6 +86,7 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | V-01 / V-04 | Version files exported (`versions_python.txt`, `versions_R.txt`); software versions and the GAMM basis (thin-plate, k = 10, mgcv default) filled in Methods. Author to confirm these are the environments the analyses ran in | 2026-10-28 |
 | L-02 | "No direct competitor" statement checked by a PubMed block search (9 hits; PMIDs 41399528, 36411277, 34899225 read by the author, no conflict); VERIFY markers in Background and Discussion replaced by a search note | 2026-10-28 |
 | W-02 | Participant flow starts at 13,146 CATSS twins (thesis Figs 3.1, 3.3; author confirmed); 3,885 excluded for missing exposure or outcome; Fig. 1 and Methods updated. 9,160 genotyped (of 13,146) vs 6,643 with PRS (of 9,261): different denominators | 2026-10-28 |
+| W-08 | README restructured: manuscript section (summary, folders, run order), thesis abstract with a note on the re-analysis, and Bodhica synthetic-data section with metrics labelled as synthetic | 2026-10-29 |
 | Q-01 | "GLMM" used throughout (author decision); Methods notes that with a Gaussian outcome it is a linear mixed model | 2026-10-27 |
 | Q-08 | TRIPOD+AI 18c, 18d, 19: no published protocol, not registered, no patient and public involvement (author); stated in Methods | 2026-10-27 |
 | C-09 | 95% CIs for the paired R² differences added to Table 4 (corrected resampled t, from paired_comparisons.csv); Methods, Results and checklist item 23a updated | 2026-10-27 |

@@ -107,7 +107,14 @@ def authors_tex(text):
     for given, family, email in ([c.strip() for c in l.split("|")] for l in lines):
         email = red % "[AUTHOR INPUT: email]" if email.startswith("`") else email
         out.append("\\author[1]{\\fnm{%s} \\sur{%s}}\\email{%s}\n" % (given, family, email))
-    out.append("\\affil[1]{\\orgname{%s}}\n\n" % (red % "[AUTHOR INPUT: affiliations and corresponding author]"))
+    affil = [l.split(":", 1)[1].strip() for l in section_text(text, "Authors and affiliations").splitlines()
+             if l.startswith("Affiliation:")]
+    if affil:
+        dept, org, *place = [p.strip() for p in affil[0].split(",")]
+        out.append("\\affil[1]{\\orgdiv{%s}, \\orgname{%s}, \\orgaddress{\\city{%s}, \\country{%s}}}\n\n"
+                   % (dept, org, place[0], place[1]))
+    else:
+        out.append("\\affil[1]{\\orgname{%s}}\n\n" % (red % "[AUTHOR INPUT: affiliations and corresponding author]"))
     return "".join(out)
 
 

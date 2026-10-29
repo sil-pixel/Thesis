@@ -10,13 +10,16 @@ Does deep cross-modal fusion improve prediction of late-adolescent psychopatholo
 
 ## Authors and affiliations
 <!-- Author list and order given by the author, 2026-10-28; to be confirmed with the supervisors (supervisor_request.md, item 4). Format per line: given name(s) | family name | email. The build reads this list. -->
-- Silpa Soni | Nallacheruvu | `[AUTHOR INPUT: email for the paper]`
+- Silpa Soni | Nallacheruvu | silpa.soni.nallacheruvu@stud.ki.se
 - Shuyang | Yao | shuyang.yao@ki.se
 - Sam | Andersson | sam.andersson@ki.se
 - Tong | Gong | tong.gong@ki.se
 - Lu | Yi | lu.yi@ki.se
 
-`[AUTHOR INPUT: affiliations for each author (department, organisation, city, postcode, country); corresponding author; confirm the given/family-name split above]`
+Affiliation: Department of Medical Epidemiology and Biostatistics, Karolinska Institutet, Stockholm, Sweden
+<!-- author, 2026-10-28; to be confirmed with the supervisors for every author (supervisor_request.md, item 4) -->
+
+`[AUTHOR INPUT: confirm the affiliation for each author, postcode, corresponding author, and the given/family-name split above]`
 <!-- Every author must meet the authorship criteria in the Springer Nature editorial policies; contributions go in Declarations (CRediT). -->
 
 ## Abstract

@@ -34,7 +34,14 @@ DCMFNet was behind the elastic net and boosting on every split, although with fi
 **What I need from you.** The draft keeps a marked placeholder for each of these, so you can fill them in directly in the draft if that's easier.
 
 1. **Data collection dates.** The paper should give the birth years of the twins and the years in which the age-15 and age-18 questionnaires were collected. Our analysis data has no birth-year column. Is it enough to give these for the CATSS cohort as a whole (for example, from the cohort documentation), or do we need them for the twins in our final sample? If the latter, could someone with access look them up after 28 October?
-2. **PRS pipeline.** The GWAS summary statistics, LD reference, PRS-CS settings, genotyping platforms, imputation and QC. Should this cite Wang (2025), or another published description?
+2. **Genotype data and PRS.** I've written the paragraph "Genotype data and polygenic scores" in Methods with everything I could take from my thesis and code: the linkage and QC counts (9,271 linked, 9,160 after QC), three genotyping batches, PRS-CS, 15 cell-type scores based on the top 10% most specifically expressed genes per cell type in the Siletti atlas, and the batch × PC adjustment. Could you confirm it is correct, and tell me whether it is enough or whether we should add more detail on the points below? If a published paper already describes the same CATSS genotype data and pipeline, a short summary and that citation may be enough. The pipeline I adapted (Han Wang's master's thesis, 2025) is not published, so I haven't cited it.
+   1. Genotyping arrays for the three batches (the labels in the data are GSA3 and PSYC, so presumably the Global Screening Array and the PsychArray).
+   2. Sample and SNP quality-control criteria.
+   3. Imputation reference panel and software.
+   4. The schizophrenia GWAS used (PGC3?), and whether it excluded Swedish samples to avoid overlap with CATSS.
+   5. PRS-CS settings: the LD reference panel and whether the global shrinkage parameter was learned or fixed.
+   6. How SNPs were mapped to the cell-type gene sets (for example a window around each gene), and whether the genome-wide score used all SNPs.
+   7. Whether individuals of non-European ancestry were excluded or only flagged.
 3. **Ethics.** The ethical approval(s) for CATSS and the genotype linkage, with committee name, reference number and date, and how consent/assent was obtained.
 4. **Authorship.** The draft currently lists the authors in this order:
    1. Silpa Soni Nallacheruvu
@@ -46,7 +53,7 @@ DCMFNet was behind the elastic net and boosting on every split, although with fi
    Is this list and order fine, or should we change it? In particular:
    - should anyone else be included, for example someone responsible for the CATSS data or the genotyping and PRS;
    - who should be the corresponding author;
-   - each author's affiliation as it should appear on the paper (department, organisation, city, country);
+   - affiliations: the draft gives all of us the Department of Medical Epidemiology and Biostatistics, Karolinska Institutet, Stockholm, Sweden. Is that right for everyone, or does anyone need a different or second affiliation?
    - should I check with Tong and Lu directly, or will you?
 5. **Declarations.** Who did what (CRediT), funding and grant numbers, and competing interests. Also whether an institutional agreement covers the article processing charge.
 6. **Decisions:**

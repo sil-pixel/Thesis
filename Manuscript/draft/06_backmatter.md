@@ -9,7 +9,7 @@ Nothing here may be invented: every [AUTHOR INPUT] needs the author's own inform
 
 # Abbreviations
 
-ACE: adverse childhood experiences; ADHD: attention-deficit/hyperactivity disorder; ASD: autism spectrum disorder; CATSS: Child and Adolescent Twin Study in Sweden; DCMFNet: Deep Cross-Modal Fusion Network; DEP: depressive symptoms; GAMM: generalised additive mixed model; GLMM: generalised linear mixed model; IGF: iterative gated fusion; MAE: mean absolute error; PC: principal component; PLE-HM: psychotic-like and hypomanic experiences; PRS: polygenic risk score; RMSE: root-mean-squared error; SES: socioeconomic status; SHAP: Shapley additive explanations; SUD: substance use; TRIPOD+AI: Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis, updated for artificial intelligence.
+ACE: adverse childhood experiences; ADHD: attention-deficit/hyperactivity disorder; ASD: autism spectrum disorder; CATSS: Child and Adolescent Twin Study in Sweden; DCMFNet: Deep Cross-Modal Fusion Network; DEP: depressive symptoms; GAMM: generalised additive mixed model; GLMM: generalised linear mixed model; GWAS: genome-wide association study; IGF: iterative gated fusion; MAE: mean absolute error; PC: principal component; PLE-HM: psychotic-like and hypomanic experiences; PRS: polygenic risk score; RMSE: root-mean-squared error; SES: socioeconomic status; SHAP: Shapley additive explanations; SUD: substance use; TRIPOD+AI: Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis, updated for artificial intelligence.
 <!-- Update if the comparator is called "GLMM" in the final text (Methods AUTHOR INPUT). -->
 
 # Supplementary information
