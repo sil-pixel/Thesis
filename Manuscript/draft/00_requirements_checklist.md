@@ -27,7 +27,7 @@ Status: ✅ met · ⚠️ partial or placeholder · ❌ not met · ➖ not appli
 | 13 | Sex and gender reporting (SAGER) | Springer Nature policy `[VERIFY]` | ❌ | Define the SEX variable (register vs self-report) |
 | 14 | **References:** numbered (Vancouver) | BMC style | ⚠️ | LaTeX build uses `sn-vancouver-num`. Registry keys map to `latex/references.bib`. Some claims still `[VERIFY: content]`. |
 | 15 | **Figures:** separate files at submission; legends in the manuscript | Template; BMC | ❌ | Regenerate as vector PDF (C-04); legends drafted in `06_backmatter.md` |
-| 16 | **Tables:** editable, in the manuscript, cited in order | BMC | ⚠️ | Tables 1–4 placed; Table 1 drafted 2026-10-24 (group rows need scale notes) |
+| 16 | **Tables:** editable, in the manuscript, cited in order | BMC | ⚠️ | Tables 1–6 placed (Table 5 interaction ablation added 2026-10-29); Table 1 drafted 2026-10-24 (group rows need scale notes) |
 | 17 | **Additional files:** title and description for each | BMC | ⚠️ | Listed in `06_backmatter.md` |
 | 18 | LaTeX submission: compiled PDF first; .tex source later `[VERIFY]` | Sibling BMC journal guidelines (search snippet) | ⚠️ | `latex/build.sh` produces `manuscript.tex` and the PDF |
 | 19 | Journal-specific formatting needed only after the first round of review `[VERIFY for BMC Psychiatry]` | Sibling BMC journal (search snippet) | ➖ | — |

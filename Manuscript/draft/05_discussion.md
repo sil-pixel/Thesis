@@ -23,9 +23,10 @@ Our attribution results fit this pattern. Symptoms measured earlier carried most
 Several explanations are possible. The training sets contained about 3,000 individuals, while the networks had 72,000 to 106,000 trainable parameters (Table 2). Flexible models need far more data than regression to reach stable performance [@R-PLOEG], so at this sample size they are likely to fit noise rather than signal. The predictors and outcomes are questionnaire sum scores and PRS, which explain a limited share of variance, and this limits the attainable R² for any model. Finally, if interactions between substance use and other domains are weak at the population level, a model designed to capture them has little to gain. Some observations fit this last explanation:
 - gradient boosting, which could learn interactions freely, selected shallow trees in most splits;
 - the elastic net selected strong, ridge-like shrinkage;
-- linear regression without interaction terms did slightly better than the mixed models that included them.
+- removing the 24 interaction terms from the mixed models raised test R² on every split, to the level of linear regression, so the interactions slightly reduced out-of-sample accuracy, as overfitting would (Table 5);
+- removing the fusion blocks from the network changed its R² inconsistently across splits, by about 0.01–0.02 on average in favour of fusion, with confidence intervals that included 0. <!-- src: interaction_ablation_summary.csv -->
 
-Our results cannot distinguish between these explanations. They also do not show that such interactions are absent: prediction accuracy is a different question from testing moderation, and the interaction tests here had limited power after correction for multiple testing.
+Our results cannot distinguish between these explanations. They also do not show that such interactions are absent: prediction accuracy is a different question from testing moderation, and the interaction tests here had limited power after correction for multiple testing. The network without fusion blocks also kept the hyperparameters tuned for the full network, which, if anything, favours the full network in this comparison.
 
 The network's gate values should not be read as measures of predictor importance.
 - **The gates hardly separated the groups.** In the fused stream they were close to the midpoint of the logistic gate (0.50) for every predictor group.

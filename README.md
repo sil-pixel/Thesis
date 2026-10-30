@@ -20,7 +20,7 @@ The results below are from a draft that has not been peer reviewed.
 
 - Mean test R² for psychotic-like and hypomanic experiences: DCMFNet 0.206, GLMM 0.228, GAMM 0.227. For depressive symptoms: 0.198, 0.202 and 0.200. No paired difference was statistically significant.
 - The elastic net did best (0.260 and 0.237), but no difference survived correction for multiple comparisons.
-- No substance-use interaction term survived correction, and DCMFNet's gate values did not agree with SHAP values or permutation importance.
+- No substance-use interaction term survived correction, and in no model did the interactions improve test R² significantly (removing them slightly raised the mixed models' R²). DCMFNet's gate values did not agree with SHAP values or permutation importance.
 
 **Where things are**
 
@@ -46,6 +46,7 @@ The results below are from a draft that has not been peer reviewed.
 | 9 | `Models/DCMFNet/Analysis/shap_analysis.py` | SHAP values and gate values for DCMFNet |
 | 10 | `Models/GLMM/Analysis/GLMM_shap_updated.R`, `Models/GAMM/Analysis/GAMM_shap_updated.R` | Exact SHAP values for the mixed models |
 | 11 | `Models/Model Comparison/attribution_agreement.py`, `attribution_importance_plot.py` | Agreement between gates, SHAP and permutation importance |
+| 12 | `Models/Model Comparison/interaction_ablation_mixed.R`, then `Models/DCMFNet/Analysis/dcmfnet_fusion_ablation.py` | Every model refitted without its SUD15 interactions (mixed models) or fusion blocks (DCMFNet) |
 
 Supporting code:
 - **Variable screening:** `Data Preprocessing/Feature Selection/feature_selection.py` and `Data Preprocessing/Data Analysis/Feature Importance/feature_importance.py`.

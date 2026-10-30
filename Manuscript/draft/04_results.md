@@ -50,7 +50,7 @@ Included and excluded participants were broadly similar (Table 1).
 
 <!-- src: table1_included_vs_excluded.csv. Group rows: mean of the raw items per person, then mean (SD) over people; excluded values use the people with data on that group. Number of items in parentheses. Batch × PC terms omitted (technical covariates; SMD 0.08). Missing-data percentages per group in the excluded set (PRS 50.1%, SCZ15 48.5%, SES 31.8%, ASD9 28.3%, ADHD9 26.3%, ACE18 19.6%, ACE15 8.2%, SUD18 0.5%) can go in a table footnote or Additional file. -->
 
-*Footnote to Table 1:* SMD, standardised mean difference (included minus excluded); for sex, computed among participants with known sex. Item scales differ between groups `[AUTHOR INPUT: response scale per group, or move group rows to Additional file 1]`. Percentages for sex use all participants in each column as the denominator.
+*Footnote to Table 1:* PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. SMD, standardised mean difference (included minus excluded); for sex, computed among participants with known sex. Item scales differ between groups `[AUTHOR INPUT: response scale per group, or move group rows to Additional file 1]`. Percentages for sex use all participants in each column as the denominator.
 
 ## Predictive performance
 
@@ -74,6 +74,8 @@ All models were evaluated on the same five twin-pair-grouped train/test splits, 
 | Linear regression | 0.215 ± 0.025 | 0.1546 ± 0.0026 |
 | Elastic net | 0.237 ± 0.015 | 0.1524 ± 0.0024 |
 | Gradient boosting | 0.229 ± 0.016 | 0.1533 ± 0.0027 |
+
+*Footnote to Table 3:* PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms; RMSE, root-mean-squared error. Both outcomes are scaled from 0 to 1.
 
 <!-- src: Models/Model Comparison/prediction_metrics_summary.csv (predictor_set = full). DCMFNet rows are from the retrained models, which reproduce Models/DCMFNet/Results/Final Best Model/test_results_summary.csv (D-23, resolved 2026-10-24); GLMM/GAMM rows equal GLMM_updated_summary.csv / GAMM_updated_summary.csv. Linear regression, elastic net and gradient boosting: ml_comparators_test_predictions.py; linear regression equals the lazy_predict.py screening per split to 4 decimals (Models/ML/Results/{Pos,Neg}_benchmark_per_seed.csv). -->
 <!-- note: DCMFNet configuration was selected partly on test data (D-04, D-09, D-21; TODO E-03), so its row may be optimistic. GLMM/GAMM were not tuned. The ML comparators were tuned inside the training splits only. -->
@@ -131,7 +133,7 @@ Comparisons of DCMFNet with the three machine-learning comparators formed a seco
 | DCMFNet − elastic net | −0.0389 (0.0201) | −0.0796 to 0.0019 | 0 of 5 | 0.057 | 0.34 |
 | DCMFNet − gradient boosting | −0.0303 (0.0217) | −0.0743 to 0.0137 | 0 of 5 | 0.13 | 0.34 |
 
-*Footnote to Table 4:* 95% CI, confidence interval for the mean difference from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; an interval excludes 0 exactly when the unadjusted p is below 0.05.
+*Footnote to Table 4:* PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. 95% CI, confidence interval for the mean difference from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; an interval excludes 0 exactly when the unadjusted p is below 0.05.
 
 <!-- src: paired_comparisons.csv, family = baselines, metric = r2, setting "(full)"; DCMFNet is setting_a, so signs and seeds_a_better are as in the file. -->
 <!-- CI computed 2026-10-27 from paired_comparisons.csv: mean ± t(0.975, 4) × sd_difference × sqrt(1/5 + 1/3) (= mean / t_corrected, checked to 1e-15); signs reversed with the comparison for the main family. -->
@@ -143,9 +145,10 @@ Comparisons of DCMFNet with the three machine-learning comparators formed a seco
 
 **Interpretation.** With five splits these tests have little power, so the results show no detectable advantage for DCMFNet. They do not show that the models are equivalent: for DEP, the confidence intervals for DCMFNet against the mixed models included differences of about 0.05 in R² in either direction, and for PLE-HM they ranged from about 0.05 lower to 0.005 higher for DCMFNet. <!-- src: paired_comparisons.csv, metrics rmse, mae, spearman_rho, setting (full) -->
 
-## Interaction and smooth terms in the mixed models
+## Substance-use interactions and smooth terms
 
 Coefficients come from the fits on the first split (seed 42); all terms are given in Additional file 1: Table S3. The GLMM and GAMM each included 24 SUD15 interaction terms:
+
 - SUD15 score × each fused modality score (7);
 - SUD15 score × sex;
 - SUD15 score × each of the 16 cell-type PRS.
@@ -158,6 +161,32 @@ Coefficients come from the fits on the first split (seed 42); all terms are give
 - We therefore found no robust evidence of SUD15 interactions in the statistical models.
 
 <!-- src: Models/GLMM/Results/{Pos,Neg}_GLMM_updated_significant_table.csv; Models/GAMM/Results/GAMM_updated_{Pos,Neg}_significant_table.csv -->
+
+**Removing the interactions.** To test whether the interactions improved prediction as a whole, we refitted each model without them on every split (Table 5).
+
+- **Mixed models:** without the 24 interaction terms, test R² was higher on all five splits for both models and both outcomes, by 0.011 for PLE-HM and 0.013 for DEP on average. For DEP the unadjusted confidence intervals excluded 0, but no difference remained significant after Holm correction (adjusted p 0.17–0.29). The joint Wald test of the 24 terms had p > 0.05 on every split (smallest 0.053), and the likelihood-ratio test in the GLMM was below 0.05 in 1 of 10 fits (p = 0.039).
+- **DCMFNet:** without the fused stream, test R² was 0.009 lower for PLE-HM and 0.019 lower for DEP on average, but the difference varied in sign across splits (fusion better on 3 and 4 of 5 splits) and its confidence intervals ranged from about −0.04 to +0.07 (adjusted p 0.69).
+- Without its interactions, the GLMM reached the R² of linear regression (0.239 and 0.215; Additional file 1: Table S6), and full DCMFNet remained below it.
+
+<!-- src: Models/DCMFNet/Results/Fusion Ablation Analysis/interaction_ablation_summary.csv; Models/Model Comparison/interaction_ablation_mixed_per_seed.csv (wald_p min 0.0528, lrt_p < 0.05 only GLMM Neg seed 42 = 0.0388); fusion_ablation_dcmfnet_per_seed.csv. "With" R² reproduce prediction_metrics_per_seed.csv exactly (checked 2026-10-29). Run on the server 2026-10-29 (S-06). -->
+
+**Table 5.** Mean test R² with and without the SUD15 interactions over five splits.
+
+| Model | With | Without | ΔR² | 95% CI | Better with | p (Holm) | Joint Wald p |
+|--------|-----|-------|------|-------------------|-----|-----|------------|
+| *PLE-HM* | | | | | | | |
+| DCMFNet | 0.206 | 0.197 | 0.009 | −0.042 to 0.061 | 3/5 | 0.69 | – |
+| GLMM | 0.228 | 0.239 | −0.011 | −0.025 to 0.002 | 0/5 | 0.29 | 0.13–0.85 |
+| GAMM | 0.227 | 0.239 | −0.011 | −0.024 to 0.002 | 0/5 | 0.29 | 0.11–0.84 |
+| *DEP* | | | | | | | |
+| DCMFNet | 0.198 | 0.179 | 0.019 | −0.031 to 0.069 | 4/5 | 0.69 | – |
+| GLMM | 0.202 | 0.215 | −0.013 | −0.023 to −0.002 | 0/5 | 0.17 | 0.053–0.31 |
+| GAMM | 0.200 | 0.212 | −0.013 | −0.023 to −0.002 | 0/5 | 0.17 | 0.055–0.31 |
+
+<!-- src: interaction_ablation_summary.csv (r2_with_mean, r2_without_mean, r2_difference_mean, ci95_low/high, seeds_with_better, p_value, p_holm, wald_p_min/max) -->
+
+*Footnote to Table 5:* PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. With: the models of the main analysis. Without: the mixed models without the 24 SUD15 interaction terms; DCMFNet without the fused stream (the SUD15 fusion blocks), with the same hyperparameters, which were not re-tuned. ΔR²: with minus without, so positive values mean that the interactions improved prediction. Better with: splits on which the model with interactions had the higher R². 95% CI from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; unadjusted p were 0.64, 0.081 and 0.074 for PLE-HM and 0.35, 0.028 and 0.030 for DEP (DCMFNet, GLMM, GAMM). p (Holm): adjusted across the six comparisons. Joint Wald p: test of the 24 interaction coefficients in each split's fit (24 degrees of freedom), smallest and largest over the five splits.
+
 
 In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (effective degrees of freedom < 1.1). The maximum was 2.54 for PLE-HM and 1.92 for DEP. Smooths with unadjusted p < 0.05:
 - **PLE-HM:** the all-cell PRS and the PRS for hippocampal CA1–3 and miscellaneous cells;
@@ -208,7 +237,7 @@ With 11 groups these correlations are coarse. These attributions describe what t
 
 ## Calibration, subgroup and sensitivity analyses
 
-**Table 5.** Calibration, upper-tail and subgroup results, mean (SD) over five splits.
+**Table 6.** Calibration, upper-tail and subgroup results, mean (SD) over five splits.
 
 | Model | CITL | Slope | Top-10% precision | Top-10% AUROC | R² (F) | R² (M) | R² (age 15) |
 |----------------|--------------|----------|-----------|-------------|------------|------------|------------|
@@ -229,7 +258,7 @@ With 11 groups these correlations are coarse. These attributions describe what t
 
 <!-- src: Models/Model Comparison/prediction_metrics_summary.csv (full and age15 rows); prediction_metrics_by_sex_summary.csv (full rows) -->
 
-*Footnote to Table 5:* CITL, calibration-in-the-large: the mean observed minus the mean predicted score; negative values mean that the model over-predicted on average. Slope: calibration slope. R² (F), R² (M): females and males. R² (age 15): predictors measured up to age 15 only. Top 10%: the 10% of test participants with the highest observed scores (12.1% for PLE-HM and 11.1% for DEP, because of tied scores). Precision is the fraction of the model's top 10% of predictions that fell in this group; a model without information would score about 0.12 and 0.11. Sex-specific R² uses the variance within each sex, so it excludes the variance explained by the sex difference itself. All columns except R² (age 15) use all predictors.
+*Footnote to Table 6:* PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. CITL, calibration-in-the-large: the mean observed minus the mean predicted score; negative values mean that the model over-predicted on average. Slope: calibration slope. R² (F), R² (M): females and males. R² (age 15): predictors measured up to age 15 only. Top 10%: the 10% of test participants with the highest observed scores (12.1% for PLE-HM and 11.1% for DEP, because of tied scores). Precision is the fraction of the model's top 10% of predictions that fell in this group; a model without information would score about 0.12 and 0.11. Sex-specific R² uses the variance within each sex, so it excludes the variance explained by the sex difference itself. All columns except R² (age 15) use all predictors.
 
 **Calibration.**
 - **Calibration-in-the-large:**
@@ -249,7 +278,7 @@ With 11 groups these correlations are coarse. These attributions describe what t
 <!-- src: prediction_metrics_summary.csv (calibration_in_the_large_mean, calibration_slope_mean, full); prediction_metrics_per_seed.csv (ranges: mixed models −0.013 to 0.006, DCMFNet DEP −0.029 to −0.000; main-model slopes 0.742–0.957, full); paired_comparisons.csv metric calibration_slope (family main: p_holm 1.0 for all model pairs; family baselines: DCMFNet − ElasticNet Pos full −0.256, p_holm 0.028; age15 −0.254, p_holm 0.0015; next smallest 0.085); calibration_bins.csv (decile means averaged over seeds, full predictor set) -->
 
 **Upper tail.**
-- About two in five of each model's top 10% of predictions for PLE-HM (0.39–0.42), and one in three for DEP (0.33–0.35), belonged to the 10% with the highest observed scores (Table 5). The chance level is about 0.12 and 0.11.
+- About two in five of each model's top 10% of predictions for PLE-HM (0.39–0.42), and one in three for DEP (0.33–0.35), belonged to the 10% with the highest observed scores (Table 6). The chance level is about 0.12 and 0.11.
 - The AUROC for identifying this group was 0.76–0.78 for all models; the elastic net and gradient boosting had the highest values (0.78).
 - All models underestimated the scores of this group:
   - mean bias −0.12 to −0.14 for PLE-HM;
@@ -259,7 +288,7 @@ With 11 groups these correlations are coarse. These attributions describe what t
 
 <!-- src: prediction_metrics_summary.csv (top_precision_at_10pct_mean, top_auroc_mean, top_mean_bias_mean, top_observed_fraction_mean; full) -->
 
-**Sex.** Most models explained more within-sex variance in females than in males, most clearly for DEP (Table 5).
+**Sex.** Most models explained more within-sex variance in females than in males, most clearly for DEP (Table 6).
 - **DEP in males:** R² was 0.10–0.12 for DCMFNet, the mixed models and linear regression, and 0.16–0.17 for the elastic net and gradient boosting.
 - **PLE-HM:** the two sexes were similar for the elastic net (0.262 and 0.255), and gradient boosting did slightly better in males (0.248 vs 0.239).
 

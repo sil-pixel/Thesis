@@ -51,13 +51,13 @@
 \affil[1]{\orgdiv{Department of Medical Epidemiology and Biostatistics}, \orgname{Karolinska Institutet}, \orgaddress{\city{Stockholm}, \country{Sweden}}}
 \affil[2]{\orgdiv{Department of Clinical Neuroscience}, \orgname{Karolinska Institutet}, \orgaddress{\city{Stockholm}, \country{Sweden}}}
 
-\abstract{% src: 04_results.md (prediction_metrics_summary.csv, paired_comparisons.csv, ML_comparators_tuning.csv). Word count without headings: 348 (2026-10-25). 
+\abstract{% src: 04_results.md (prediction_metrics_summary.csv, paired_comparisons.csv, ML_comparators_tuning.csv). Word count without headings: 349 (2026-10-29). 
 
 \textbf{Background:} Deep multimodal fusion networks can model interactions between psychiatric risk domains, but whether they predict better than well-specified regression models is rarely tested on identical data. We compared a deep cross-modal fusion network, which fuses adolescent substance use with each other risk domain, against regression and machine-learning models.
 
-\textbf{Methods:} We analysed 4,033 twins (2,690 pairs) from the Child and Adolescent Twin Study in Sweden with complete data on 105 predictors in 11 groups, including substance use at age 15, neurodevelopmental traits, adverse experiences and 16 cell-type-specific polygenic scores. Outcomes were continuous scores of psychotic-like and hypomanic experiences and of depressive symptoms at age 18. Comparators were generalised linear and additive mixed models (GLMM, GAMM) with a twin-pair random intercept and 24 substance-use interactions mirroring the fusion design, and linear regression, an elastic net and gradient boosting tuned within the training data. All models were evaluated on the same five twin-pair-grouped splits, with corrected resampled t-tests. Secondary analyses covered calibration, sex, predictors measured by age 15, and the network's gate values.
+\textbf{Methods:} We analysed 4,033 twins (2,690 pairs) from the Child and Adolescent Twin Study in Sweden with complete data on 105 predictors, including substance use at age 15, neurodevelopmental traits, adverse experiences and 16 cell-type-specific polygenic scores. Outcomes were continuous scores of psychotic-like and hypomanic experiences and of depressive symptoms at age 18. Comparators were generalised linear and additive mixed models (GLMM, GAMM) with a twin-pair random intercept and 24 substance-use interactions mirroring the fusion design, and linear regression, an elastic net and gradient boosting tuned within the training data. All models were evaluated on the same five twin-pair-grouped splits, with corrected resampled t-tests. Secondary analyses covered calibration, sex, age-15 predictors, removal of the interactions and the network's gates.
 
-\textbf{Results:} For psychotic-like and hypomanic experiences, mean test R² was 0.206 for the network, 0.228 for the GLMM and 0.227 for the GAMM; for depressive symptoms, it was 0.198, 0.202 and 0.200. No paired difference was statistically significant. An elastic net did best (0.260 and 0.237) and was ahead of the network on every split, but no difference survived correction. No interaction term survived correction. Without age-18 predictors, R² fell by 0.05--0.07 in every model. The network's gate values were nearly uniform and agreed poorly with SHAP values and permutation importance.
+\textbf{Results:} For psychotic-like and hypomanic experiences, mean test R² was 0.206 for the network, 0.228 for the GLMM and 0.227 for the GAMM; for depressive symptoms, it was 0.198, 0.202 and 0.200. No paired difference was significant. An elastic net did best (0.260 and 0.237), but no difference survived correction. No interaction term survived correction, and removing them raised mixed-model R² slightly on every split; removing the network's fusion blocks had inconsistent effects. Without age-18 predictors, R² fell by 0.05--0.07 in every model. The network's gates were nearly uniform and agreed poorly with SHAP and permutation importance.
 
 \textbf{Conclusions:} In this twin cohort, the fusion network did not predict better than mixed-effects models with matched inputs and interactions, even though part of its configuration was chosen using test data, and simpler models tuned on training data alone did better. The data gave little evidence of interactions between adolescent substance use and other risk domains, and the network's gates did not indicate predictor importance. Deep psychiatric prediction models should be benchmarked against well-specified regression models on identical splits before their complexity or attention-based explanations are relied on.}
 
@@ -83,31 +83,62 @@ A long-standing hypothesis holds that genetic and environmental risk factors act
 If such interactions are strong, models that represent them should predict symptoms better than additive models. Deep multimodal fusion networks are one way to do this: they combine groups of inputs (``modalities'') through learned non-linear interactions, and they are increasingly applied to heterogeneous health data \citep{R-BORSOS}. A fusion architecture in which one exposure domain conditions the representation of every other domain, such as the iterative gated fusion of the Deep Cross-Modal Fusion Network (DCMFNet) \citep{R-DCMF}, matches the interaction hypothesis directly. Such networks also contain attention-like gates, which are often read as indicators of which inputs matter.
 
 Matching the hypothesis does not guarantee better predictions. In clinical prediction, a systematic review found no performance benefit of machine learning over logistic regression in comparisons at low risk of bias, and calibration was rarely assessed \citep{R-CHRIST}. On medium-sized tabular data, tree ensembles usually outperform deep networks \citep{R-GRIN}. Studies of adolescent mental health point the same way:
-- \textbf{In the cohort used here,} random forests, support vector machines, gradient boosting and a neural network predicted mental-health problems at age 15 no better than logistic regression \citep{R-TATE}.
-- \textbf{In a US cohort,} gradient boosting improved the prediction of depressive symptoms over logistic regression only slightly, and polygenic scores added nothing to environmental predictors \citep{R-GEURGAS}.
-- \textbf{For psychotic experiences in adolescents,} polygenic and polyenvironmental risk scores did not predict the outcome \citep{R-NAVARRO}.
-- \textbf{In a large child cohort,} earlier symptoms were the strongest predictors of later mental-health problems, and neuroimaging added little \citep{R-HOU}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{In the cohort used here,} random forests, support vector machines, gradient boosting and a neural network predicted mental-health problems at age 15 no better than logistic regression \citep{R-TATE}.
+\item
+  \textbf{In a US cohort,} gradient boosting improved the prediction of depressive symptoms over logistic regression only slightly, and polygenic scores added nothing to environmental predictors \citep{R-GEURGAS}.
+\item
+  \textbf{For psychotic experiences in adolescents,} polygenic and polyenvironmental risk scores did not predict the outcome \citep{R-NAVARRO}.
+\item
+  \textbf{In a large child cohort,} earlier symptoms were the strongest predictors of later mental-health problems, and neuroimaging added little \citep{R-HOU}.
+\end{itemize}
 
 Where multimodal prediction of psychosis has worked well, in patients at clinical high risk, separate clinical, polygenic and imaging models were combined step by step rather than fused within one network \citep{R-KOUTS}.
 
 To our knowledge, no study has tested whether a deep fusion network built around substance-use interactions, using polygenic and environmental predictors in a population cohort, predicts better than regression models given the same inputs and interactions. % VERIFIED 2026-10-28 (L-02): PubMed search, title/abstract blocks for deep/fusion models (deep learning, neural network*, multimodal/multi-modal fusion, multimodal deep, cross-modal, attention mechanism*) × psychotic/hypomanic/depressive outcomes × PRS/substance use/cannabis × adolescent/youth/cohort/twin: 9 hits; adding a regression/mixed-model block gave 2 (both among the 9). Closest records read in full by the author (PMIDs 41399528, 36411277, 34899225): none tested this comparison. Non-systematic search. 
 Such a test also has to avoid artefacts that favour the more flexible model:
-- model selection on test data;
-- feature screening outside the training data \citep{R-KAPOOR};
-- related individuals on both sides of a split \citep{R-ROBERTS};
-- unequal tuning effort;
-- comparators that lack the interactions the flexible model is credited with.
+
+\begin{itemize}
+\tightlist
+\item
+  model selection on test data;
+\item
+  feature screening outside the training data \citep{R-KAPOOR};
+\item
+  related individuals on both sides of a split \citep{R-ROBERTS};
+\item
+  unequal tuning effort;
+\item
+  comparators that lack the interactions the flexible model is credited with.
+\end{itemize}
 
 Finally, attention weights are not necessarily faithful explanations of a model's predictions \citep{R-JAIN}. Gate values therefore need to be checked against attribution methods that measure what the model relies on.
 
 We therefore compared DCMFNet, adapted so that substance use at age 15 is fused with each other risk domain, against two kinds of comparator:
-- linear and generalised additive mixed models given the same predictors, a twin-pair random intercept and interaction terms that mirror the network's fusion design;
-- three standard machine-learning models (linear regression, an elastic net and gradient boosting) tuned within the training data.
+
+\begin{itemize}
+\tightlist
+\item
+  linear and generalised additive mixed models given the same predictors, a twin-pair random intercept and interaction terms that mirror the network's fusion design;
+\item
+  three standard machine-learning models (linear regression, an elastic net and gradient boosting) tuned within the training data.
+\end{itemize}
 
 All models were evaluated on identical twin-pair-grouped splits in the Child and Adolescent Twin Study in Sweden \citep{R-CATSS}, with outcomes at age 18. We asked:
-1. whether the fusion network predicted better than these comparators, including calibration, performance by sex and models restricted to predictors measured by age 15;
-2. whether the mixed models showed evidence of the substance-use interactions that motivate the fusion design;
-3. whether the network's attention gates agreed with SHAP values and permutation importance computed on the same models, and with exact SHAP values from the mixed models.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  whether the fusion network predicted better than these comparators, including calibration, performance by sex and models restricted to predictors measured by age 15;
+\item
+  whether the mixed models showed evidence of the substance-use interactions that motivate the fusion design;
+\item
+  whether the network's attention gates agreed with SHAP values and permutation importance computed on the same models, and with exact SHAP values from the mixed models.
+\end{enumerate}
 
 % Do NOT add: superiority claims; "interpretable" claims based on gate values (D-12); causal or "amplifier" language. 
 %% ---------------- 03_methods.md ----------------
@@ -189,10 +220,19 @@ Genotyping was done in three batches. % src: batch dummies batch_GSA3 and batch_
 The models adjusted for population structure and batch through the products of the batch indicators with the first two principal components (group 11).
 
 \textbf{Variable screening.} The 236 candidate variables were reduced in four steps, guided by pairwise Pearson correlations and by SHAP values from LightGBM models fitted to each outcome \citep{R-LGBM, R-SHAP}. % src: Thesis §3.4 p.10-11 and Fig. 3.3; Data Preprocessing/Feature Selection/feature_selection.py; Data Analysis/Feature Importance/feature_importance.py 
-1. Variables with more than 90\% missing values were removed. % src: feature_selection.py get_high_missingness_columns 
-2. Groups of highly correlated items were combined into one variable by taking the highest response: 11 illicit-drug items into ``other drugs'' and beer into alcohol at age 15; six types of bullying at age 15; and five types of abuse or violence at age 18. % src: feature_selection.py group_columns (Drugs15, ACE15, ACE18) 
-3. Parent-reported symptom items at age 18 were removed. They were highly correlated with the self-reports and had more missing values, so the outcomes are based on self-reports. % src: feature_selection.py group_columns (Symptoms18) 
-4. A further 41 variables with 50--90\% missing values that could not be combined with correlated items were removed. Most were parent-reported items at age 15 or adverse experiences at age 9. % src: feature_selection.py drop_mid_missing_cols (41 variables: 30 parent-reported at 15, 8 at age 9, 3 at age 18) 
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Variables with more than 90\% missing values were removed. % src: feature_selection.py get_high_missingness_columns 
+\item
+  Groups of highly correlated items were combined into one variable by taking the highest response: 11 illicit-drug items into ``other drugs'' and beer into alcohol at age 15; six types of bullying at age 15; and five types of abuse or violence at age 18. % src: feature_selection.py group_columns (Drugs15, ACE15, ACE18) 
+\item
+  Parent-reported symptom items at age 18 were removed. They were highly correlated with the self-reports and had more missing values, so the outcomes are based on self-reports. % src: feature_selection.py group_columns (Symptoms18) 
+\item
+  A further 41 variables with 50--90\% missing values that could not be combined with correlated items were removed. Most were parent-reported items at age 15 or adverse experiences at age 9. % src: feature_selection.py drop_mid_missing_cols (41 variables: 30 parent-reported at 15, 8 at age 9, 3 at age 18) 
+\end{enumerate}
 
 The LightGBM models used the outcomes and were fitted on random splits of the full sample (seeds 41--45) that do not correspond to the evaluation splits. % src: feature_importance.py:31-45, 104-112; D-09, E-04 
 Although the reasons recorded in the code for each removal or grouping are missingness or correlation, the SHAP values informed these decisions, so we treat the screening as outcome-informed. Because all models received the same 105 predictors, this step could raise the performance of all models but does not favour any one of them. % E-04 resolved 2026-10-26: author confirmed screening was inferred from Pearson correlations and LightGBM SHAP values (thesis §3.4) 
@@ -295,9 +335,16 @@ For both models, test-set predictions were made at the population level, without
 Defaults suit some algorithms poorly. For example, the lasso with its default penalty predicted a constant. Ranking the screened models by test performance would also select on test data. The screening was therefore used only to describe how default-setting models perform.
 
 \textbf{Tuned machine-learning comparators.} After the screening, we chose three comparators by model class, not by their rank in the screening:
-- \textbf{linear regression} without penalty, which has nothing to tune;
-- \textbf{an elastic net}, a penalised linear model that includes the lasso and ridge regression as special cases \citep{R-ZOU};
-- \textbf{gradient-boosted trees}, which learn non-linear effects and interactions without a prespecified structure and are a strong benchmark for tabular data \citep{R-GRIN}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{linear regression} without penalty, which has nothing to tune;
+\item
+  \textbf{an elastic net}, a penalised linear model that includes the lasso and ridge regression as special cases \citep{R-ZOU};
+\item
+  \textbf{gradient-boosted trees}, which learn non-linear effects and interactions without a prespecified structure and are a strong benchmark for tabular data \citep{R-GRIN}.
+\end{itemize}
 
 For the elastic net, inputs were standardised, and the penalty strength (100 values) and L1 ratio (0.05--1) were chosen by cross-validation. For gradient boosting (scikit-learn \textcolor{red}{HistGradientBoostingRegressor}), 40 configurations were drawn at random over learning rate, number of trees, maximum depth, number of leaves, minimum leaf size and L2 penalty. Early stopping was not used, because its internal validation split is not grouped by twin pair. All tuning used the training split only, with five inner folds grouped by twin pair and mean squared error as the criterion. Each model was then refitted on the whole training split and evaluated once on the test split. The comparators used the same 105 inputs; in the age-15 analysis, ACE18 and SUD18 were removed. Like the network, they did not model twin dependence. % src: Models/ML/Method/ml_comparators_test_predictions.py (ELASTIC_NET_L1_RATIOS, BOOSTING_SPACE, N_BOOSTING_CONFIGS = 40, GroupKFold n_splits = 5); scikit-learn 1.8.0 from versions_python.txt 
 
@@ -309,6 +356,8 @@ Models were compared split by split with the corrected resampled t-test, which a
 With five splits these tests have low power, so a non-significant difference is not evidence of equivalence.
 
 For the mixed models, interaction terms were assessed with their Wald p-values, Holm-adjusted across the 24 terms, and PRS smooth terms by their effective degrees of freedom. % src: Models/GLMM/Results/{Pos,Neg}_GLMM_updated_all_coefs.csv; Models/GAMM/Results/GAMM_updated_{Pos,Neg}_smooth_terms.csv 
+
+\textbf{Interaction ablation.} To test whether the SUD15 interactions improved prediction as a whole, each model was also fitted without them on the same five splits. The mixed models were refitted without the 24 interaction terms, keeping all main effects and the random intercept. DCMFNet was retrained without the fused stream, so that all inputs passed only through the independent stream and the output layers; it used the same hyperparameters and training procedure, which were not re-tuned for the reduced network. Because the feature gates multiply inputs by input-dependent weights, the reduced network can still represent some interactions; the ablation therefore removes the dedicated SUD15 fusion, not every interaction. Test R² with and without the interactions was compared split by split with the corrected resampled t-test, with a Holm correction across these six comparisons (three models, two outcomes). On each split, we also tested the 24 interaction coefficients of the mixed models jointly with a Wald test, and in the GLMM with a likelihood-ratio test of the two fits refitted by maximum likelihood. % src: Models/Model Comparison/interaction_ablation_mixed.R; Models/DCMFNet/Analysis/dcmfnet_fusion_ablation.py (IndependentStreamModel; corrected_t_test, holm); authorised by the author 2026-10-29 
 
 \subsection{Calibration, subgroup and sensitivity analyses}
 
@@ -371,11 +420,20 @@ The analysis sample comprised 4,033 individuals from 2,690 twin pairs with compl
 Of the 9,261 eligible individuals (5,756 twin pairs), 4,033 (43.5\%) had complete data (Fig. 1). In the analysis sample, 1,343 twin pairs contributed both twins and 1,347 contributed one. Missing genotype data was the largest single reason for exclusion (2,618 individuals), followed by missing data on symptoms at age 15 (907), adverse experiences at age 18 (626) and parental socioeconomic indicators (526). Each individual is counted at the first step they failed, in the order shown in Fig. 1. % src: Data Preprocessing/Data Analysis/Sample Analysis/analysis_sample_flow.csv; analysis_sample_twin_structure.csv 
 
 Included and excluded participants were broadly similar (Table 1).
-- \textbf{Outcomes:} the analysis sample had slightly lower mean outcome scores (PLE-HM 0.132 vs 0.145; DEP 0.243 vs 0.266; SMD −0.13 for both).
-- \textbf{Symptoms at age 15:} the largest difference was in the SCZ15 item mean (0.414 vs 0.476; SMD −0.22). Higher item values mean more frequent or more certain symptoms, so included participants reported fewer symptoms at age 15. % coding from catss_analysis_final.html (prod 0–2 No never/Maybe/Yes definitely; cmr 0–3 Never-rarely to Very often; sdq 0–2 Not true to Certainly true), confirmed by the author 2026-10-29 (Q-05) 
-- \textbf{Other groups:} included participants reported more adverse experiences at age 18 (SMD 0.18; these items are coded 1 for yes and 0 for no), and the item means for parental socioeconomic indicators also differed (SMD 0.19). The socioeconomic items combine parental country of birth with education categories that include an unordered ``other'' category, so the sign of that difference has no simple interpretation. % ACE18 coding from the author (2026-10-29): raw CATSS-18 items 1 = No, 2 = Yes, recoded to 0 = No, 1 = Yes. D-25 closed by the author. SES: birth country 0 Sweden / 1 other, education 0–4 ordered plus 5 = Other education. 
-- \textbf{Substance use at age 15:} all six items differed little (\textbar SMD\textbar{} ≤ 0.10).
-- \textbf{Sex:} missing for 26.0\% of excluded participants. Among those with known sex, 58.0\% of included and 60.6\% of excluded participants were female.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Outcomes:} the analysis sample had slightly lower mean outcome scores (PLE-HM 0.132 vs 0.145; DEP 0.243 vs 0.266; SMD −0.13 for both).
+\item
+  \textbf{Symptoms at age 15:} the largest difference was in the SCZ15 item mean (0.414 vs 0.476; SMD −0.22). Higher item values mean more frequent or more certain symptoms, so included participants reported fewer symptoms at age 15. % coding from catss_analysis_final.html (prod 0–2 No never/Maybe/Yes definitely; cmr 0–3 Never-rarely to Very often; sdq 0–2 Not true to Certainly true), confirmed by the author 2026-10-29 (Q-05) 
+\item
+  \textbf{Other groups:} included participants reported more adverse experiences at age 18 (SMD 0.18; these items are coded 1 for yes and 0 for no), and the item means for parental socioeconomic indicators also differed (SMD 0.19). The socioeconomic items combine parental country of birth with education categories that include an unordered ``other'' category, so the sign of that difference has no simple interpretation. % ACE18 coding from the author (2026-10-29): raw CATSS-18 items 1 = No, 2 = Yes, recoded to 0 = No, 1 = Yes. D-25 closed by the author. SES: birth country 0 Sweden / 1 other, education 0–4 ordered plus 5 = Other education. 
+\item
+  \textbf{Substance use at age 15:} all six items differed little (\textbar SMD\textbar{} ≤ 0.10).
+\item
+  \textbf{Sex:} missing for 26.0\% of excluded participants. Among those with known sex, 58.0\% of included and 60.6\% of excluded participants were female.
+\end{itemize}
 
 % src: Data Preprocessing/Data Analysis/Sample Analysis/table1_included_vs_excluded.csv. 60.6% = 2,345 / (1,526 + 2,345), computed from the exported counts. SMD = included minus excluded; for sex it was computed among those with known sex. 
 
@@ -437,7 +495,7 @@ SES (4), item mean (SD) & 2.594 (0.460) & 2.501 (0.513) & 0.19 \\
 
 % src: table1_included_vs_excluded.csv. Group rows: mean of the raw items per person, then mean (SD) over people; excluded values use the people with data on that group. Number of items in parentheses. Batch × PC terms omitted (technical covariates; SMD 0.08). Missing-data percentages per group in the excluded set (PRS 50.1%, SCZ15 48.5%, SES 31.8%, ASD9 28.3%, ADHD9 26.3%, ACE18 19.6%, ACE15 8.2%, SUD18 0.5%) can go in a table footnote or Additional file. 
 
-\emph{Footnote to Table 1:} SMD, standardised mean difference (included minus excluded); for sex, computed among participants with known sex. Item scales differ between groups \textcolor{red}{{[}AUTHOR INPUT: response scale per group, or move group rows to Additional file 1{]}}. Percentages for sex use all participants in each column as the denominator.
+\emph{Footnote to Table 1:} PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. SMD, standardised mean difference (included minus excluded); for sex, computed among participants with known sex. Item scales differ between groups \textcolor{red}{{[}AUTHOR INPUT: response scale per group, or move group rows to Additional file 1{]}}. Percentages for sex use all participants in each column as the denominator.
 
 \subsection{Predictive performance}
 
@@ -472,6 +530,8 @@ Elastic net & 0.237 ± 0.015 & 0.1524 ± 0.0024 \\
 Gradient boosting & 0.229 ± 0.016 & 0.1533 ± 0.0027 \\
 \end{longtable}
 
+\emph{Footnote to Table 3:} PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms; RMSE, root-mean-squared error. Both outcomes are scaled from 0 to 1.
+
 % src: Models/Model Comparison/prediction_metrics_summary.csv (predictor_set = full). DCMFNet rows are from the retrained models, which reproduce Models/DCMFNet/Results/Final Best Model/test_results_summary.csv (D-23, resolved 2026-10-24); GLMM/GAMM rows equal GLMM_updated_summary.csv / GAMM_updated_summary.csv. Linear regression, elastic net and gradient boosting: ml_comparators_test_predictions.py; linear regression equals the lazy_predict.py screening per split to 4 decimals (Models/ML/Results/{Pos,Neg}_benchmark_per_seed.csv). 
 
 % note: DCMFNet configuration was selected partly on test data (D-04, D-09, D-21; TODO E-03), so its row may be optimistic. GLMM/GAMM were not tuned. The ML comparators were tuned inside the training splits only. 
@@ -479,17 +539,30 @@ Gradient boosting & 0.229 ± 0.016 & 0.1533 ± 0.0027 \\
 Mean R² was higher for the GLMM and GAMM than for DCMFNet on both outcomes. The difference was 0.022 for PLE-HM and 0.004 for DEP (GLMM minus DCMFNet). GLMM and GAMM performed almost identically. For DEP, DCMFNet had a higher Spearman correlation than the mixed models (0.451 vs 0.446 and 0.442; Additional file 1: Table S6). % src: same file 
 
 All three machine-learning comparators had higher mean R² than DCMFNet and the mixed models for both outcomes:
-- \textbf{elastic net:} 0.260 (PLE-HM) and 0.237 (DEP), the best of all models;
-- \textbf{gradient boosting:} 0.244 and 0.229;
-- \textbf{linear regression without penalty:} 0.239 and 0.215.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{elastic net:} 0.260 (PLE-HM) and 0.237 (DEP), the best of all models;
+\item
+  \textbf{gradient boosting:} 0.244 and 0.229;
+\item
+  \textbf{linear regression without penalty:} 0.239 and 0.215.
+\end{itemize}
 
 Fig. 3 shows the results of every model on each split.
 
 The comparators also had the highest Spearman correlations (0.47--0.49 for PLE-HM, 0.45--0.47 for DEP; Additional file 1: Table S6). % src: prediction_metrics_summary.csv (full) 
 
 The tuning favoured strong shrinkage and simple structure:
-- \textbf{Elastic net:} the selected L1 ratio was 0.05, close to ridge regression, in 15 of 20 fits.
-- \textbf{Gradient boosting:} the selected trees had a maximum depth of 2 or 3 in 14 of 20 fits, and at most 6 leaves in the other six.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Elastic net:} the selected L1 ratio was 0.05, close to ridge regression, in 15 of 20 fits.
+\item
+  \textbf{Gradient boosting:} the selected trees had a maximum depth of 2 or 3 in 14 of 20 fits, and at most 6 leaves in the other six.
+\end{itemize}
 
 % src: Models/ML/Results/ML_comparators_tuning.csv (20 fits per model = 5 splits × 2 outcomes × 2 predictor sets; boosting max_depth 2 or 3 in 14 fits; depth 4 with 6 leaves or depth 6 with 4 leaves in the others) 
 
@@ -498,12 +571,24 @@ In the default-settings screening of 40 algorithms, cross-validated penalised li
 \subsection{Paired comparisons across splits}
 
 The models were compared split by split with the corrected resampled t-test \citep{R-NADEAU}. P-values were Holm-adjusted within each metric across 18 comparisons:
-- the three model pairs, with each predictor set, for both outcomes (12 comparisons);
-- full versus age-15-only predictors for each model and outcome (6 comparisons).
+
+\begin{itemize}
+\tightlist
+\item
+  the three model pairs, with each predictor set, for both outcomes (12 comparisons);
+\item
+  full versus age-15-only predictors for each model and outcome (6 comparisons).
+\end{itemize}
 
 Comparisons of DCMFNet with the three machine-learning comparators formed a second family of 18 comparisons, with its own Holm correction:
-- DCMFNet versus each comparator, with each predictor set, for both outcomes (12 comparisons);
-- full versus age-15-only predictors for each comparator and outcome (6 comparisons).
+
+\begin{itemize}
+\tightlist
+\item
+  DCMFNet versus each comparator, with each predictor set, for both outcomes (12 comparisons);
+\item
+  full versus age-15-only predictors for each comparator and outcome (6 comparisons).
+\end{itemize}
 
 % src: Models/Model Comparison/paired_comparisons.csv (18 rows per metric); prediction_evaluation.py paired_comparisons(), holm() 
 
@@ -568,7 +653,7 @@ DCMFNet − elastic net & −0.0389 (0.0201) & −0.0796 to 0.0019 & 0 of 5 & 0.
 DCMFNet − gradient boosting & −0.0303 (0.0217) & −0.0743 to 0.0137 & 0 of 5 & 0.13 & 0.34 \\
 \end{longtable}
 
-\emph{Footnote to Table 4:} 95\% CI, confidence interval for the mean difference from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; an interval excludes 0 exactly when the unadjusted p is below 0.05.
+\emph{Footnote to Table 4:} PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. 95\% CI, confidence interval for the mean difference from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; an interval excludes 0 exactly when the unadjusted p is below 0.05.
 
 % src: paired_comparisons.csv, family = baselines, metric = r2, setting "(full)"; DCMFNet is setting_a, so signs and seeds_a_better are as in the file. 
 
@@ -582,12 +667,19 @@ DCMFNet − gradient boosting & −0.0303 (0.0217) & −0.0743 to 0.0137 & 0 of 
 
 \textbf{Interpretation.} With five splits these tests have little power, so the results show no detectable advantage for DCMFNet. They do not show that the models are equivalent: for DEP, the confidence intervals for DCMFNet against the mixed models included differences of about 0.05 in R² in either direction, and for PLE-HM they ranged from about 0.05 lower to 0.005 higher for DCMFNet. % src: paired_comparisons.csv, metrics rmse, mae, spearman_rho, setting (full) 
 
-\subsection{Interaction and smooth terms in the mixed models}
+\subsection{Substance-use interactions and smooth terms}
 
 Coefficients come from the fits on the first split (seed 42); all terms are given in Additional file 1: Table S3. The GLMM and GAMM each included 24 SUD15 interaction terms:
-- SUD15 score × each fused modality score (7);
-- SUD15 score × sex;
-- SUD15 score × each of the 16 cell-type PRS.
+
+\begin{itemize}
+\tightlist
+\item
+  SUD15 score × each fused modality score (7);
+\item
+  SUD15 score × sex;
+\item
+  SUD15 score × each of the 16 cell-type PRS.
+\end{itemize}
 
 % src: Models/GLMM/Results/{Pos,Neg}_GLMM_updated_all_coefs.csv (24 interaction rows each) 
 
@@ -605,9 +697,95 @@ Coefficients come from the fits on the first split (seed 42); all terms are give
 
 % src: Models/GLMM/Results/{Pos,Neg}_GLMM_updated_significant_table.csv; Models/GAMM/Results/GAMM_updated_{Pos,Neg}_significant_table.csv 
 
+\textbf{Removing the interactions.} To test whether the interactions improved prediction as a whole, we refitted each model without them on every split (Table 5).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Mixed models:} without the 24 interaction terms, test R² was higher on all five splits for both models and both outcomes, by 0.011 for PLE-HM and 0.013 for DEP on average. For DEP the unadjusted confidence intervals excluded 0, but no difference remained significant after Holm correction (adjusted p 0.17--0.29). The joint Wald test of the 24 terms had p \textgreater{} 0.05 on every split (smallest 0.053), and the likelihood-ratio test in the GLMM was below 0.05 in 1 of 10 fits (p = 0.039).
+\item
+  \textbf{DCMFNet:} without the fused stream, test R² was 0.009 lower for PLE-HM and 0.019 lower for DEP on average, but the difference varied in sign across splits (fusion better on 3 and 4 of 5 splits) and its confidence intervals ranged from about −0.04 to +0.07 (adjusted p 0.69).
+\item
+  Without its interactions, the GLMM reached the R² of linear regression (0.239 and 0.215; Additional file 1: Table S6), and full DCMFNet remained below it.
+\end{itemize}
+
+% src: Models/DCMFNet/Results/Fusion Ablation Analysis/interaction_ablation_summary.csv; Models/Model Comparison/interaction_ablation_mixed_per_seed.csv (wald_p min 0.0528, lrt_p < 0.05 only GLMM Neg seed 42 = 0.0388); fusion_ablation_dcmfnet_per_seed.csv. "With" R² reproduce prediction_metrics_per_seed.csv exactly (checked 2026-10-29). Run on the server 2026-10-29 (S-06). 
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1194}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0746}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1045}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0896}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2836}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0746}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0746}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1791}}@{}}
+\caption{Mean test R² with and without the SUD15 interactions over five splits.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+With
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Without
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ΔR²
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+95\% CI
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Better with
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+p (Holm)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Joint Wald p
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+With
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Without
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ΔR²
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+95\% CI
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Better with
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+p (Holm)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Joint Wald p
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\emph{PLE-HM} & & & & & & & \\
+DCMFNet & 0.206 & 0.197 & 0.009 & −0.042 to 0.061 & 3/5 & 0.69 & -- \\
+GLMM & 0.228 & 0.239 & −0.011 & −0.025 to 0.002 & 0/5 & 0.29 & 0.13--0.85 \\
+GAMM & 0.227 & 0.239 & −0.011 & −0.024 to 0.002 & 0/5 & 0.29 & 0.11--0.84 \\
+\emph{DEP} & & & & & & & \\
+DCMFNet & 0.198 & 0.179 & 0.019 & −0.031 to 0.069 & 4/5 & 0.69 & -- \\
+GLMM & 0.202 & 0.215 & −0.013 & −0.023 to −0.002 & 0/5 & 0.17 & 0.053--0.31 \\
+GAMM & 0.200 & 0.212 & −0.013 & −0.023 to −0.002 & 0/5 & 0.17 & 0.055--0.31 \\
+\end{longtable}
+
+% src: interaction_ablation_summary.csv (r2_with_mean, r2_without_mean, r2_difference_mean, ci95_low/high, seeds_with_better, p_value, p_holm, wald_p_min/max) 
+
+\emph{Footnote to Table 5:} PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. With: the models of the main analysis. Without: the mixed models without the 24 SUD15 interaction terms; DCMFNet without the fused stream (the SUD15 fusion blocks), with the same hyperparameters, which were not re-tuned. ΔR²: with minus without, so positive values mean that the interactions improved prediction. Better with: splits on which the model with interactions had the higher R². 95\% CI from the corrected resampled t-test (4 degrees of freedom), not adjusted for multiple comparisons; unadjusted p were 0.64, 0.081 and 0.074 for PLE-HM and 0.35, 0.028 and 0.030 for DEP (DCMFNet, GLMM, GAMM). p (Holm): adjusted across the six comparisons. Joint Wald p: test of the 24 interaction coefficients in each split's fit (24 degrees of freedom), smallest and largest over the five splits.
+
 In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (effective degrees of freedom \textless{} 1.1). The maximum was 2.54 for PLE-HM and 1.92 for DEP. Smooths with unadjusted p \textless{} 0.05:
-- \textbf{PLE-HM:} the all-cell PRS and the PRS for hippocampal CA1--3 and miscellaneous cells;
-- \textbf{DEP:} the all-cell PRS only.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{PLE-HM:} the all-cell PRS and the PRS for hippocampal CA1--3 and miscellaneous cells;
+\item
+  \textbf{DEP:} the all-cell PRS only.
+\end{itemize}
 
 % src: Models/GAMM/Results/GAMM_updated_{Pos,Neg}_smooth_terms.csv 
 
@@ -618,29 +796,52 @@ In the GAMM, 11 of the 16 PRS smooths were close to linear for each outcome (eff
 \subsection{Attribution: gates, SHAP and permutation importance}
 
 \textbf{Gate values.} DCMFNet's gates hardly differed between predictor groups.
-- \textbf{Fused stream:} the mean gate value of every group lay between 0.499 and 0.507 for both outcomes, with SDs across splits of at most 0.006. This is the midpoint of the logistic gate.
-- \textbf{Independent stream:} gate values ranged from 0.44 to 0.56.
-- \textbf{Stability:} the ranking of groups by gate value was not stable across splits. The mean between-split Spearman correlation was 0.17 (PLE-HM) and 0.12 (DEP) for the fused gates and 0.16 and 0.39 for the independent gates, with minimum values down to −0.55.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fused stream:} the mean gate value of every group lay between 0.499 and 0.507 for both outcomes, with SDs across splits of at most 0.006. This is the midpoint of the logistic gate.
+\item
+  \textbf{Independent stream:} gate values ranged from 0.44 to 0.56.
+\item
+  \textbf{Stability:} the ranking of groups by gate value was not stable across splits. The mean between-split Spearman correlation was 0.17 (PLE-HM) and 0.12 (DEP) for the fused gates and 0.16 and 0.39 for the independent gates, with minimum values down to −0.55.
+\end{itemize}
 
 % src: Models/Model Comparison/attribution_modality_summary.csv (DCMFNet_gate_fused importance_mean 0.4989–0.5069, importance_std ≤ 0.0061; DCMFNet_gate_independent 0.4439–0.5620); attribution_stability.csv 
 
 \textbf{Gates compared with SHAP.} Gate values agreed poorly with DCMFNet's own SHAP values:
-- fused gates: mean Spearman ρ 0.04 for PLE-HM and 0.36 for DEP;
-- independent gates: −0.02 and 0.21;
-- overlap of the three highest-ranked groups: 0.27--0.53.
+
+\begin{itemize}
+\tightlist
+\item
+  fused gates: mean Spearman ρ 0.04 for PLE-HM and 0.36 for DEP;
+\item
+  independent gates: −0.02 and 0.21;
+\item
+  overlap of the three highest-ranked groups: 0.27--0.53.
+\end{itemize}
 
 In contrast, DCMFNet's SHAP rankings were stable across splits (mean ρ 0.79 and 0.85), as were its permutation rankings (0.73 and 0.82). % src: attribution_agreement_summary.csv (DCMFNet_gate_fused vs DCMFNet_SHAP 0.040 / 0.360; DCMFNet_gate_independent vs DCMFNet_SHAP −0.022 / 0.215; top3_overlap 0.27–0.53); attribution_stability.csv (DCMFNet_SHAP 0.793 / 0.852; DCMFNet_permutation 0.735 / 0.818) 
 
 \textbf{Which groups the models relied on.} SHAP values and permutation importance gave a similar picture for all three models (Fig. 5). The five most important single predictors are listed in Additional file 1: Table S7.
-- \textbf{Symptoms at age 15 (SCZ15)} had the largest share of SHAP importance:
-- DCMFNet: 34\% (PLE-HM) and 33\% (DEP);
-- GLMM: 30\% and 28\%.
-- \textbf{Age-18 groups:} the adverse experiences and substance use measured at age 18 came next. They accounted for 31\% (PLE-HM) and 30\% (DEP) of DCMFNet's SHAP importance and 34\% and 29\% of the GLMM's.
-- \textbf{Substance use at age 15} (the anchor group of DCMFNet) accounted for 4.7--6.1\% of SHAP importance in every model.
-- \textbf{Polygenic scores:} the all-cell PRS was associated with both outcomes in the GAMM (unadjusted p \textless{} 0.05), but the 16 PRS together contributed little to prediction: at most 8\% of SHAP importance in any model (DCMFNet 3.6\% for both outcomes; GLMM 7.1\% and 6.9\%; GAMM 8.0\% and 7.4\%), and permuting them reduced test R² by at most 0.007. % src: attribution_modality_summary.csv, modality PRS: share_mean DCMFNet_SHAP 0.0363 / 0.0362, GLMM_SHAP 0.0707 / 0.0686, GAMM_SHAP 0.0797 / 0.0739; importance_mean permutation (Pos / Neg) DCMFNet −0.0005 / 0.0010, GLMM −0.0014 / 0.0070, GAMM −0.0004 / 0.0065. GAMM smooths: GAMM_updated_{Pos,Neg}_smooth_terms.csv (seed 42) 
 
 \begin{itemize}
-\tightlist
+\item
+  \textbf{Symptoms at age 15 (SCZ15)} had the largest share of SHAP importance:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DCMFNet: 34\% (PLE-HM) and 33\% (DEP);
+  \item
+    GLMM: 30\% and 28\%.
+  \end{itemize}
+\item
+  \textbf{Age-18 groups:} the adverse experiences and substance use measured at age 18 came next. They accounted for 31\% (PLE-HM) and 30\% (DEP) of DCMFNet's SHAP importance and 34\% and 29\% of the GLMM's.
+\item
+  \textbf{Substance use at age 15} (the anchor group of DCMFNet) accounted for 4.7--6.1\% of SHAP importance in every model.
+\item
+  \textbf{Polygenic scores:} the all-cell PRS was associated with both outcomes in the GAMM (unadjusted p \textless{} 0.05), but the 16 PRS together contributed little to prediction: at most 8\% of SHAP importance in any model (DCMFNet 3.6\% for both outcomes; GLMM 7.1\% and 6.9\%; GAMM 8.0\% and 7.4\%), and permuting them reduced test R² by at most 0.007. % src: attribution_modality_summary.csv, modality PRS: share_mean DCMFNet_SHAP 0.0363 / 0.0362, GLMM_SHAP 0.0707 / 0.0686, GAMM_SHAP 0.0797 / 0.0739; importance_mean permutation (Pos / Neg) DCMFNet −0.0005 / 0.0010, GLMM −0.0014 / 0.0070, GAMM −0.0004 / 0.0065. GAMM smooths: GAMM_updated_{Pos,Neg}_smooth_terms.csv (seed 42) 
 \item
   \textbf{Permutation importance:} permuting the SCZ15 items reduced test R² by 0.24 (PLE-HM) and 0.22 (DEP) for DCMFNet, and by 0.22 and 0.20 for the GLMM. The reduction was at most 0.008 for substance use at age 15 in all models.
 \end{itemize}
@@ -648,9 +849,16 @@ In contrast, DCMFNet's SHAP rankings were stable across splits (mean ρ 0.79 and
 % src: attribution_modality_summary.csv share_mean: DCMFNet_SHAP SCZ15 0.340 / 0.327, ACE18+SUD18 0.137+0.178 = 0.314 (Pos), 0.192+0.107 = 0.299 (Neg), SUD15 0.052 / 0.061; GLMM_SHAP SCZ15 0.296 / 0.278, ACE18+SUD18 0.201+0.134 = 0.335 (Pos), 0.193+0.096 = 0.289 (Neg), SUD15 0.057 / 0.047; GAMM_SHAP SUD15 0.056 / 0.047. importance_mean permutation: DCMFNet SCZ15 0.241 / 0.217, GLMM 0.225 / 0.198; SUD15 DCMFNet 0.0076 / 0.0044, GLMM 0.0059 / 0.0016, GAMM 0.0058 / 0.0016. Permuting SCZ15 reduces R² by more than the model's R², i.e. test R² becomes negative. 
 
 \textbf{Agreement between models.}
-- \textbf{DCMFNet vs GLMM, SHAP:} mean Spearman ρ 0.64 (PLE-HM) and 0.81 (DEP); top-three overlap 0.93 and 0.80.
-- \textbf{DCMFNet vs GLMM, permutation importance:} ρ 0.75 and 0.80; top-three overlap 1.00 and 0.93.
-- \textbf{GLMM vs GAMM:} practically identical attributions (SHAP ρ 0.99 and 1.00).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{DCMFNet vs GLMM, SHAP:} mean Spearman ρ 0.64 (PLE-HM) and 0.81 (DEP); top-three overlap 0.93 and 0.80.
+\item
+  \textbf{DCMFNet vs GLMM, permutation importance:} ρ 0.75 and 0.80; top-three overlap 1.00 and 0.93.
+\item
+  \textbf{GLMM vs GAMM:} practically identical attributions (SHAP ρ 0.99 and 1.00).
+\end{itemize}
 
 With 11 groups these correlations are coarse. These attributions describe what the fitted models use for prediction, not causal effects of the predictors. % src: attribution_agreement_summary.csv (DCMFNet_SHAP vs GLMM_SHAP 0.642 / 0.805, top3 0.93 / 0.80; DCMFNet_permutation vs GLMM_permutation 0.745 / 0.800, top3 1.00 / 0.93; GLMM_SHAP vs GAMM_SHAP 0.995 / 1.000) 
 
@@ -726,57 +934,135 @@ Gradient boosting & −0.003 (0.006) & 1.00 (0.09) & 0.35 (0.04) & 0.78 (0.01) &
 
 % src: Models/Model Comparison/prediction_metrics_summary.csv (full and age15 rows); prediction_metrics_by_sex_summary.csv (full rows) 
 
-\emph{Footnote to Table 5:} CITL, calibration-in-the-large: the mean observed minus the mean predicted score; negative values mean that the model over-predicted on average. Slope: calibration slope. R² (F), R² (M): females and males. R² (age 15): predictors measured up to age 15 only. Top 10\%: the 10\% of test participants with the highest observed scores (12.1\% for PLE-HM and 11.1\% for DEP, because of tied scores). Precision is the fraction of the model's top 10\% of predictions that fell in this group; a model without information would score about 0.12 and 0.11. Sex-specific R² uses the variance within each sex, so it excludes the variance explained by the sex difference itself. All columns except R² (age 15) use all predictors.
+\emph{Footnote to Table 6:} PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. CITL, calibration-in-the-large: the mean observed minus the mean predicted score; negative values mean that the model over-predicted on average. Slope: calibration slope. R² (F), R² (M): females and males. R² (age 15): predictors measured up to age 15 only. Top 10\%: the 10\% of test participants with the highest observed scores (12.1\% for PLE-HM and 11.1\% for DEP, because of tied scores). Precision is the fraction of the model's top 10\% of predictions that fell in this group; a model without information would score about 0.12 and 0.11. Sex-specific R² uses the variance within each sex, so it excludes the variance explained by the sex difference itself. All columns except R² (age 15) use all predictors.
 
 \textbf{Calibration.}
-- \textbf{Calibration-in-the-large:}
-- the mixed models and the three comparators were well calibrated: the mean prediction was within 0.003 of the mean observed score for both outcomes (within 0.014 on every split for the mixed models);
-- DCMFNet over-predicted DEP on average (−0.017; range −0.029 to 0.000 across splits) and PLE-HM slightly (−0.007).
-- \textbf{Calibration slopes:}
-- DCMFNet, the mixed models and linear regression had slopes below 1 (0.82--0.89), meaning that their predictions were spread somewhat too widely;
-- the elastic net and gradient boosting had slopes close to 1 for DEP (0.99 and 1.00) and slightly above 1 for PLE-HM (1.07 for both), meaning that their PLE-HM predictions were slightly too narrow;
-- DCMFNet's slope was lower than the elastic net's for PLE-HM (difference −0.26; Holm-adjusted p = 0.028), and this also held with age-15 predictors only (p = 0.002);
-- no other difference in slope was significant after correction (smallest Holm-adjusted p 0.085);
-- for the main models, split-specific slopes ranged from 0.74 to 0.96.
-- \textbf{Deciles of predicted score}, averaged over the five splits (Fig. 4):
-- DCMFNet and the mixed models overestimated the observed mean in the highest decile, for DEP (predicted 0.448 in the GLMM and 0.455 in DCMFNet; observed 0.404 and 0.406) and for PLE-HM (0.252 and 0.261; observed 0.234 and 0.226);
-- the mixed models underestimated the lowest decile for DEP (0.108 vs 0.135), whereas DCMFNet did not (0.134 vs 0.135).
-- \textbf{GLMM vs GAMM:} the two calibration curves were almost identical.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Calibration-in-the-large:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    the mixed models and the three comparators were well calibrated: the mean prediction was within 0.003 of the mean observed score for both outcomes (within 0.014 on every split for the mixed models);
+  \item
+    DCMFNet over-predicted DEP on average (−0.017; range −0.029 to 0.000 across splits) and PLE-HM slightly (−0.007).
+  \end{itemize}
+\item
+  \textbf{Calibration slopes:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DCMFNet, the mixed models and linear regression had slopes below 1 (0.82--0.89), meaning that their predictions were spread somewhat too widely;
+  \item
+    the elastic net and gradient boosting had slopes close to 1 for DEP (0.99 and 1.00) and slightly above 1 for PLE-HM (1.07 for both), meaning that their PLE-HM predictions were slightly too narrow;
+  \item
+    DCMFNet's slope was lower than the elastic net's for PLE-HM (difference −0.26; Holm-adjusted p = 0.028), and this also held with age-15 predictors only (p = 0.002);
+  \item
+    no other difference in slope was significant after correction (smallest Holm-adjusted p 0.085);
+  \item
+    for the main models, split-specific slopes ranged from 0.74 to 0.96.
+  \end{itemize}
+\item
+  \textbf{Deciles of predicted score}, averaged over the five splits (Fig. 4):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DCMFNet and the mixed models overestimated the observed mean in the highest decile, for DEP (predicted 0.448 in the GLMM and 0.455 in DCMFNet; observed 0.404 and 0.406) and for PLE-HM (0.252 and 0.261; observed 0.234 and 0.226);
+  \item
+    the mixed models underestimated the lowest decile for DEP (0.108 vs 0.135), whereas DCMFNet did not (0.134 vs 0.135).
+  \end{itemize}
+\item
+  \textbf{GLMM vs GAMM:} the two calibration curves were almost identical.
+\end{itemize}
 
 % src: prediction_metrics_summary.csv (calibration_in_the_large_mean, calibration_slope_mean, full); prediction_metrics_per_seed.csv (ranges: mixed models −0.013 to 0.006, DCMFNet DEP −0.029 to −0.000; main-model slopes 0.742–0.957, full); paired_comparisons.csv metric calibration_slope (family main: p_holm 1.0 for all model pairs; family baselines: DCMFNet − ElasticNet Pos full −0.256, p_holm 0.028; age15 −0.254, p_holm 0.0015; next smallest 0.085); calibration_bins.csv (decile means averaged over seeds, full predictor set) 
 
 \textbf{Upper tail.}
-- About two in five of each model's top 10\% of predictions for PLE-HM (0.39--0.42), and one in three for DEP (0.33--0.35), belonged to the 10\% with the highest observed scores (Table 5). The chance level is about 0.12 and 0.11.
-- The AUROC for identifying this group was 0.76--0.78 for all models; the elastic net and gradient boosting had the highest values (0.78).
-- All models underestimated the scores of this group:
-- mean bias −0.12 to −0.14 for PLE-HM;
-- mean bias −0.26 to −0.28 for DEP.
 
-The underestimation was smallest for DCMFNet (−0.124 and −0.257) and largest for the elastic net and gradient boosting (−0.136 to −0.139 and −0.275 to −0.278).
+\begin{itemize}
+\tightlist
+\item
+  About two in five of each model's top 10\% of predictions for PLE-HM (0.39--0.42), and one in three for DEP (0.33--0.35), belonged to the 10\% with the highest observed scores (Table 6). The chance level is about 0.12 and 0.11.
+\item
+  The AUROC for identifying this group was 0.76--0.78 for all models; the elastic net and gradient boosting had the highest values (0.78).
+\item
+  All models underestimated the scores of this group:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    mean bias −0.12 to −0.14 for PLE-HM;
+  \item
+    mean bias −0.26 to −0.28 for DEP.
+  \end{itemize}
+
+  The underestimation was smallest for DCMFNet (−0.124 and −0.257) and largest for the elastic net and gradient boosting (−0.136 to −0.139 and −0.275 to −0.278).
+\end{itemize}
 
 % src: prediction_metrics_summary.csv (top_precision_at_10pct_mean, top_auroc_mean, top_mean_bias_mean, top_observed_fraction_mean; full) 
 
-\textbf{Sex.} Most models explained more within-sex variance in females than in males, most clearly for DEP (Table 5).
-- \textbf{DEP in males:} R² was 0.10--0.12 for DCMFNet, the mixed models and linear regression, and 0.16--0.17 for the elastic net and gradient boosting.
-- \textbf{PLE-HM:} the two sexes were similar for the elastic net (0.262 and 0.255), and gradient boosting did slightly better in males (0.248 vs 0.239).
+\textbf{Sex.} Most models explained more within-sex variance in females than in males, most clearly for DEP (Table 6).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{DEP in males:} R² was 0.10--0.12 for DCMFNet, the mixed models and linear regression, and 0.16--0.17 for the elastic net and gradient boosting.
+\item
+  \textbf{PLE-HM:} the two sexes were similar for the elastic net (0.262 and 0.255), and gradient boosting did slightly better in males (0.248 vs 0.239).
+\end{itemize}
 
 These differences were not formally tested. % src: prediction_metrics_by_sex_summary.csv (full) 
 
 \textbf{Predictors measured by age 15.} Without the age-18 groups (ACE18, SUD18), test R² fell by 0.05--0.07 in every model.
-- \textbf{Size of the drop:}
-- DCMFNet: 0.049 (PLE-HM) and 0.072 (DEP);
-- GLMM: 0.060 and 0.060;
-- GAMM: 0.061 and 0.059.
-- \textbf{Significance of the drop (Holm-adjusted p):}
-- DCMFNet: 0.002 and 0.006;
-- GLMM: 0.041 (PLE-HM) and 0.066 (DEP);
-- GAMM: 0.036 and 0.075.
-- \textbf{Comparators:} the drop was 0.060--0.063 (Holm-adjusted p 0.010--0.094 in the comparator family).
-- \textbf{Between models:} with age-15 predictors only, the ranking was unchanged:
-- the mixed models remained slightly ahead of DCMFNet, by 0.010--0.016 (all Holm-adjusted p = 1.00);
-- every comparator was ahead of DCMFNet on all five splits, by 0.023--0.048 (Holm-adjusted p ≥ 0.11);
-- the elastic net again did best (0.198 for PLE-HM, 0.174 for DEP).
-- \textbf{DEP in males:} with age-15 predictors only, DCMFNet explained almost none of the within-sex variance (R² 0.010, SD 0.018). The other models reached 0.058--0.061 (GLMM, GAMM), 0.065 (linear regression), 0.096 (gradient boosting) and 0.105 (elastic net).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Size of the drop:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DCMFNet: 0.049 (PLE-HM) and 0.072 (DEP);
+  \item
+    GLMM: 0.060 and 0.060;
+  \item
+    GAMM: 0.061 and 0.059.
+  \end{itemize}
+\item
+  \textbf{Significance of the drop (Holm-adjusted p):}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    DCMFNet: 0.002 and 0.006;
+  \item
+    GLMM: 0.041 (PLE-HM) and 0.066 (DEP);
+  \item
+    GAMM: 0.036 and 0.075.
+  \end{itemize}
+\item
+  \textbf{Comparators:} the drop was 0.060--0.063 (Holm-adjusted p 0.010--0.094 in the comparator family).
+\item
+  \textbf{Between models:} with age-15 predictors only, the ranking was unchanged:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    the mixed models remained slightly ahead of DCMFNet, by 0.010--0.016 (all Holm-adjusted p = 1.00);
+  \item
+    every comparator was ahead of DCMFNet on all five splits, by 0.023--0.048 (Holm-adjusted p ≥ 0.11);
+  \item
+    the elastic net again did best (0.198 for PLE-HM, 0.174 for DEP).
+  \end{itemize}
+\item
+  \textbf{DEP in males:} with age-15 predictors only, DCMFNet explained almost none of the within-sex variance (R² 0.010, SD 0.018). The other models reached 0.058--0.061 (GLMM, GAMM), 0.065 (linear regression), 0.096 (gradient boosting) and 0.105 (elastic net).
+\end{itemize}
 
 % src: paired_comparisons.csv ("(full)" vs "(age15)" rows for each model, metric r2; GLMM/GAMM vs DCMFNet "(age15)" rows); prediction_metrics_summary.csv (age15 rows); prediction_metrics_by_sex_summary.csv (age15 rows). For DCMFNet, ACE18 and SUD18 were set to their training means rather than removed (Methods). 
 %% ---------------- 05_discussion.md ----------------
@@ -794,38 +1080,76 @@ These findings are consistent with comparisons in clinical prediction, where fle
 
 Few studies have compared flexible models with regression for these outcomes in population cohorts, and we found none that used a deep fusion architecture with polygenic and environmental predictors. % VERIFIED 2026-10-28 (L-02): PubMed search, title/abstract blocks for deep/fusion models (deep learning, neural network*, multimodal/multi-modal fusion, multimodal deep, cross-modal, attention mechanism*) × psychotic/hypomanic/depressive outcomes × PRS/substance use/cannabis × adolescent/youth/cohort/twin: 9 hits; adding a regression/mixed-model block gave 2 (both among the 9). Closest records read in full by the author (PMIDs 41399528, 36411277, 34899225): none tested this comparison. Non-systematic search. 
 The studies we found point in the same direction as ours:
-- \textbf{Depression, Add Health cohort:} gradient boosting improved discrimination of depressive symptoms by about 0.02 AUC over logistic regression. Adding polygenic scores to environmental predictors did not improve prediction \citep{R-GEURGAS}.
-- \textbf{Psychotic experiences, Brazilian youth cohort:} polygenic and polyenvironmental risk scores, alone or combined, did not predict psychotic experiences in adolescents \citep{R-NAVARRO}.
-- \textbf{Mental health problems, ABCD study:} earlier subclinical symptoms predicted later problems, and neuroimaging added little \citep{R-HOU}.
-- \textbf{Psychosis, clinical high-risk patients:} multimodal prediction performed well where clinical, polygenic and imaging information was combined. There, the risk estimates of separate models were integrated step by step, rather than fused in a single network \citep{R-KOUTS}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Depression, Add Health cohort:} gradient boosting improved discrimination of depressive symptoms by about 0.02 AUC over logistic regression. Adding polygenic scores to environmental predictors did not improve prediction \citep{R-GEURGAS}.
+\item
+  \textbf{Psychotic experiences, Brazilian youth cohort:} polygenic and polyenvironmental risk scores, alone or combined, did not predict psychotic experiences in adolescents \citep{R-NAVARRO}.
+\item
+  \textbf{Mental health problems, ABCD study:} earlier subclinical symptoms predicted later problems, and neuroimaging added little \citep{R-HOU}.
+\item
+  \textbf{Psychosis, clinical high-risk patients:} multimodal prediction performed well where clinical, polygenic and imaging information was combined. There, the risk estimates of separate models were integrated step by step, rather than fused in a single network \citep{R-KOUTS}.
+\end{itemize}
 
 Our attribution results fit this pattern. Symptoms measured earlier carried most of the predictive information, and polygenic scores contributed little.
 
 Several explanations are possible. The training sets contained about 3,000 individuals, while the networks had 72,000 to 106,000 trainable parameters (Table 2). Flexible models need far more data than regression to reach stable performance \citep{R-PLOEG}, so at this sample size they are likely to fit noise rather than signal. The predictors and outcomes are questionnaire sum scores and PRS, which explain a limited share of variance, and this limits the attainable R² for any model. Finally, if interactions between substance use and other domains are weak at the population level, a model designed to capture them has little to gain. Some observations fit this last explanation:
-- gradient boosting, which could learn interactions freely, selected shallow trees in most splits;
-- the elastic net selected strong, ridge-like shrinkage;
-- linear regression without interaction terms did slightly better than the mixed models that included them.
 
-Our results cannot distinguish between these explanations. They also do not show that such interactions are absent: prediction accuracy is a different question from testing moderation, and the interaction tests here had limited power after correction for multiple testing.
+\begin{itemize}
+\tightlist
+\item
+  gradient boosting, which could learn interactions freely, selected shallow trees in most splits;
+\item
+  the elastic net selected strong, ridge-like shrinkage;
+\item
+  removing the 24 interaction terms from the mixed models raised test R² on every split, to the level of linear regression, so the interactions slightly reduced out-of-sample accuracy, as overfitting would (Table 5);
+\item
+  removing the fusion blocks from the network changed its R² inconsistently across splits, by about 0.01--0.02 on average in favour of fusion, with confidence intervals that included 0. % src: interaction_ablation_summary.csv 
+\end{itemize}
+
+Our results cannot distinguish between these explanations. They also do not show that such interactions are absent: prediction accuracy is a different question from testing moderation, and the interaction tests here had limited power after correction for multiple testing. The network without fusion blocks also kept the hyperparameters tuned for the full network, which, if anything, favours the full network in this comparison.
 
 The network's gate values should not be read as measures of predictor importance.
-- \textbf{The gates hardly separated the groups.} In the fused stream they were close to the midpoint of the logistic gate (0.50) for every predictor group.
-- \textbf{They were unstable.} Their ranking of the groups changed from split to split.
-- \textbf{They disagreed with the model-agnostic attributions.} They agreed poorly with SHAP values and permutation importance computed on the same trained networks: mean Spearman ρ 0.04 for PLE-HM and 0.36 for DEP for the fused gates.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The gates hardly separated the groups.} In the fused stream they were close to the midpoint of the logistic gate (0.50) for every predictor group.
+\item
+  \textbf{They were unstable.} Their ranking of the groups changed from split to split.
+\item
+  \textbf{They disagreed with the model-agnostic attributions.} They agreed poorly with SHAP values and permutation importance computed on the same trained networks: mean Spearman ρ 0.04 for PLE-HM and 0.36 for DEP for the fused gates.
+\end{itemize}
 
 This agrees with work showing that attention weights need not reflect what a model relies on \citep{R-JAIN}. In this network, the gates scale each individual's features. A value near 0.50 for every group means that this scaling did little to distinguish between groups.
 
 The model-agnostic attributions, in contrast, were stable across splits and broadly consistent between the network and the mixed models.
-- \textbf{In all models,} symptoms at age 15 contributed most, followed by adverse experiences and substance use at age 18.
-- \textbf{Substance use at age 15,} the anchor of the fusion design, contributed only about 5\% of SHAP importance (4.7--6.1\% across models and outcomes).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{In all models,} symptoms at age 15 contributed most, followed by adverse experiences and substance use at age 18.
+\item
+  \textbf{Substance use at age 15,} the anchor of the fusion design, contributed only about 5\% of SHAP importance (4.7--6.1\% across models and outcomes).
+\end{itemize}
 
 The network thus relied on much the same predictors as the linear models, not mainly on its anchor domain, which fits the absence of a performance gain. These attributions describe what the fitted models used for prediction. They do not identify causal risk factors, and the age-18 predictors were measured at the same time as the outcomes.
 
 The secondary analyses did not change the main conclusion.
-- \textbf{Calibration.} All models predicted the mean outcome well, although the network slightly over-predicted depressive symptoms. The network, the mixed models and linear regression produced predictions that were spread somewhat too widely (calibration slopes 0.82--0.89). The tuned elastic net and gradient boosting had slopes close to 1.
-- \textbf{The highest scores.} Every model under-predicted the scores of the 10\% of participants with the highest scores. The network's weighted loss, designed to give more weight to the upper tail, produced the smallest under-prediction. It did not, however, identify this group better (AUROC 0.76, against 0.76--0.78 for the other models).
-- \textbf{Predictors measured by age 15.} Without the age-18 predictors, R² fell by 0.05--0.07 in every model, and the ranking of the models did not change. A substantial part of the performance in the main analysis therefore came from measures taken at the same time as the outcomes. With predictors available by age 15, R² was 0.13--0.20.
-- \textbf{Sex.} All models explained less variance in depressive symptoms in males than in females. With age-15 predictors only, the network explained almost none of the variance in males (R² 0.01), whereas the elastic net reached 0.10. In the network the age-18 inputs were held at their training mean, not removed, which may contribute to this difference. These sex differences were not formally tested.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Calibration.} All models predicted the mean outcome well, although the network slightly over-predicted depressive symptoms. The network, the mixed models and linear regression produced predictions that were spread somewhat too widely (calibration slopes 0.82--0.89). The tuned elastic net and gradient boosting had slopes close to 1.
+\item
+  \textbf{The highest scores.} Every model under-predicted the scores of the 10\% of participants with the highest scores. The network's weighted loss, designed to give more weight to the upper tail, produced the smallest under-prediction. It did not, however, identify this group better (AUROC 0.76, against 0.76--0.78 for the other models).
+\item
+  \textbf{Predictors measured by age 15.} Without the age-18 predictors, R² fell by 0.05--0.07 in every model, and the ranking of the models did not change. A substantial part of the performance in the main analysis therefore came from measures taken at the same time as the outcomes. With predictors available by age 15, R² was 0.13--0.20.
+\item
+  \textbf{Sex.} All models explained less variance in depressive symptoms in males than in females. With age-15 predictors only, the network explained almost none of the variance in males (R² 0.01), whereas the elastic net reached 0.10. In the network the age-18 inputs were held at their training mean, not removed, which may contribute to this difference. These sex differences were not formally tested.
+\end{itemize}
 
 \subsection{Strengths and limitations}
 
@@ -918,11 +1242,11 @@ Not applicable. \textcolor{red}{{[}VERIFY: JOURNAL REQUIREMENT{]}}
 
 \textbf{Fig. 1} Participant flow from the CATSS twins in the study data to the complete-case analysis sample and the five evaluation splits. Each excluded individual is counted at the first missing predictor group, in the order shown; steps that excluded fewer than five individuals are combined with the preceding step. % src: figures/make_figures.py from analysis_sample_flow.csv; top step from thesis Figs 3.1 and 3.3 (W-02, author confirmed 2026-10-28) 
 
-\textbf{Fig. 2} Architecture of the deep cross-modal fusion network (DCMFNet). Left: substance use at age 15 (SUD15, the anchor) is fused with each of nine predictor groups in an iterative gated fusion (IGF) block of depth \emph{L} (fused stream); each block output passes through a feature gate \(\phi\), and the gated outputs are concatenated and gated again (\(\phi_F\)). The independent stream gates all 105 inputs, including the genotyping batch × principal component terms (\(\phi_I\)). Both streams are concatenated, gated (\(\phi_{\mathrm{out}}\)) and passed to a linear output. Numbers of inputs per group in parentheses. Right: one layer of an IGF block (Eqs 1--3 in Methods). % src: figures/make_figures.py; Models/DCMFNet/Method/dcmfnet/model.py; hyperparameters.json 
+\textbf{Fig. 2} Architecture of the deep cross-modal fusion network (DCMFNet). Left: substance use at age 15 (SUD15, the anchor) is fused with each of nine predictor groups in an iterative gated fusion (IGF) block of depth \emph{L} (fused stream); each block output passes through a feature gate \(\phi\), and the gated outputs are concatenated and gated again (\(\phi_F\)). The independent stream gates all 105 inputs, including the genotyping batch × principal component terms (\(\phi_I\)). Both streams are concatenated, gated (\(\phi_{\mathrm{out}}\)) and passed to a linear output. Numbers of inputs per group in parentheses. Right: one layer of an IGF block (Eqs 1--3 in Methods). PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. % src: figures/make_figures.py; Models/DCMFNet/Method/dcmfnet/model.py; hyperparameters.json 
 
-\textbf{Fig. 3} Test-set R² of each model on each of the five splits, with all predictors. Each symbol is one split; grey lines join the results of the same split, so that within-split differences between models can be seen. Black bars and the numbers above each panel give the mean over the five splits. The dashed line separates the fusion network and the mixed models from the comparators tuned within the training data. % src: figures/make_figures.py fig3() from Models/Model Comparison/prediction_metrics_per_seed.csv (predictor_set = full) 
+\textbf{Fig. 3} Test-set R² of each model on each of the five splits, with all predictors. Each symbol is one split; grey lines join the results of the same split, so that within-split differences between models can be seen. Black bars and the numbers above each panel give the mean over the five splits. The dashed line separates the fusion network and the mixed models from the comparators tuned within the training data. PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. % src: figures/make_figures.py fig3() from Models/Model Comparison/prediction_metrics_per_seed.csv (predictor_set = full) 
 
-\textbf{Fig. 4} Calibration of each model, by decile of predicted score: mean predicted against mean observed score per decile, averaged over the five test sets, with all predictors. Each panel highlights one model; the other models are shown in light grey for comparison. The dashed line shows perfect calibration. % src: figures/make_figures.py fig4() from Models/Model Comparison/calibration_bins.csv (same data as calibration_curves_full.pdf) 
+\textbf{Fig. 4} Calibration of each model, by decile of predicted score: mean predicted against mean observed score per decile, averaged over the five test sets, with all predictors. Each panel highlights one model; the other models are shown in light grey for comparison. The dashed line shows perfect calibration. PLE-HM, psychotic-like and hypomanic experiences; DEP, depressive symptoms. % src: figures/make_figures.py fig4() from Models/Model Comparison/calibration_bins.csv (same data as calibration_curves_full.pdf) 
 
 \textbf{Fig. 5} Importance of each predictor group, by model and attribution method, for psychotic-like and hypomanic experiences (left) and depressive symptoms (right). Each cell gives the group's share of the total importance for that method, as a percentage averaged over the five test sets. The two left-hand columns of each panel show DCMFNet's mean gate values, also expressed as shares. The fused stream has no gate for substance use at age 15 (the anchor group) or for the batch × PC terms, so these cells are empty. Negative permutation importances were set to zero. Groups are ordered by their mean GLMM SHAP share across the two outcomes. Importance describes what each fitted model uses for prediction, not causal effects. % src: Models/Model Comparison/attribution_importance_by_group.pdf (attribution_importance_plot.py, from attribution_modality_summary.csv). Figure labels say "GLMM"; relabel if the model is called LMM in the final text. 
 

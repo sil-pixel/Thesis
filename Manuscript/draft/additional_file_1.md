@@ -13,6 +13,8 @@ scratchpad build_af1.py (Tables S1, S3, S4, S5) and a one-off script (Tables S2,
 Rebuild if these files change.
 -->
 
+Outcomes in all tables: PLE-HM, psychotic-like and hypomanic experiences at age 18; DEP, depressive symptoms at age 18 (both scaled from 0 to 1). GLMM, generalised linear mixed model; GAMM, generalised additive mixed model; RMSE, root-mean-squared error; SHAP, Shapley additive explanations.
+
 Contents:
 
 - Table S1. DCMFNet hyperparameter search and tuning history

@@ -72,7 +72,7 @@ UNICODE_MAP = {
 
 
 def pandoc(markdown, backmatter=False, clean=False):
-    cmd = ["pandoc", "-f", "markdown+tex_math_dollars-raw_tex-auto_identifiers", "-t", "latex", "--natbib", "--wrap=preserve",
+    cmd = ["pandoc", "-f", "markdown+tex_math_dollars+lists_without_preceding_blankline-raw_tex-auto_identifiers", "-t", "latex", "--natbib", "--wrap=preserve",
            "--lua-filter", str(LATEX_DIR / "md2sn.lua")]
     if backmatter:
         cmd += ["-M", "backmatter=true"]

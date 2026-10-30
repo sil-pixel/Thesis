@@ -37,7 +37,7 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | | 12b | D | Handling of predictors (form, scaling) | Methods: DCMFNet, mixed-effects and machine-learning comparators | Reported |
 | | 12c | D | Model type, building steps, tuning, internal validation | Methods; Table 2; Additional file 1: Tables S1, S2b, S5 | Reported (test-set involvement in DCMFNet configuration disclosed) |
 | | 12d | D;E | Heterogeneity across clusters | Methods: Data partitioning, mixed-effects comparators | Reported (twin pairs as clusters: grouped splits; random intercept in the mixed models) |
-| | 12e | D;E | Performance measures and model comparison | Methods: Evaluation and statistical comparison; Calibration, subgroup and sensitivity analyses | Reported |
+| | 12e | D;E | Performance measures and model comparison | Methods: Evaluation and statistical comparison (incl. interaction ablation); Calibration, subgroup and sensitivity analyses | Reported |
 | | 12f | E | Model updating | – | Not applicable: no recalibration or updating |
 | | 12g | E | How predictions were calculated | Methods: Software and reporting | Reported: code archived with a DOI |
 | Class imbalance | 13 | D;E | Class-imbalance methods | Methods: Loss | Reported (continuous outcomes; tail-weighted loss in DCMFNet) |
@@ -57,7 +57,7 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | | 20c | E | Comparison with development data | – | Not applicable: internal evaluation on random splits of the same cohort |
 | Model development | 21 | D;E | Numbers in each analysis | Methods: Data partitioning; Fig. 1 | Reported (training, validation and test sizes) |
 | Model specification | 22 | D | Full model available for new predictions | Methods; Table 2; Additional file 1: Table S3 | Partly: mixed-model coefficients and all code given; network weights trained on CATSS are not shared |
-| Model performance | 23a | D;E | Performance with confidence intervals, incl. subgroups | Results: Tables 3–5 | Reported: mean and SD over splits for each model; paired differences with 95% confidence intervals and corrected p values (Table 4); results by sex (Table 5) |
+| Model performance | 23a | D;E | Performance with confidence intervals, incl. subgroups | Results: Tables 3–6 | Reported: mean and SD over splits for each model; paired differences with 95% confidence intervals and corrected p values (Tables 4–5); results by sex (Table 6) |
 | | 23b | D;E | Heterogeneity across clusters | – | Not applicable: twin pairs are too small for cluster-level performance |
 | Model updating | 24 | E | Results of updating | – | Not applicable |
 | Interpretation | 25 | D;E | Overall interpretation, incl. fairness | Discussion | Reported |

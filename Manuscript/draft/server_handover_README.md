@@ -51,6 +51,7 @@ The file with the same name in `Results/Complexity Analysis/Avg complexity resul
 | 10 | `Rscript GLMM_shap_updated.R`, `Rscript GAMM_shap_updated.R` | `{GLMM,GAMM}_attribution_per_seed.csv` | The log should show "SHAP additivity check ... ~0" (about 1e-17) |
 | 11 | `python attribution_agreement.py` | `attribution_agreement_*`, `attribution_stability.csv`, `attribution_modality_summary.csv` | Needs the three attribution files from steps 9–10 |
 | 12 | `python models_comparison_plot_generation_updated.py` | `model_comparison_updated.{pdf,png}` | Needs the summary CSVs from steps 3–4 and the DCMFNet `test_results_summary.csv` |
+| 13 | `Rscript interaction_ablation_mixed.R`, then `python dcmfnet_fusion_ablation.py` | `interaction_ablation_mixed_per_seed.csv`, `fusion_ablation_dcmfnet_per_seed.csv`, `interaction_ablation_summary.csv`; `SERVER_ONLY_predictions_DCMFNet_no_fusion.csv` stays on the server | Needs `SERVER_ONLY_predictions_DCMFNet.csv` from step 7. The "with" R² must equal `prediction_metrics_per_seed.csv` (full). Table 5 |
 | — | `python lazy_predict.py` | `{Pos,Neg}_benchmark_*` | Machine-learning baselines, already run. It uses the same splits, so there is no need to rerun. |
 
 Steps 6–11 depend on steps 1, 3 and 4 only through the shared scripts and splits. You can rerun any of them on its own.

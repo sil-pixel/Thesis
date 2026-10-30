@@ -33,7 +33,7 @@ Simpler machine-learning models, tuned only on the training data with folds grou
 DCMFNet was behind the elastic net and boosting on every split, although with five splits no difference survived correction. I chose these three comparators by model class, after a default-settings screening of 40 algorithms (which goes in the supplement), and not by their rank in it. So the paper is framed as a careful benchmark of deep multimodal fusion against regression and standard machine-learning models, not as a new-method paper.
 
 **Other results you should know about before reading the draft:**
-- **Interactions.** None of the 24 substance-use interaction terms in the mixed models survived correction.
+- **Interactions.** None of the 24 substance-use interaction terms in the mixed models survived correction. I also refitted every model without its interactions on all five splits (new, run on 29 October). Removing the 24 terms raised the mixed models' test R² on every split by about 0.01, to the level of linear regression, so they slightly reduced accuracy. Removing DCMFNet's fusion blocks lowered its R² by 0.009 and 0.019 on average, but inconsistently across splits (confidence intervals about −0.04 to +0.07). No difference survived correction (new Table 5).
 - **Predictors measured at age 18.** Leaving out adverse experiences and substance use at age 18 lowered R² by 0.05–0.07 in every model. The ranking of the models stayed the same.
 - **Attention gates, checked against SHAP.** We had wanted to validate the gate values with SHAP and permutation importance on the same trained networks, but there wasn't time before. I've now done this. The two do not match: the gate values were almost identical across predictor groups (about 0.50), changed between splits, and agreed poorly with SHAP and permutation importance (mean Spearman ρ 0.04 for PLE-HM and 0.36 for depressive symptoms). So the paper reports the gates as not indicating predictor importance.
 - **What drives the predictions.** SHAP and permutation importance agree across all models: symptoms at age 15 matter most, then the age-18 groups. Substance use at age 15 contributes little.
@@ -48,9 +48,10 @@ DCMFNet was behind the elastic net and boosting on every split, although with fi
 | MAE and Spearman's ρ for all models (Table 3 now shows R² and RMSE only) | Supplement (Table S6) |
 | Default-settings screening of 40 algorithms | Supplement (Table S2) |
 | Age-15 analysis (without the age-18 predictors) | Main text |
-| Calibration | Main text (Fig. 4, Table 5) |
-| Results by sex | Main text (Table 5) |
-| Top 10% of scores (under-prediction, AUROC) | Main text (Table 5) |
+| Removing the interactions (mixed models and DCMFNet fusion blocks) | Main text (Table 5) |
+| Calibration | Main text (Fig. 4, Table 6) |
+| Results by sex | Main text (Table 6) |
+| Top 10% of scores (under-prediction, AUROC) | Main text (Table 6) |
 | Gate values vs SHAP and permutation importance | Main text |
 | Predictor-group importance across models | Main text (Fig. 5) |
 | Mixed-model coefficients and interactions | Supplement (Table S3) |
