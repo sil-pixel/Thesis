@@ -28,7 +28,6 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | Q-02 | Supervisors' decision on which analyses to keep in the main text, move to the supplement or drop, and whether anything is missing (email table "What should be in the paper") | Results; Additional file 1 |
 | Q-03 | Choose title and keywords | Title page |
 | Q-04 | Confirm the wording of the configuration-selection disclosure (E-03) | Methods; Discussion limitations |
-| Q-06 | Item response scale per predictor group for the Table 1 footnote, or move group rows to Additional file 1 | Table 1 footnote |
 
 ## 3. Writing and references (agent can do; no data needed)
 
@@ -91,6 +90,7 @@ Q-xx are decisions for the author or supervisors (not to be confused with D-xx d
 | M-01a | Outcome instruments and scoring: APSS (7 items, 0–3), MDQ (13, yes/no), CMRS (4, 0–3) → max 46; CES-D 11-item (0–3, two items reverse-coded) → max 33; references verified | 2026-10-28 |
 | M-06a | A-TAC (ADHD and autism modules, parent interview), sex from the parents' age-9/12 interview, data files last updated Nov 2023, analysed Nov 2025–Oct 2026 | 2026-10-28 |
 | Q-05 | Coding direction: SCZ15 higher = more symptoms (report + author); SES mixes birth country and an education scale with an unordered "other" category, so its SMD sign is not interpreted. ACE18: 1 = yes, 0 = no (author recode, W-13) | 2026-10-29 |
+| Q-06 | Table 1 footnote: response scale of each predictor group added (from the report label lists and ace_columns.txt); table kept in the main text at the author's request | 2026-10-30 |
 | S-06 | Interaction ablations run on the server and added: Methods "Interaction ablation", Results Table 5 (calibration table renumbered to Table 6), Abstract (349 words), Discussion, email, TRIPOD 12e/23a | 2026-10-29 |
 | W-13 | ACE value counts exported (ace_columns.txt). ACE18 recoded by the author from raw 1 = No, 2 = Yes to 0 = No, 1 = Yes (higher = more); ACE15 1 = No, higher = more. Table 1 text updated (included reported more ACE18 experiences). D-25 closed by the author; confirmed by raw counts (raw 2 = Yes ≈ 6,200 for emotional abuse) | 2026-10-29 |
 | W-08 | README restructured: manuscript section (summary, folders, run order), thesis abstract with a note on the re-analysis, and Bodhica synthetic-data section with metrics labelled as synthetic | 2026-10-29 |

@@ -56,10 +56,10 @@ The study also has limitations.
 - **Configuration selection.** The network's depth configuration, and the choice among tuning runs, used test-set results, and the tuning data overlapped later test sets. The network's own performance estimates are therefore likely optimistic, although this bias works against our main conclusion.
 - **Feature screening.** The variable-screening step used the outcomes on data that overlap the test sets [@R-KAPOOR]. This affects all models equally but may inflate absolute performance.
 - **Complete-case analysis.** Only individuals with complete data were analysed, 43.5% of the eligible sample, mainly because genotype data were missing. Included participants had slightly lower outcome and age-15 symptom scores than excluded participants (standardised differences up to 0.22), so the sample may under-represent adolescents with more symptoms, and results may not generalise to the full cohort.
-- **Outcome measures.** The outcomes are continuous questionnaire scores, not diagnoses, and the PLE-HM score combines psychotic-like and hypomanic items. `[AUTHOR INPUT: M-01 instrument details]`
+- **Outcome measures.** The outcomes are continuous questionnaire scores, not diagnoses, and the PLE-HM score combines psychotic-like and hypomanic items.
 - **Concurrent predictors.** In the main analysis, adverse experiences and substance use at age 18 were measured at the same time as the outcomes. Removing them lowered R² by 0.05–0.07 in every model without changing the ranking of the models, so the main-analysis estimates overstate what can be predicted from information available at age 15.
 - **Twin dependence.** The mixed models included a twin-pair random intercept, but the network and the machine-learning comparators did not model twin dependence during training; splits, and the comparators' inner tuning folds, were grouped by twin pair.
-- **Generalisability.** A single cohort with no external validation; PRS derived from European-ancestry genome-wide association studies `[VERIFY: GWAS ancestry — W-03]`.
+- **Generalisability.** A single cohort with no external validation; PRS derived from European-ancestry genome-wide association studies `[VERIFY: GWAS ancestry]` <!-- W-03 -->.
 - **Power.** Five splits give limited power to detect small differences between models.
 
 # Conclusions

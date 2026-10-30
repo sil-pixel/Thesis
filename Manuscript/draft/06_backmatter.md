@@ -20,7 +20,7 @@ ACE: adverse childhood experiences; ADHD: attention-deficit/hyperactivity disord
 # Declarations
 
 ## Ethics approval and consent to participate
-`[AUTHOR INPUT: "CATSS and the genotype linkage were approved by [committee, e.g., the Regional Ethical Review Board in Stockholm / Swedish Ethical Review Authority], reference number(s) [xxx], date(s) [xxx]. [Consent procedure: parents for participants under 15/18; participants themselves at age 18 — VERIFY]. The study was conducted in accordance with the Declaration of Helsinki."]` — TODO C-02
+`[AUTHOR INPUT: "CATSS and the genotype linkage were approved by [committee, e.g., the Regional Ethical Review Board in Stockholm / Swedish Ethical Review Authority], reference number(s) [xxx], date(s) [xxx]. [Consent procedure: parents for participants under 15/18; participants themselves at age 18 — VERIFY]. The study was conducted in accordance with the Declaration of Helsinki."]` <!-- C-02 -->
 
 ## Consent for publication
 Not applicable. <!-- No individual-level data, images or case details are reported. -->

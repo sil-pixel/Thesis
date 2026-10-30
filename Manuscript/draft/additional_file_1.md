@@ -165,7 +165,7 @@ Estimates from the models fitted on the training set of the first split (seed 42
 ### Table S3a. PLE-HM: fixed effects of the linear and additive mixed models
 
 | Term | GLMM β (SE) | GLMM p | GAMM β (SE) | GAMM p |
-|---|---|---|---|---|
+|----------------------------------------|------------------|----------|-------------------|----------|
 | **Substance use, age 15 (anchor)** | | | | |
 | `SUD15_OtherDrugs15` | 0.0171 (0.0082) | 0.0373 | 0.0175 (0.0082) | 0.0333 |
 | `SUD15_Painkillers_opioids15` | 0.0081 (0.0058) | 0.163 | 0.0083 (0.0058) | 0.153 |
@@ -311,7 +311,7 @@ Estimates from the models fitted on the training set of the first split (seed 42
 ### Table S3b. DEP: fixed effects of the linear and additive mixed models
 
 | Term | GLMM β (SE) | GLMM p | GAMM β (SE) | GAMM p |
-|---|---|---|---|---|
+|----------------------------------------|------------------|----------|-------------------|----------|
 | **Substance use, age 15 (anchor)** | | | | |
 | `SUD15_Cigarettes15` | -0.0152 (0.0073) | 0.0368 | -0.0151 (0.0073) | 0.0389 |
 | `SUD15_Snuff15` | 0.0065 (0.0083) | 0.438 | 0.0063 (0.0083) | 0.450 |
@@ -457,7 +457,7 @@ Estimates from the models fitted on the training set of the first split (seed 42
 ### Table S3c. PRS smooth terms of the additive mixed models
 
 | Smooth | PLE-HM edf | PLE-HM F | PLE-HM p | DEP edf | DEP F | DEP p |
-|---|---|---|---|---|---|---|
+|----------------------------------------|---------|---------|---------|---------|---------|---------|
 | `s(PRS_Amygdala_excitatory)` | 1.00 | 1.75 | 0.186 | 1.00 | 0.25 | 0.618 |
 | `s(PRS_Cerebellar_inhibitory)` | 2.44 | 0.83 | 0.450 | 1.72 | 1.03 | 0.384 |
 | `s(PRS_CGE_interneuron)` | 1.87 | 1.25 | 0.323 | 1.92 | 0.74 | 0.608 |

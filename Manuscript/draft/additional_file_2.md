@@ -9,7 +9,7 @@ This study develops and internally evaluates several models on the same data and
 a model for use, which makes several implementation items not applicable.
 -->
 
-Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E, evaluation. Sections refer to the main manuscript.
+Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E, evaluation. Sections refer to the main manuscript. Status: *Reported*, the item is fully reported where shown; *Partly*, part of the item is reported and the missing part is described; *To be completed*, the information is being collected from the authors and will be added before submission; *Not applicable*, with the reason; *Not reported*, with the reason.
 
 | Section | Item | D/E | Topic (shortened) | Reported in | Status |
 |--------------|----|----|--------------------|--------------------|----------------------------------------|
@@ -20,7 +20,7 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | | 3c | D;E | Known health inequalities | – | Not reported: sex differences are analysed (Results), but known inequalities are not discussed in the Background |
 | Objectives | 4 | D;E | Objectives; development and/or validation | Background (final paragraph) | Reported |
 | Data | 5a | D;E | Data sources, rationale, representativeness | Methods: Study population; Results: Table 1 | Reported (included vs excluded comparison) |
-| | 5b | D;E | Dates of data collection and follow-up | Methods: Study population | Partly: access period reported; collection years and birth cohorts are author input (M-06) |
+| | 5b | D;E | Dates of data collection and follow-up | Methods: Study population | Partly: the analysis period is reported; the birth years of the participants and the years of data collection at ages 9, 15 and 18 are still to be added |
 | Participants | 6a | D;E | Setting, centres | Methods: Study population | Reported (population-based national twin cohort) |
 | | 6b | D;E | Eligibility criteria | Methods: Study population; Fig. 1 | Reported |
 | | 6c | D;E | Treatments | – | Not applicable: treatment data were not available in the analysis data and not used |
@@ -29,7 +29,7 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | | 8b | D;E | Qualifications of outcome assessors | – | Not applicable: self-reported questionnaires |
 | | 8c | D;E | Blinding of outcome assessment | – | Not applicable: self-report |
 | Predictors | 9a | D | Choice and pre-selection of predictors | Methods: Predictors (variable screening); Additional file 1: Table S4 | Reported (outcome-informed screening disclosed as a limitation) |
-| | 9b | D;E | Definition and timing of predictors | Methods: Predictors; Additional file 1: Table S4 | Partly: age-9 instruments and informants are author input (M-06) |
+| | 9b | D;E | Definition and timing of predictors | Methods: Predictors; Additional file 1: Table S4 | Reported: age-9 measures from the A-TAC parent telephone interview; questionnaires at ages 15 and 18; genotype data (Methods: Predictors, Genotype data and polygenic scores) |
 | | 9c | D;E | Qualifications of predictor assessors | – | Not applicable: questionnaire and genotype data |
 | Sample size | 10 | D;E | How study size was arrived at, and adequacy | Methods: Study population; Discussion | Reported: set by the available complete cases, no formal calculation; the Discussion relates sample size to model complexity |
 | Missing data | 11 | D;E | Handling of missing data | Methods: Study population; Fig. 1; Discussion (limitations) | Reported (complete-case analysis) |
@@ -44,12 +44,12 @@ Reporting checklist for the TRIPOD+AI statement [@R-TRIPODAI]. D, development; E
 | Fairness | 14 | D;E | Approaches to fairness | Methods: Calibration, subgroup and sensitivity analyses | Partly: performance by sex reported; no fairness intervention |
 | Model output | 15 | D | Output and any thresholds | Methods: Outcomes | Reported (continuous scores, no thresholds) |
 | Training vs evaluation | 16 | D;E | Differences between development and evaluation data | Methods: Data partitioning | Reported (random splits of one cohort; no differences by design) |
-| Ethical approval | 17 | D;E | Ethics committee and consent | Methods: Ethics; Declarations | Author input (C-02) |
-| Funding | 18a | D;E | Funding and role of funders | Declarations | Author input (C-03) |
-| Conflicts of interest | 18b | D;E | Competing interests | Declarations | Author input (C-03) |
+| Ethical approval | 17 | D;E | Ethics committee and consent | Methods: Ethics; Declarations | To be completed: name of the ethics committee, approval reference numbers and dates, and how consent was obtained |
+| Funding | 18a | D;E | Funding and role of funders | Declarations | To be completed: funding sources and grant numbers, and the role of the funders |
+| Conflicts of interest | 18b | D;E | Competing interests | Declarations | To be completed: competing-interest statement from each author |
 | Protocol | 18c | D;E | Protocol access | Methods: Software and reporting | Reported: no protocol was published |
 | Registration | 18d | D;E | Study registration | Methods: Software and reporting | Reported: not registered |
-| Data sharing | 18e | D;E | Data availability | Declarations: Availability of data and materials | Partly: access procedure is author input (C-07) |
+| Data sharing | 18e | D;E | Data availability | Declarations: Availability of data and materials | Partly: the data cannot be shared publicly; the procedure for applying for access to CATSS data is still to be added |
 | Code sharing | 18f | D;E | Code availability | Methods: Software and reporting; Declarations | Reported: Zenodo DOI and GitHub repository |
 | Patient and public involvement | 19 | D;E | Patient and public involvement | Methods: Software and reporting | Reported: no involvement |
 | Participants | 20a | D;E | Participant flow | Results: Analysis sample; Fig. 1 | Reported |
