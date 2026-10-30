@@ -562,6 +562,8 @@ Mean ± SD over the five test sets, with all predictors. R², coefficient of det
 | Elastic net | 0.2373 ± 0.0146 | 0.1524 ± 0.0024 | 0.1197 ± 0.0012 | 0.4733 ± 0.0193 |
 | Gradient boosting | 0.2287 ± 0.0163 | 0.1533 ± 0.0027 | 0.1203 ± 0.0017 | 0.4645 ± 0.0194 |
 
+\newpage
+
 ## Table S7. Five most important predictors in DCMFNet and the GLMM
 
 DCMFNet: mean absolute SHAP value over the five test sets (SD across splits), and its share of the summed mean absolute SHAP values of all 105 predictors. GLMM: predictors ranked by the absolute t value of their main effect in the model fitted on the first split (seed 42; interaction terms not ranked); the full coefficients are in Table S3. Per-predictor SHAP values were not computed for the GLMM. Both columns describe what the fitted models use for prediction, not causal effects. Variable names as in Table S4.
@@ -569,7 +571,7 @@ DCMFNet: mean absolute SHAP value over the five test sets (SD across splits), an
 <!-- src: Models/DCMFNet/Results/SHAP Analysis/{Pos,Neg}_shap_feature_importance_5seeds.csv (mean_abs_shap, across_seed_std); Models/GLMM/Results/{Pos,Neg}_GLMM_updated_all_coefs.csv (t value; intercept, SUD15 interactions and batch x PC terms excluded). Added 2026-10-29. -->
 
 | Rank | DCMFNet predictor | Mean \|SHAP\| (SD) | Share | GLMM predictor | t |
-|---|---|---|---|---|---|
+|---------|------------------------------|-----------------|-------|------------------------------|------|
 | *PLE-HM* | | | | | |
 | 1 | `ACE18_emotional_abuse18` | 0.0119 (0.0044) | 7.2% | `ACE18_emotional_abuse18` | −9.13 |
 | 2 | `SUD18_cigarettes18` | 0.0082 (0.0021) | 5.0% | `SCZ15_Too_much_energy15` | 4.49 |
